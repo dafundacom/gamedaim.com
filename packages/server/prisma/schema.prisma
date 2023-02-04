@@ -34,6 +34,7 @@ model User {
   articles         Article[] @relation("ArticleAuthors")
   topics           Topic[]   @relation("TopicAuthors")
   medias           Media[]   @relation("MediaAuthors")
+  wpComments       WpComment[]   @relation("WpCommentAuthors")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
@@ -79,6 +80,16 @@ model Media {
   articles    Article[] @relation(name: "ArticleFeaturedImages")
   topics      Topic[]   @relation(name: "TopicFeaturedImages")
   users       User[]    @relation(name: "UserProfilePictures")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model WpComment {
+  id          String @id @unique @default(uuid())
+  content     String
+  wpPostId    String @unique
+  author      User      @relation(name: "WpCommentAuthors", fields: [authorId], references: [id])
+  authorId    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
