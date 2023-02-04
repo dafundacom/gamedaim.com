@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  AUTHOR
+  ADMIN
+}
+
+enum ArticleStatus {
+  PUBLISHED
+  DRAFT
+  REJECTED
+  IN_REVIEW
+}
+
+model User {
+  id               String    @id @unique @default(uuid())
+  email            String    @unique
+  username         String    @unique
+  name             String?
+  phoneNumber      String?
+  profilePictureId String?
+  profilePicture   Media?    @relation(name: "UserProfilePictures", fields: [profilePictureId], references: [id])
+  about            String?
+  password         String
+  role             UserRole  @default(USER)
+  articles         Article[] @relation("ArticleAuthors")
+  topics           Topic[]   @relation("TopicAuthors")
+  medias           Media[]   @relation("MediaAuthors")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Article {
+  id              String        @id @unique @default(uuid())
+  title           String
+  content         String
+  slug            String        @unique
+  author          User          @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
+  authorId        String
+  topics          Topic[]       @relation(name: "ArticleTopics")
+  featuredImageId String
+  featuredImage   Media         @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
+  status          ArticleStatus @default(PUBLISHED)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Topic {
+  id              String    @id @unique @default(uuid())
+  title           String
+  description     String?
+  slug            String    @unique
+  featuredImageId String?
+  featuredImage   Media?    @relation(name: "TopicFeaturedImages", fields: [featuredImageId], references: [id])
+  author          User      @relation(name: "TopicAuthors", fields: [authorId], references: [id])
+  authorId        String
+  articles        Article[] @relation(name: "ArticleTopics")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Media {
+  id          String    @id @unique @default(uuid())
+  name        String    @unique
+  url         String    @unique
+  type        String
+  description String?
+  alt         String?
+  author      User      @relation(name: "MediaAuthors", fields: [authorId], references: [id])
+  authorId    String
+  articles    Article[] @relation(name: "ArticleFeaturedImages")
+  topics      Topic[]   @relation(name: "TopicFeaturedImages")
+  users       User[]    @relation(name: "UserProfilePictures")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

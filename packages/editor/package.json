@@ -1,0 +1,61 @@
+{
+  "name": "editor",
+  "version": "0.0.1",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.ts*"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "8.33.0",
+    "eslint-config": "workspace:*",
+    "prettier-plugin-tailwindcss": "^0.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.5",
+    "typescript-config": "workspace:*"
+  },
+  "dependencies": {
+    "@tiptap/extension-blockquote": "2.0.0-beta.212",
+    "@tiptap/extension-bold": "2.0.0-beta.212",
+    "@tiptap/extension-bullet-list": "2.0.0-beta.212",
+    "@tiptap/extension-character-count": "2.0.0-beta.212",
+    "@tiptap/extension-code": "2.0.0-beta.212",
+    "@tiptap/extension-color": "2.0.0-beta.212",
+    "@tiptap/extension-document": "2.0.0-beta.212",
+    "@tiptap/extension-dropcursor": "2.0.0-beta.212",
+    "@tiptap/extension-gapcursor": "2.0.0-beta.212",
+    "@tiptap/extension-heading": "2.0.0-beta.212",
+    "@tiptap/extension-history": "2.0.0-beta.212",
+    "@tiptap/extension-horizontal-rule": "2.0.0-beta.212",
+    "@tiptap/extension-image": "2.0.0-beta.212",
+    "@tiptap/extension-italic": "2.0.0-beta.212",
+    "@tiptap/extension-link": "2.0.0-beta.212",
+    "@tiptap/extension-list-item": "2.0.0-beta.212",
+    "@tiptap/extension-ordered-list": "2.0.0-beta.212",
+    "@tiptap/extension-paragraph": "2.0.0-beta.212",
+    "@tiptap/extension-placeholder": "2.0.0-beta.212",
+    "@tiptap/extension-strike": "2.0.0-beta.212",
+    "@tiptap/extension-text": "2.0.0-beta.212",
+    "@tiptap/extension-text-align": "2.0.0-beta.212",
+    "@tiptap/extension-text-style": "2.0.0-beta.212",
+    "@tiptap/extension-underline": "2.0.0-beta.212",
+    "@tiptap/extension-youtube": "2.0.0-beta.212",
+    "@tiptap/react": "2.0.0-beta.212",
+    "highlight.js": "^11.7.0",
+    "lowlight": "^2.8.1",
+    "next": "^13.1.6",
+    "react-icons": "^4.7.1",
+    "ui": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "test": {
+      "outputs": []
+    },
+    "analyze": {
+      "outputs": []
+    },
+    "analyze:server": {
+      "outputs": []
+    },
+    "analyze:brower": {
+      "outputs": []
+    },
+    "clean": {
+      "outputs": []
+    },
+    "clean:build": {
+      "outputs": []
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "files.saveConflictResolution": "overwriteFileOnDisk",
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}
