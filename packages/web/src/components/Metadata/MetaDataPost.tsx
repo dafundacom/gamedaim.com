@@ -1,10 +1,11 @@
 import * as React from "react"
 import NextLink from "next/link"
 import NextImage from "next/image"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { MdAccessTime } from "react-icons/md"
 
 import { Heading } from "ui"
-import { cleanDate } from "@/utils/datetime"
 import { wpAuthorPathBySlug } from "@/lib/wp-users"
 
 interface MetadataPostProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -18,6 +19,8 @@ export const MetadataPost = React.forwardRef<HTMLDivElement, MetadataPostProps>(
   (props, ref) => {
     const { authorName, authorAvatarUrl, authorSlug, date, ...rest } = props
     const [image, setImage] = React.useState(authorAvatarUrl) as any
+
+    dayjs.extend(relativeTime)
 
     return (
       <div className="flex-column flex" ref={ref} {...rest}>
@@ -48,7 +51,7 @@ export const MetadataPost = React.forwardRef<HTMLDivElement, MetadataPostProps>(
                     className="ml-[6px] text-xs text-gray-700 dark:text-gray-200"
                     dateTime={date}
                   >
-                    {cleanDate(date)}
+                    {dayjs(date).fromNow()}
                   </time>
                 </div>
               )}
