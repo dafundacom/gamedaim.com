@@ -6,6 +6,7 @@ import { SidebarToggleItem, SidebarToggleItemProps } from "./SidebarToggleItem"
 import { SidebarItem, SidebarItemProps } from "./SidebarItem"
 import { SidebarDashboard, SidebarDashboardProps } from "./SidebarDashboard"
 import { TopNav } from "./TopNav"
+import { SideNav } from "./SideNav"
 
 interface Sidebar
   extends React.ForwardRefExoticComponent<
@@ -39,4 +40,5 @@ export {
   SidebarItem,
   SidebarDashboard,
   TopNav,
+  SideNav,
 }
