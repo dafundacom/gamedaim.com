@@ -110,68 +110,68 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                 </form>
               </div>
               <div className="grow-1 flex flex-row ml-auto space-x-4">
-                <div className="space-x-2 hidden lg:block">
-                  <NextLink
-                    href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
-                    target="_blank"
-                  >
-                    <IconButton variant="ghost" className="!text-lg">
-                      <FaFacebook />
-                    </IconButton>
-                  </NextLink>
-                  <NextLink
-                    href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
-                    target="_blank"
-                  >
-                    <IconButton variant="ghost" className="!text-lg">
-                      <FaTwitter />
-                    </IconButton>
-                  </NextLink>
-                  {env.YOUTUBE_CHANNEL ? (
+                {!auth.user && (
+                  <div className="space-x-2 hidden lg:block">
                     <NextLink
-                      href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
+                      href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
                       target="_blank"
                     >
                       <IconButton variant="ghost" className="!text-lg">
-                        <FaYoutube />
+                        <FaFacebook />
                       </IconButton>
                     </NextLink>
-                  ) : null}
-                  <NextLink
-                    href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
-                    target="_blank"
-                  >
-                    <IconButton variant="ghost" className="!text-lg">
-                      <FaInstagram />
+                    <NextLink
+                      href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
+                      target="_blank"
+                    >
+                      <IconButton variant="ghost" className="!text-lg">
+                        <FaTwitter />
+                      </IconButton>
+                    </NextLink>
+                    {env.YOUTUBE_CHANNEL ? (
+                      <NextLink
+                        href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
+                        target="_blank"
+                      >
+                        <IconButton variant="ghost" className="!text-lg">
+                          <FaYoutube />
+                        </IconButton>
+                      </NextLink>
+                    ) : null}
+                    <NextLink
+                      href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
+                      target="_blank"
+                    >
+                      <IconButton variant="ghost" className="!text-lg">
+                        <FaInstagram />
+                      </IconButton>
+                    </NextLink>
+                  </div>
+                )}
+                {auth.user ? (
+                  <>
+                    {auth.user?.role !== "USER" && (
+                      <NextLink href="/dashboard">
+                        <IconButton variant="ghost" aria-label="Profile">
+                          <DashboardIcon className="h-5 w-5" />
+                        </IconButton>
+                      </NextLink>
+                    )}
+                    <IconButton
+                      variant="ghost"
+                      aria-label="Log Out"
+                      onClick={() => logOut()}
+                    >
+                      <LogoutIcon className="h-5 w-5" />
+                    </IconButton>
+                  </>
+                ) : (
+                  <NextLink href="/auth/login">
+                    <IconButton variant="ghost" aria-label="Login">
+                      <LoginIcon className="h-5 w-5" />
                     </IconButton>
                   </NextLink>
-                </div>
-                <>
-                  {auth.user ? (
-                    <>
-                      {auth.user?.role !== "USER" && (
-                        <NextLink href="/dashboard">
-                          <IconButton variant="ghost" aria-label="Profile">
-                            <DashboardIcon className="h-5 w-5" />
-                          </IconButton>
-                        </NextLink>
-                      )}
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Log Out"
-                        onClick={() => logOut()}
-                      >
-                        <LogoutIcon className="h-5 w-5" />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <NextLink href="/auth/login">
-                      <IconButton variant="ghost" aria-label="Login">
-                        <LoginIcon className="h-5 w-5" />
-                      </IconButton>
-                    </NextLink>
-                  )}
-                </>
+                )}
                 <IconButton
                   variant="ghost"
                   aria-label="Toggle Dark Mode"
