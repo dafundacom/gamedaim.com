@@ -12,10 +12,12 @@ import userRoutes from "./modules/user/user.route"
 import articleRoutes from "./modules/article/article.route"
 import topicRoutes from "./modules/topic/topic.route"
 import mediaRoutes from "./modules/media/media.route"
+import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
 import { userSchemas } from "./modules/user/user.schema"
 import { articleSchemas } from "./modules/article/article.schema"
 import { mediaSchemas } from "./modules/media/media.schema"
 import { topicSchemas } from "./modules/topic/topic.schema"
+import { wpCommentSchemas } from "./modules/wp-comment/wp-comment.schema"
 import { version } from "../package.json"
 
 function buildServer() {
@@ -58,6 +60,7 @@ function buildServer() {
     ...articleSchemas,
     ...mediaSchemas,
     ...topicSchemas,
+    ...wpCommentSchemas,
   ]) {
     server.addSchema(schema)
   }
@@ -90,6 +93,7 @@ function buildServer() {
   server.register(articleRoutes, { prefix: "api/article" })
   server.register(topicRoutes, { prefix: "api/topic" })
   server.register(mediaRoutes, { prefix: "api/media" })
+  server.register(wpCommentRoutes, { prefix: "api/wp-comment" })
 
   return server
 }

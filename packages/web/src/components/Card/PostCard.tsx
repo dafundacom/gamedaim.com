@@ -1,10 +1,11 @@
 import * as React from "react"
 import NextLink from "next/link"
 import NextImage from "next/image"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { MdAccessTime } from "react-icons/md"
 
 import { Heading } from "ui"
-import { cleanDate } from "@/utils/datetime"
 
 interface PostCardProps {
   title: string
@@ -34,6 +35,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
     } = props
     const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl) as any
     const [image, setImage] = React.useState("/image/imgloader.gif") as any
+    dayjs.extend(relativeTime)
     return (
       <article
         className="flex flex-row grow lg:flex-col rounded-lg drop-shadow-md mb-[30px] border-separate"
@@ -103,7 +105,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
                     className="pl-0.5 text-xs text-gray-700 dark:text-gray-200"
                     dateTime={date}
                   >
-                    {cleanDate(date)}
+                    {dayjs(date).fromNow()}
                   </time>
                 )}
               </div>

@@ -1,11 +1,12 @@
 import * as React from "react"
 import NextLink from "next/link"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { IoGameController } from "react-icons/io5"
 import { ImBook } from "react-icons/im"
 import { BiMovie, BiTv } from "react-icons/bi"
 
 import { WpCategoriesProps } from "@/data/wp-types"
-import { cleanDate } from "@/utils/datetime"
 import {
   wpPrimaryCategorySlug,
   wpCategoryPathBySlug,
@@ -19,7 +20,7 @@ interface MetadataFeaturedProps extends React.HTMLAttributes<HTMLDivElement> {
 export const MetadataFeatured = React.forwardRef<
   HTMLDivElement,
   MetadataFeaturedProps
->(function MetadataFeatured({ categories, date, ...props }, ref) {
+>(({ categories, date, ...props }, ref) => {
   const { primary } = wpPrimaryCategorySlug(categories)
   let categoryIcon
 
@@ -32,6 +33,8 @@ export const MetadataFeatured = React.forwardRef<
   } else if (primary.slug == "tv") {
     categoryIcon = <BiTv className="h-3 w-3" />
   }
+
+  dayjs.extend(relativeTime)
 
   return (
     <div className="flex flex-row" {...props} ref={ref}>
@@ -54,7 +57,7 @@ export const MetadataFeatured = React.forwardRef<
         <span className="ml-1 text-sm">&bull;</span>
         {date && (
           <time className={`pl-1 text-sm line-clamp-1`} dateTime={date}>
-            {cleanDate(date)}
+            {dayjs(date).fromNow()}
           </time>
         )}
       </div>
