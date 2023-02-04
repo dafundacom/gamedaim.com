@@ -25,7 +25,7 @@ const PostCardSide = dynamic(() =>
 )
 
 const HomeLayout = dynamic(() =>
-  import("@/layouts/HomeLayout").then((mod) => mod.HomeLayout),
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))

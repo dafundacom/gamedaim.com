@@ -9,7 +9,7 @@ import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { wpGetMenusByName } from "@/lib/wp-menus"
 
 const HomeLayout = dynamic(() =>
-  import("@/layouts/HomeLayout").then((mod) => mod.HomeLayout),
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),

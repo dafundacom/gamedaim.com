@@ -5,9 +5,7 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import { GetStaticProps, GetStaticPaths } from "next"
 import parse from "html-react-parser"
-const HomeLayout = dynamic(() =>
-  import("@/layouts/HomeLayout").then((mod) => mod.HomeLayout),
-)
+
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
 import {
@@ -19,6 +17,10 @@ import {
 } from "@/lib/wp-posts"
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
+
+const HomeLayout = dynamic(() =>
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
+)
 
 interface PostProps {
   post: {

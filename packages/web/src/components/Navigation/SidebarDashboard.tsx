@@ -73,6 +73,12 @@ export const SidebarDashboard = React.forwardRef<
           <Sidebar.Item icon={<MdOutlineComment />} href="/dashboard/comments">
             Comments
           </Sidebar.Item>
+          <Sidebar.Item
+            icon={<MdOutlineComment />}
+            href="/dashboard/wp-comments"
+          >
+            WP Comments
+          </Sidebar.Item>
           <Sidebar.Toggle icon={<MdSupervisedUserCircle />} title="Users">
             <Sidebar.ToggleItem href="/dashboard/users">
               All users
