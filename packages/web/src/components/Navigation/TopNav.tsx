@@ -9,7 +9,7 @@ import { IconButton, MoonIcon, SunIcon } from "ui"
 import env from "@/env"
 
 interface TopNavProps {
-  onToggle: any
+  onToggle?: any
 }
 
 export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
