@@ -71,7 +71,6 @@ query AllSlug($after: String) {
         slug
         categories {
           edges {
-            isPrimary
             node {
               slug
               parent {

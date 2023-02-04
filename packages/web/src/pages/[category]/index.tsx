@@ -2,13 +2,14 @@ import * as React from "react"
 import NextLink from "next/link"
 import Head from "next/head"
 import parse from "html-react-parser"
-import { GetServerSideProps } from "next"
+import { GetStaticProps, GetStaticPaths } from "next"
 import dynamic from "next/dynamic"
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
 import {
   wpGetCategoryBySlug,
   useWpGetCategoryBySlug,
+  wpGetAllCategories,
 } from "@/lib/wp-categories"
 import {
   wpGetPostsByCategorySlug,
@@ -55,7 +56,7 @@ export default function Category(props: CategoryProps) {
   const { getPostsByCategorySlug }: any = useWpGetPostsByCategorySlug(
     category as string,
   )
-  const categoryChild = getCategoryBySlug?.data?.category.children.nodes
+  const categoryChild = getCategoryBySlug?.data?.category?.children?.nodes
   if (isError) {
     router.push("/404")
   }
@@ -98,7 +99,7 @@ export default function Category(props: CategoryProps) {
                     All
                   </Button>
                 </NextLink>
-                {categoryChild &&
+                {categoryChild !== undefined &&
                   categoryChild.map((child: { slug: string; name: string }) => {
                     return (
                       <NextLink href={`/${child.slug}`}>
@@ -164,15 +165,7 @@ export default function Category(props: CategoryProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  res,
-}: any) => {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=120, stale-while-revalidate=600",
-  )
-
+export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
   const queryClient = new QueryClient()
   const slug = params?.category
   let isError = false
@@ -200,5 +193,22 @@ export const getServerSideProps: GetServerSideProps = async ({
       dehydratedState: dehydrate(queryClient),
       seo,
     },
+    revalidate: 100,
+  }
+}
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { categories } = await wpGetAllCategories()
+  const paths = categories.map(({ slug }: any) => {
+    const category = slug
+    return {
+      params: {
+        category,
+      },
+    }
+  })
+
+  return {
+    paths,
+    fallback: "blocking",
   }
 }

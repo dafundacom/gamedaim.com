@@ -127,9 +127,9 @@ export function wpMapPostData(post = {}) {
 export async function wpGetAllSlug() {
   const after = ""
   const data = await wpFetchAPI(QUERY_WP_ALL_SLUG, {
-    variables: { after },
+    after,
   })
-  const posts = data?.posts.edges.map(({ node = {} }) => node)
+  const posts = data?.data?.posts.edges.map(({ node = {} }) => node)
   return {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
   }

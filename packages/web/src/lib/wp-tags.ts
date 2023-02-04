@@ -12,7 +12,7 @@ export function wpTagPathBySlug(slug: string) {
 
 export async function wpGetAllTags() {
   const data = await wpFetchAPI(QUERY_WP_ALL_TAGS)
-  const tags = data?.data.tags.edges.map(({ node = {} }) => node)
+  const tags = data?.data?.tags.edges.map(({ node = {} }) => node)
   return {
     tags,
   }
