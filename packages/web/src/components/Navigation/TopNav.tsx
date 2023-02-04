@@ -95,6 +95,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                 <div className="space-x-2 hidden lg:block">
                   <NextLink
                     href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
+                    target="_blank"
                   >
                     <IconButton variant="ghost" className="!text-lg">
                       <FaFacebook />
@@ -102,14 +103,16 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                   </NextLink>
                   <NextLink
                     href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
+                    target="_blank"
                   >
                     <IconButton variant="ghost" className="!text-lg">
                       <FaTwitter />
                     </IconButton>
                   </NextLink>
-                  {env.YOUTUBE ? (
+                  {env.YOUTUBE_CHANNEL ? (
                     <NextLink
-                      href={`https://www.youtube.com/channel/${env.YOUTUBE}`}
+                      href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
+                      target="_blank"
                     >
                       <IconButton variant="ghost" className="!text-lg">
                         <FaYoutube />
@@ -118,6 +121,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                   ) : null}
                   <NextLink
                     href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
+                    target="_blank"
                   >
                     <IconButton variant="ghost" className="!text-lg">
                       <FaInstagram />
