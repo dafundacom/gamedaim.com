@@ -10,7 +10,7 @@ const PostCard = dynamic(() =>
   import("@/components/Card/PostCard").then((mod) => mod.PostCard),
 )
 const HomeLayout = dynamic(() =>
-  import("@/layouts/HomeLayout").then((mod) => mod.HomeLayout),
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 interface SearchProps {
