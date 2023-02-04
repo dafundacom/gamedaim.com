@@ -13,6 +13,7 @@ const ArticleProvider: React.FunctionComponent<ArticleProviderProps> = (
   const [article, setArticle] = React.useState({
     articles: [],
     topics: [],
+    wpComments: [],
   })
 
   return (

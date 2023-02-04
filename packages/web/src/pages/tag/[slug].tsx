@@ -15,7 +15,7 @@ const PostCardSide = dynamic(() =>
 )
 
 const HomeLayout = dynamic(() =>
-  import("@/layouts/HomeLayout").then((mod) => mod.HomeLayout),
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const InfiniteScroll = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
