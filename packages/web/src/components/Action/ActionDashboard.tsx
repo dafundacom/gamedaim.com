@@ -33,33 +33,41 @@ export const ActionDashboard = React.forwardRef<
 
   return (
     <div ref={ref} className={tx("flex", className)} {...rest}>
-      {viewLink ? (
+      {viewLink && (
         <NextLink href={viewLink} target="_blank">
-          <HiOutlineEye className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-purple-500" />
+          <HiOutlineEye className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500" />
         </NextLink>
-      ) : (
+      )}
+
+      {onView && (
         <HiOutlineEye
-          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-purple-500"
+          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500"
           onClick={onView}
         />
       )}
-      {editLink ? (
+
+      {editLink && (
         <NextLink href={editLink}>
-          <HiOutlinePencil className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-purple-500" />
+          <HiOutlinePencil className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500" />
         </NextLink>
-      ) : (
+      )}
+
+      {onEdit && (
         <HiOutlinePencil
-          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-purple-500"
+          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500"
           onClick={onEdit}
         />
       )}
-      {deleteLink ? (
+
+      {deleteLink && (
         <NextLink href={deleteLink}>
-          <HiOutlineTrash className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-purple-500" />
+          <HiOutlineTrash className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500" />
         </NextLink>
-      ) : (
+      )}
+
+      {onDelete && (
         <HiOutlineTrash
-          className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-purple-500"
+          className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500"
           onClick={onDelete}
         />
       )}
