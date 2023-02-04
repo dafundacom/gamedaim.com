@@ -1,11 +1,8 @@
 import * as React from "react"
-import NextLink from "next/link"
 import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
-import { Button } from "ui"
-import { MdAdd } from "react-icons/md"
 
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
@@ -54,11 +51,6 @@ export default function WpCommentsDashboard() {
   return (
     <AdminRole>
       <DashboardLayout>
-        <div className="mt-4 flex items-end justify-end">
-          <NextLink href="/dashboard/wp-comments/new">
-            <Button leftIcon={<MdAdd />}>Add New</Button>
-          </NextLink>
-        </div>
         <div className="my-6 rounded">
           <Table>
             <Thead>
