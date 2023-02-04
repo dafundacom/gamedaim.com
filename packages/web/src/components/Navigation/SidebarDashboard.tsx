@@ -1,6 +1,6 @@
 import * as React from "react"
-// TODO: change Link to our own componenet
-import Link from "next/link"
+import NextImage from "next/image"
+import NextLink from "next/link"
 import {
   MdOutlineArticle,
   MdOutlineComment,
@@ -12,8 +12,8 @@ import {
   MdSupervisedUserCircle,
 } from "react-icons/md"
 
+import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
-import { Logo } from "@/components/Brand"
 import { Sidebar } from "."
 
 export interface SidebarDashboardProps {}
@@ -28,12 +28,17 @@ export const SidebarDashboard = React.forwardRef<
 
   return (
     <Sidebar ref={ref} {...rest}>
-      <Link
+      <NextLink
         href="/"
         className="mx-auto my-0 flex items-center justify-center p-5"
       >
-        <Logo />
-      </Link>
+        <NextImage
+          height={32}
+          width={120}
+          alt={env.SITE_TITLE}
+          src={env.LOGO_URL}
+        />
+      </NextLink>
       <Sidebar.Item icon={<MdSpaceDashboard />} href="/dashboard">
         Dashboard
       </Sidebar.Item>

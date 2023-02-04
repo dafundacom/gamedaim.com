@@ -1,5 +1,6 @@
 import * as React from "react"
 import NextLink from "next/link"
+import NextImage from "next/image"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -17,9 +18,9 @@ import {
 } from "ui"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 
+import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { PublicRole } from "@/components/Role"
-import { Logo } from "@/components/Brand"
 
 interface FormValues {
   email: string
@@ -74,7 +75,12 @@ export default function Login() {
       <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <NextLink className="my-24 flex items-center justify-center" href="/">
-            <Logo />
+            <NextImage
+              height={32}
+              width={120}
+              alt={env.SITE_TITLE}
+              src={env.LOGO_URL}
+            />
           </NextLink>
           <Heading size="2xl" bold className="text-center">
             Login

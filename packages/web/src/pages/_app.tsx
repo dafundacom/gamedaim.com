@@ -3,6 +3,7 @@ import NProgress from "nprogress"
 import { useRouter } from "next/router"
 import { AppProps } from "next/app"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
+import { Toaster } from "react-hot-toast"
 import install from "@twind/with-next/app"
 import {
   QueryClient,
@@ -13,6 +14,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import "nprogress/nprogress.css"
 
 import styleConfig from "@/utils/style"
+import { AuthProvider } from "@/contexts/auth.context"
+import { ArticleProvider } from "@/contexts/article.context"
+import { UserProvider } from "@/contexts/user.context"
 
 const queryClient = new QueryClient()
 
@@ -42,7 +46,14 @@ function App({ Component, pageProps }: AppProps) {
             attribute="class"
             enableSystem
           >
-            <Component {...pageProps} />
+            <AuthProvider>
+              <UserProvider>
+                <ArticleProvider>
+                  <Toaster />
+                  <Component {...pageProps} />
+                </ArticleProvider>
+              </UserProvider>
+            </AuthProvider>
           </NextThemeProvider>
         </Hydrate>
         <ReactQueryDevtools />

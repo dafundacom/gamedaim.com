@@ -5,8 +5,16 @@ import { useRouter } from "next/router"
 import { useTheme } from "next-themes"
 import { FaTwitter, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa"
 
-import { IconButton, MoonIcon, SunIcon } from "ui"
+import {
+  DashboardIcon,
+  IconButton,
+  LoginIcon,
+  LogoutIcon,
+  MoonIcon,
+  SunIcon,
+} from "ui"
 import env from "@/env"
+import { AuthContext } from "@/contexts/auth.context"
 
 interface TopNavProps {
   onToggle?: any
@@ -17,6 +25,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
     const { onToggle, ...rest } = props
     const [mounted, setMounted] = React.useState(false)
     const { resolvedTheme, setTheme } = useTheme()
+    const [auth, setAuth] = React.useContext(AuthContext)
     const router = useRouter()
     const inputRef = React.useRef() as React.RefObject<HTMLInputElement>
     const handlerSubmit = (e: { preventDefault: () => void }) => {
@@ -32,6 +41,15 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
       if (mounted) {
         setTheme(resolvedTheme === "dark" ? "light" : "dark")
       }
+    }
+
+    const logOut = () => {
+      localStorage.removeItem("auth")
+      setAuth({
+        user: null,
+        token: "",
+      })
+      router.push("/auth/login")
     }
 
     return (
@@ -128,6 +146,32 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     </IconButton>
                   </NextLink>
                 </div>
+                <>
+                  {auth.user ? (
+                    <>
+                      {auth.user?.role !== "USER" && (
+                        <NextLink href="/dashboard">
+                          <IconButton variant="ghost" aria-label="Profile">
+                            <DashboardIcon className="h-5 w-5" />
+                          </IconButton>
+                        </NextLink>
+                      )}
+                      <IconButton
+                        variant="ghost"
+                        aria-label="Log Out"
+                        onClick={() => logOut()}
+                      >
+                        <LogoutIcon className="h-5 w-5" />
+                      </IconButton>
+                    </>
+                  ) : (
+                    <NextLink href="/auth/login">
+                      <IconButton variant="ghost" aria-label="Login">
+                        <LoginIcon className="h-5 w-5" />
+                      </IconButton>
+                    </NextLink>
+                  )}
+                </>
                 <IconButton
                   variant="ghost"
                   aria-label="Toggle Dark Mode"

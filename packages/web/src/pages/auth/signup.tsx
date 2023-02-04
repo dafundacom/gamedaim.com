@@ -1,4 +1,5 @@
 import * as React from "react"
+import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
@@ -17,9 +18,9 @@ import {
 } from "ui"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 
+import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { PublicRole } from "@/components/Role"
-import { Logo } from "@/components/Brand"
 
 interface FormValues {
   email: string
@@ -72,7 +73,12 @@ export default function Signup() {
       <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <NextLink className="my-24 flex items-center justify-center" href="/">
-            <Logo className="h-[60px] w-[188px]" />
+            <NextImage
+              height={32}
+              width={120}
+              alt={env.SITE_TITLE}
+              src={env.LOGO_URL}
+            />
           </NextLink>
           <Heading bold size="3xl" className="text-center">
             Sign Up
