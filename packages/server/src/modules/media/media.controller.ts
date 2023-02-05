@@ -1,7 +1,9 @@
-//FIX: Unsupported Media Type Error
 import { FastifyReply, FastifyRequest } from "fastify"
+import { S3Client } from "@aws-sdk/client-s3"
+import { Upload } from "@aws-sdk/lib-storage"
 
 import env from "../../env"
+import { uniqueSlug } from "../../utils/slug"
 import {
   findMediaById,
   uploadMedia,
@@ -16,15 +18,46 @@ export async function uploadMediaHandler(
   reply: FastifyReply,
 ) {
   try {
-    const file = request.file
+    const data = await request.file()
     const user = request.user
+    const uniqueName = uniqueSlug() + "-" + data.filename
+
+    const s3Config = {
+      endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+      region: "auto",
+      credentials: {
+        accessKeyId: `${env.R2_ACCESS_KEY}`,
+        secretAccessKey: `${env.R2_SECRET_KEY}`,
+      },
+      signatureVersion: "v4",
+    }
+
+    const fileProperties = {
+      Bucket: env.R2_BUCKET,
+      Key: uniqueName,
+      ContentType: data.mimetype,
+      Body: data.file,
+    }
+
+    const uploadToBucket = new Upload({
+      client: new S3Client(s3Config),
+      leavePartsOnError: false,
+      params: fileProperties,
+    })
+
+    uploadToBucket.on("httpUploadProgress", (progress) => {
+      console.log(progress)
+    })
+
+    await uploadToBucket.done()
 
     const upload = await uploadMedia({
-      name: file.key,
-      url: "https://" + env.R2_DOMAIN + "/" + file.key,
-      type: file.mimetype,
+      name: uniqueName,
+      url: "https://" + env.R2_DOMAIN + "/" + uniqueName,
+      type: data.mimetype,
       authorId: user.id,
     })
+
     reply.code(200).send(upload)
   } catch (e) {
     reply.code(500).send(e)

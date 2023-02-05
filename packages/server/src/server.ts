@@ -1,6 +1,7 @@
 import fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
+import multipart from "@fastify/multipart"
 import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUi from "@fastify/swagger-ui"
 import { withRefResolver } from "fastify-zod"
@@ -46,13 +47,24 @@ function buildServer() {
     },
   )
 
-  server.get("/health-check", async function () {
+  server.get("/health-check", async () => {
     return { status: "OK" }
   })
 
   server.addHook("preHandler", (req, _reply, next) => {
     req.jwt = server.jwt
     return next()
+  })
+
+  server.register(multipart, {
+    limits: {
+      fieldNameSize: 100,
+      fieldSize: 100,
+      fields: 10,
+      fileSize: 1000000,
+      files: 1,
+      headerPairs: 2000,
+    },
   })
 
   for (const schema of [
