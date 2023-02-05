@@ -1,6 +1,14 @@
 import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
+const MAX_FILE_SIZE = 500000
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]
+
 export const mediaInput = {
   name: z.string({
     invalid_type_error: "Name must be a string",
@@ -27,6 +35,20 @@ export const mediaInput = {
   }),
 }
 
+const mediaUpload = {
+  image: z
+    .any()
+    .refine((files) => files?.length === 0, "Image is required.")
+    .refine(
+      (files) => files?.[0]?.size >= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png and .webp files are accepted.",
+    ),
+}
+
 const mediaGenerated = {
   id: z.string(),
   url: z.string(),
@@ -39,6 +61,10 @@ const mediaGenerated = {
 
 const uploadMediaSchema = z.object({
   ...mediaInput,
+})
+
+const uploadFileMediaSchema = z.object({
+  ...mediaUpload,
 })
 
 const updateMediaSchema = z.object({
@@ -62,10 +88,12 @@ const mediaResponseSchema = z.object({
 const mediasResponseSchema = z.array(mediaResponseSchema)
 
 export type UploadMediaInput = z.infer<typeof uploadMediaSchema>
+export type UploadMediaFile = z.infer<typeof uploadFileMediaSchema>
 export type UpdateMediaInput = z.infer<typeof updateMediaSchema>
 
 const models = {
   uploadMediaSchema,
+  uploadFileMediaSchema,
   updateMediaSchema,
   mediaResponseSchema,
   mediasResponseSchema,

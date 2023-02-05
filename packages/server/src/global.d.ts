@@ -13,8 +13,15 @@ declare global {
 declare module "fastify" {
   interface FastifyRequest {
     jwt: JWT
-    //@ts-ignore
-    file: File<{ originalname: string; authorId: string }>
+    // @ts-ignore
+    file: File<{
+      key: string
+      filename: string
+      mimetype: string
+      fieldname: string
+      originalname: string
+      authorId: string
+    }>
     user: {
       id: string
       username: string
