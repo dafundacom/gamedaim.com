@@ -199,7 +199,7 @@ export default defineConfig({
     }
 
     .article-body .wp-block-button {
-      @apply inline-flex flex-shrink-0 relative items-center justify-center align-middle rounded-xl m-0 font-medium leading-tight transition-colors duration-75 ease-out outline-none appearance-none cursor-pointer focus:outline-none select-none whitespace-nowrap disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 h-9 px-4 text-base min-w-[2.5rem] shadow-sm text-white bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800;
+      @apply inline-flex flex-shrink-0 relative items-center justify-center align-middle rounded-xl m-0 font-medium leading-tight transition-colors duration-75 ease-out outline-none appearance-none cursor-pointer focus:outline-none select-none whitespace-nowrap disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 h-9 px-4 text-base min-w-[2.5rem] shadow-sm text-white bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800;
     }
 
     #ez-toc-container.ez-toc-transparent {
