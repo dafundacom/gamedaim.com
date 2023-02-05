@@ -118,7 +118,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
                     target="_blank"
                   >
-                    <IconButton variant="ghost" className="!text-lg !px-1">
+                    <IconButton variant="ghost" className="!text-lg">
                       <FaFacebook />
                     </IconButton>
                   </NextLink>
@@ -126,7 +126,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
                     target="_blank"
                   >
-                    <IconButton variant="ghost" className="!text-lg !px-1">
+                    <IconButton variant="ghost" className="!text-lg">
                       <FaTwitter />
                     </IconButton>
                   </NextLink>
@@ -135,7 +135,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                       href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
                       target="_blank"
                     >
-                      <IconButton variant="ghost" className="!text-lg !px-1">
+                      <IconButton variant="ghost" className="!text-lg">
                         <FaYoutube />
                       </IconButton>
                     </NextLink>
@@ -144,46 +144,35 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
                     target="_blank"
                   >
-                    <IconButton variant="ghost" className="!text-lg !px-1">
+                    <IconButton variant="ghost" className="!text-lg">
                       <FaInstagram />
                     </IconButton>
                   </NextLink>
                 </div>
-                <>
-                  {auth.user ? (
-                    <>
-                      {auth.user?.role !== "USER" && (
-                        <NextLink href="/dashboard">
-                          <IconButton
-                            variant="ghost"
-                            aria-label="Profile"
-                            className="!px-1"
-                          >
-                            <DashboardIcon className="h-5 w-5" />
-                          </IconButton>
-                        </NextLink>
-                      )}
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Log Out"
-                        onClick={() => logOut()}
-                        className="!px-1"
-                      >
-                        <LogoutIcon className="h-5 w-5" />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <NextLink href="/auth/login">
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Login"
-                        className="!px-1"
-                      >
-                        <LoginIcon className="h-5 w-5" />
-                      </IconButton>
-                    </NextLink>
-                  )}
-                </>
+                {auth.user ? (
+                  <>
+                    {auth.user?.role !== "USER" && (
+                      <NextLink href="/dashboard">
+                        <IconButton variant="ghost" aria-label="Profile">
+                          <DashboardIcon className="h-5 w-5" />
+                        </IconButton>
+                      </NextLink>
+                    )}
+                    <IconButton
+                      variant="ghost"
+                      aria-label="Log Out"
+                      onClick={() => logOut()}
+                    >
+                      <LogoutIcon className="h-5 w-5" />
+                    </IconButton>
+                  </>
+                ) : (
+                  <NextLink href="/auth/login">
+                    <IconButton variant="ghost" aria-label="Login">
+                      <LoginIcon className="h-5 w-5" />
+                    </IconButton>
+                  </NextLink>
+                )}
                 <div className="flex space-x-2">
                   <IconButton
                     variant="ghost"

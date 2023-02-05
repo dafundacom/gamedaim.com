@@ -481,3 +481,79 @@ export const QUERY_WP_SEARCH_POSTS = `
     }
   }
 `
+export const GET_INFINITE_SCROLL_POSTS = `query GET_POSTS_BY_CATEGORY($categoryName: String!,$after: String = "") {
+  posts(where: { categoryName: $categoryName }, first: 1,after: $after){
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        author {
+          node {
+            avatar {
+              height
+              url
+              width
+            }
+            id
+            name
+            slug
+          }
+        }
+        id
+        categories {
+          edges {
+            node {
+              categoryId
+              id
+              name
+              slug
+              children {
+                  nodes {
+                    id
+                    slug
+                    name
+                  }
+                }
+              parent {
+                    node {
+                      id
+                    }
+                  }
+            }
+          }
+        }
+        tags {
+          edges {
+            node {
+              tagId
+              id
+              name
+              slug
+            }
+          }
+        }
+        content
+        date
+        excerpt
+        featuredImage {
+          node {
+            altText
+            caption
+            sourceUrl
+            srcSet
+            sizes
+            id
+          }
+        }
+        modified
+        postId
+        title
+        slug
+        uri
+      }
+    }
+  }
+}
+`

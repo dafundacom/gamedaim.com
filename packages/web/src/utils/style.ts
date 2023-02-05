@@ -232,6 +232,109 @@ export default defineConfig({
     .cssiconcheckbox {
       @apply hidden;
     }
+
+    /* editor */
+    .ProseMirror {
+      @apply min-h-screen px-3 py-2 text-base items-center min-w-0 dark:text-white outline-none space-y-2;
+    }
+    .ProseMirror p.is-editor-empty:first-child::before {
+      @apply text-gray-500 dark:text-gray-200 float-left h-0 pointer-events-none;
+      content: attr(data-placeholder);
+    }
+    .ProseMirror h1,
+    .ProseMirror h2,
+    .ProseMirror h3,
+    .ProseMirror h4,
+    .ProseMirror h5,
+    .ProseMirror h6 {
+      @apply text-black dark:text-gray-100;
+    }
+    .ProseMirror h1 {
+      @apply text-2xl md:text-5xl;
+    }
+    .ProseMirror h2 {
+      @apply text-xl md:text-4xl;
+    }
+    .ProseMirror h3 {
+      @apply text-lg md:text-3xl;
+    }
+    .ProseMirror h4 {
+      @apply text-base md:text-2xl;
+    }
+    .ProseMirror h5 {
+      @apply text-base md:text-xl;
+    }
+    .ProseMirror h6 {
+      @apply text-base md:text-lg;
+    }
+    .ProseMirror a {
+      @apply text-primary-500 duration-200 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 hover:underline;
+    }
+    .ProseMirror ul li {
+      @apply list-disc ml-12;
+    }
+    .ProseMirror ol li {
+      @apply list-decimal ml-12;
+    }
+    .ProseMirror blockquote {
+      @apply p-4 my-4 bg-gray-50 border-l-4 border-gray-300 dark:border-gray-500 dark:bg-gray-700 rounded-sm italic;
+    }
+    .ProseMirror img {
+      @apply rounded-md;
+    }
+    .ProseMirror pre {
+      @apply bg-black rounded-lg text-white px-3 py-2 font-mono;
+    }
+    .ProseMirror code {
+      @apply text-xs p-0 bg-[none] text-[inherit];
+    }
+    .hljs-comment,
+    .hljs-quote {
+      color: #616161;
+    }
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #f98181;
+    }
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #fbbc88;
+    }
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #b9f18d;
+    }
+    .hljs-title,
+    .hljs-section {
+      color: #faf594;
+    }
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #70cff8;
+    }
+    .hljs-emphasis {
+      font-style: italic;
+    }
+    .hljs-strong {
+      font-weight: 700;
+    }
+    .tippybox {
+      @apply !max-w-5xl;
+    }
   `,
   presets: [
     presetAutoprefix(),
