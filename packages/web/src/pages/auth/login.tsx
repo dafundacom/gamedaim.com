@@ -151,7 +151,7 @@ export default function Login() {
           <Text className="mt-8 text-center">
             Need an account?&nbsp;
             <NextLink
-              className="text-purple-500 hover:text-purple-700 font-semibold dark:text-gray-400 dark:hover:text-gray-300"
+              className="text-primary-500 hover:text-primary-700 font-semibold dark:text-gray-400 dark:hover:text-gray-300"
               href="/auth/signup"
             >
               Create an account
@@ -160,7 +160,7 @@ export default function Login() {
           {/* <Text className="mt-8 text-center"> */}
           {/*   Forgot Password?&nbsp; */}
           {/*   <NextLink */}
-          {/*     className="text-purple-500 hover:text-purple-700 font-semibold dark:text-gray-400 dark:hover:text-gray-300" */}
+          {/*     className="text-primary-500 hover:text-primary-700 font-semibold dark:text-gray-400 dark:hover:text-gray-300" */}
           {/*     href="/auth/forgot-password" */}
           {/*   > */}
           {/*     Reset here */}
