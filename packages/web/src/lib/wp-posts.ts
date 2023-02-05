@@ -13,6 +13,7 @@ import {
   QUERY_WP_ALL_SLUG,
   QUERY_WP_POST_BY_SLUG,
   QUERY_WP_SEARCH_POSTS,
+  GET_INFINITE_SCROLL_POSTS,
 } from "@/data/wp-posts"
 
 export function wpPostPathBySlug(slug: string) {
@@ -127,9 +128,9 @@ export function wpMapPostData(post = {}) {
 export async function wpGetAllSlug() {
   const after = ""
   const data = await wpFetchAPI(QUERY_WP_ALL_SLUG, {
-    variables: { after },
+    after,
   })
-  const posts = data?.posts.edges.map(({ node = {} }) => node)
+  const posts = data?.data?.posts.edges.map(({ node = {} }) => node)
   return {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
   }
@@ -461,5 +462,33 @@ export async function wpGetPaginatedPosts(currentPage = 1) {
       pagesCount,
     },
     pageInfo: pageInfo,
+  }
+}
+export async function wpGetInfiniteScollArticles(
+  categoryName: any,
+  after: any,
+) {
+  let postData
+  try {
+    postData = await wpFetchAPI(GET_INFINITE_SCROLL_POSTS, {
+      categoryName,
+      after,
+    })
+  } catch (e) {
+    console.log(`Failed to query post data: ${e}`)
+    throw e
+  }
+  if (postData.posts === null) {
+    let post: { error: string } = {
+      error: "",
+    }
+    post.error = "Something went wrong"
+    return { post }
+  }
+  const posts = postData?.data.posts.edges.map(({ node = {} }) => node)
+
+  return {
+    posts: Array.isArray(posts) && posts.map(wpMapPostData),
+    pageInfo: postData?.data.posts.pageInfo,
   }
 }

@@ -15,7 +15,7 @@ export const PostCardFeatured = React.forwardRef<
   PostCardFeaturedProps
 >(function PostCardFeatured({ post, ...props }, ref) {
   const { title, featuredImage, uri } = post
-
+  const [image, setImage] = React.useState("/image/imgloader.gif") as any
   return (
     <>
       <article
@@ -34,7 +34,10 @@ export const PostCardFeatured = React.forwardRef<
                 height={500}
                 width={600}
                 className="!w-auto rounded-md aspect-[8/16] md:!aspect-[9/16] object-cover !h-[300px] transition-all"
-                src={featuredImage.sourceUrl}
+                src={image}
+                onLoadingComplete={() => {
+                  setImage(featuredImage?.sourceUrl)
+                }}
                 alt={featuredImage.altText}
               />
             </div>
@@ -43,7 +46,7 @@ export const PostCardFeatured = React.forwardRef<
         <div className="featured-meta absolute bottom-0 left-0 z-[9] w-full p-[20px] min-[992px]:p-[25px] md:py-5 md:px-4">
           <NextLink href={uri}>
             <h3
-              className={`text-xl font-bold text-white line-clamp-3 hover:text-primary-400 dark:text-gray-100`}
+              className={`text-xl font-bold !leading-[1.3] !text-white line-clamp-4 hover:text-primary-400 dark:text-gray-100`}
             >
               {title}
             </h3>
@@ -90,7 +93,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
         onClick={handlePrevClick}
         id="prev"
         variant="outline"
-        className={`${arrowClass} ${prevDisplay} left-0 hidden top-[50%] translate-x-2/4 -translate-y-2/4	`}
+        className={`${arrowClass} ${prevDisplay} left-0 hidden top-[50%] translate-x-2/4 -translate-y-2/4	!z-[8]`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +109,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
         onClick={handleNextClick}
         id="next"
         variant="outline"
-        className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] -translate-y-2/4	translate-x-2/4	`}
+        className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] -translate-y-2/4	translate-x-2/4 !z-[8]`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

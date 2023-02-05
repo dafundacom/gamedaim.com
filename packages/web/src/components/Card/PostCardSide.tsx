@@ -15,6 +15,8 @@ export const PostCardSide = React.forwardRef<
   PostCardSlideProps
 >((props, ref) => {
   const { src, alt, slug, title, ...rest } = props
+  const [image, setImage] = React.useState("/image/imgloader.gif") as any
+
   return (
     <NextLink href={slug}>
       <article
@@ -29,7 +31,10 @@ export const PostCardSide = React.forwardRef<
               height={75}
               width={75}
               className="!w-auto rounded-md aspect-[1/1] object-cover !h-[75px] max-w-[unset]"
-              src={src}
+              src={image}
+              onLoadingComplete={() => {
+                setImage(src)
+              }}
               alt={alt}
             />
           </div>

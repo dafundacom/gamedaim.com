@@ -4,7 +4,6 @@ import NextImage from "next/image"
 import { useRouter } from "next/router"
 import { useTheme } from "next-themes"
 import { FaTwitter, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa"
-
 import {
   DashboardIcon,
   IconButton,
@@ -12,21 +11,25 @@ import {
   LogoutIcon,
   MoonIcon,
   SunIcon,
+  useDisclosure,
 } from "ui"
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
+import { MdSearch } from "react-icons/md"
 
 interface TopNavProps {
-  onToggle?: any
+  toggleSideNav?: any
 }
 
 export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
   (props, ref) => {
-    const { onToggle, ...rest } = props
+    const { toggleSideNav, ...rest } = props
     const [mounted, setMounted] = React.useState(false)
     const { resolvedTheme, setTheme } = useTheme()
     const [auth, setAuth] = React.useContext(AuthContext)
     const router = useRouter()
+    const { isOpen, onToggle } = useDisclosure()
+
     const inputRef = React.useRef() as React.RefObject<HTMLInputElement>
     const handlerSubmit = (e: { preventDefault: () => void }) => {
       e.preventDefault()
@@ -64,7 +67,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
               <div id="drawer" className="mx-2">
                 <div
                   className="cursor-pointer space-y-[6px] hover:space-y-[3px]"
-                  onClick={onToggle}
+                  onClick={toggleSideNav}
                 >
                   <div className="h-0.5 w-5 bg-gray-600 dark:bg-white transition-[margin] delay-200	"></div>
                   <div className="h-0.5 w-5 bg-gray-600 dark:bg-white transition-[margin] delay-200	"></div>
@@ -109,45 +112,43 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                   </div>
                 </form>
               </div>
-              <div className="grow-1 flex flex-row ml-auto space-x-4">
-                {!auth.user && (
-                  <div className="space-x-2 hidden lg:block">
+              <div className="grow-1 flex flex-row ml-auto space-x-2">
+                <div className="space-x-2 hidden lg:block">
+                  <NextLink
+                    href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
+                    target="_blank"
+                  >
+                    <IconButton variant="ghost" className="!text-lg">
+                      <FaFacebook />
+                    </IconButton>
+                  </NextLink>
+                  <NextLink
+                    href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
+                    target="_blank"
+                  >
+                    <IconButton variant="ghost" className="!text-lg">
+                      <FaTwitter />
+                    </IconButton>
+                  </NextLink>
+                  {env.YOUTUBE_CHANNEL ? (
                     <NextLink
-                      href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
+                      href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
                       target="_blank"
                     >
                       <IconButton variant="ghost" className="!text-lg">
-                        <FaFacebook />
+                        <FaYoutube />
                       </IconButton>
                     </NextLink>
-                    <NextLink
-                      href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
-                      target="_blank"
-                    >
-                      <IconButton variant="ghost" className="!text-lg">
-                        <FaTwitter />
-                      </IconButton>
-                    </NextLink>
-                    {env.YOUTUBE_CHANNEL ? (
-                      <NextLink
-                        href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
-                        target="_blank"
-                      >
-                        <IconButton variant="ghost" className="!text-lg">
-                          <FaYoutube />
-                        </IconButton>
-                      </NextLink>
-                    ) : null}
-                    <NextLink
-                      href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
-                      target="_blank"
-                    >
-                      <IconButton variant="ghost" className="!text-lg">
-                        <FaInstagram />
-                      </IconButton>
-                    </NextLink>
-                  </div>
-                )}
+                  ) : null}
+                  <NextLink
+                    href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
+                    target="_blank"
+                  >
+                    <IconButton variant="ghost" className="!text-lg">
+                      <FaInstagram />
+                    </IconButton>
+                  </NextLink>
+                </div>
                 {auth.user ? (
                   <>
                     {auth.user?.role !== "USER" && (
@@ -172,18 +173,51 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     </IconButton>
                   </NextLink>
                 )}
-                <IconButton
-                  variant="ghost"
-                  aria-label="Toggle Dark Mode"
-                  onClick={switchTheme}
-                >
-                  {mounted &&
-                    (resolvedTheme === "light" ? (
-                      <MoonIcon className="h-5 w-5" />
-                    ) : (
-                      <SunIcon className="h-5 w-5" />
-                    ))}
-                </IconButton>
+                <div className="flex space-x-2">
+                  <IconButton
+                    variant="ghost"
+                    aria-label="Toggle Dark Mode"
+                    onClick={switchTheme}
+                    className="!px-1"
+                  >
+                    {mounted &&
+                      (resolvedTheme === "light" ? (
+                        <MoonIcon className="h-5 w-5" />
+                      ) : (
+                        <SunIcon className="h-5 w-5" />
+                      ))}
+                  </IconButton>
+                  <div className="md:!hidden relative">
+                    <IconButton
+                      onClick={onToggle}
+                      variant="ghost"
+                      className="!text-lg !px-1"
+                    >
+                      <MdSearch />
+                    </IconButton>
+                    <div
+                      className={`${
+                        isOpen ? "!visible !opacity-100" : null
+                      } opacity-0	invisible absolute border border-solid border-gray-100 top-[60px] right-0 z-[8] rounded-md p-5 bg-white transition-all w-[300px] before:absolute before:right-[16px] before:top-[-30px] before:z-[8] before:border-solid before:border-x-[8px] before:border-b-[8px] before:border-b-white before:border-x-transparent before:border-t-transparent`}
+                    >
+                      <form
+                        className="relative rounded-md overflow-hidden"
+                        onSubmit={handlerSubmit}
+                        autoComplete="off"
+                      >
+                        <input
+                          className="focus:border-primary-200 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-gray-500"
+                          type="search"
+                          name="q"
+                          ref={inputRef}
+                          autoComplete="off"
+                          placeholder="Search..."
+                          required
+                        />
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

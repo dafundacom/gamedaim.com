@@ -2,10 +2,10 @@ import * as React from "react"
 import Head from "next/head"
 import parse from "html-react-parser"
 import NextLink from "next/link"
-import { GetServerSideProps } from "next"
+import { GetStaticProps, GetStaticPaths } from "next"
 import dynamic from "next/dynamic"
 import env from "@/env"
-import { wpGetTagBySlug, useWpGetTagBySlug } from "@/lib/wp-tags"
+import { wpGetTagBySlug, useWpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug, useWpGetPostsByTagSlug } from "@/lib/wp-posts"
 import { getSeoDatas } from "@/lib/wp-seo"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
@@ -135,15 +135,7 @@ export default function Tag(props: TagProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  res,
-}: any) => {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=120, stale-while-revalidate=600",
-  )
-
+export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const queryClient = new QueryClient()
   const slug = params?.slug
   const seo = await getSeoDatas(`https://${env.DOMAIN}/tag/${slug}`)
@@ -166,5 +158,22 @@ export const getServerSideProps: GetServerSideProps = async ({
       seo,
       dehydratedState: dehydrate(queryClient),
     },
+    revalidate: 100,
+  }
+}
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { tags } = await wpGetAllTags()
+  const paths = tags.map((tag: any) => {
+    const { slug } = tag
+    return {
+      params: {
+        slug,
+      },
+    }
+  })
+
+  return {
+    paths,
+    fallback: "blocking",
   }
 }

@@ -13,7 +13,7 @@ export function wpCategoryPathBySlug(slug: string) {
 
 export async function wpGetAllCategories() {
   const data = await wpFetchAPI(QUERY_WP_ALL_CATEGORIES)
-  const categories = data?.data.categories.edges.map(({ node = {} }) => node)
+  const categories = data?.data?.categories.edges.map(({ node = {} }) => node)
   return {
     categories,
   }

@@ -33,8 +33,8 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
       date,
       ...rest
     } = props
-    const [image, setImage] = React.useState(authorAvatarUrl) as any
-
+    const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl) as any
+    const [image, setImage] = React.useState("/image/imgloader.gif") as any
     dayjs.extend(relativeTime)
     return (
       <article
@@ -53,7 +53,10 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               height={250}
               width={350}
               className="post-card-thumbnail w-[125px] min-w-[125px] min-h-[90px] h-[90px] md:!w-[270px] md:!min-w-[270px] md:!h-[193px] md:!min-h-full object-cover rounded-lg"
-              src={src}
+              src={image}
+              onLoadingComplete={() => {
+                setImage(src)
+              }}
               alt={alt}
             />
           </NextLink>
@@ -80,9 +83,9 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
                         <NextImage
                           width="20"
                           height="20"
-                          src={image}
+                          src={imageAvatar}
                           onError={() => {
-                            setImage("/icons/author.jpg")
+                            setImageAvatar("/icons/author.jpg")
                           }}
                           alt={authorName}
                           className="rounded-full object-cover bg-[url('/icons/author.jpg')]"
