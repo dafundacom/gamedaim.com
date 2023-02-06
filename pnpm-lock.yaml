@@ -3975,7 +3975,7 @@ packages:
         optional: true
     dependencies:
       '@twind/core': 1.1.3_typescript@4.9.5
-      next: 13.1.6_biqbaboplfbrettd7655fr4n2y
+      next: 13.1.6_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       typescript: 4.9.5
     dev: false
@@ -3988,13 +3988,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.0
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.21.0:
     resolution: {integrity: sha512-35EhHNOXgxnUgh4XCJsGhE7zdlDhYDN/aMG6UbkByCFFNgQ7b3U+uVoqBpicFydR8JEfgdjCF7SJ7MiJfzuiTA==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 
