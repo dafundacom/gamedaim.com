@@ -5,6 +5,7 @@ import env from "@/env"
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
 )
+import parse from "html-react-parser"
 const ShareButtonArticle = dynamic(() =>
   import("@/components/Share").then((mod) => mod.ShareButtonArticle),
 )
@@ -14,10 +15,24 @@ const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
 import NextLink from "next/link"
 import NextImage from "next/image"
+import * as React from "react"
 export const Article = (props: { post: any; posts: any; index: any }) => {
   const { post, posts, index } = props
   const { content, title, author, categories, featuredImage, date, tags } = post
   const { primary } = wpPrimaryCategorySlug(categories)
+  const [image, setImage] = React.useState("/image/imgloader.gif") as any
+  const articleRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const article: any = articleRef.current
+    const toc = article.querySelector(".ez-toc-title input")
+    if (toc) {
+      toc.addEventListener("click", () => {
+        const list = article.querySelector("ul.ez-toc-list.ez-toc-list-level-1")
+        list.classList.toggle("open-list")
+      })
+    }
+  }, [])
   return (
     <>
       <div className="px-4">
@@ -63,15 +78,15 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
               height="720"
               alt={featuredImage.altText}
               className="rounded-lg object-cover"
-              src={featuredImage.sourceUrl}
+              src={image}
+              onLoadingComplete={() => {
+                setImage(featuredImage.sourceUrl)
+              }}
             />
             {featuredImage.caption && (
-              <span
-                className="text-center text-xs italic text-gray-600 dark:text-gray-500"
-                dangerouslySetInnerHTML={{
-                  __html: featuredImage.caption,
-                }}
-              />
+              <span className="text-center text-xs italic text-gray-600 dark:text-gray-500">
+                {parse(featuredImage.caption)}
+              </span>
             )}
           </>
         )}
@@ -82,12 +97,9 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
               text={title}
             />
           </div>
-          <section
-            className="article-body"
-            dangerouslySetInnerHTML={{
-              __html: content,
-            }}
-          />
+          <section ref={articleRef} className="article-body">
+            {parse(content)}
+          </section>
         </div>
 
         <section className="mx-4 md:mx-12 my-6" id="tag">

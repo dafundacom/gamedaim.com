@@ -45,7 +45,6 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const [hasNextPage, setHasNextPage] = React.useState(true)
     const [endCursor, setEndCursor] = React.useState("")
     const LoaderRef = React.useRef(null)
-
     const handleObserver = React.useCallback(
       async (entries: any) => {
         const [target] = entries
@@ -85,7 +84,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
             if (i > 0 && arr[i].slug == post.slug) {
               return null
             }
-            return <Article post={postData} posts={posts} index={i} />
+            return <Article key={i} post={postData} posts={posts} index={i} />
           })}
           <div ref={LoaderRef}></div>
         </section>
