@@ -20,7 +20,6 @@ export default function TopicsDashboard() {
 
   dayjs.extend(relativeTime)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTopics = async () => {
     try {
       const { data } = await axios.get("/topic/all/1")

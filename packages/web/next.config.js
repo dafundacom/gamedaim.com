@@ -6,7 +6,12 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   poweredByHeader: false,
   images: {
-    domains: ["gamedaim.com", "secure.gravatar.com", "i.postimg.cc"],
+    domains: [
+      "assets.gamedaim.com",
+      "gamedaim.com",
+      "secure.gravatar.com",
+      "i.postimg.cc",
+    ],
   },
   transpilePackages: ["editor", "ui"],
   sentry: {
