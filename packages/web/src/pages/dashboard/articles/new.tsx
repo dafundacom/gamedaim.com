@@ -8,8 +8,10 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
+  Heading,
   IconButton,
   Input,
   Text,
@@ -27,8 +29,23 @@ interface FormValues {
 export default function CreateArticlesDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
+  const [topics, setTopics] = React.useState([])
+  const [loadedTopics, setLoadedTopics] = React.useState([])
 
   const { isOpen, onToggle } = useDisclosure()
+
+  const loadTopics = async () => {
+    try {
+      const { data } = await axios.get("/topic/all/1")
+      setLoadedTopics(data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  React.useEffect(() => {
+    loadTopics()
+  }, [])
 
   const editor = useEditor({
     extensions: [EditorKitExtension],
@@ -37,6 +54,17 @@ export default function CreateArticlesDashboard() {
       setEditorContent(editor.getHTML())
     },
   })
+
+  const assignTopic = (id: string | never) => {
+    const checkedTopics = [...topics]
+    const index = checkedTopics.indexOf(id as never)
+    if (index === -1) {
+      checkedTopics.push(id as never)
+    } else {
+      checkedTopics.splice(index, 1)
+    }
+    setTopics(checkedTopics)
+  }
 
   const {
     register,
@@ -48,8 +76,7 @@ export default function CreateArticlesDashboard() {
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
-      const mergedValues = { ...values, content: editorContent }
-      console.log(mergedValues)
+      const mergedValues = { ...values, content: editorContent, topics: topics }
       const { data } = await axios.post("/article", mergedValues)
       if (data?.error) {
         toast.error(data.error)
@@ -93,10 +120,18 @@ export default function CreateArticlesDashboard() {
         <ArticleDashboardLayout
           isOpen={isOpen}
           sidebar={
-            <>
-              <div>div</div>
-              <div>div</div>
-            </>
+            <div className="flex flex-row">
+              <Heading as="h3">Topics</Heading>
+              {loadedTopics.map((topic: { title: string; id: string }) => (
+                <Checkbox
+                  key={topic.title}
+                  value={topic.id}
+                  onClick={() => assignTopic(topic.id as string)}
+                >
+                  {topic.title}
+                </Checkbox>
+              ))}
+            </div>
           }
         >
           <div className="mt-4 relative flex items-center justify-center">
