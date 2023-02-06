@@ -13,7 +13,7 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       colorScheme = "gray",
       className,
       placeholder = "Click to upload or drag and drop",
-      description = "SVG, PNG, JPG or GIF (MAX. 800x400px)",
+      description = "JPG, JPEG, PNG, WEBP (MAX. 1270x720px)",
       ...rest
     } = props
 

@@ -13,7 +13,7 @@ import { MediaContext } from "@/contexts/media.context"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
-export default function ArticlesDashboard() {
+export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(MediaContext)
 
   const { medias } = post
@@ -55,7 +55,7 @@ export default function ArticlesDashboard() {
     <AdminOrAuthorRole>
       <DashboardLayout>
         <div className="mt-4 flex items-end justify-end">
-          <NextLink href="/dashboard/articles/new">
+          <NextLink href="/dashboard/media/new">
             <Button leftIcon={<MdAdd />}>Add New</Button>
           </NextLink>
         </div>

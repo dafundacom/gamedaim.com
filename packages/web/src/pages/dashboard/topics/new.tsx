@@ -34,7 +34,6 @@ export default function CreateTopicsDashboard() {
     setLoading(true)
     try {
       const { data } = await axios.post("/topic", values)
-      console.log(data)
       if (data?.error) {
         toast.error(data.error)
       } else {
