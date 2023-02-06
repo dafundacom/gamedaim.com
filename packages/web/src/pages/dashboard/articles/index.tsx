@@ -20,7 +20,6 @@ export default function ArticlesDashboard() {
 
   dayjs.extend(relativeTime)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getArticles = async () => {
     try {
       const { data } = await axios.get("/article/all/1")

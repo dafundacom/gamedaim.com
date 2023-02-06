@@ -17,7 +17,6 @@ export default function WpCommentsDashboard() {
 
   dayjs.extend(relativeTime)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getWpComments = async () => {
     try {
       const { data } = await axios.get("/wp-comment/all/1")

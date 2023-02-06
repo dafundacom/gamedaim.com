@@ -20,7 +20,6 @@ export default function UsersDashboard() {
 
   dayjs.extend(relativeTime)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getUsers = async () => {
     try {
       const { data } = await axios.get("/user/all/1")
