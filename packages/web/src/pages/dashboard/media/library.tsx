@@ -59,17 +59,15 @@ export default function ArticlesDashboard() {
             <Button leftIcon={<MdAdd />}>Add New</Button>
           </NextLink>
         </div>
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-5 gap-3 my-3">
           {medias.map((media: { id: string; name: string; url: string }) => (
-            <div className="flex flex-row">
-              <NextImage
-                key={media.id}
-                src={media.url}
-                alt={media.name}
-                fill
-                className="max-w-[100px] max-h-[100px]"
-              />
-            </div>
+            <NextImage
+              key={media.id}
+              src={media.url}
+              alt={media.name}
+              fill
+              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border border-3 border-gray-300"
+            />
           ))}
         </div>
       </DashboardLayout>

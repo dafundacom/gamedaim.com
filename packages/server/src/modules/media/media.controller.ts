@@ -1,3 +1,4 @@
+import slugify from "slugify"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { S3Client } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
@@ -20,7 +21,7 @@ export async function uploadMediaHandler(
   try {
     const data = await request.file()
     const user = request.user
-    const uniqueName = uniqueSlug() + "-" + data.filename
+    const uniqueName = slugify(uniqueSlug() + "-" + data.filename)
 
     const s3Config = {
       endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
