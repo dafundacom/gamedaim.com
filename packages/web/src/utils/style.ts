@@ -232,7 +232,25 @@ export default defineConfig({
     .cssiconcheckbox {
       @apply hidden;
     }
-
+    .article-body p.ez-toc-title {
+      margin-bottom: unset;
+    }
+    #ez-toc-container [type="checkbox"] {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      height: 30px;
+      opacity: 0;
+    }
+    p.ez-toc-title {
+      position: relative;
+    }
+    ul.ez-toc-list.ez-toc-list-level-1 {
+      @apply max-h-[0px] overflow-hidden transition-all my-0;
+    }
+    .ez-toc-list.ez-toc-list-level-1.open-list {
+      @apply max-h-full;
+    }
     /* editor */
     .ProseMirror {
       @apply min-h-screen px-3 py-2 text-base items-center min-w-0 dark:text-white outline-none space-y-2;

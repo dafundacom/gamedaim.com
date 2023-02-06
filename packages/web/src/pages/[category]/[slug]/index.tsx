@@ -2,7 +2,6 @@ import * as React from "react"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import Head from "next/head"
-import dynamic from "next/dynamic"
 import { GetStaticProps, GetStaticPaths } from "next"
 import parse from "html-react-parser"
 
@@ -17,10 +16,7 @@ import {
 } from "@/lib/wp-posts"
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
-
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+import { HomeLayout } from "@/layouts/Home"
 
 interface PostProps {
   post: {
