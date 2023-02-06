@@ -20,7 +20,7 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
   const { primary } = wpPrimaryCategorySlug(categories)
   return (
     <>
-      <div className="px-4 mb-5">
+      <div className="px-4">
         <div>
           {categories.map(
             (category: { slug: string; name: string }, i: number) => {
@@ -109,34 +109,39 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
             )
           })}
         </section>
-        {index === 0 && (
-          <section>
-            <div className="mb-2">
-              <Heading
-                as="h4"
-                className="border-b-4 !text-primary-400 border-primary-400"
-              >
-                Related Posts
-              </Heading>
-            </div>
-            <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
-              {posts.map((post: { title: string; uri: string }, i: number) => {
-                return (
-                  <article className="border-b-2 border-gray-200">
-                    <NextLink key={i} href={post.uri}>
-                      <Text
-                        size="lg"
-                        className="font-semibold hover:text-primary-400"
-                      >
-                        {post.title}
-                      </Text>
-                    </NextLink>
-                  </article>
-                )
-              })}
-            </div>
-          </section>
-        )}
+
+        <section className="mb-10">
+          {index === 0 && (
+            <>
+              <div className="mb-2">
+                <Heading
+                  as="h4"
+                  className="border-b-4 !text-primary-400 border-primary-400"
+                >
+                  Related Posts
+                </Heading>
+              </div>
+              <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
+                {posts.map(
+                  (post: { title: string; uri: string }, i: number) => {
+                    return (
+                      <article className="border-b-2 border-gray-200">
+                        <NextLink key={i} href={post.uri}>
+                          <Text
+                            size="lg"
+                            className="font-semibold hover:text-primary-400"
+                          >
+                            {post.title}
+                          </Text>
+                        </NextLink>
+                      </article>
+                    )
+                  },
+                )}
+              </div>
+            </>
+          )}
+        </section>
       </div>
     </>
   )
