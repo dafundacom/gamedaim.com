@@ -20,6 +20,8 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
       }
       menus()
     }, [])
+    const [mounted, setMounted] = React.useState(false)
+    React.useEffect(() => setMounted(true), [])
 
     const { children, ...rest } = props
 
@@ -35,12 +37,14 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
           >
             <SideNav primaryMenus={primaryMenus} />
           </div>
-          <div
-            onClick={onToggle}
-            className={`${
-              isOpen == true && "!block md:!hidden"
-            } hidden bg-[linear-gradient(180deg,#000,#434343)] z-11 opacity-80 transition-all	 w-full top-0 bottom-0 fixed`}
-          />
+          {mounted && (
+            <div
+              onClick={onToggle}
+              className={`${
+                isOpen == true && "!block md:!hidden"
+              } hidden bg-[linear-gradient(180deg,#000,#434343)] z-[11] opacity-80 transition-all	 w-full top-0 bottom-0 fixed`}
+            />
+          )}
         </div>
 
         <div

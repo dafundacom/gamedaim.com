@@ -2,7 +2,7 @@
 const { withSentryConfig } = require("@sentry/nextjs")
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   productionBrowserSourceMaps: true,
   poweredByHeader: false,
   images: {

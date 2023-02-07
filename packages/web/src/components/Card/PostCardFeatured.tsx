@@ -28,7 +28,7 @@ export const PostCardFeatured = React.forwardRef<
             className="after:absolute after:top-0 after:left-0 after:h-full after:w-full after:rounded-xl after:bg-gradient-to-t after:from-[#282828] after:to-transparent after:transition-all"
             href={uri}
           >
-            <div className="relative box-border overflow-hidden ">
+            <div className="relative box-border overflow-hidden">
               <NextImage
                 priority={true}
                 height={500}

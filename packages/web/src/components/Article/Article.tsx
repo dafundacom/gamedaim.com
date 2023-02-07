@@ -1,13 +1,13 @@
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
 import dynamic from "next/dynamic"
-import env from "@/env"
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
 )
 import parse from "html-react-parser"
-const ShareButtonArticle = dynamic(() =>
-  import("@/components/Share").then((mod) => mod.ShareButtonArticle),
+const StickyShare = dynamic(
+  () => import("@/components/Share").then((mod) => mod.StickyShare),
+  { ssr: false },
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
@@ -91,12 +91,7 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
           </>
         )}
         <div className="flex">
-          <div className="h-fit mr-2 shadow-xs fixed top-[unset] bottom-0 left-0 z-40 mx-0 mb-0 mr-0 flex w-full flex-row items-center justify-center bg-white dark:bg-gray-700 lg:px-2 lg:!sticky lg:top-20 lg:bottom-[unset] lg:left-[unset] lg:!w-auto lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
-            <ShareButtonArticle
-              url={`https://${env.DOMAIN}/${primary.slug}/${post.slug}`}
-              text={title}
-            />
-          </div>
+          <StickyShare categorySlug={primary.slug} postSlug={post.slug} />
           <section ref={articleRef} className="article-body">
             {parse(content)}
           </section>
