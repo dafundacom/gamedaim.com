@@ -20,7 +20,7 @@ export const ShareButtonArticle = React.forwardRef<
   const { url, text, ...rest } = props
   return (
     <div
-      className="lg:justify-unset flex max-lg:w-full flex-row justify-evenly py-2 sm:max-[767px]:w-1/2 lg:mt-2 lg:!w-auto lg:flex-col lg:!py-0 "
+      className="lg:justify-[unset] flex max-lg:w-full flex-row justify-evenly py-2 sm:max-[767px]:w-1/2 lg:mt-2 lg:!w-auto lg:flex-col lg:!py-0 "
       ref={ref}
       {...rest}
     >
