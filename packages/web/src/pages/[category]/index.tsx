@@ -102,7 +102,7 @@ export default function Category(props: CategoryProps) {
                 {categoryChild !== undefined &&
                   categoryChild.map((child: { slug: string; name: string }) => {
                     return (
-                      <NextLink href={`/${child.slug}`}>
+                      <NextLink href={`/${child.slug}`} key={child.name}>
                         <Button className="!mr-2 border border-[#24272f] !bg-[#ffffff33] hover:!bg-[#1e3799]">
                           {child.name}
                         </Button>

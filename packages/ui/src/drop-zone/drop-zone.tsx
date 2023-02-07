@@ -21,7 +21,6 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       <div
         ref={ref}
         className={tx`flex w-full items-center justify-center ${className}`}
-        {...rest}
       >
         <label
           htmlFor="dropzone-file"
@@ -54,7 +53,7 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
               {description}
             </p>
           </div>
-          <input id="dropzone-file" type="file" className="hidden" />
+          <input id="dropzone-file" type="file" className="hidden" {...rest} />
         </label>
       </div>
     )

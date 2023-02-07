@@ -66,7 +66,7 @@ export default function MediaLibraryDashboard() {
               src={media.url}
               alt={media.name}
               fill
-              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border border-3 border-gray-300"
+              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
             />
           ))}
         </div>
