@@ -16,8 +16,8 @@
     "db:studio": "pnpx prisma studio"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.264.0",
-    "@aws-sdk/lib-storage": "^3.264.0",
+    "@aws-sdk/client-s3": "^3.266.0",
+    "@aws-sdk/lib-storage": "^3.266.0",
     "@faker-js/faker": "^7.6.0",
     "@fastify/cors": "^8.2.0",
     "@fastify/jwt": "^6.5.0",
@@ -43,8 +43,6 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "^18.11.19",
     "@types/tap": "^15.0.8",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^5.50.0",
     "eslint-config": "workspace:*",
     "sinon": "^15.0.1",
     "ts-node": "^10.9.1",
