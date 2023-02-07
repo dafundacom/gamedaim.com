@@ -10,11 +10,13 @@ import { MdAdd } from "react-icons/md"
 import { Button } from "ui"
 
 import { MediaContext } from "@/contexts/media.context"
+import { Modal } from "@/components/Modal"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(MediaContext)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   const { medias } = post
 
@@ -61,13 +63,22 @@ export default function MediaLibraryDashboard() {
         </div>
         <div className="grid grid-cols-5 gap-3 my-3">
           {medias.map((media: { id: string; name: string; url: string }) => (
-            <NextImage
-              key={media.id}
-              src={media.url}
-              alt={media.name}
-              fill
-              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
-            />
+            <>
+              <NextImage
+                key={media.id}
+                src={media.url}
+                alt={media.name}
+                fill
+                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+                onClick={() => setOpenModal(true)}
+              />
+              <Modal
+                title={media.name}
+                content={media.url}
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+              />
+            </>
           ))}
         </div>
       </DashboardLayout>
