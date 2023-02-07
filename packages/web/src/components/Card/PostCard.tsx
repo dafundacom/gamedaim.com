@@ -60,7 +60,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               alt={alt}
             />
           </NextLink>
-          <div className="order-1 md:order-2 mr-3 md:mr-unset flex flex-col">
+          <div className="order-1 md:order-2 mr-3 md:mr-[unset] flex flex-col">
             <NextLink href={slug}>
               <Heading
                 as="h3"

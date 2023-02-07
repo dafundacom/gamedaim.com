@@ -100,17 +100,15 @@ export default function Category(props: CategoryProps) {
                   </Button>
                 </NextLink>
                 {categoryChild !== undefined &&
-                  categoryChild.map(
-                    (child: { slug: string; name: string }, i: any) => {
-                      return (
-                        <NextLink key={i} href={`/${child.slug}`}>
-                          <Button className="!mr-2 border border-[#24272f] !bg-[#ffffff33] hover:!bg-[#1e3799]">
-                            {child.name}
-                          </Button>
-                        </NextLink>
-                      )
-                    },
-                  )}
+                  categoryChild.map((child: { slug: string; name: string }) => {
+                    return (
+                      <NextLink href={`/${child.slug}`} key={child.name}>
+                        <Button className="!mr-2 border border-[#24272f] !bg-[#ffffff33] hover:!bg-[#1e3799]">
+                          {child.name}
+                        </Button>
+                      </NextLink>
+                    )
+                  })}
               </div>
             </div>
             <div className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:mx-auto lg:px-4">

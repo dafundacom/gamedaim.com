@@ -79,7 +79,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                 <div className="flex-grow-0 flex-shrink-0 flex flex-col pl-4 pr-4 max-w-full min-w-0 basis-auto">
                   <div className="pr-0 pl-0 items-center justify-start w-full flex flex-wrap flex-row">
                     <div className="ak-bar-item ak-header-logo pr-0 pl-0 items-center justify-start w-full flex flex-wrap flex-row">
-                      <Heading className="logo-image m-0 p-0 leading-none font-bold text-4xl">
+                      <Heading className="m-0 p-0 leading-none font-bold text-4xl">
                         <NextLink href="/">
                           <NextImage
                             height={32}
@@ -92,7 +92,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     </div>
                   </div>
                 </div>
-                <div className="mx-auto w-[50%] hidden lg:block">
+                <div className="mx-auto w-[50%] hidden lg:!block">
                   <form
                     className="bg-white dark:bg-gray-800"
                     onSubmit={handlerSubmit}

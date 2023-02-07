@@ -43,7 +43,7 @@ export const PostCardFeatured = React.forwardRef<
             </div>
           </NextLink>
         </div>
-        <div className="featured-meta absolute bottom-0 left-0 z-[9] w-full p-[20px] min-[992px]:p-[25px] md:py-5 md:px-4">
+        <div className="featured-meta absolute bottom-0 left-0 z-[7] w-full p-[20px] min-[992px]:p-[25px] md:py-5 md:px-4">
           <NextLink href={uri}>
             <h3
               className={`text-xl font-bold !leading-[1.3] !text-white line-clamp-4 hover:text-primary-400 dark:text-gray-100`}
@@ -62,7 +62,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
   const [prevDisplay, setPrevDisplay] = React.useState("md:!hidden")
   const [nextDisplay, setNextDisplay] = React.useState("md:!flex")
   const arrowClass =
-    "!hidden justify-center content-center bg-white p-2 cursor-pointer !absolute rounded-full z-[99]"
+    "!hidden justify-center content-center bg-white p-2 cursor-pointer !absolute rounded-full"
 
   const contentRef: any = React.useRef(null)
 

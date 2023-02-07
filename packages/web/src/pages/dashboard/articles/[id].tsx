@@ -50,10 +50,12 @@ export default function EditArticleDashboard() {
 
   React.useEffect(() => {
     loadArticle()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor])
 
   React.useEffect(() => {
     reset(article)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article])
 
   const loadArticle = async () => {

@@ -34,7 +34,7 @@
     "@commitlint/cz-commitlint": "^17.4.2",
     "commitizen": "^4.3.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
+    "lint-staged": "^13.1.1",
     "prettier": "^2.8.3",
     "rimraf": "^4.1.2",
     "turbo": "^1.7.3"

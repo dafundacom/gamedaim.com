@@ -15,3 +15,4 @@
 - [ ] Dashboard pagination
 - [x] replace CUID with NANOID
 - [ ] add excerpt to api and other seo attributes
+- [ ] multiple media upload

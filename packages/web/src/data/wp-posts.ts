@@ -1,6 +1,6 @@
 export const QUERY_WP_ALL_POSTS = `
   query AllPosts {
-    posts(first: 10) {
+    posts(first: 20) {
       pageInfo {
         hasNextPage
         endCursor

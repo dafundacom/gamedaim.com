@@ -10,11 +10,13 @@ import { MdAdd } from "react-icons/md"
 import { Button } from "ui"
 
 import { MediaContext } from "@/contexts/media.context"
+import { Modal } from "@/components/Modal"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
-export default function ArticlesDashboard() {
+export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(MediaContext)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   const { medias } = post
 
@@ -55,21 +57,28 @@ export default function ArticlesDashboard() {
     <AdminOrAuthorRole>
       <DashboardLayout>
         <div className="mt-4 flex items-end justify-end">
-          <NextLink href="/dashboard/articles/new">
+          <NextLink href="/dashboard/media/new">
             <Button leftIcon={<MdAdd />}>Add New</Button>
           </NextLink>
         </div>
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-5 gap-3 my-3">
           {medias.map((media: { id: string; name: string; url: string }) => (
-            <div className="flex flex-row">
+            <>
               <NextImage
                 key={media.id}
                 src={media.url}
                 alt={media.name}
                 fill
-                className="max-w-[100px] max-h-[100px]"
+                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+                onClick={() => setOpenModal(true)}
               />
-            </div>
+              <Modal
+                title={media.name}
+                content={media.url}
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+              />
+            </>
           ))}
         </div>
       </DashboardLayout>

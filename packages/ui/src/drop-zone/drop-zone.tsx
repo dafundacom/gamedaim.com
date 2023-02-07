@@ -13,7 +13,7 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       colorScheme = "gray",
       className,
       placeholder = "Click to upload or drag and drop",
-      description = "SVG, PNG, JPG or GIF (MAX. 800x400px)",
+      description = "JPG, JPEG, PNG, WEBP (MAX. 1270x720px)",
       ...rest
     } = props
 
@@ -21,7 +21,6 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
       <div
         ref={ref}
         className={tx`flex w-full items-center justify-center ${className}`}
-        {...rest}
       >
         <label
           htmlFor="dropzone-file"
@@ -54,7 +53,7 @@ export const DropZone = React.forwardRef<HTMLDivElement, DropZoneProps>(
               {description}
             </p>
           </div>
-          <input id="dropzone-file" type="file" className="hidden" />
+          <input id="dropzone-file" type="file" className="hidden" {...rest} />
         </label>
       </div>
     )
