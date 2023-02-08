@@ -88,7 +88,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           })}
           <div ref={LoaderRef}></div>
         </section>
-        <aside className="w-4/12 px-4 hidden lg:block">
+        <aside className="w-4/12 px-4 hidden lg:!block">
           <div className="rounded-xl border border-gray-100 dark:border-gray-700 p-4 sticky top-8">
             <div className="mb-4">
               <Heading as="h4" className="!text-transparent">

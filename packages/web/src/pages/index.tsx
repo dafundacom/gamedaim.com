@@ -35,8 +35,11 @@ export default function Home(props: HomeProps) {
   const { seo } = props
   const { getAllPostsData } = useWpGetAllPosts()
   const { data }: any = getAllPostsData
-  const featured = data?.posts?.slice(0, 7)
-
+  const featured = data?.posts?.slice(0, 9)
+  const listPost = data?.posts?.slice(
+    data?.posts?.length / 2,
+    data?.posts?.length,
+  )
   return (
     <>
       <Head>{seo.success === true && parse(seo.head)}</Head>
@@ -47,7 +50,7 @@ export default function Home(props: HomeProps) {
             <div className="w-full flex flex-col px-4 lg:mr-4">
               <InfiniteScroll
                 pageType="home"
-                posts={data?.posts}
+                posts={listPost}
                 pageInfo={data?.pageInfo}
               />
             </div>

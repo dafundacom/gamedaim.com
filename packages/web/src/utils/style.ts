@@ -245,11 +245,17 @@ export default defineConfig({
     p.ez-toc-title {
       position: relative;
     }
-    ul.ez-toc-list.ez-toc-list-level-1 {
-      @apply max-h-[0px] overflow-hidden transition-all my-0;
+    #ez-toc-container .ez-toc-list.ez-toc-list-level-1 {
+      max-height: 0px;
+      overflow: hidden;
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
-    .ez-toc-list.ez-toc-list-level-1.open-list {
-      @apply max-h-full;
+    #ez-toc-container .ez-toc-list.ez-toc-list-level-1.open-list {
+      max-height: 100%;
     }
     /* editor */
     .ProseMirror {

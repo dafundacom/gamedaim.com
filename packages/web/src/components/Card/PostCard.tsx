@@ -46,7 +46,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
           <NextLink
             href={slug}
             shallow={true}
-            className="order-2 md:order-1 md:mr-[30px] "
+            className="order-2 md:order-1 md:mr-[30px]"
           >
             <NextImage
               priority={true}
@@ -75,7 +75,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               />
             </NextLink>
             <div className="flex-column flex">
-              <div className="flex flex-row items-center ">
+              <div className="flex flex-row items-center">
                 {authorName && (
                   <>
                     <div className="hidden md:flex flex-row items-center">

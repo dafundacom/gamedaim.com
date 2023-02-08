@@ -92,7 +92,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     </div>
                   </div>
                 </div>
-                <div className="mx-auto w-[50%] hidden lg:block">
+                <div className="mx-auto w-[50%] hidden lg:!block">
                   <form
                     className="bg-white dark:bg-gray-800"
                     onSubmit={handlerSubmit}
@@ -206,27 +206,29 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                       >
                         <MdSearch />
                       </IconButton>
-                      <div
-                        className={`${
-                          isOpen ? "!visible !opacity-100" : null
-                        } opacity-0	invisible absolute border border-solid border-gray-100 top-[60px] right-0 z-[8] rounded-md p-5 bg-white transition-all w-[300px] before:absolute before:right-[16px] before:top-[-30px] before:z-[8] before:border-solid before:border-x-[8px] before:border-b-[8px] before:border-b-white before:border-x-transparent before:border-t-transparent`}
-                      >
-                        <form
-                          className="relative rounded-md overflow-hidden"
-                          onSubmit={handlerSubmit}
-                          autoComplete="off"
+                      {mounted && (
+                        <div
+                          className={`${
+                            isOpen ? "!visible !opacity-100" : null
+                          } opacity-0	invisible absolute border border-solid border-gray-100 top-[60px] right-0 z-[8] rounded-md p-5 bg-white transition-all w-[300px] before:absolute before:right-[16px] before:top-[-30px] before:z-[8] before:border-solid before:border-x-[8px] before:border-b-[8px] before:border-b-white before:border-x-transparent before:border-t-transparent`}
                         >
-                          <input
-                            className="focus:border-primary-200 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-gray-500"
-                            type="search"
-                            name="q"
-                            ref={inputRef}
+                          <form
+                            className="relative rounded-md overflow-hidden"
+                            onSubmit={handlerSubmit}
                             autoComplete="off"
-                            placeholder="Search..."
-                            required
-                          />
-                        </form>
-                      </div>
+                          >
+                            <input
+                              className="focus:border-primary-200 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-gray-500"
+                              type="search"
+                              name="q"
+                              ref={inputRef}
+                              autoComplete="off"
+                              placeholder="Search..."
+                              required
+                            />
+                          </form>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
