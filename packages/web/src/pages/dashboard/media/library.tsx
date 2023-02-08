@@ -10,13 +10,13 @@ import { MdAdd } from "react-icons/md"
 import { Button } from "ui"
 
 import { MediaContext } from "@/contexts/media.context"
-import { Modal } from "@/components/Modal"
+// import { Modal } from "@/components/Modal"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(MediaContext)
-  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  // const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   const { medias } = post
 
@@ -70,14 +70,33 @@ export default function MediaLibraryDashboard() {
                 alt={media.name}
                 fill
                 className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
-                onClick={() => setOpenModal(true)}
+                // onClick={() => setOpenModal(true)}
               />
-              <Modal
-                title={media.name}
-                content={media.url}
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
-              />
+              {/* <Modal */}
+              {/*   className="hidden" */}
+              {/*   title={media.name} */}
+              {/*   content={ */}
+              {/*     <div className="flex flex-row justify-between space-x-2"> */}
+              {/*       <div> */}
+              {/*         <NextImage */}
+              {/*           key={media.id} */}
+              {/*           src={media.url} */}
+              {/*           alt={media.name} */}
+              {/*           fill */}
+              {/*           className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300" */}
+              {/*           onClick={() => setOpenModal(true)} */}
+              {/*         /> */}
+              {/*       </div> */}
+              {/*       <div> */}
+              {/*         <div>ID: {media.id}</div> */}
+              {/*         <div>Name: {media.name}</div> */}
+              {/*         <div>URL: {media.url}</div> */}
+              {/*       </div> */}
+              {/*     </div> */}
+              {/*   } */}
+              {/*   isOpen={openModal} */}
+              {/*   onClose={() => setOpenModal(false)} */}
+              {/* /> */}
             </>
           ))}
         </div>
