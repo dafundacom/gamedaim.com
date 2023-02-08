@@ -22,20 +22,21 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
   const { primary } = wpPrimaryCategorySlug(categories)
   const [image, setImage] = React.useState("/image/imgloader.gif") as any
   const articleRef = React.useRef(null)
-
+  const article: any = articleRef.current
   React.useEffect(() => {
-    const article: any = articleRef.current
-    const toc = article.querySelector(".ez-toc-title input")
-    if (toc) {
-      toc.addEventListener("click", () => {
-        const list = article.querySelector("ul.ez-toc-list.ez-toc-list-level-1")
-        list.classList.toggle("open-list")
-      })
+    if (article) {
+      const toc = article.querySelector(".ez-toc-title")
+      const list = article.querySelector("nav > ul")
+      if (toc) {
+        toc.addEventListener("click", () => {
+          list.classList.toggle("open-list")
+        })
+      }
     }
-  }, [])
+  }, [article])
   return (
     <>
-      <div className="px-4">
+      <article className="px-4 [&:not(:first-child)]:before:block [&:not(:first-child)]:before:w-full [&:not(:first-child)]:before:h-[35px] [&:not(:first-child)]:before:mb-[50px] [&:not(:first-child)]:before:bg-[url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAE0lEQVQYV2NkwAIYqSy4YMGC/wAIQwLlE7lczAAAAABJRU5ErkJggg==)]">
         <div>
           {categories.map(
             (category: { slug: string; name: string }, i: number) => {
@@ -117,7 +118,7 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
           })}
         </section>
 
-        <section className="mb-10">
+        <section className="mb-20">
           {index === 0 && (
             <>
               <div className="mb-2">
@@ -149,7 +150,7 @@ export const Article = (props: { post: any; posts: any; index: any }) => {
             </>
           )}
         </section>
-      </div>
+      </article>
     </>
   )
 }

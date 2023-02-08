@@ -464,14 +464,11 @@ export async function wpGetPaginatedPosts(currentPage = 1) {
     pageInfo: pageInfo,
   }
 }
-export async function wpGetInfiniteScollArticles(
-  categoryName: any,
-  after: any,
-) {
+export async function wpGetInfiniteScollArticles(categoryIn: any, after: any) {
   let postData
   try {
     postData = await wpFetchAPI(GET_INFINITE_SCROLL_POSTS, {
-      categoryName,
+      categoryIn,
       after,
     })
   } catch (e) {
