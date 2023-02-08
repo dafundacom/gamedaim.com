@@ -3,24 +3,18 @@ import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
-// import dayjs from "dayjs"
-// import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
-import { MdAdd } from "react-icons/md"
-import { Button } from "ui"
+import { MdAdd, MdDeleteOutline } from "react-icons/md"
+import { Button, IconButton } from "ui"
 
 import { MediaContext } from "@/contexts/media.context"
-// import { Modal } from "@/components/Modal"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(MediaContext)
-  // const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   const { medias } = post
-
-  // dayjs.extend(relativeTime)
 
   const getMedias = async () => {
     try {
@@ -36,22 +30,22 @@ export default function MediaLibraryDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // const handleDelete = async (media: { id: string }) => {
-  //   try {
-  //     const { data } = await axios.delete(`/media/${media.id}`)
-  //     if (data.ok) {
-  //       setPost({
-  //         ...medias,
-  //         media: medias.filter((media: { id: string }) => media.id !== data.id),
-  //         selected: null,
-  //       })
-  //       toast.success("Image deleted successfully")
-  //     }
-  //   } catch (err: any) {
-  //     console.log(err)
-  //     toast.error(err.response.data.message)
-  //   }
-  // }
+  const handleDelete = async (media: { id: string }) => {
+    try {
+      const { data } = await axios.delete(`/media/${media.id}`)
+      if (data.ok) {
+        setPost({
+          ...medias,
+          media: medias.filter((media: { id: string }) => media.id !== data.id),
+          selected: null,
+        })
+        toast.success("Image deleted successfully")
+      }
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
   return (
     <AdminOrAuthorRole>
@@ -62,43 +56,30 @@ export default function MediaLibraryDashboard() {
           </NextLink>
         </div>
         <div className="grid grid-cols-5 gap-3 my-3">
-          {medias.map((media: { id: string; name: string; url: string }) => (
-            <>
-              <NextImage
-                key={media.id}
-                src={media.url}
-                alt={media.name}
-                fill
-                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
-                // onClick={() => setOpenModal(true)}
-              />
-              {/* <Modal */}
-              {/*   className="hidden" */}
-              {/*   title={media.name} */}
-              {/*   content={ */}
-              {/*     <div className="flex flex-row justify-between space-x-2"> */}
-              {/*       <div> */}
-              {/*         <NextImage */}
-              {/*           key={media.id} */}
-              {/*           src={media.url} */}
-              {/*           alt={media.name} */}
-              {/*           fill */}
-              {/*           className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300" */}
-              {/*           onClick={() => setOpenModal(true)} */}
-              {/*         /> */}
-              {/*       </div> */}
-              {/*       <div> */}
-              {/*         <div>ID: {media.id}</div> */}
-              {/*         <div>Name: {media.name}</div> */}
-              {/*         <div>URL: {media.url}</div> */}
-              {/*       </div> */}
-              {/*     </div> */}
-              {/*   } */}
-              {/*   isOpen={openModal} */}
-              {/*   onClose={() => setOpenModal(false)} */}
-              {/* /> */}
-            </>
-          ))}
+          {medias.map(
+            (media: { id: string; name: string; url: string; alt: string }) => (
+              <>
+                <div>
+                  <IconButton
+                    colorScheme="red"
+                    className="!rounded-full !p-0"
+                    onClick={() => handleDelete(media)}
+                  >
+                    <MdDeleteOutline />
+                  </IconButton>
+                  <NextLink href={`/dashboard/media/${media.id}`}>
+                    <NextImage
+                      key={media.id}
+                      src={media.url}
+                      alt={media.alt}
+                      fill
+                      className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+                    />
+                  </NextLink>
+                </div>
+              </>
+            ),
+          )}
         </div>
       </DashboardLayout>
     </AdminOrAuthorRole>
