@@ -16,3 +16,4 @@
 - [x] replace CUID with NANOID
 - [ ] add excerpt to api and other seo attributes
 - [ ] multiple media upload
+- [ ] fix: do not inlcude . and other symbols except - and _ on slug
