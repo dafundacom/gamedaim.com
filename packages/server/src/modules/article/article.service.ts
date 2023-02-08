@@ -32,6 +32,7 @@ export function getArticles(articlePage: number, perPage: number) {
       status: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
           alt: true,
         },
@@ -68,6 +69,7 @@ export async function findArticleById(artilceId: string) {
       status: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
           alt: true,
         },
@@ -106,6 +108,7 @@ export async function findArticleBySlug(artilceSlug: string) {
       status: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
           alt: true,
         },

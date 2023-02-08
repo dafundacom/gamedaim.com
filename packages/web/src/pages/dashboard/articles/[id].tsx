@@ -29,7 +29,15 @@ interface FormValues {
 
 export default function EditArticleDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
-  const [editorContent, setEditorContent] = React.useState("<p></p>")
+  // const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [editorContent, setEditorContent] = React.useState("")
+  // const [topics, setTopics] = React.useState([])
+  // const [loadedTopics, setLoadedTopics] = React.useState([])
+  // const [loadedMedias, setLoadedMedias] = React.useState([])
+  // const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
+  // React.useState<string>("")
+  // const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
+  // React.useState<string>("")
   const [article, setArticle] = React.useState<any>({
     id: "",
     title: "",
