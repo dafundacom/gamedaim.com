@@ -234,6 +234,7 @@ export default defineConfig({
     }
     .article-body p.ez-toc-title {
       margin-bottom: unset;
+      cursor: pointer;
     }
     #ez-toc-container [type="checkbox"] {
       width: 100%;

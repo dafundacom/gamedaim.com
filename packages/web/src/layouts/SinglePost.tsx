@@ -5,6 +5,8 @@ import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import dynamic from "next/dynamic"
 import { Article } from "@/components/Article"
 import { wpGetInfiniteScollArticles } from "@/lib/wp-posts"
+import { useRouter } from "next/router"
+import { Button } from "ui"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -45,12 +47,18 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const [hasNextPage, setHasNextPage] = React.useState(true)
     const [endCursor, setEndCursor] = React.useState("")
     const LoaderRef = React.useRef(null)
+    const router = useRouter()
+    const categoryPath = categories.find(
+      (category: { slug: string | string[] | undefined }) => {
+        return category.slug == router.query?.category
+      },
+    )
     const handleObserver = React.useCallback(
       async (entries: any) => {
         const [target] = entries
         if (target.isIntersecting && hasNextPage == true) {
           const data: any = await wpGetInfiniteScollArticles(
-            primary.name,
+            categoryPath.id,
             endCursor,
           )
           setArticles((list: any) => [...list, ...data.posts])
@@ -86,7 +94,16 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
             }
             return <Article key={i} post={postData} posts={posts} index={i} />
           })}
-          <div ref={LoaderRef}></div>
+          <div ref={LoaderRef}>
+            <Button
+              loading={hasNextPage == true}
+              loadingText="Loading ..."
+              colorScheme="blue"
+              className="!w-full !cursor-default"
+            >
+              No More Posts
+            </Button>
+          </div>
         </section>
         <aside className="w-4/12 px-4 hidden lg:!block">
           <div className="rounded-xl border border-gray-100 dark:border-gray-700 p-4 sticky top-8">

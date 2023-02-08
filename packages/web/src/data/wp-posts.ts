@@ -481,8 +481,8 @@ export const QUERY_WP_SEARCH_POSTS = `
     }
   }
 `
-export const GET_INFINITE_SCROLL_POSTS = `query GET_POSTS_BY_CATEGORY($categoryName: String!,$after: String = "") {
-  posts(where: { categoryName: $categoryName }, first: 1,after: $after){
+export const GET_INFINITE_SCROLL_POSTS = `query GET_POSTS_BY_CATEGORY($categoryIn: [ID] = "",$after: String = "") {
+  posts(where: { categoryIn: $categoryIn }, first: 1,after: $after){
     pageInfo {
       endCursor
       hasNextPage
