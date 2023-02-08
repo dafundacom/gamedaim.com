@@ -66,7 +66,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           setHasNextPage(data.pageInfo.hasNextPage)
         }
       },
-      [endCursor, hasNextPage, primary.name],
+      [categoryPath.id, endCursor, hasNextPage],
     )
     React.useEffect(() => {
       const observer = new IntersectionObserver(handleObserver)
