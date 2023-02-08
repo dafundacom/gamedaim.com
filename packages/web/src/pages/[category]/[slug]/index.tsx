@@ -1,9 +1,7 @@
 import * as React from "react"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
-import Head from "next/head"
 import { GetStaticProps, GetStaticPaths } from "next"
-import parse from "html-react-parser"
 
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
@@ -17,6 +15,7 @@ import {
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
+import { SeoContext } from "@/contexts/seo.context"
 
 interface PostProps {
   post: {
@@ -47,7 +46,7 @@ interface PostProps {
 }
 
 export default function Post(props: PostProps) {
-  const { seo } = props
+  const { seo }: any = props
   const router = useRouter()
   const {
     query: { slug },
@@ -57,16 +56,17 @@ export default function Post(props: PostProps) {
   const { getPostBySlug } = useWpGetPostBySlug(slug as string)
   return (
     <>
-      <Head>{seo?.success === true && parse(seo?.head)}</Head>
-      <HomeLayout>
-        {getPostBySlug?.data !== undefined &&
-          getAllPostsData?.data !== undefined && (
-            <SinglePostLayout
-              post={getPostBySlug?.data?.post}
-              posts={getAllPostsData?.data?.posts}
-            />
-          )}
-      </HomeLayout>
+      <SeoContext.Provider value={seo}>
+        <HomeLayout>
+          {getPostBySlug?.data !== undefined &&
+            getAllPostsData?.data !== undefined && (
+              <SinglePostLayout
+                post={getPostBySlug?.data?.post}
+                posts={getAllPostsData?.data?.posts}
+              />
+            )}
+        </HomeLayout>
+      </SeoContext.Provider>
     </>
   )
 }
