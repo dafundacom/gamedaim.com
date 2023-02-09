@@ -23,7 +23,6 @@ export default function UsersDashboard() {
   const getUsers = async () => {
     try {
       const { data } = await axios.get("/user/all/1")
-      console.log(data)
       setPost((prev: any) => ({ ...prev, users: data }))
     } catch (err: any) {
       toast.error(err.response.data.message)
