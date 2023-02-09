@@ -21,7 +21,9 @@ export async function createTopicHandler(
   try {
     const { title, description, featuredImageId } = request.body
     const user = request.user
-    const slug = slugify(title.toLowerCase() + "_" + uniqueSlug())
+    const slug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
+      remove: /[*+~.()'"!:@]/g,
+    })
 
     if (user.role !== "ADMIN") {
       return reply.code(403).send({ message: "Unauthorized" })

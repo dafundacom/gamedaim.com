@@ -26,7 +26,9 @@ export async function createArticleHandler(
   try {
     const { title, content, featuredImageId, topicIds } = request.body
     const user = request.user
-    const articleSlug = slugify(title.toLowerCase() + "_" + uniqueSlug())
+    const articleSlug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
+      remove: /[*+~.()'"!:@]/g,
+    })
 
     if (user.role !== "ADMIN") {
       return reply.code(403).send({ message: "Unauthorized" })
