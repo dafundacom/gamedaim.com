@@ -10,7 +10,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
     return (
       <aside
-        className="relative h-screen min-h-screen w-[55px] hover:w-2/12 flex-col flex-wrap transition-[width] overflow-y-auto rounded bg-white py-4 px-3 shadow-xl dark:bg-gray-800 lg:flex scrollbar"
+        className="dashboard-sidenav relative h-screen min-h-screen w-[55px] hover:w-[250px] flex-col flex-wrap transition-[width] duration-300 overflow-y-auto rounded bg-white py-4 px-3 shadow-xl dark:bg-gray-800 lg:flex scrollbar"
         aria-label="Sidebar"
         ref={ref}
         {...rest}

@@ -10,9 +10,9 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
   const { children, ...rest } = props
 
   return (
-    <div className="flex h-screen flex-row flex-wrap" {...rest}>
+    <div className="flex h-screen flex-col flex-wrap" {...rest}>
       <SidebarDashboard />
-      <div className="w-full px-3 lg:w-10/12">{children}</div>
+      <div className="px-3 dashboard-mainmenu">{children}</div>
     </div>
   )
 }

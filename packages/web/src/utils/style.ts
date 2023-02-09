@@ -258,6 +258,12 @@ export default defineConfig({
     #ez-toc-container .ez-toc-list.ez-toc-list-level-1.open-list {
       max-height: 100%;
     }
+    .dashboard-sidenav:hover ~ .dashboard-mainmenu {
+      width: calc(100% - 250px);
+    }
+    .dashboard-mainmenu {
+      width: calc(100% - 55px);
+    }
     /* editor */
     .ProseMirror {
       @apply min-h-screen px-3 py-2 text-base items-center min-w-0 dark:text-white outline-none space-y-2;
