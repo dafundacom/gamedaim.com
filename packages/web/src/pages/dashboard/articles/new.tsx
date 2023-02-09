@@ -145,7 +145,7 @@ export default function CreateArticlesDashboard() {
           isOpen={isOpen}
           sidebar={
             <div className="flex flex-col min-w-[300px] space-y-4">
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 my-2">
                 <Heading as="h3">Topics</Heading>
                 {loadedTopics.map((topic: { title: string; id: string }) => (
                   <Checkbox
@@ -158,7 +158,7 @@ export default function CreateArticlesDashboard() {
                 ))}
               </div>
               {selectedFeaturedImageId ? (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <NextImage
                     src={selectedFeaturedImageUrl}
@@ -169,7 +169,7 @@ export default function CreateArticlesDashboard() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <Text
                     size="sm"
