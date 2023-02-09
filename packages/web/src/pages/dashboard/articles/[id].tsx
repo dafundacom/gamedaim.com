@@ -47,7 +47,6 @@ export default function EditArticleDashboard() {
     title: "",
     slug: "",
   })
-  console.log(topics)
   const editor = useEditor({
     extensions: [EditorKitExtension],
     content: editorContent,
@@ -135,7 +134,6 @@ export default function EditArticleDashboard() {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      console.log(mergedValues)
       const { data } = await axios.put(`/article/${article.id}`, mergedValues)
       if (data?.error) {
         toast.error(data?.error)
@@ -282,6 +280,7 @@ export default function EditArticleDashboard() {
       </form>
       <Modal
         title="Select Featured Image"
+        className="!max-w-full"
         content={
           <>
             <div className="grid grid-cols-5 gap-3 my-3">

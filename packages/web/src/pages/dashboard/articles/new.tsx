@@ -101,7 +101,6 @@ export default function CreateArticlesDashboard() {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      console.log(mergedValues)
       const { data } = await axios.post("/article", mergedValues)
       if (data?.error) {
         toast.error(data.error)

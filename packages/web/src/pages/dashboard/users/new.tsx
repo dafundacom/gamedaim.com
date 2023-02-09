@@ -43,7 +43,6 @@ export default function CreateUsersDashboard() {
     setLoading(true)
     try {
       const { data } = await axios.post("/user/signup", values)
-      console.log(data)
       if (data?.error) {
         toast.error(data.error)
       } else {
