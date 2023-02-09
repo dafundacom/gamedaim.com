@@ -13,7 +13,6 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Heading,
   IconButton,
   Input,
@@ -181,8 +180,8 @@ export default function EditArticleDashboard() {
           sidebar={
             <div className="px-3">
               <div className="flex flex-col min-w-[300px] space-y-4">
-                <div className="flex flex-col px-4">
-                  <FormLabel>Slug</FormLabel>
+                <div className="flex flex-col px-4 my-2">
+                  <Heading as="h3">Slug</Heading>
                   <FormControl invalid={Boolean(errors.slug)}>
                     <Input
                       type="text"
@@ -198,7 +197,7 @@ export default function EditArticleDashboard() {
                   </FormControl>
                 </div>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 my-2">
                 <Heading as="h3">Topics</Heading>
                 {loadedTopics.map((topic: { title: string; id: string }) => (
                   <>
@@ -224,7 +223,7 @@ export default function EditArticleDashboard() {
                 ))}
               </div>
               {selectedFeaturedImageId ? (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <NextImage
                     src={selectedFeaturedImageUrl}
@@ -235,7 +234,7 @@ export default function EditArticleDashboard() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <Text
                     size="sm"
