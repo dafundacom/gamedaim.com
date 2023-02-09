@@ -20,6 +20,13 @@ enum ArticleStatus {
   IN_REVIEW
 }
 
+enum AdPosition {
+  ABOVE_POST
+  INLINE_POST
+  BELOW_POST
+  POP_UP
+}
+
 model User {
   id               String    @id @unique @default(uuid())
   email            String    @unique
@@ -35,6 +42,7 @@ model User {
   topics           Topic[]   @relation("TopicAuthors")
   medias           Media[]   @relation("MediaAuthors")
   wpComments       WpComment[]   @relation("WpCommentAuthors")
+  ads              Ad[]   @relation("AdAuthors")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
@@ -92,4 +100,15 @@ model WpComment {
   authorId    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model Ad {
+  id String @id @unique @default(uuid())
+  title String @unique
+  content String
+  position AdPosition @default(ABOVE_POST)
+  author      User      @relation(name: "AdAuthors", fields: [authorId], references: [id])
+  authorId    String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }

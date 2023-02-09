@@ -9,11 +9,13 @@ import { withRefResolver } from "fastify-zod"
 import env from "./env"
 import { loggerOption } from "./utils/logger"
 
+import adRoutes from "./modules/ad/ad.route"
 import userRoutes from "./modules/user/user.route"
 import articleRoutes from "./modules/article/article.route"
 import topicRoutes from "./modules/topic/topic.route"
 import mediaRoutes from "./modules/media/media.route"
 import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
+import { adSchemas } from "./modules/ad/ad.schema"
 import { userSchemas } from "./modules/user/user.schema"
 import { articleSchemas } from "./modules/article/article.schema"
 import { mediaSchemas } from "./modules/media/media.schema"
@@ -68,6 +70,7 @@ function buildServer() {
   })
 
   for (const schema of [
+    ...adSchemas,
     ...userSchemas,
     ...articleSchemas,
     ...mediaSchemas,
@@ -101,6 +104,7 @@ function buildServer() {
     },
   })
 
+  server.register(adRoutes, { prefix: "api/ad" })
   server.register(userRoutes, { prefix: "api/user" })
   server.register(articleRoutes, { prefix: "api/article" })
   server.register(topicRoutes, { prefix: "api/topic" })
