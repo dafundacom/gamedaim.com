@@ -22,7 +22,7 @@ export default function ArticlesDashboard() {
 
   const getArticles = async () => {
     try {
-      const { data } = await axios.get("/article/all/1")
+      const { data } = await axios.get("/article/page/1")
       setPost((prev: any) => ({ ...prev, articles: data }))
     } catch (err: any) {
       toast.error(err.response.data.message)

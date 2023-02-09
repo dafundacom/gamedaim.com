@@ -21,7 +21,9 @@ export async function uploadMediaHandler(
   try {
     const data = await request.file()
     const user = request.user
-    const uniqueName = slugify(uniqueSlug() + "-" + data.filename)
+    const uniqueName = slugify(uniqueSlug() + "-" + data.filename, {
+      remove: /[*+~.()'"!:@]/g,
+    })
 
     const s3Config = {
       endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,

@@ -44,7 +44,7 @@ export default function CreateArticlesDashboard() {
 
   const loadTopics = async () => {
     try {
-      const { data } = await axios.get("/topic/all/1")
+      const { data } = await axios.get("/topic/page/1")
       setLoadedTopics(data)
     } catch (err) {
       console.log(err)
@@ -53,7 +53,7 @@ export default function CreateArticlesDashboard() {
 
   const loadMedias = async () => {
     try {
-      const { data } = await axios.get("/media/all/1")
+      const { data } = await axios.get("/media/page/1")
       setLoadedMedias(data)
     } catch (err: any) {
       toast.error(err.response.data.message)
@@ -101,7 +101,6 @@ export default function CreateArticlesDashboard() {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      console.log(mergedValues)
       const { data } = await axios.post("/article", mergedValues)
       if (data?.error) {
         toast.error(data.error)
@@ -146,7 +145,7 @@ export default function CreateArticlesDashboard() {
           isOpen={isOpen}
           sidebar={
             <div className="flex flex-col min-w-[300px] space-y-4">
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 my-2">
                 <Heading as="h3">Topics</Heading>
                 {loadedTopics.map((topic: { title: string; id: string }) => (
                   <Checkbox
@@ -159,7 +158,7 @@ export default function CreateArticlesDashboard() {
                 ))}
               </div>
               {selectedFeaturedImageId ? (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <NextImage
                     src={selectedFeaturedImageUrl}
@@ -170,7 +169,7 @@ export default function CreateArticlesDashboard() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <Text
                     size="sm"

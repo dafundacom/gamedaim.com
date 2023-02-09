@@ -13,7 +13,6 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Heading,
   IconButton,
   Input,
@@ -47,7 +46,6 @@ export default function EditArticleDashboard() {
     title: "",
     slug: "",
   })
-  console.log(topics)
   const editor = useEditor({
     extensions: [EditorKitExtension],
     content: editorContent,
@@ -60,7 +58,7 @@ export default function EditArticleDashboard() {
 
   const loadTopics = async () => {
     try {
-      const { data } = await axios.get("/topic/all/1")
+      const { data } = await axios.get("/topic/page/1")
       setLoadedTopics(data)
     } catch (err) {
       console.log(err)
@@ -69,7 +67,7 @@ export default function EditArticleDashboard() {
 
   const loadMedias = async () => {
     try {
-      const { data } = await axios.get("/media/all/1")
+      const { data } = await axios.get("/media/page/1")
       setLoadedMedias(data)
     } catch (err: any) {
       toast.error(err.response.data.message)
@@ -135,7 +133,6 @@ export default function EditArticleDashboard() {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      console.log(mergedValues)
       const { data } = await axios.put(`/article/${article.id}`, mergedValues)
       if (data?.error) {
         toast.error(data?.error)
@@ -183,8 +180,8 @@ export default function EditArticleDashboard() {
           sidebar={
             <div className="px-3">
               <div className="flex flex-col min-w-[300px] space-y-4">
-                <div className="flex flex-col px-4">
-                  <FormLabel>Slug</FormLabel>
+                <div className="flex flex-col px-4 my-2">
+                  <Heading as="h3">Slug</Heading>
                   <FormControl invalid={Boolean(errors.slug)}>
                     <Input
                       type="text"
@@ -200,7 +197,7 @@ export default function EditArticleDashboard() {
                   </FormControl>
                 </div>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 my-2">
                 <Heading as="h3">Topics</Heading>
                 {loadedTopics.map((topic: { title: string; id: string }) => (
                   <>
@@ -226,7 +223,7 @@ export default function EditArticleDashboard() {
                 ))}
               </div>
               {selectedFeaturedImageId ? (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <NextImage
                     src={selectedFeaturedImageUrl}
@@ -237,7 +234,7 @@ export default function EditArticleDashboard() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 my-2">
                   <Heading as="h3">Featured Image</Heading>
                   <Text
                     size="sm"
@@ -282,6 +279,7 @@ export default function EditArticleDashboard() {
       </form>
       <Modal
         title="Select Featured Image"
+        className="!max-w-full"
         content={
           <>
             <div className="grid grid-cols-5 gap-3 my-3">
