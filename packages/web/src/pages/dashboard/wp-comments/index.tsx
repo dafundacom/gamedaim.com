@@ -19,7 +19,7 @@ export default function WpCommentsDashboard() {
 
   const getWpComments = async () => {
     try {
-      const { data } = await axios.get("/wp-comment/all/1")
+      const { data } = await axios.get("/wp-comment/page/1")
       setPost((prev: any) => ({ ...prev, wpComments: data }))
     } catch (err: any) {
       toast.error(err.response.data.message)

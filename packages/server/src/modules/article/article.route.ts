@@ -25,7 +25,7 @@ async function articleRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/all/:articlePage",
+    "/page/:articlePage",
     {
       schema: {
         response: {

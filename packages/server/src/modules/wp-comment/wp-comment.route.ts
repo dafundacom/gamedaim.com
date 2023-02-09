@@ -24,7 +24,7 @@ async function wpCommentRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/all/:wpCommentPage",
+    "/page/:wpCommentPage",
     {
       schema: {
         response: {
