@@ -25,6 +25,7 @@ export default function AdsDashboard() {
       const { data } = await axios.get("/ad/page/1")
       setAd((prev: any) => ({ ...prev, ads: data }))
     } catch (err: any) {
+      console.log(err)
       toast.error(err.response.data.message)
     }
   }
@@ -61,6 +62,7 @@ export default function AdsDashboard() {
             <Thead>
               <Tr isTitle>
                 <Th>Title</Th>
+                <Th>Position</Th>
                 <Th>Published Date</Th>
                 <Th>Last Modified</Th>
                 <Th>Actions</Th>
@@ -72,7 +74,7 @@ export default function AdsDashboard() {
                   ad: {
                     id: string
                     title: string
-                    slug: string
+                    position: string
                     createdAt: string
                     updatedAt: string
                   },
@@ -82,6 +84,11 @@ export default function AdsDashboard() {
                     <Td className="whitespace-nowrap">
                       <div className="flex">
                         <span className="font-medium">{ad.title}</span>
+                      </div>
+                    </Td>
+                    <Td className="whitespace-nowrap">
+                      <div className="flex">
+                        <span className="font-medium">{ad.position}</span>
                       </div>
                     </Td>
                     <Td>{dayjs(ad.createdAt).fromNow()}</Td>
