@@ -19,7 +19,7 @@ export const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(
           className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           {icon}
-          <span className="ml-3 flex-1 whitespace-nowrap">{children}</span>
+          <span className="ml-5 flex-1 whitespace-nowrap">{children}</span>
           {badge && (
             <span className="ml-3 inline-flex items-center justify-center rounded-full bg-gray-200 px-2 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
               {badge}

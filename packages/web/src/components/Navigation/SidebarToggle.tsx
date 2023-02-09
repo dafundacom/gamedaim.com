@@ -33,7 +33,7 @@ export const SidebarToggle = React.forwardRef<
       >
         {icon}
         <span
-          className="ml-3 flex-1 whitespace-nowrap text-left"
+          className="ml-5 flex-1 whitespace-nowrap text-left"
           sidebar-toggle-item="true"
         >
           {title}

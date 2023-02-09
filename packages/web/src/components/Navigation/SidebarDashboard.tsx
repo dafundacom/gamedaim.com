@@ -2,6 +2,7 @@ import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import {
+  MdOutlineAdsClick,
   MdOutlineArticle,
   MdOutlineComment,
   MdOutlinePermMedia,
@@ -30,7 +31,7 @@ export const SidebarDashboard = React.forwardRef<
     <Sidebar ref={ref} {...rest}>
       <NextLink
         href="/"
-        className="mx-auto my-0 flex items-center justify-center p-5"
+        className="ml-6 my-0 flex items-center justify-center p-5"
       >
         <NextImage
           height={32}
@@ -57,6 +58,14 @@ export const SidebarDashboard = React.forwardRef<
           </Sidebar.ToggleItem>
           <Sidebar.ToggleItem href="/dashboard/topics/new">
             Add new topic
+          </Sidebar.ToggleItem>
+        </Sidebar.Toggle>
+      )}
+      {auth?.user?.role === "ADMIN" && (
+        <Sidebar.Toggle icon={<MdOutlineAdsClick />} title="Ads">
+          <Sidebar.ToggleItem href="/dashboard/ads">All Ads</Sidebar.ToggleItem>
+          <Sidebar.ToggleItem href="/dashboard/ads/new">
+            Add new ad
           </Sidebar.ToggleItem>
         </Sidebar.Toggle>
       )}
