@@ -18,7 +18,7 @@ export default function MediaLibraryDashboard() {
 
   const getMedias = async () => {
     try {
-      const { data } = await axios.get("/media/all/1")
+      const { data } = await axios.get("/media/page/1")
       setPost((prev: any) => ({ ...prev, medias: data }))
     } catch (err: any) {
       toast.error(err.response.data.message)

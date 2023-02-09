@@ -20,7 +20,7 @@ async function mediaRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/all/:mediaPage",
+    "/page/:mediaPage",
     {
       schema: {
         response: {

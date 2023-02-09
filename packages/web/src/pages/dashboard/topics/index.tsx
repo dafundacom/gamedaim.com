@@ -22,7 +22,7 @@ export default function TopicsDashboard() {
 
   const getTopics = async () => {
     try {
-      const { data } = await axios.get("/topic/all/1")
+      const { data } = await axios.get("/topic/page/1")
       setPost((prev: any) => ({ ...prev, topics: data }))
     } catch (err: any) {
       toast.error(err.response.data.message)

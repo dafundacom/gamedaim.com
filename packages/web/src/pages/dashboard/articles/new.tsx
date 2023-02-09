@@ -44,7 +44,7 @@ export default function CreateArticlesDashboard() {
 
   const loadTopics = async () => {
     try {
-      const { data } = await axios.get("/topic/all/1")
+      const { data } = await axios.get("/topic/page/1")
       setLoadedTopics(data)
     } catch (err) {
       console.log(err)
@@ -53,7 +53,7 @@ export default function CreateArticlesDashboard() {
 
   const loadMedias = async () => {
     try {
-      const { data } = await axios.get("/media/all/1")
+      const { data } = await axios.get("/media/page/1")
       setLoadedMedias(data)
     } catch (err: any) {
       toast.error(err.response.data.message)

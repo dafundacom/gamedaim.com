@@ -39,7 +39,7 @@ async function userRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/all/:userPage",
+    "/page/:userPage",
     {
       preHandler: [server.authenticate],
     },
