@@ -18,6 +18,7 @@ import { AuthProvider } from "@/contexts/auth.context"
 import { ArticleProvider } from "@/contexts/article.context"
 import { MediaProvider } from "@/contexts/media.context"
 import { UserProvider } from "@/contexts/user.context"
+import { AdProvider } from "@/contexts/ads.context"
 
 const queryClient = new QueryClient()
 
@@ -48,14 +49,16 @@ function App({ Component, pageProps }: AppProps) {
             enableSystem
           >
             <AuthProvider>
-              <UserProvider>
-                <ArticleProvider>
-                  <MediaProvider>
-                    <Toaster />
-                    <Component {...pageProps} />
-                  </MediaProvider>
-                </ArticleProvider>
-              </UserProvider>
+              <AdProvider>
+                <UserProvider>
+                  <ArticleProvider>
+                    <MediaProvider>
+                      <Toaster />
+                      <Component {...pageProps} />
+                    </MediaProvider>
+                  </ArticleProvider>
+                </UserProvider>
+              </AdProvider>
             </AuthProvider>
           </NextThemeProvider>
         </Hydrate>
