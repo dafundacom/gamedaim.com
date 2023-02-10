@@ -6,7 +6,7 @@ RUN apk update
 WORKDIR /app
 RUN npm install --global pnpm turbo
 COPY . .
-RUN pnpm turbo prune --scope=gamedaim-server --docker
+RUN pnpm turbo prune --scope=gamedaim-web --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM node:alpine AS installer
@@ -14,6 +14,7 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
 RUN npm install --global pnpm turbo
+
 
 # First install the dependencies (as they change less often)
 COPY .gitignore .gitignore
@@ -33,7 +34,7 @@ COPY turbo.json turbo.json
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN pnpm turbo run build --filter=gamedaim-server...
+RUN pnpm turbo run build --filter=gamedaim-web...
 
 FROM node:alpine AS runner
 WORKDIR /app
@@ -41,12 +42,14 @@ RUN npm install --global pnpm turbo
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 fastify
-USER fastify
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
 
-COPY --from=installer /app/packages/server/package.json .
+COPY --from=installer /app/packages/web/next.config.js .
+COPY --from=installer /app/packages/web/package.json .
 
 # Automatically leverage output traces to reduce image size
-COPY --from=installer --chown=fastify:nodejs /app/packages/server/dist ./apps/server/dist
+COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/ ./packages/web/.next/
 
-CMD node packages/server/dist/src/app.js
+CMD node packages/web/server.js
