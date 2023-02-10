@@ -42,7 +42,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
         ref={ref}
         {...rest}
       >
-        <div className="relative w-full justify-between flex flex-row">
+        <div className="relative w-full justify-between lg:!justify-start flex flex-row">
           <NextLink
             href={slug}
             shallow={true}
