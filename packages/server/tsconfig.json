@@ -1,3 +1,8 @@
 {
-  "extends": "typescript-config/node.json"
+  "extends": "typescript-config/node.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": ["global.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

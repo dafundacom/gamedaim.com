@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 const { withSentryConfig } = require("@sentry/nextjs")
+const path = require("path")
 
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   poweredByHeader: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: [
       "assets.gamedaim.com",
@@ -17,6 +21,10 @@ const nextConfig = {
   sentry: {
     silent: true,
     hideSourceMaps: true,
+  },
+  output: "standalone",
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, "../../"),
   },
 }
 
