@@ -258,11 +258,14 @@ export default defineConfig({
     #ez-toc-container .ez-toc-list.ez-toc-list-level-1.open-list {
       max-height: 100%;
     }
-    .dashboard-sidenav:hover ~ .dashboard-mainmenu {
-      width: calc(100% - 250px);
+    .dashboard-sidenav.open-sidenav ~ .dashboard-mainmenu {
+      @apply pl-[265px];
+    }
+    .dashboard-sidenav.open-sidenav.open-sidenav {
+      @apply w-[250px];
     }
     .dashboard-mainmenu {
-      width: calc(100% - 55px);
+      @apply w-full];
     }
     /* editor */
     .ProseMirror {
