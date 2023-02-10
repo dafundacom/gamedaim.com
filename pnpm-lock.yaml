@@ -277,7 +277,6 @@ importers:
       next-pwa: ^5.6.0
       next-sitemap: ^3.1.52
       next-themes: ^0.2.1
-      nprogress: ^0.2.0
       prettier-plugin-tailwindcss: ^0.2.2
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -308,7 +307,6 @@ importers:
       next-pwa: 5.6.0_k2seot55bsmlm52vxz6m7rtrky
       next-sitemap: 3.1.52_dlcnecpznf2wc36zwuq5m2ie5q
       next-themes: 0.2.1_3vryta7zmbcsw4rrqf4axjqggm
-      nprogress: 0.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.1_react@18.2.0
@@ -3978,13 +3976,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.0
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.21.0:
     resolution: {integrity: sha512-35EhHNOXgxnUgh4XCJsGhE7zdlDhYDN/aMG6UbkByCFFNgQ7b3U+uVoqBpicFydR8JEfgdjCF7SJ7MiJfzuiTA==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 
@@ -8340,10 +8338,6 @@ packages:
       console-control-strings: 1.1.0
       gauge: 2.7.4
       set-blocking: 2.0.0
-    dev: false
-
-  /nprogress/0.2.0:
-    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
     dev: false
 
   /number-is-nan/1.0.1:

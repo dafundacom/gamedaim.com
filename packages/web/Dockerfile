@@ -50,6 +50,6 @@ COPY --from=installer /app/packages/web/package.json .
 
 # Automatically leverage output traces to reduce image size
 COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/ ./packages/web/.next/
+COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/static ./packages/web/.next/static
 
-CMD node packages/web/server.js
+CMD node apps/web/server.js
