@@ -1,5 +1,4 @@
 import * as React from "react"
-import NProgress from "nprogress"
 import { useRouter } from "next/router"
 import { AppProps } from "next/app"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
@@ -11,22 +10,22 @@ import {
   Hydrate,
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import "nprogress/nprogress.css"
-
 import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"
 import { ArticleProvider } from "@/contexts/article.context"
 import { MediaProvider } from "@/contexts/media.context"
 import { UserProvider } from "@/contexts/user.context"
 import { AdProvider } from "@/contexts/ads.context"
+import { Button } from "ui"
 
 const queryClient = new QueryClient()
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
   React.useEffect(() => {
-    const handleRouteStart = () => NProgress.start()
-    const handleRouteDone = () => NProgress.done()
+    const handleRouteStart = () => setLoading(true)
+    const handleRouteDone = () => setLoading(false)
 
     router.events.on("routeChangeStart", handleRouteStart)
     router.events.on("routeChangeComplete", handleRouteDone)
@@ -54,6 +53,15 @@ function App({ Component, pageProps }: AppProps) {
                   <ArticleProvider>
                     <MediaProvider>
                       <Toaster />
+                      {loading === true && (
+                        <div className="fixed w-full flex mx-auto top-[10px] z-[999]">
+                          <Button
+                            loading={loading == true}
+                            colorScheme="blue"
+                            className="!w-auto !mx-auto !p-1 !rounded-full !cursor-default"
+                          />
+                        </div>
+                      )}
                       <Component {...pageProps} />
                     </MediaProvider>
                   </ArticleProvider>
