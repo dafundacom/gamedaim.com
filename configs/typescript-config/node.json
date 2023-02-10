@@ -7,7 +7,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "outDir": "./dist",
     "strict": true,
     "strictNullChecks": false,
     "module": "commonjs",
@@ -25,8 +24,6 @@
     "incremental": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["global.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS",
