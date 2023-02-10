@@ -1,1 +1,1 @@
-module.exports = require("eslint-config/eslint-preset-next")
+module.exports = require("eslint-config/eslint-preset-next.js")

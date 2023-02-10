@@ -17,3 +17,4 @@
 - [ ] add excerpt to api and other seo attributes
 - [ ] multiple media upload
 - [x] fix: do not inlcude . and other symbols except - and _ on slug
+- [ ] [web]: enable eslint during docker build

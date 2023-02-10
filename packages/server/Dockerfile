@@ -34,19 +34,17 @@ COPY turbo.json turbo.json
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN pnpm turbo run build --filter=gamedaim-server...
+RUN cd packages/server && pnpm db:generate
 
 FROM node:18-alpine AS runner
 WORKDIR /app
 RUN npm install --global pnpm turbo
 
 # Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
+RUN addgroup --system --gid 1001 fastify
 RUN adduser --system --uid 1001 fastify
 USER fastify
 
-COPY --from=installer /app/packages/server/package.json .
-
-# Automatically leverage output traces to reduce image size
-COPY --from=installer --chown=fastify:nodejs /app/packages/server/dist ./apps/server/dist
+COPY --from=installer /app .
 
 CMD node packages/server/dist/src/app.js

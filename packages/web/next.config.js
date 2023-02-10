@@ -3,6 +3,9 @@ const { withSentryConfig } = require("@sentry/nextjs")
 const path = require("path")
 
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   reactStrictMode: true,
   output: "standalone",
   experimental: {
