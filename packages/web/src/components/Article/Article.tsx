@@ -16,6 +16,7 @@ const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
 import NextLink from "next/link"
 import NextImage from "next/image"
 import * as React from "react"
+import axios from "axios"
 
 interface PostProps {
   post: {
@@ -52,6 +53,25 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     const [image, setImage] = React.useState("/image/imgloader.gif") as any
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
+    const [ad, setAd]: any = React.useState()
+    const [loadingAd, setLoadingAd] = React.useState(false)
+    const adAbove: any = ad?.filter((ads: any) => ads.position == "ABOVE_POST")
+    const adBelow: any = ad?.filter((ads: any) => ads.position == "BELOW_POST")
+    const getAds = async () => {
+      try {
+        const { data } = await axios.get("/ad/page/1")
+        setAd(data)
+        setLoadingAd(true)
+      } catch (err: any) {
+        console.log(err)
+      }
+    }
+    React.useEffect(() => {
+      getAds()
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     React.useEffect(() => {
       if (article) {
         const toc = article.querySelector(".ez-toc-title")
@@ -113,6 +133,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 alt={featuredImage.altText}
                 className="rounded-lg object-cover"
                 src={image}
+                priority={true}
                 onLoadingComplete={() => {
                   setImage(featuredImage.sourceUrl)
                 }}
@@ -127,7 +148,13 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           <div className="flex">
             <StickyShare categorySlug={primary.slug} postSlug={post.slug} />
             <section ref={articleRef} className="article-body">
+              {loadingAd === true && ad.length > 0 && adAbove.length > 0 && (
+                <div>{parse(adAbove[0]?.content)}</div>
+              )}
               {parse(content)}
+              {loadingAd === true && ad.length > 0 && adBelow.length > 0 && (
+                <div>{parse(adBelow[0]?.content)}</div>
+              )}
             </section>
           </div>
 
