@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:18-alpine AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 
@@ -9,7 +9,7 @@ COPY . .
 RUN pnpm turbo prune --scope=gamedaim-server --docker
 
 # Add lockfile and package.json's of isolated subworkspace
-FROM node:alpine AS installer
+FROM node:18-alpine AS installer
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
@@ -35,7 +35,7 @@ COPY turbo.json turbo.json
 
 RUN pnpm turbo run build --filter=gamedaim-server...
 
-FROM node:alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 RUN npm install --global pnpm turbo
 
