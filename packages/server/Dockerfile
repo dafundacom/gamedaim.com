@@ -1,0 +1,52 @@
+FROM node:alpine AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+
+# Set working directory
+WORKDIR /app
+RUN npm install --global pnpm turbo
+COPY . .
+RUN pnpm turbo prune --scope=gamedaim-server --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM node:alpine AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+RUN npm install --global pnpm turbo
+
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+
+RUN pnpm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
+
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+
+RUN pnpm turbo run build --filter=gamedaim-server...
+
+FROM node:alpine AS runner
+WORKDIR /app
+RUN npm install --global pnpm turbo
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 fastify
+USER fastify
+
+COPY --from=installer /app/packages/server/package.json .
+
+# Automatically leverage output traces to reduce image size
+COPY --from=installer --chown=fastify:nodejs /app/packages/server/dist ./apps/server/dist
+
+CMD node packages/server/dist/src/app.js
