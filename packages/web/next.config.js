@@ -4,11 +4,11 @@ const path = require("path")
 
 const nextConfig = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
-  poweredByHeader: false,
-  eslint: {
-    ignoreDuringBuilds: true,
+  output: "standalone",
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, "../../"),
   },
+  productionBrowserSourceMaps: true,
   images: {
     domains: [
       "assets.gamedaim.com",
@@ -21,10 +21,6 @@ const nextConfig = {
   sentry: {
     silent: true,
     hideSourceMaps: true,
-  },
-  output: "standalone",
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, "../../"),
   },
 }
 
