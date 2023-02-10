@@ -14,7 +14,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
     const { data } = getMenusByName
     return (
       <nav className="flex w-full flex-col w-56 relative" ref={ref}>
-        <ul className="flex flex-col p-4  border-b border-gray-100 dark:border-gray-700">
+        <ul className="flex flex-col p-4 border-b border-gray-100 dark:border-gray-700">
           {data?.menu &&
             data?.menu.map((menu: { url: string; label: string }) => {
               const domainUrl = `https://${env.DOMAIN}`
