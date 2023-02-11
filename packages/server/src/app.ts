@@ -5,7 +5,7 @@ const server = buildServer()
 
 async function main() {
   try {
-    await server.listen({ port: env.PORT })
+    await server.listen({ port: env.PORT, host: env.HOST })
 
     console.log(`Server ready at http://localhost:${env.PORT}`)
   } catch (e) {
