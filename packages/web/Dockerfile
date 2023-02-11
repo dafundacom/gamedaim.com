@@ -38,7 +38,6 @@ RUN pnpm turbo run build --filter=gamedaim-web...
 
 FROM node:18-alpine AS runner
 WORKDIR /app
-RUN npm install --global pnpm turbo
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
@@ -47,9 +46,10 @@ USER nextjs
 
 COPY --from=installer /app/packages/web/next.config.js .
 COPY --from=installer /app/packages/web/package.json .
+COPY --from=installer /app/packages/web/public .
 
 # Automatically leverage output traces to reduce image size
 COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/static ./packages/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/static ./apps/web/.next/static
 
-CMD node apps/web/server.js
+CMD node packages/web/server.js
