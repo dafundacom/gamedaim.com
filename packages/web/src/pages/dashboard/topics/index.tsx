@@ -12,27 +12,23 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ArticleContext } from "@/contexts/article.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { useQuery } from "@tanstack/react-query"
 
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
-
+  const [page, setPage] = React.useState(1)
   const { topics } = post
-
+  const { data, isFetching } = useQuery({
+    queryKey: ["topics", page],
+    queryFn: () => getTopics(page),
+    keepPreviousData: true,
+  })
   dayjs.extend(relativeTime)
 
-  const getTopics = async () => {
-    try {
-      const { data } = await axios.get("/topic/page/1")
-      setPost((prev: any) => ({ ...prev, topics: data }))
-    } catch (err: any) {
-      toast.error(err.response.data.message)
-    }
+  const getTopics = async (page: number) => {
+    const { data } = await axios.get(`/topic/page/${page}`)
+    return data
   }
-
-  React.useEffect(() => {
-    getTopics()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const handleDelete = async (item: { id: string }) => {
     try {
@@ -67,37 +63,53 @@ export default function TopicsDashboard() {
               </Tr>
             </Thead>
             <Tbody>
-              {topics.map(
-                (
-                  topic: {
-                    id: string
-                    title: string
-                    slug: string
-                    createdAt: string
-                    updatedAt: string
-                  },
-                  i: number,
-                ) => (
-                  <Tr key={i}>
-                    <Td className="whitespace-nowrap">
-                      <div className="flex">
-                        <span className="font-medium">{topic.title}</span>
-                      </div>
-                    </Td>
-                    <Td>{dayjs(topic.createdAt).fromNow()}</Td>
-                    <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
-                    <Td align="right">
-                      <ActionDashboard
-                        viewLink={`/topic/${topic.slug}`}
-                        onDelete={() => handleDelete(topic)}
-                        editLink={`/dashboard/topics/${topic.id}`}
-                      />
-                    </Td>
-                  </Tr>
-                ),
-              )}
+              {isFetching === false &&
+                data.map(
+                  (
+                    topic: {
+                      id: string
+                      title: string
+                      slug: string
+                      createdAt: string
+                      updatedAt: string
+                    },
+                    i: number,
+                  ) => (
+                    <Tr key={i}>
+                      <Td className="whitespace-nowrap">
+                        <div className="flex">
+                          <span className="font-medium">{topic.title}</span>
+                        </div>
+                      </Td>
+                      <Td>{dayjs(topic.createdAt).fromNow()}</Td>
+                      <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
+                      <Td align="right">
+                        <ActionDashboard
+                          viewLink={`/topic/${topic.slug}`}
+                          onDelete={() => handleDelete(topic)}
+                          editLink={`/dashboard/topics/${topic.id}`}
+                        />
+                      </Td>
+                    </Tr>
+                  ),
+                )}
             </Tbody>
           </Table>
+          <div className="flex justify-between mt-2">
+            <Button
+              onClick={() => setPage((old) => Math.max(old - 1, 0))}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={() => {
+                setPage((old) => old + 1)
+              }}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </DashboardLayout>
     </AdminRole>
