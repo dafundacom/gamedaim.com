@@ -12,37 +12,47 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ArticleContext } from "@/contexts/article.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
   const [page, setPage] = React.useState(1)
   const { topics } = post
-  const { data, isFetching } = useQuery({
+  const { isFetching }: any = useQuery({
     queryKey: ["topics", page],
     queryFn: () => getTopics(page),
     keepPreviousData: true,
+    onSuccess: (data) => {
+      setPost((prev: any) => ({ ...prev, topics: data }))
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
   })
+
   dayjs.extend(relativeTime)
 
   const getTopics = async (page: number) => {
     const { data } = await axios.get(`/topic/page/${page}`)
     return data
   }
-
-  const handleDelete = async (item: { id: string }) => {
-    try {
-      const { data } = await axios.delete(`/topic/${item.id}`)
+  const mutationDelete: any = useMutation({
+    mutationFn: (item: any) => {
+      return axios.delete(`/topic/${item.id}kss`)
+    },
+    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        topics: topics.filter((topic: { id: string }) => topic.id !== data.id),
+        topics: topics.filter(
+          (topic: { id: string }) => topic.id !== datas.data.id,
+        ),
       }))
       toast.success("Topic deleted successfully")
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-    }
-  }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   return (
     <AdminRole>
@@ -64,7 +74,7 @@ export default function TopicsDashboard() {
             </Thead>
             <Tbody>
               {isFetching === false &&
-                data.map(
+                topics.map(
                   (
                     topic: {
                       id: string
@@ -86,7 +96,7 @@ export default function TopicsDashboard() {
                       <Td align="right">
                         <ActionDashboard
                           viewLink={`/topic/${topic.slug}`}
-                          onDelete={() => handleDelete(topic)}
+                          onDelete={() => mutationDelete.mutate(topic)}
                           editLink={`/dashboard/topics/${topic.id}`}
                         />
                       </Td>
