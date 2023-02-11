@@ -18,3 +18,4 @@
 - [ ] multiple media upload
 - [x] fix: do not inlcude . and other symbols except - and _ on slug
 - [ ] [web]: enable eslint during docker build
+- [ ] [web]: image not showing if deploy with docker
