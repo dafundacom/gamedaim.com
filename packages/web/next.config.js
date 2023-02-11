@@ -1,16 +1,11 @@
 /** @type {import('next').NextConfig} */
 const { withSentryConfig } = require("@sentry/nextjs")
-const path = require("path")
 
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
-  output: "standalone",
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, "../../"),
-  },
   productionBrowserSourceMaps: true,
   images: {
     domains: [

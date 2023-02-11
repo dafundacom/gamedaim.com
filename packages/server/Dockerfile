@@ -26,19 +26,10 @@ RUN pnpm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
-
 RUN pnpm turbo run build --filter=gamedaim-server...
-RUN cd packages/server && pnpm db:generate
 
 FROM node:18-alpine AS runner
 WORKDIR /app
-RUN npm install --global pnpm turbo
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 fastify
@@ -46,5 +37,7 @@ RUN adduser --system --uid 1001 fastify
 USER fastify
 
 COPY --from=installer /app .
+COPY --from=installer --chown=fastify:fastify /app ./
 
+RUN cd packages/server && npx prisma generate
 CMD node packages/server/dist/src/app.js
