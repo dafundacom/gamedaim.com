@@ -27,29 +27,20 @@ RUN pnpm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
-
 RUN pnpm turbo run build --filter=gamedaim-web...
 
 FROM node:18-alpine AS runner
 WORKDIR /app
 
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
 # Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
+RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
-COPY --from=installer /app/packages/web/next.config.js .
-COPY --from=installer /app/packages/web/package.json .
-COPY --from=installer /app/packages/web/public .
+COPY --from=installer /app .
+COPY --from=installer --chown=nextjs:nextjs /app ./
 
-# Automatically leverage output traces to reduce image size
-COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/packages/web/.next/static ./apps/web/.next/static
-
-CMD node packages/web/server.js
+CMD cd packages/web && npm run start

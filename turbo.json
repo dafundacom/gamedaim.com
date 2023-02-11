@@ -16,10 +16,13 @@
     "analyze": {
       "outputs": []
     },
-    "analyze:server": {
+    "db:generate": {
       "outputs": []
     },
-    "analyze:brower": {
+    "db:migrate": {
+      "outputs": []
+    },
+    "db:studio": {
       "outputs": []
     },
     "clean": {
