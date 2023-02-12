@@ -74,7 +74,7 @@ export const Input = React.forwardRef<HTMLElement, InputProps>((props, ref) => {
         `disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 disabled:border-${colorScheme}-200 disabled:bg-${colorScheme}-200 dark:disabled:border-transparent dark:disabled:bg-${colorScheme}-200`,
     ),
     solid: tx(
-      `relative rounded-md w-full min-w-0 inline-flex px-3 items-center appearance-none focus:outline-none transition-colors duration-75 ease-out border border-${colorScheme}-300 text-${colorScheme}-900 bg-${colorScheme}-50 hover:bg-${colorScheme}-50 focus:bg-white invalid:border-1 invalid:border-red-500 invalid:ring-red-600 focus:ring-2 dark:border-${colorScheme}-600 dark:text-white dark:bg-${colorScheme}-200 dark:hover:bg-${colorScheme}-100 dark:focus:bg-${colorScheme}-900 dark:invalid:border-1 dark:invalid:border-red-700 dark:invalid:ring-offset-2 dark:invalid:ring-red-700`,
+      `relative rounded-md w-full min-w-0 inline-flex px-3 items-center appearance-none focus:outline-none transition-colors duration-75 ease-out border border-${colorScheme}-300 text-${colorScheme}-900 bg-${colorScheme}-50 hover:bg-${colorScheme}-50 focus:bg-white invalid:border-1 invalid:border-red-500 invalid:ring-red-600 focus:ring-2 dark:border-${colorScheme}-600 dark:text-${colorScheme}-200 dark:bg-${colorScheme}-700 dark:hover:bg-${colorScheme}-700 dark:focus:bg-${colorScheme}-800 dark:invalid:border-1 dark:invalid:border-red-700 dark:invalid:ring-offset-2 dark:invalid:ring-red-700`,
       sizeClasses[size],
       disabled &&
         `disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 disabled:border-${colorScheme}-200 disabled:bg-${colorScheme}-200 dark:disabled:border-transparent dark:disabled:bg-${colorScheme}-200`,
