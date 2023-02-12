@@ -3,7 +3,7 @@
 ## TODO:
 
 - [x] Create Dashboard
-- [ ] Make Dashboard Responsive
+- [x] Make Dashboard Responsive
 - [ ] Reset Password API
 - [ ] Reset Password Frontend
 - [x] Add Topic
