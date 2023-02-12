@@ -140,6 +140,9 @@ export const SidebarDashboard = React.forwardRef<
         >
           Switch Theme
         </Sidebar.Item>
+        <Sidebar.Item icon={<LogoutIcon />} onClick={() => logOut()}>
+          Log Out
+        </Sidebar.Item>
       </div>
     </Sidebar>
   )
