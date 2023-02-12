@@ -37,7 +37,7 @@ export function getAds(adPage: number, perPage: number) {
 }
 
 export async function findAdById(adId: string) {
-  const ad = await db.ad.findUnique({
+  return await db.ad.findUnique({
     where: { id: adId },
     select: {
       id: true,
@@ -54,17 +54,13 @@ export async function findAdById(adId: string) {
       },
     },
   })
-
-  return ad
 }
 
 export async function updateAd(adId: string, data: CreateAdInput) {
-  const updatedAd = await db.ad.update({
+  return await db.ad.update({
     where: { id: adId },
     data,
   })
-
-  return updatedAd
 }
 
 export async function deleteAdById(adId: string) {
@@ -76,6 +72,5 @@ export async function deleteAdById(adId: string) {
 }
 
 export async function getTotalAds() {
-  const ad = await db.ad.count()
-  return ad
+  return await db.ad.count()
 }

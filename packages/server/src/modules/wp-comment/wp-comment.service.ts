@@ -36,7 +36,7 @@ export function getWpComments(wpCommentPage: number, perPage: number) {
 }
 
 export async function findWpCommentById(wpCommentId: string) {
-  const wpComment = await db.wpComment.findUnique({
+  return await db.wpComment.findUnique({
     where: { id: wpCommentId },
     select: {
       content: true,
@@ -52,12 +52,10 @@ export async function findWpCommentById(wpCommentId: string) {
       },
     },
   })
-
-  return wpComment
 }
 
 export async function findWpCommentByWpPostId(wpPostId: string) {
-  const wpComment = await db.wpComment.findUnique({
+  return await db.wpComment.findUnique({
     where: { wpPostId: wpPostId },
     select: {
       content: true,
@@ -73,20 +71,16 @@ export async function findWpCommentByWpPostId(wpPostId: string) {
       },
     },
   })
-
-  return wpComment
 }
 
 export async function updateWpComment(
   wpCommentId: string,
   data: UpdateWpCommentInput,
 ) {
-  const updatedWpComment = await db.wpComment.update({
+  return await db.wpComment.update({
     where: { id: wpCommentId },
     data,
   })
-
-  return updatedWpComment
 }
 
 export async function deleteWpCommentById(wpCommentId: string) {
@@ -98,6 +92,5 @@ export async function deleteWpCommentById(wpCommentId: string) {
 }
 
 export async function getTotalWpComments() {
-  const wpComment = await db.wpComment.count()
-  return wpComment
+  return await db.wpComment.count()
 }

@@ -4,15 +4,12 @@ import { CreateUserInput, UpdateUserInput } from "./user.schema"
 
 export async function createUser(input: CreateUserInput) {
   const { password, ...rest } = input
-
   const hashedPassword = hashPassword(password)
 
-  const user = await db.user.create({
+  return await db.user.create({
     // @ts-ignore fix later
     data: { ...rest, password: hashedPassword },
   })
-
-  return user
 }
 
 export async function findUserByEmail(email: string) {
@@ -62,13 +59,10 @@ export async function findUsers(userPage: number, perPage: number) {
 }
 
 export async function updateUser(userId: string, data: UpdateUserInput) {
-  const updatedUser = await db.user.update({
+  return await db.user.update({
     where: { id: userId },
-    //@ts-ignore FIX: later
     data,
   })
-
-  return updatedUser
 }
 
 export async function deleteUserById(userId: string) {
@@ -80,6 +74,5 @@ export async function deleteUserById(userId: string) {
 }
 
 export async function getTotalUsers() {
-  const user = await db.user.count()
-  return user
+  return await db.user.count()
 }
