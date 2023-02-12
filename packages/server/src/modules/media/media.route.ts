@@ -6,6 +6,7 @@ import {
   uploadMediaHandler,
   updateMediaHandler,
   deleteMediaHandler,
+  getTotalMediasHandler,
 } from "./media.controller"
 import { $ref } from "./media.schema"
 
@@ -62,6 +63,12 @@ async function mediaRoutes(server: FastifyInstance) {
     "/:mediaId",
     { preHandler: [server.authenticate] },
     deleteMediaHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalMediasHandler,
   )
 }
 

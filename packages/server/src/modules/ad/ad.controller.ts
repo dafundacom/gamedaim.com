@@ -7,6 +7,7 @@ import {
   findAdById,
   getAds,
   updateAd,
+  getTotalAds,
 } from "./ad.service"
 
 export async function createAdHandler(
@@ -108,6 +109,25 @@ export async function getAdsHandler(
     const perPage = 10
     const adPage = Number(request.params.adPage || 1)
     const ads = await getAds(adPage, perPage)
+    return reply.code(201).send(ads)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalAdsHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const ads = await getTotalAds()
     return reply.code(201).send(ads)
   } catch (e) {
     console.log(e)

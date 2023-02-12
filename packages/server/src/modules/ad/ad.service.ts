@@ -74,3 +74,8 @@ export async function deleteAdById(adId: string) {
     },
   })
 }
+
+export async function getTotalAds() {
+  const ad = await db.ad.count()
+  return ad
+}

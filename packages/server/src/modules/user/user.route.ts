@@ -8,6 +8,7 @@ import {
   updateUserByAdminHandler,
   getUserByIdHandler,
   getUserByUsernameHandler,
+  getTotalUsersHandler,
 } from "./user.controller"
 import { $ref } from "./user.schema"
 
@@ -102,6 +103,12 @@ async function userRoutes(server: FastifyInstance) {
     "/:userId",
     { preHandler: [server.authenticate] },
     deleteUserHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalUsersHandler,
   )
 }
 

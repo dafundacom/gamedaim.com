@@ -5,6 +5,7 @@ import {
   updateAdHandler,
   getAdsHandler,
   getAdByIdHandler,
+  getTotalAdsHandler,
 } from "./ad.controller"
 import { $ref } from "./ad.schema"
 
@@ -66,6 +67,12 @@ async function adRoutes(server: FastifyInstance) {
     "/:adId",
     { preHandler: [server.authenticate] },
     deleteAdHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalAdsHandler,
   )
 }
 

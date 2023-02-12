@@ -10,6 +10,7 @@ import {
   findTopicBySlug,
   getTopics,
   updateTopic,
+  getTotalTopics,
 } from "./topic.service"
 
 export async function createTopicHandler(
@@ -124,6 +125,25 @@ export async function getTopicsHandler(
     const perPage = 10
     const topicPage = Number(request.params.topicPage || 1)
     const topics = await getTopics(topicPage, perPage)
+    return reply.code(201).send(topics)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalTopicsHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const topics = await getTotalTopics()
     return reply.code(201).send(topics)
   } catch (e) {
     console.log(e)
