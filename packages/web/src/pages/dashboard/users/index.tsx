@@ -7,14 +7,14 @@ import toast from "react-hot-toast"
 import { MdAdd } from "react-icons/md"
 import { Badge, Button } from "ui"
 
-import { UserContext } from "@/contexts/user.context"
+import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function UsersDashboard() {
-  const [post, setPost] = React.useContext(UserContext)
+  const [post, setPost] = React.useContext(ContentContext)
 
   const { users } = post
 

@@ -10,12 +10,12 @@ import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
-import { ArticleContext } from "@/contexts/article.context"
+import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 export default function TopicsDashboard() {
-  const [post, setPost] = React.useContext(ArticleContext)
+  const [post, setPost] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const { topics } = post
 

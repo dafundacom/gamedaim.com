@@ -6,7 +6,7 @@ import { wpGetInfiniteScollArticles } from "@/lib/wp-posts"
 import { useRouter } from "next/router"
 import { Button } from "ui"
 import Head from "next/head"
-import { SeoContext } from "@/contexts/seo.context"
+import { ContentContext } from "@/contexts/content.context"
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
 import parse from "html-react-parser"
@@ -52,13 +52,8 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const LoaderRef = React.useRef(null)
     const articleRef = React.useRef(null)
     const router = useRouter()
-    const seoData: any = React.useContext(SeoContext)
+    const seoData: any = React.useContext(ContentContext)
     const [seo, setSeo] = React.useState(seoData)
-    // const categoryPath = categories.find(
-    //   (category: { slug: string | string[] | undefined }) => {
-    //     return category.slug == router.query?.category
-    //   },
-    // )
 
     const handleObserver = React.useCallback(
       async (entries: any) => {

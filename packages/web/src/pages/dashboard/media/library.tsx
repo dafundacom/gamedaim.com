@@ -7,12 +7,12 @@ import toast from "react-hot-toast"
 import { MdAdd, MdDeleteOutline } from "react-icons/md"
 import { Button, IconButton } from "ui"
 
-import { MediaContext } from "@/contexts/media.context"
+import { ContentContext } from "@/contexts/content.context"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function MediaLibraryDashboard() {
-  const [post, setPost] = React.useContext(MediaContext)
+  const [post, setPost] = React.useContext(ContentContext)
 
   const { medias } = post
 

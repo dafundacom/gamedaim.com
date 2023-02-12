@@ -14,10 +14,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import env from "@/env"
 import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"
-import { ArticleProvider } from "@/contexts/article.context"
-import { MediaProvider } from "@/contexts/media.context"
-import { UserProvider } from "@/contexts/user.context"
-import { AdProvider } from "@/contexts/ads.context"
+import { ContentProvider } from "@/contexts/content.context"
 import { Button } from "ui"
 
 const queryClient = new QueryClient()
@@ -51,27 +48,21 @@ function App({ Component, pageProps }: AppProps) {
             enableSystem
           >
             <AuthProvider>
-              <AdProvider>
-                <UserProvider>
-                  <ArticleProvider>
-                    <MediaProvider>
-                      <Toaster />
-                      {loading && (
-                        <div className="fixed w-full flex mx-auto top-[10px] z-[999]">
-                          <Button
-                            size="xl"
-                            colorScheme="blue"
-                            variant="ghost"
-                            loading={loading}
-                            className="!w-auto !mx-auto !p-1 !rounded-full !cursor-default"
-                          />
-                        </div>
-                      )}
-                      <Component {...pageProps} />
-                    </MediaProvider>
-                  </ArticleProvider>
-                </UserProvider>
-              </AdProvider>
+              <ContentProvider>
+                <Toaster />
+                {loading && (
+                  <div className="fixed w-full flex mx-auto top-[10px] z-[999]">
+                    <Button
+                      size="xl"
+                      colorScheme="blue"
+                      variant="ghost"
+                      loading={loading}
+                      className="!w-auto !mx-auto !p-1 !rounded-full !cursor-default"
+                    />
+                  </div>
+                )}
+                <Component {...pageProps} />
+              </ContentProvider>
             </AuthProvider>
           </NextThemeProvider>
         </Hydrate>
