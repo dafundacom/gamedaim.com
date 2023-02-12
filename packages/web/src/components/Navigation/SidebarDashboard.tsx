@@ -24,31 +24,19 @@ export const SidebarDashboard = React.forwardRef<
   SidebarDashboardProps
 >((props, ref) => {
   const { ...rest } = props
-  const [drawer, setDrawer] = React.useState(false)
   const [auth] = React.useContext(AuthContext)
 
   return (
-    <Sidebar isOpen={drawer} ref={ref} {...rest}>
-      <div className="flex flex-row items-center space-x-2">
-        <div id="drawer" className="mx-2">
-          <div
-            className="cursor-pointer space-y-[3px]"
-            onClick={() => setDrawer((prev) => !prev)}
-          >
-            <div className="h-0.5 w-5 bg-gray-600 dark:bg-white transition-[margin]"></div>
-            <div className="h-0.5 w-5 bg-gray-600 dark:bg-white transition-[margin]"></div>
-            <div className="h-0.5 w-5 bg-gray-600 dark:bg-white transition-[margin]"></div>
-          </div>
-        </div>
-        <NextLink href="/" className="flex items-center justify-center">
-          <NextImage
-            height={32}
-            width={120}
-            alt={env.SITE_TITLE}
-            src={env.LOGO_URL}
-          />
-        </NextLink>
-      </div>
+    <Sidebar ref={ref} {...rest}>
+      <NextLink href="/" className="flex items-center justify-center p-2">
+        <NextImage
+          height={32}
+          width={120}
+          alt={env.SITE_TITLE}
+          src={env.LOGO_URL}
+        />
+      </NextLink>
+
       <Sidebar.Item icon={<MdSpaceDashboard />} href="/dashboard">
         Dashboard
       </Sidebar.Item>
