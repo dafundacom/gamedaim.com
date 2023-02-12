@@ -96,3 +96,8 @@ export async function deleteWpCommentById(wpCommentId: string) {
     },
   })
 }
+
+export async function getTotalWpComments() {
+  const wpComment = await db.wpComment.count()
+  return wpComment
+}

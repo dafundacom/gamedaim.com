@@ -10,6 +10,7 @@ import {
   findUserByUsername,
   findUsers,
   updateUser,
+  getTotalUsers,
 } from "./user.service"
 
 export async function registerUserHandler(
@@ -227,6 +228,25 @@ export async function getUserByUsernameHandler(
 
     const user = await findUserByUsername(username)
     return reply.code(201).send(user)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalUsersHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const users = await getTotalUsers()
+    return reply.code(201).send(users)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

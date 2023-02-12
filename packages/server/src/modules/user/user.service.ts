@@ -78,3 +78,8 @@ export async function deleteUserById(userId: string) {
     },
   })
 }
+
+export async function getTotalUsers() {
+  const user = await db.user.count()
+  return user
+}

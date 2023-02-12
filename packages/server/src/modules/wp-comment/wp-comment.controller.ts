@@ -7,6 +7,7 @@ import {
   findWpCommentById,
   getWpComments,
   updateWpComment,
+  getTotalWpComments,
 } from "./wp-comment.service"
 
 export async function createWpCommentHandler(
@@ -96,6 +97,25 @@ export async function getWpCommentsHandler(
     const WpCommentPage = Number(request.params.WpCommentPage || 1)
     const WpComments = await getWpComments(WpCommentPage, perPage)
     return reply.code(201).send(WpComments)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalWpCommentsHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const wpComments = await getTotalWpComments()
+    return reply.code(201).send(wpComments)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

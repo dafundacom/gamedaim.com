@@ -6,6 +6,7 @@ import {
   deleteArticleHandler,
   updateArticleHandler,
   getArticleByIdHandler,
+  getTotalArticlesHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
 
@@ -67,6 +68,12 @@ async function articleRoutes(server: FastifyInstance) {
     "/:articleId",
     { preHandler: [server.authenticate] },
     deleteArticleHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalArticlesHandler,
   )
 }
 

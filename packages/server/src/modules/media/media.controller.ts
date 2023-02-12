@@ -11,6 +11,7 @@ import {
   updateMedia,
   deleteMediaById,
   getMedias,
+  getTotalMedias,
 } from "./media.service"
 import { UpdateMediaInput } from "./media.schema"
 
@@ -137,6 +138,25 @@ export async function getMediasHandler(
     const mediaPage = Number(request.params.mediaPage || 1)
 
     const medias = await getMedias(mediaPage, perPage)
+    return reply.code(201).send(medias)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalMediasHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const medias = await getTotalMedias()
     return reply.code(201).send(medias)
   } catch (e) {
     console.log(e)
