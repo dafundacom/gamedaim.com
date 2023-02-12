@@ -1,6 +1,8 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { useTheme } from "next-themes"
 import {
   MdOutlineAdsClick,
   MdOutlineArticle,
@@ -12,6 +14,7 @@ import {
   MdSpaceDashboard,
   MdSupervisedUserCircle,
 } from "react-icons/md"
+import { LogoutIcon, MoonIcon, SunIcon } from "ui"
 
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
@@ -24,7 +27,28 @@ export const SidebarDashboard = React.forwardRef<
   SidebarDashboardProps
 >((props, ref) => {
   const { ...rest } = props
-  const [auth] = React.useContext(AuthContext)
+  const [auth, setAuth] = React.useContext(AuthContext)
+  const [mounted, setMounted] = React.useState(false)
+  const { resolvedTheme, setTheme } = useTheme()
+
+  const router = useRouter()
+
+  React.useEffect(() => setMounted(true), [])
+
+  const switchTheme = () => {
+    if (mounted) {
+      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+    }
+  }
+
+  const logOut = () => {
+    localStorage.removeItem("auth")
+    setAuth({
+      user: null,
+      token: "",
+    })
+    router.push("/auth/login")
+  }
 
   return (
     <Sidebar ref={ref} {...rest}>
@@ -97,13 +121,29 @@ export const SidebarDashboard = React.forwardRef<
           </Sidebar.Item>
         </>
       )}
-      <Sidebar.Item
-        icon={<MdPerson />}
-        className="py-5"
-        href="/setting/user/profile"
-      >
-        Profile
-      </Sidebar.Item>
+      <div className="py-5">
+        <Sidebar.Item icon={<MdPerson />} href="/setting/user/profile">
+          Profile
+        </Sidebar.Item>
+        <Sidebar.Item
+          icon={
+            <>
+              {mounted &&
+                (resolvedTheme === "light" ? (
+                  <MoonIcon className="h-5 w-5" />
+                ) : (
+                  <SunIcon className="h-5 w-5" />
+                ))}
+            </>
+          }
+          onClick={switchTheme}
+        >
+          Switch Theme
+        </Sidebar.Item>
+        <Sidebar.Item icon={<LogoutIcon />} onClick={() => logOut()}>
+          Log Out
+        </Sidebar.Item>
+      </div>
     </Sidebar>
   )
 })
