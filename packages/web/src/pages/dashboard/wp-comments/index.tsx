@@ -61,31 +61,37 @@ export default function WpCommentsDashboard() {
               </Tr>
             </Thead>
             <Tbody>
-              {wpComments.map(
-                (
-                  wpComment: {
-                    id: string
-                    content: string
-                    createdAt: string
-                    updatedAt: string
-                  },
-                  i: number,
-                ) => (
-                  <Tr key={i}>
-                    <Td className="whitespace-nowrap">
-                      <div className="flex">
-                        <span className="font-medium">{wpComment.content}</span>
-                      </div>
-                    </Td>
-                    <Td>{dayjs(wpComment.createdAt).fromNow()}</Td>
-                    <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
-                    <Td align="right">
-                      <ActionDashboard
-                        onDelete={() => handleDelete(wpComment)}
-                      />
-                    </Td>
-                  </Tr>
-                ),
+              {wpComments && (
+                <>
+                  {wpComments.map(
+                    (
+                      wpComment: {
+                        id: string
+                        content: string
+                        createdAt: string
+                        updatedAt: string
+                      },
+                      i: number,
+                    ) => (
+                      <Tr key={i}>
+                        <Td className="whitespace-nowrap">
+                          <div className="flex">
+                            <span className="font-medium">
+                              {wpComment.content}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td>{dayjs(wpComment.createdAt).fromNow()}</Td>
+                        <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
+                        <Td align="right">
+                          <ActionDashboard
+                            onDelete={() => handleDelete(wpComment)}
+                          />
+                        </Td>
+                      </Tr>
+                    ),
+                  )}
+                </>
               )}
             </Tbody>
           </Table>
