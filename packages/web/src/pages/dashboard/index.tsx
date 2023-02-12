@@ -92,7 +92,6 @@ export default function Dashboard() {
           toast.error(error.message)
         },
       },
-
       {
         queryKey: ["mediasCount"],
         queryFn: () => getMediasCount(),

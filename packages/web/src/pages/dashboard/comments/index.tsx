@@ -46,18 +46,18 @@ export default function CommentsDashboard() {
   })
 
   const getCommentsCount = async () => {
-    const { data } = await axios.get("/wp-comment/count")
+    const { data } = await axios.get("/comment/count")
     return data
   }
 
   const getComments = async (page: number) => {
-    const { data } = await axios.get(`/wp-comment/page/${page}`)
+    const { data } = await axios.get(`/comment/page/${page}`)
     return data
   }
 
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
-      return axios.delete(`/wp-comment/${item.id}`)
+      return axios.delete(`/comment/${item.id}`)
     },
     onSuccess: (datas) => {
       setPost((prev: any) => ({
