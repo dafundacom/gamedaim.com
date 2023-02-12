@@ -36,7 +36,6 @@ export const SidebarDashboard = React.forwardRef<
           src={env.LOGO_URL}
         />
       </NextLink>
-
       <Sidebar.Item icon={<MdSpaceDashboard />} href="/dashboard">
         Dashboard
       </Sidebar.Item>

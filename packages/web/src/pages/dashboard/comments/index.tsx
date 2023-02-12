@@ -13,73 +13,73 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
-export default function WpCommentsDashboard() {
+export default function CommentsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
-  const [totalWpComments, setTotalWpComments]: any = React.useState()
+  const [totalComments, setTotalComments]: any = React.useState()
 
-  const { wpComments } = post
+  const { comments } = post
 
   dayjs.extend(relativeTime)
 
   const { isFetching }: any = useQuery({
-    queryKey: ["wpComments", page],
-    queryFn: () => getWpComments(page),
+    queryKey: ["comments", page],
+    queryFn: () => getComments(page),
     keepPreviousData: true,
     onSuccess: (data) => {
-      setPost((prev: any) => ({ ...prev, wpComments: data }))
+      setPost((prev: any) => ({ ...prev, comments: data }))
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
   })
 
-  const wpCommentsCount: any = useQuery({
-    queryKey: ["wpCommentsCount"],
-    queryFn: () => getWpCommentsCount(),
+  const commentsCount: any = useQuery({
+    queryKey: ["commentsCount"],
+    queryFn: () => getCommentsCount(),
     onSuccess: (data) => {
-      setTotalWpComments(data)
+      setTotalComments(data)
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
   })
 
-  const getWpCommentsCount = async () => {
-    const { data } = await axios.get("/wp-comment/count")
+  const getCommentsCount = async () => {
+    const { data } = await axios.get("/comment/count")
     return data
   }
 
-  const getWpComments = async (page: number) => {
-    const { data } = await axios.get(`/wp-comment/page/${page}`)
+  const getComments = async (page: number) => {
+    const { data } = await axios.get(`/comment/page/${page}`)
     return data
   }
 
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
-      return axios.delete(`/wp-comment/${item.id}`)
+      return axios.delete(`/comment/${item.id}`)
     },
     onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        wpComments: wpComments.filter(
-          (wpComment: { id: string }) => wpComment.id !== datas.data.id,
+        comments: comments.filter(
+          (comment: { id: string }) => comment.id !== datas.data.id,
         ),
       }))
-      toast.success("WpComment deleted successfully")
+      toast.success("Comment deleted successfully")
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
   })
 
-  const lastPage = wpCommentsCount.isSuccess && Math.ceil(totalWpComments / 10)
+  const lastPage = commentsCount.isSuccess && Math.ceil(totalComments / 10)
 
   return (
     <AdminRole>
       <DashboardLayout>
         <div className="my-6 rounded">
-          {wpComments.length > 0 ? (
+          {comments.length > 0 ? (
             <>
               <Table>
                 <Thead>
@@ -91,12 +91,12 @@ export default function WpCommentsDashboard() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {wpComments && (
+                  {comments && (
                     <>
                       {isFetching === false &&
-                        wpComments.map(
+                        comments.map(
                           (
-                            wpComment: {
+                            comment: {
                               id: string
                               content: string
                               createdAt: string
@@ -108,16 +108,16 @@ export default function WpCommentsDashboard() {
                               <Td className="whitespace-nowrap">
                                 <div className="flex">
                                   <span className="font-medium">
-                                    {wpComment.content}
+                                    {comment.content}
                                   </span>
                                 </div>
                               </Td>
-                              <Td>{dayjs(wpComment.createdAt).fromNow()}</Td>
-                              <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
+                              <Td>{dayjs(comment.createdAt).fromNow()}</Td>
+                              <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
                               <Td align="right">
                                 <ActionDashboard
                                   onDelete={() =>
-                                    mutationDelete.mutate(wpComment)
+                                    mutationDelete.mutate(comment)
                                   }
                                 />
                               </Td>
@@ -141,7 +141,7 @@ export default function WpCommentsDashboard() {
                         <MdChevronLeft />
                       </IconButton>
                     )}
-                    {wpCommentsCount.isFetching === false &&
+                    {commentsCount.isFetching === false &&
                       page !== lastPage && (
                         <IconButton
                           onClick={() => {
@@ -159,7 +159,7 @@ export default function WpCommentsDashboard() {
           ) : (
             <div className="flex items-center justify-center my-48">
               <Text size="4xl" as="h3" className="text-center font-bold">
-                WP Comments Not found
+                Comments Not found
               </Text>
             </div>
           )}
