@@ -10,6 +10,8 @@ import {
   Hydrate,
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
+import env from "@/env"
 import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"
 import { ArticleProvider } from "@/contexts/article.context"
@@ -23,6 +25,7 @@ const queryClient = new QueryClient()
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
+
   React.useEffect(() => {
     const handleRouteStart = () => setLoading(true)
     const handleRouteDone = () => setLoading(false)
@@ -53,11 +56,13 @@ function App({ Component, pageProps }: AppProps) {
                   <ArticleProvider>
                     <MediaProvider>
                       <Toaster />
-                      {loading === true && (
+                      {loading && (
                         <div className="fixed w-full flex mx-auto top-[10px] z-[999]">
                           <Button
-                            loading={loading == true}
+                            size="xl"
                             colorScheme="blue"
+                            variant="ghost"
+                            loading={loading}
                             className="!w-auto !mx-auto !p-1 !rounded-full !cursor-default"
                           />
                         </div>
@@ -70,7 +75,7 @@ function App({ Component, pageProps }: AppProps) {
             </AuthProvider>
           </NextThemeProvider>
         </Hydrate>
-        <ReactQueryDevtools />
+        {env.NODE_ENV !== "production" && <ReactQueryDevtools />}
       </QueryClientProvider>
     </>
   )
