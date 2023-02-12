@@ -97,7 +97,8 @@ model Media {
 model Comment {
   id          String @id @unique @default(uuid())
   content     String
-  articles    Article[] @relation(name: "ArticleComments")
+  articles    Article @relation(name: "ArticleComments", fields: [articleId], references: [id])
+  articleId   String 
   author      User      @relation(name: "CommentAuthors", fields: [authorId], references: [id])
   authorId    String
   createdAt   DateTime  @default(now())
