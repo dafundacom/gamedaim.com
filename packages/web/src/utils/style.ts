@@ -259,13 +259,13 @@ export default defineConfig({
       max-height: 100%;
     }
     .dashboard-sidenav.open-sidenav ~ .dashboard-mainmenu {
-      @apply pl-[265px];
+      @apply pl-[270px] lg:pl-[70px];
     }
     .dashboard-sidenav.open-sidenav.open-sidenav {
-      @apply w-[250px];
+      @apply w-[250px] lg:w-[55px];
     }
     .dashboard-mainmenu {
-      @apply w-full];
+      @apply w-full;
     }
     /* editor */
     .ProseMirror {

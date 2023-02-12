@@ -17,8 +17,10 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
-  const { topics } = post
+  const [totalTopics, setTotalTopics]: any = React.useState()
 
+  const { topics } = post
+  dayjs.extend(relativeTime)
   const { isFetching }: any = useQuery({
     queryKey: ["topics", page],
     queryFn: () => getTopics(page),
@@ -30,9 +32,21 @@ export default function TopicsDashboard() {
       toast.error(error.message)
     },
   })
+  const topicsCount: any = useQuery({
+    queryKey: ["topicsCount"],
+    queryFn: () => getTopicsCount(),
+    onSuccess: (data) => {
+      setTotalTopics(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
-  dayjs.extend(relativeTime)
-
+  const getTopicsCount = async () => {
+    const { data } = await axios.get("/topic/count")
+    return data
+  }
   const getTopics = async (page: number) => {
     const { data } = await axios.get(`/topic/page/${page}`)
     return data
@@ -55,7 +69,7 @@ export default function TopicsDashboard() {
       toast.error(error.message)
     },
   })
-
+  const lastPage = topicsCount.isSuccess && Math.ceil(totalTopics / 10)
   return (
     <AdminRole>
       <DashboardLayout>
@@ -119,14 +133,16 @@ export default function TopicsDashboard() {
                     <MdChevronLeft />
                   </IconButton>
                 )}
-                <IconButton
-                  onClick={() => {
-                    setPage((old) => old + 1)
-                  }}
-                  className="!rounded-full !px-0"
-                >
-                  <MdChevronRight />
-                </IconButton>
+                {topicsCount.isFetching === false && page !== lastPage && (
+                  <IconButton
+                    onClick={() => {
+                      setPage((old) => old + 1)
+                    }}
+                    className="!rounded-full !px-0"
+                  >
+                    <MdChevronRight />
+                  </IconButton>
+                )}
               </>
             </div>
           )}
