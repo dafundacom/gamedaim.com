@@ -17,6 +17,8 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
   const [page, setPage] = React.useState(1)
+  const [totalTopics, setTotalTopics]: any = React.useState()
+
   const { topics } = post
   dayjs.extend(relativeTime)
   const { isFetching }: any = useQuery({
@@ -30,11 +32,11 @@ export default function TopicsDashboard() {
       toast.error(error.message)
     },
   })
-  const { data }: any = useQuery({
+  const topicsCount: any = useQuery({
     queryKey: ["topicsCount"],
     queryFn: () => getTopicsCount(),
     onSuccess: (data) => {
-      console.log(data)
+      setTotalTopics(data)
     },
     onError: (error: any) => {
       toast.error(error.message)
@@ -67,7 +69,7 @@ export default function TopicsDashboard() {
       toast.error(error.message)
     },
   })
-
+  const lastPage = topicsCount.isSuccess && Math.ceil(totalTopics / 10)
   return (
     <AdminRole>
       <DashboardLayout>
@@ -131,14 +133,16 @@ export default function TopicsDashboard() {
                     <MdChevronLeft />
                   </IconButton>
                 )}
-                <IconButton
-                  onClick={() => {
-                    setPage((old) => old + 1)
-                  }}
-                  className="!rounded-full !px-0"
-                >
-                  <MdChevronRight />
-                </IconButton>
+                {topicsCount.isFetching === false && page !== lastPage && (
+                  <IconButton
+                    onClick={() => {
+                      setPage((old) => old + 1)
+                    }}
+                    className="!rounded-full !px-0"
+                  >
+                    <MdChevronRight />
+                  </IconButton>
+                )}
               </>
             </div>
           )}
