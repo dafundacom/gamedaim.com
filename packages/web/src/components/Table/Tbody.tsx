@@ -7,7 +7,10 @@ export const Tbody = React.forwardRef<HTMLTableSectionElement, TbodyProps>(
   (props, ref) => {
     const { className, ...rest } = props
 
-    const classes = tx("text-sm font-light text-gray-600", className)
+    const classes = tx(
+      "text-sm font-light text-gray-600 dark:text-gray-200",
+      className,
+    )
     return <tbody className={classes} ref={ref} {...rest} />
   },
 )
