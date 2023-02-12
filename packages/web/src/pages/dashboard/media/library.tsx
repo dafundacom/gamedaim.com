@@ -87,7 +87,7 @@ export default function MediaLibraryDashboard() {
         </div>
         {medias.length > 0 ? (
           <>
-            <div className="grid grid-cols-5 gap-3 my-3">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-3">
               {isFetching === false &&
                 medias.map(
                   (media: {
