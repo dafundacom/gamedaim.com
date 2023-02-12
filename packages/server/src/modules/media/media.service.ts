@@ -36,7 +36,7 @@ export function getMedias(mediaPage: number, perPage: number) {
 }
 
 export async function findMediaById(mediaId: string) {
-  const media = await db.media.findUnique({
+  return await db.media.findUnique({
     where: { id: mediaId },
     select: {
       id: true,
@@ -54,17 +54,13 @@ export async function findMediaById(mediaId: string) {
       },
     },
   })
-
-  return media
 }
 
 export async function updateMedia(mediaId: string, data: UploadMediaInput) {
-  const updatedMedia = await db.media.update({
+  return await db.media.update({
     where: { id: mediaId },
     data,
   })
-
-  return updatedMedia
 }
 
 export async function deleteMediaById(mediaId: string) {
@@ -76,6 +72,5 @@ export async function deleteMediaById(mediaId: string) {
 }
 
 export async function getTotalMedias() {
-  const media = await db.media.count()
-  return media
+  return await db.media.count()
 }

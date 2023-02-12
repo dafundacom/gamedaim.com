@@ -10,7 +10,6 @@ export async function createArticle(
     topics: { connect: { id: string }[] }
   },
 ) {
-  // const { title, content, topicIds, slug, authorId } = data
   return db.article.create({
     // @ts-ignore FIX: validation error
     data,
@@ -59,7 +58,7 @@ export function getArticles(articlePage: number, perPage: number) {
 }
 
 export async function findArticleById(artilceId: string) {
-  const article = await db.article.findUnique({
+  return await db.article.findUnique({
     where: { id: artilceId },
     select: {
       content: true,
@@ -93,12 +92,10 @@ export async function findArticleById(artilceId: string) {
       },
     },
   })
-
-  return article
 }
 
 export async function findArticleBySlug(artilceSlug: string) {
-  const article = await db.article.findUnique({
+  return await db.article.findUnique({
     where: { slug: artilceSlug },
     select: {
       content: true,
@@ -132,8 +129,6 @@ export async function findArticleBySlug(artilceSlug: string) {
       },
     },
   })
-
-  return article
 }
 
 export async function updateArticle(
@@ -145,12 +140,10 @@ export async function updateArticle(
     topics: { connect: { id: string }[] }
   },
 ) {
-  const updatedTopic = await db.article.update({
+  return await db.article.update({
     where: { id: articleId },
     data,
   })
-
-  return updatedTopic
 }
 
 export async function deleteArticleById(articleId: string) {
@@ -162,6 +155,5 @@ export async function deleteArticleById(articleId: string) {
 }
 
 export async function getTotalArticles() {
-  const article = await db.article.count()
-  return article
+  return await db.article.count()
 }
