@@ -13,6 +13,8 @@ const ContentProvider: React.FunctionComponent<ContentProviderProps> = (
   const [content, setContent] = React.useState({
     ads: [],
     articles: [],
+    comments: [],
+    wpComments: [],
     seo: [],
     medias: [],
     topics: [],
