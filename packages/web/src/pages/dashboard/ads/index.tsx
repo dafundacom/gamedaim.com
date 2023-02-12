@@ -4,50 +4,75 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
-import { Button } from "ui"
-import { MdAdd } from "react-icons/md"
+import { Button, IconButton, Text } from "ui"
+import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 
+import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { ContentContext } from "@/contexts/content.context"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export default function AdsDashboard() {
   const [ad, setAd] = React.useContext(ContentContext)
+  const [page, setPage] = React.useState(1)
+  const [totalAds, setTotalAds]: any = React.useState()
 
   const { ads } = ad
 
   dayjs.extend(relativeTime)
 
-  const getAds = async () => {
-    try {
-      const { data } = await axios.get("/ad/page/1")
+  const { isFetching }: any = useQuery({
+    queryKey: ["ads", page],
+    queryFn: () => getAds(page),
+    keepPreviousData: true,
+    onSuccess: (data) => {
       setAd((prev: any) => ({ ...prev, ads: data }))
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-    }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
+
+  const adsCount: any = useQuery({
+    queryKey: ["adsCount"],
+    queryFn: () => getAdsCount(),
+    onSuccess: (data) => {
+      setTotalAds(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
+
+  const getAdsCount = async () => {
+    const { data } = await axios.get("/ad/count")
+    return data
   }
 
-  React.useEffect(() => {
-    getAds()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const getAds = async (page: number) => {
+    const { data } = await axios.get(`/ad/page/${page}`)
+    return data
+  }
 
-  const handleDelete = async (item: { id: string }) => {
-    try {
-      const { data } = await axios.delete(`/ad/${item.id}`)
+  const mutationDelete: any = useMutation({
+    mutationFn: (item: any) => {
+      return axios.delete(`/ad/${item.id}`)
+    },
+    onSuccess: (datas) => {
       setAd((prev: any) => ({
         ...prev,
-        ads: ads.filter((ad: { id: string }) => ad.id !== data.id),
+        ads: ads.filter((ad: { id: string }) => ad.id !== datas.data.id),
       }))
-      toast.success("Ad deleted successfully")
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-    }
-  }
+      toast.success("Ads deleted successfully")
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
+
+  const lastPage = adsCount.isSuccess && Math.ceil(totalAds / 10)
 
   return (
     <AdminRole>
@@ -58,52 +83,88 @@ export default function AdsDashboard() {
           </NextLink>
         </div>
         <div className="my-6 rounded">
-          <Table>
-            <Thead>
-              <Tr isTitle>
-                <Th>Title</Th>
-                <Th>Position</Th>
-                <Th>Published Date</Th>
-                <Th>Last Modified</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {ads.map(
-                (
-                  ad: {
-                    id: string
-                    title: string
-                    position: string
-                    createdAt: string
-                    updatedAt: string
-                  },
-                  i: number,
-                ) => (
-                  <Tr key={i}>
-                    <Td className="whitespace-nowrap">
-                      <div className="flex">
-                        <span className="font-medium">{ad.title}</span>
-                      </div>
-                    </Td>
-                    <Td className="whitespace-nowrap">
-                      <div className="flex">
-                        <span className="font-medium">{ad.position}</span>
-                      </div>
-                    </Td>
-                    <Td>{dayjs(ad.createdAt).fromNow()}</Td>
-                    <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
-                    <Td align="right">
-                      <ActionDashboard
-                        onDelete={() => handleDelete(ad)}
-                        editLink={`/dashboard/ads/${ad.id}`}
-                      />
-                    </Td>
+          {ads.length > 0 ? (
+            <>
+              <Table>
+                <Thead>
+                  <Tr isTitle>
+                    <Th>Title</Th>
+                    <Th>Position</Th>
+                    <Th>Published Date</Th>
+                    <Th>Last Modified</Th>
+                    <Th>Actions</Th>
                   </Tr>
-                ),
+                </Thead>
+                <Tbody>
+                  {isFetching === false &&
+                    ads.map(
+                      (
+                        ad: {
+                          id: string
+                          title: string
+                          position: string
+                          createdAt: string
+                          updatedAt: string
+                        },
+                        i: number,
+                      ) => (
+                        <Tr key={i}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{ad.title}</span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{ad.position}</span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(ad.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              onDelete={() => mutationDelete.mutate(ad)}
+                              editLink={`/dashboard/ads/${ad.id}`}
+                            />
+                          </Td>
+                        </Tr>
+                      ),
+                    )}
+                </Tbody>
+              </Table>
+              {page && (
+                <div className="flex justify-center items-center align-center mt-2 space-x-2">
+                  <>
+                    {page !== 1 && (
+                      <IconButton
+                        onClick={() => setPage((old) => Math.max(old - 1, 0))}
+                        disabled={page === 1}
+                        className="!rounded-full !px-0"
+                      >
+                        <MdChevronLeft />
+                      </IconButton>
+                    )}
+                    {adsCount.isFetching === false && page !== lastPage && (
+                      <IconButton
+                        onClick={() => {
+                          setPage((old) => old + 1)
+                        }}
+                        className="!rounded-full !px-0"
+                      >
+                        <MdChevronRight />
+                      </IconButton>
+                    )}
+                  </>
+                </div>
               )}
-            </Tbody>
-          </Table>
+            </>
+          ) : (
+            <div className="flex items-center justify-center my-48">
+              <Text size="4xl" as="h3" className="text-center font-bold">
+                Ads Not found
+              </Text>
+            </div>
+          )}
         </div>
       </DashboardLayout>
     </AdminRole>
