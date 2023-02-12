@@ -53,7 +53,6 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     const { content, title, author, categories, featuredImage, date, tags } =
       post
     const { primary } = wpPrimaryCategorySlug(categories)
-    const [image, setImage] = React.useState("/image/imgloader.gif") as any
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
     const [ad, setAd]: any = React.useState()
@@ -138,11 +137,8 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImage.altText}
-                className="rounded-lg object-cover"
-                src={image}
-                onLoadingComplete={() => {
-                  setImage(featuredImage.sourceUrl)
-                }}
+                className={`rounded-lg object-cover bg-[url('/image/imgloader.gif')]`}
+                src={featuredImage.sourceUrl}
               />
               {featuredImage.caption && (
                 <span className="text-center text-xs italic text-gray-600 dark:text-gray-500">
