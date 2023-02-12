@@ -38,7 +38,7 @@ export default function TopicsDashboard() {
   }
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
-      return axios.delete(`/topic/${item.id}kss`)
+      return axios.delete(`/topic/${item.id}`)
     },
     onSuccess: (datas) => {
       setPost((prev: any) => ({
