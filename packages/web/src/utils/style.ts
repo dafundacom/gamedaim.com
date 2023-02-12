@@ -258,6 +258,9 @@ export default defineConfig({
     #ez-toc-container .ez-toc-list.ez-toc-list-level-1.open-list {
       max-height: 100%;
     }
+    .ad-inline {
+      @apply py-2;
+    }
     .dashboard-sidenav.open-sidenav ~ .dashboard-mainmenu {
       @apply pl-[270px] lg:pl-[70px];
     }
