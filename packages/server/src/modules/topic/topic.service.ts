@@ -45,7 +45,7 @@ export function getTopics(topicPage: number, perPage: number) {
 }
 
 export async function findTopicById(topicId: string) {
-  const topic = await db.topic.findUnique({
+  return await db.topic.findUnique({
     where: { id: topicId },
     select: {
       description: true,
@@ -68,12 +68,10 @@ export async function findTopicById(topicId: string) {
       },
     },
   })
-
-  return topic
 }
 
 export async function findTopicBySlug(topicSlug: string) {
-  const topic = await db.topic.findUnique({
+  return await db.topic.findUnique({
     where: { slug: topicSlug },
     select: {
       description: true,
@@ -96,8 +94,6 @@ export async function findTopicBySlug(topicSlug: string) {
       },
     },
   })
-
-  return topic
 }
 
 export async function updateTopic(
@@ -107,12 +103,10 @@ export async function updateTopic(
     featuredImageId?: string
   },
 ) {
-  const updatedTopic = await db.topic.update({
+  return await db.topic.update({
     where: { id: topicId },
     data,
   })
-
-  return updatedTopic
 }
 
 export async function deleteTopicById(topicId: string) {
@@ -124,6 +118,5 @@ export async function deleteTopicById(topicId: string) {
 }
 
 export async function getTotalTopics() {
-  const topic = await db.topic.count()
-  return topic
+  return await db.topic.count()
 }
