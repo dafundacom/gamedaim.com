@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [totalAds, setTotalAds]: any = React.useState<number>()
   const [totalArticles, setTotalArticles]: any = React.useState<number>()
   const [totalComments, setTotalComments]: any = React.useState<number>()
+  const [totalWpComments, setTotalWpComments]: any = React.useState<number>()
   const [totalMedias, setTotalMedias]: any = React.useState<number>()
   const [totalTopics, setTotalTopics]: any = React.useState<number>()
   const [totalUsers, setTotalUsers]: any = React.useState<number>()
@@ -51,6 +52,11 @@ export default function Dashboard() {
 
   const getUsersCount = async () => {
     const { data } = await axios.get("/user/count")
+    return data
+  }
+
+  const getWpCommentsCount = async () => {
+    const { data } = await axios.get("/wp-comment/count")
     return data
   }
 
@@ -117,6 +123,16 @@ export default function Dashboard() {
           toast.error(error.message)
         },
       },
+      {
+        queryKey: ["wpCommentsCount"],
+        queryFn: () => getWpCommentsCount(),
+        onSuccess: (data: number) => {
+          setTotalWpComments(data)
+        },
+        onError: (error: any) => {
+          toast.error(error.message)
+        },
+      },
     ],
   })
 
@@ -159,8 +175,15 @@ export default function Dashboard() {
             {getCounts[2].isSuccess && (
               <BoxDashboard
                 icon={<MdOutlineComment className="h-5 w-5" />}
-                count={0}
-                text={totalComments}
+                count={totalComments}
+                text="comment"
+              />
+            )}
+            {getCounts[6].isSuccess && (
+              <BoxDashboard
+                icon={<MdOutlineComment className="h-5 w-5" />}
+                count={totalWpComments}
+                text="wp comment"
               />
             )}
             {getCounts[5].isSuccess && (
