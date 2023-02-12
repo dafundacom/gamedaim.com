@@ -79,7 +79,7 @@ importers:
       '@tiptap/extension-youtube': 2.0.0-beta.217
       '@tiptap/react': 2.0.0-beta.217
       '@types/node': ^18.13.0
-      '@types/react': ^18.0.27
+      '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.10
       eslint: 8.34.0
       eslint-config: workspace:*
@@ -130,7 +130,7 @@ importers:
       ui: link:../ui
     devDependencies:
       '@types/node': 18.13.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       '@types/react-dom': 18.0.10
       eslint: 8.34.0
       eslint-config: link:../../configs/eslint-config
@@ -221,7 +221,7 @@ importers:
       '@twind/preset-tailwind-forms': ^1.1.2
       '@twind/with-next': ^1.2.2
       '@types/node': ^18.13.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       '@types/react-dom': ^18.0.10
       eslint: 8.34.0
       eslint-config: workspace:*
@@ -244,7 +244,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@types/node': 18.13.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       '@types/react-dom': 18.0.10
       eslint: 8.34.0
       eslint-config: link:../../configs/eslint-config
@@ -267,14 +267,14 @@ importers:
       '@twind/with-next': ^1.2.2
       '@types/node': ^18.13.0
       '@types/nprogress': ^0.2.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       '@types/react-dom': ^18.0.10
       axios: ^1.3.2
       dayjs: ^1.11.7
       editor: workspace:*
       eslint: 8.34.0
       eslint-config: workspace:*
-      html-react-parser: ^3.0.8
+      html-react-parser: ^3.0.9
       next: ^13.1.6
       next-pwa: ^5.6.0
       next-sitemap: ^3.1.52
@@ -304,7 +304,7 @@ importers:
       axios: 1.3.2
       dayjs: 1.11.7
       editor: link:../editor
-      html-react-parser: 3.0.8_react@18.2.0
+      html-react-parser: 3.0.9_react@18.2.0
       next: 13.1.6_pjwopsidmaokadturxaafygjp4
       next-pwa: 5.6.0_k2seot55bsmlm52vxz6m7rtrky
       next-sitemap: 3.1.52_dlcnecpznf2wc36zwuq5m2ie5q
@@ -321,7 +321,7 @@ importers:
       '@tanstack/react-query-devtools': 4.24.4_pkeil6ml7pq7xvil3imldjs2sa
       '@types/node': 18.13.0
       '@types/nprogress': 0.2.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       '@types/react-dom': 18.0.10
       eslint: 8.34.0
       eslint-config: link:../../configs/eslint-config
@@ -3983,13 +3983,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.0
-      '@types/estree': 1.0.0
+      '@types/estree': 0.0.51
     dev: false
 
   /@types/eslint/8.21.0:
     resolution: {integrity: sha512-35EhHNOXgxnUgh4XCJsGhE7zdlDhYDN/aMG6UbkByCFFNgQ7b3U+uVoqBpicFydR8JEfgdjCF7SJ7MiJfzuiTA==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 0.0.51
       '@types/json-schema': 7.0.11
     dev: false
 
@@ -4064,11 +4064,11 @@ packages:
   /@types/react-dom/18.0.10:
     resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
     dependencies:
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
     dev: true
 
-  /@types/react/18.0.27:
-    resolution: {integrity: sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==}
+  /@types/react/18.0.28:
+    resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -6953,8 +6953,8 @@ packages:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: false
 
-  /html-react-parser/3.0.8_react@18.2.0:
-    resolution: {integrity: sha512-eIxPq/3Ja3+nZkx6X/BNpFy0lNuW+v3V4nzABzuL8KkRVdYY/2KyXO42epKonsEVVRSBxm2zsxWcOkT6fYL+iQ==}
+  /html-react-parser/3.0.9_react@18.2.0:
+    resolution: {integrity: sha512-gOPZmaCMXNYu7Y9+58k2tLhTMXQ+QN8ctNFijzLuBxJaLZ6TsN+tUpN+MhbI+6nGaBCRGT2rpw6y/AqkTFZckg==}
     peerDependencies:
       react: 0.14 || 15 || 16 || 17 || 18
     dependencies:

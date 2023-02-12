@@ -22,7 +22,7 @@ export async function uploadMediaHandler(
     const data = await request.file()
     const user = request.user
     const uniqueName = slugify(uniqueSlug() + "-" + data.filename, {
-      remove: /[*+~.()'"!:@]/g,
+      remove: /[*+~()'"!:@]/g,
     })
 
     const s3Config = {

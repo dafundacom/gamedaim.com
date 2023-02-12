@@ -20,6 +20,10 @@ build:  ## build docker image for all tools
 start:  ## build docker image for all tools
 	docker-compose up --build
 
-.PHONY: start-detach
-start-detach:  ## build docker image for all tools
+.PHONY: start-d
+start-d:  ## build docker image for all tools
 	docker-compose up -d --build
+
+.PHONY: down
+down:  ## build docker image for all tools
+	docker-compose down

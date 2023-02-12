@@ -4,8 +4,8 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
-import { Button } from "ui"
-import { MdAdd } from "react-icons/md"
+import { Button, IconButton } from "ui"
+import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
@@ -18,6 +18,7 @@ export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
   const [page, setPage] = React.useState(1)
   const { topics } = post
+
   const { isFetching }: any = useQuery({
     queryKey: ["topics", page],
     queryFn: () => getTopics(page),
@@ -36,6 +37,7 @@ export default function TopicsDashboard() {
     const { data } = await axios.get(`/topic/page/${page}`)
     return data
   }
+
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
       return axios.delete(`/topic/${item.id}`)
@@ -105,21 +107,29 @@ export default function TopicsDashboard() {
                 )}
             </Tbody>
           </Table>
-          <div className="flex justify-between mt-2">
-            <Button
-              onClick={() => setPage((old) => Math.max(old - 1, 0))}
-              disabled={page === 1}
-            >
-              Previous
-            </Button>
-            <Button
-              onClick={() => {
-                setPage((old) => old + 1)
-              }}
-            >
-              Next
-            </Button>
-          </div>
+          {page && (
+            <div className="flex justify-center items-center align-center mt-2 space-x-2">
+              <>
+                {page !== 1 && (
+                  <IconButton
+                    onClick={() => setPage((old) => Math.max(old - 1, 0))}
+                    disabled={page === 1}
+                    className="!rounded-full !px-0"
+                  >
+                    <MdChevronLeft />
+                  </IconButton>
+                )}
+                <IconButton
+                  onClick={() => {
+                    setPage((old) => old + 1)
+                  }}
+                  className="!rounded-full !px-0"
+                >
+                  <MdChevronRight />
+                </IconButton>
+              </>
+            </div>
+          )}
         </div>
       </DashboardLayout>
     </AdminRole>
