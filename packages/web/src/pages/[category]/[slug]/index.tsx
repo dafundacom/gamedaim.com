@@ -16,7 +16,8 @@ import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
 
-export default function Post() {
+export default function Post(props: { seo: any }) {
+  const { seo } = props
   const router = useRouter()
   const {
     query: { slug },
@@ -30,6 +31,7 @@ export default function Post() {
         {getPostBySlug?.data !== undefined &&
           getAllPostsData?.data !== undefined && (
             <SinglePostLayout
+              seoData={seo}
               post={getPostBySlug?.data?.post}
               posts={getAllPostsData?.data?.posts}
             />
