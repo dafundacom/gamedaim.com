@@ -32,7 +32,14 @@ export const ActionDashboard = React.forwardRef<
   } = props
 
   return (
-    <div ref={ref} className={tx("flex", className)} {...rest}>
+    <div
+      ref={ref}
+      className={tx(
+        "flex items-center justify-center content-center text-center",
+        className,
+      )}
+      {...rest}
+    >
       {viewLink && (
         <NextLink href={viewLink} target="_blank">
           <HiOutlineEye className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500" />

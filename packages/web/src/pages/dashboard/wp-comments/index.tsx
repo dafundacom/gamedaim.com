@@ -87,7 +87,7 @@ export default function WpCommentsDashboard() {
                     <Th>Content</Th>
                     <Th>Published Date</Th>
                     <Th>Last Modified</Th>
-                    <Th>Actions</Th>
+                    <Th className="!text-center">Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
