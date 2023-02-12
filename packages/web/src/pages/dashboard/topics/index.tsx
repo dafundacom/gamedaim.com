@@ -18,7 +18,7 @@ export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
   const [page, setPage] = React.useState(1)
   const { topics } = post
-
+  dayjs.extend(relativeTime)
   const { isFetching }: any = useQuery({
     queryKey: ["topics", page],
     queryFn: () => getTopics(page),
@@ -30,9 +30,21 @@ export default function TopicsDashboard() {
       toast.error(error.message)
     },
   })
+  const { data }: any = useQuery({
+    queryKey: ["topicsCount"],
+    queryFn: () => getTopicsCount(),
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
-  dayjs.extend(relativeTime)
-
+  const getTopicsCount = async () => {
+    const { data } = await axios.get("/topic/count")
+    return data
+  }
   const getTopics = async (page: number) => {
     const { data } = await axios.get(`/topic/page/${page}`)
     return data
