@@ -1,10 +1,16 @@
+import * as React from "react"
+import NextLink from "next/link"
+import NextImage from "next/image"
+import axios from "axios"
+import parse from "html-react-parser"
+import dynamic from "next/dynamic"
+
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
-import dynamic from "next/dynamic"
+
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
 )
-import parse from "html-react-parser"
 const StickyShare = dynamic(
   () => import("@/components/Share").then((mod) => mod.StickyShare),
   { ssr: false },
@@ -13,10 +19,6 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
-import NextLink from "next/link"
-import NextImage from "next/image"
-import * as React from "react"
-import axios from "axios"
 
 interface PostProps {
   post: {
@@ -190,22 +192,23 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                   </Heading>
                 </div>
                 <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
-                  {posts.map(
-                    (post: { title: string; uri: string }, i: number) => {
-                      return (
-                        <article className="border-b-2 border-gray-200">
-                          <NextLink key={i} href={post.uri}>
-                            <Text
-                              size="lg"
-                              className="font-semibold hover:text-primary-400"
-                            >
-                              {post.title}
-                            </Text>
-                          </NextLink>
-                        </article>
-                      )
-                    },
-                  )}
+                  {posts.map((post: { title: string; uri: string }) => {
+                    return (
+                      <article
+                        className="border-b-2 border-gray-200"
+                        key={title}
+                      >
+                        <NextLink href={post.uri}>
+                          <Text
+                            size="lg"
+                            className="font-semibold hover:text-primary-400"
+                          >
+                            {post.title}
+                          </Text>
+                        </NextLink>
+                      </article>
+                    )
+                  })}
                 </div>
               </>
             )}

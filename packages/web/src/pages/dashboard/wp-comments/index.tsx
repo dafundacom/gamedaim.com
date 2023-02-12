@@ -7,11 +7,11 @@ import toast from "react-hot-toast"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
-import { ArticleContext } from "@/contexts/article.context"
+import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function WpCommentsDashboard() {
-  const [post, setPost] = React.useContext(ArticleContext)
+  const [post, setPost] = React.useContext(ContentContext)
 
   const { wpComments } = post
 

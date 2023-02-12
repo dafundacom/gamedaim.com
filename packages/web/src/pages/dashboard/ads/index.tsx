@@ -11,10 +11,10 @@ import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { AdContext } from "@/contexts/ads.context"
+import { ContentContext } from "@/contexts/content.context"
 
 export default function AdsDashboard() {
-  const [ad, setAd] = React.useContext(AdContext)
+  const [ad, setAd] = React.useContext(ContentContext)
 
   const { ads } = ad
 
