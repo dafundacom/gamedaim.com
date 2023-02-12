@@ -97,7 +97,6 @@ export default function Search(props: SearchProps) {
                       className="focus:border-primary-200 h-11 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-gray-500"
                       type="search"
                       name="q"
-                      value={router.query.q}
                       ref={inputRef}
                       autoComplete="off"
                       placeholder="Search..."

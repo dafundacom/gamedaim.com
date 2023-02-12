@@ -68,12 +68,17 @@ export const ListPostFeatured = (props: { featured: any }) => {
 
   const content: any = contentRef.current
   function handleNextClick() {
-    content.scrollBy(200, 0)
-    if (content.scrollLeft > 190) {
-      setPrevDisplay("md:!flex")
-    }
-    if (content.scrollLeft >= content.scrollWidth - content.offsetWidth - 200) {
-      setNextDisplay("md:!hidden")
+    if (content) {
+      content.scrollBy(200, 0)
+      if (content.scrollLeft > 190) {
+        setPrevDisplay("md:!flex")
+      }
+      if (
+        content.scrollLeft >=
+        content.scrollWidth - content.offsetWidth - 200
+      ) {
+        setNextDisplay("md:!hidden")
+      }
     }
   }
 

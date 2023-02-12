@@ -30,13 +30,17 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
     const [auth, setAuth] = React.useContext(AuthContext)
     const router = useRouter()
     const { isOpen, onToggle } = useDisclosure()
-
-    const inputRef = React.useRef() as React.RefObject<HTMLInputElement>
+    const [values, setValues] = React.useState("")
+    const handleChange = (event: {
+      target: { value: React.SetStateAction<string> }
+    }) => {
+      // 👇 Get input value from "event"
+      setValues(event.target.value)
+    }
     const handlerSubmit = (e: { preventDefault: () => void }) => {
       e.preventDefault()
       //@ts-ignore
-      const value = inputRef.current.value
-      router.push(`/search?q=${value}`)
+      router.push(`/search?q=${values}`)
     }
 
     React.useEffect(() => setMounted(true), [])
@@ -106,7 +110,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                         className="focus:border-primary-200 h-11 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-gray-500"
                         type="search"
                         name="q"
-                        ref={inputRef}
+                        onChange={handleChange}
                         autoComplete="off"
                         placeholder="Search..."
                         required
@@ -221,7 +225,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                               className="focus:border-primary-200 w-full rounded-full border border-gray-300 bg-white px-8 py-3 text-gray-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-gray-500"
                               type="search"
                               name="q"
-                              ref={inputRef}
+                              onChange={handleChange}
                               autoComplete="off"
                               placeholder="Search..."
                               required

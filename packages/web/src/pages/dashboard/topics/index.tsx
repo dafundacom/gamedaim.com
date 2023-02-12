@@ -12,41 +12,47 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ArticleContext } from "@/contexts/article.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
-
+  const [page, setPage] = React.useState(1)
   const { topics } = post
+  const { isFetching }: any = useQuery({
+    queryKey: ["topics", page],
+    queryFn: () => getTopics(page),
+    keepPreviousData: true,
+    onSuccess: (data) => {
+      setPost((prev: any) => ({ ...prev, topics: data }))
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   dayjs.extend(relativeTime)
 
-  const getTopics = async () => {
-    try {
-      const { data } = await axios.get("/topic/page/1")
-      setPost((prev: any) => ({ ...prev, topics: data }))
-    } catch (err: any) {
-      toast.error(err.response.data.message)
-    }
+  const getTopics = async (page: number) => {
+    const { data } = await axios.get(`/topic/page/${page}`)
+    return data
   }
-
-  React.useEffect(() => {
-    getTopics()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const handleDelete = async (item: { id: string }) => {
-    try {
-      const { data } = await axios.delete(`/topic/${item.id}`)
+  const mutationDelete: any = useMutation({
+    mutationFn: (item: any) => {
+      return axios.delete(`/topic/${item.id}kss`)
+    },
+    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        topics: topics.filter((topic: { id: string }) => topic.id !== data.id),
+        topics: topics.filter(
+          (topic: { id: string }) => topic.id !== datas.data.id,
+        ),
       }))
       toast.success("Topic deleted successfully")
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-    }
-  }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   return (
     <AdminRole>
@@ -67,37 +73,53 @@ export default function TopicsDashboard() {
               </Tr>
             </Thead>
             <Tbody>
-              {topics.map(
-                (
-                  topic: {
-                    id: string
-                    title: string
-                    slug: string
-                    createdAt: string
-                    updatedAt: string
-                  },
-                  i: number,
-                ) => (
-                  <Tr key={i}>
-                    <Td className="whitespace-nowrap">
-                      <div className="flex">
-                        <span className="font-medium">{topic.title}</span>
-                      </div>
-                    </Td>
-                    <Td>{dayjs(topic.createdAt).fromNow()}</Td>
-                    <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
-                    <Td align="right">
-                      <ActionDashboard
-                        viewLink={`/topic/${topic.slug}`}
-                        onDelete={() => handleDelete(topic)}
-                        editLink={`/dashboard/topics/${topic.id}`}
-                      />
-                    </Td>
-                  </Tr>
-                ),
-              )}
+              {isFetching === false &&
+                topics.map(
+                  (
+                    topic: {
+                      id: string
+                      title: string
+                      slug: string
+                      createdAt: string
+                      updatedAt: string
+                    },
+                    i: number,
+                  ) => (
+                    <Tr key={i}>
+                      <Td className="whitespace-nowrap">
+                        <div className="flex">
+                          <span className="font-medium">{topic.title}</span>
+                        </div>
+                      </Td>
+                      <Td>{dayjs(topic.createdAt).fromNow()}</Td>
+                      <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
+                      <Td align="right">
+                        <ActionDashboard
+                          viewLink={`/topic/${topic.slug}`}
+                          onDelete={() => mutationDelete.mutate(topic)}
+                          editLink={`/dashboard/topics/${topic.id}`}
+                        />
+                      </Td>
+                    </Tr>
+                  ),
+                )}
             </Tbody>
           </Table>
+          <div className="flex justify-between mt-2">
+            <Button
+              onClick={() => setPage((old) => Math.max(old - 1, 0))}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={() => {
+                setPage((old) => old + 1)
+              }}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </DashboardLayout>
     </AdminRole>
