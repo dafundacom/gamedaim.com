@@ -122,3 +122,8 @@ export async function deleteTopicById(topicId: string) {
     },
   })
 }
+
+export async function getTotalTopics() {
+  const topic = await db.topic.count()
+  return topic
+}

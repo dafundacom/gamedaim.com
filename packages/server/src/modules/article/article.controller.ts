@@ -10,6 +10,7 @@ import {
   updateArticle,
   findArticleById,
   findArticleBySlug,
+  getTotalArticles,
 } from "./article.service"
 
 export async function createArticleHandler(
@@ -136,6 +137,25 @@ export async function deleteArticleHandler(
     const { articleId } = request.params
     const deleteArticle = await deleteArticleById(articleId)
     return reply.code(201).send(deleteArticle)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTotalArticlesHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  try {
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const articles = await getTotalArticles()
+    return reply.code(201).send(articles)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

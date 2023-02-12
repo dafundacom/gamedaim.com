@@ -5,7 +5,9 @@ import {
   updateTopicHandler,
   getTopicsHandler,
   getTopicByIdHandler,
+  getTotalTopicsHandler,
 } from "./topic.controller"
+
 import { $ref } from "./topic.schema"
 
 async function topicRoutes(server: FastifyInstance) {
@@ -66,6 +68,12 @@ async function topicRoutes(server: FastifyInstance) {
     "/:topicId",
     { preHandler: [server.authenticate] },
     deleteTopicHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalTopicsHandler,
   )
 }
 

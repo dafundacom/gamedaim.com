@@ -160,3 +160,8 @@ export async function deleteArticleById(articleId: string) {
     },
   })
 }
+
+export async function getTotalArticles() {
+  const article = await db.article.count()
+  return article
+}

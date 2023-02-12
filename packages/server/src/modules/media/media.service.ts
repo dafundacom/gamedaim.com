@@ -74,3 +74,8 @@ export async function deleteMediaById(mediaId: string) {
     },
   })
 }
+
+export async function getTotalMedias() {
+  const media = await db.media.count()
+  return media
+}

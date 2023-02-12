@@ -5,6 +5,7 @@ import {
   updateWpCommentHandler,
   getWpCommentsHandler,
   getWpCommentByIdHandler,
+  getTotalWpCommentsHandler,
 } from "./wp-comment.controller"
 import { $ref } from "./wp-comment.schema"
 
@@ -66,6 +67,12 @@ async function wpCommentRoutes(server: FastifyInstance) {
     "/:wpCommentId",
     { preHandler: [server.authenticate] },
     deleteWpCommentHandler,
+  )
+
+  server.get(
+    "/count",
+    { preHandler: [server.authenticate] },
+    getTotalWpCommentsHandler,
   )
 }
 
