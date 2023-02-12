@@ -46,7 +46,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const { post, posts } = props
     const { categories } = post
     const { primary } = wpPrimaryCategorySlug(categories)
-    const [articles, setArticles] = React.useState([post])
+    const [articles, setArticles] = React.useState<any>([])
     const [hasNextPage, setHasNextPage] = React.useState(true)
     const [endCursor, setEndCursor] = React.useState("")
     const LoaderRef = React.useRef(null)
@@ -87,7 +87,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
       const observer = new IntersectionObserver(handleObserver)
       const observerSeo = new IntersectionObserver(handleObserverSeo)
       const handleRouteChange = () => {
-        setArticles([post])
+        setArticles([])
         setSeo(seoData)
       }
       router.events.on("routeChangeComplete", handleRouteChange)
@@ -117,20 +117,44 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           className="flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto"
         >
           <section className="w-full lg:w-8/12">
-            {articles.map((postData, i, arr) => {
-              if (i > 0 && arr[i].slug == post.slug) {
-                return null
-              }
-              return (
-                <Article
-                  key={i}
-                  post={postData}
-                  posts={posts}
-                  index={i}
-                  ref={articleRef}
-                />
-              )
-            })}
+            <Article post={post} posts={posts} />
+            {articles.map(
+              (
+                postData: {
+                  title: string
+                  content: string
+                  author: {
+                    name: string
+                    slug: string
+                    avatar: { url: string }
+                  }
+                  slug: string
+                  categories: any
+                  featuredImage: {
+                    altText: string
+                    sourceUrl: string
+                    caption: string
+                  }
+                  tags: any
+                  date: string
+                },
+                i: number,
+                arr: { [x: string]: { slug: string } },
+              ) => {
+                if (i > 0 && arr[i].slug == post.slug) {
+                  return null
+                }
+                return (
+                  <Article
+                    key={i}
+                    post={postData}
+                    posts={posts}
+                    index={i}
+                    ref={articleRef}
+                  />
+                )
+              },
+            )}
             <div ref={LoaderRef}>
               <Button
                 loading={hasNextPage == true}
