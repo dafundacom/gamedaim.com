@@ -12,11 +12,11 @@
 - [ ] Resize image on the server
 - [x] implement lexical text editor base
 - [x] implement lexical text editor image upload, embed socmed (youtube, facebook, twitter, instagram)
-- [ ] Dashboard pagination
+- [x] Dashboard pagination
 - [x] replace CUID with NANOID
 - [ ] add excerpt to api and other seo attributes
 - [ ] multiple media upload
 - [x] fix: do not inlcude . and other symbols except - and _ on slug
 - [ ] [web]: enable eslint during docker build
 - [x] [web]: image not showing if deploy with docker
-- [ ] [server]: cannot connect to postgres 
+- [x] [server]: cannot connect to postgres 
