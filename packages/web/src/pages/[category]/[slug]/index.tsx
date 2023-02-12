@@ -15,38 +15,8 @@ import {
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
-import { SeoContext } from "@/contexts/seo.context"
 
-interface PostProps {
-  post: {
-    title: string
-    content: string
-    author: {
-      name: string
-      slug: string
-      avatar: {
-        url: string
-      }
-    }
-    slug: string
-    categories: any
-    featuredImage: {
-      altText: string
-      sourceUrl: string
-      caption: string
-    }
-    tags: any
-    date: string
-  }
-  seo: {
-    head: string
-    success: boolean
-  }
-  posts: any
-}
-
-export default function Post(props: PostProps) {
-  const { seo }: any = props
+export default function Post() {
   const router = useRouter()
   const {
     query: { slug },
@@ -56,17 +26,15 @@ export default function Post(props: PostProps) {
   const { getPostBySlug } = useWpGetPostBySlug(slug as string)
   return (
     <>
-      <SeoContext.Provider value={seo}>
-        <HomeLayout>
-          {getPostBySlug?.data !== undefined &&
-            getAllPostsData?.data !== undefined && (
-              <SinglePostLayout
-                post={getPostBySlug?.data?.post}
-                posts={getAllPostsData?.data?.posts}
-              />
-            )}
-        </HomeLayout>
-      </SeoContext.Provider>
+      <HomeLayout>
+        {getPostBySlug?.data !== undefined &&
+          getAllPostsData?.data !== undefined && (
+            <SinglePostLayout
+              post={getPostBySlug?.data?.post}
+              posts={getAllPostsData?.data?.posts}
+            />
+          )}
+      </HomeLayout>
     </>
   )
 }
