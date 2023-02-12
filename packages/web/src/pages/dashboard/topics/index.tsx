@@ -18,6 +18,7 @@ export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ArticleContext)
   const [page, setPage] = React.useState(1)
   const { topics } = post
+
   const { isFetching }: any = useQuery({
     queryKey: ["topics", page],
     queryFn: () => getTopics(page),
