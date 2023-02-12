@@ -42,7 +42,6 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
             } hidden bg-[linear-gradient(180deg,#000,#434343)] z-[19] opacity-80 transition-all	w-full top-0 bottom-0 fixed`}
           />
         </div>
-
         <div
           id="container"
           className={`flex w-full mt-20 ${
