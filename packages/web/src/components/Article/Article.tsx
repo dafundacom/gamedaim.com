@@ -81,10 +81,9 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     React.useEffect(() => {
       if (article) {
         const toc = article.querySelector(".ez-toc-title")
-        const list = article.querySelector("nav > ul")
         if (toc) {
           toc.addEventListener("click", () => {
-            list.classList.toggle("open-list")
+            toc.classList.toggle("open-list")
           })
         }
       }

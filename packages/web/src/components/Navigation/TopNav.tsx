@@ -96,7 +96,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                     </div>
                   </div>
                 </div>
-                <div className="mx-auto w-[50%] hidden lg:!block">
+                <div className="mx-auto lg:w-[40%] xl:!w-[50%] hidden lg:!block">
                   <form
                     className="bg-white dark:bg-gray-800"
                     onSubmit={handlerSubmit}
