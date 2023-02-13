@@ -243,8 +243,22 @@ export default defineConfig({
       height: 30px;
       opacity: 0;
     }
+    .ez-toc-title::after {
+      content: "";
+      position: absolute;
+      left: 0px;
+      top: 5px;
+      display: inline-block;
+      border: 10px solid transparent;
+      border-left: 10px solid black;
+    }
+    .ez-toc-title.open-list::after {
+      border-left: 10px solid transparent;
+      border-top: 10px solid black;
+    }
     p.ez-toc-title {
       position: relative;
+      padding-left: 25px;
     }
     #ez-toc-container .ez-toc-list.ez-toc-list-level-1 {
       max-height: 0px;
@@ -255,8 +269,12 @@ export default defineConfig({
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    #ez-toc-container .ez-toc-list.ez-toc-list-level-1.open-list {
+    #ez-toc-container
+      .ez-toc-title.open-list
+      ~ nav
+      .ez-toc-list.ez-toc-list-level-1 {
       max-height: 100%;
+      margin: 10px 0px;
     }
     .ad-inline {
       @apply py-2;
