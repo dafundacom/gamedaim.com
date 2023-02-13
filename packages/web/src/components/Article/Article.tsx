@@ -20,6 +20,7 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
+import { PopupAd } from "../Ads/PopupAd"
 
 interface PostProps {
   post: {
@@ -56,12 +57,14 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
     const [ad, setAd]: any = React.useState()
+    const [openModal, setOpenModal] = React.useState<boolean>(false)
     const [loadingAd, setLoadingAd] = React.useState(false)
     const adAbove: any = ad?.filter((ads: any) => ads.position == "ABOVE_POST")
     const adBelow: any = ad?.filter((ads: any) => ads.position == "BELOW_POST")
     const adInline: any = ad?.filter(
       (ads: any) => ads.position == "INLINE_POST",
     )
+    const adPopup: any = ad?.filter((ads: any) => ads.position == "POP_UP")
     const { firstHalf, secondHalf } = parseAndSplitHTMLString(content)
     const getAds = async () => {
       try {
@@ -74,7 +77,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     }
     React.useEffect(() => {
       getAds()
-
+      setOpenModal(true)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -90,11 +93,19 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     }, [article])
     return (
       <>
-        <article
-          id={post.slug}
-          ref={ref}
-          className="px-4 [&:not(:first-child)]:before:block [&:not(:first-child)]:before:w-full [&:not(:first-child)]:before:h-[35px] [&:not(:first-child)]:before:mb-[50px] [&:not(:first-child)]:before:bg-[url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAE0lEQVQYV2NkwAIYqSy4YMGC/wAIQwLlE7lczAAAAABJRU5ErkJggg==)]"
-        >
+        <article id={post.slug} ref={ref} className="px-4 article-divider">
+          {loadingAd === true &&
+            ad.length > 0 &&
+            adPopup.length > 0 &&
+            openModal === true && (
+              <PopupAd
+                content={<>{parse(adPopup[0]?.content)}</>}
+                isOpen={openModal}
+                className="max-w-[366px]"
+                onClose={() => setOpenModal(false)}
+              />
+            )}
+
           <div>
             {categories.map(
               (category: { slug: string; name: string }, i: number) => {
@@ -162,7 +173,6 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
               )}
             </section>
           </div>
-
           <section className="mx-4 md:mx-12 my-6" id="tag">
             {tags.map((tag: { slug: string; name: string }, i: number) => {
               return (
@@ -182,7 +192,6 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
               )
             })}
           </section>
-
           <section className="mb-20">
             {index === 0 && (
               <>

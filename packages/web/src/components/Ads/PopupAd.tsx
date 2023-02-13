@@ -3,7 +3,6 @@ import { Dialog as ModalBase, Transition } from "@headlessui/react"
 import { CrossIcon } from "ui"
 
 interface ModalProps {
-  title?: string
   content?: React.ReactNode
   placeholder?: string
   isOpen: boolean
@@ -11,8 +10,8 @@ interface ModalProps {
   className?: string
 }
 
-export const Modal: React.FunctionComponent<ModalProps> = (props) => {
-  const { title, content, isOpen, onClose, className } = props
+export const PopupAd: React.FunctionComponent<ModalProps> = (props) => {
+  const { content, isOpen, onClose, className } = props
 
   const completeButtonRef = React.useRef(null)
 
@@ -26,7 +25,7 @@ export const Modal: React.FunctionComponent<ModalProps> = (props) => {
           open={isOpen}
           onClose={onClose}
         >
-          <ModalBase.Overlay className="fixed top-0 left-0 h-screen w-screen bg-gray-600" />
+          <ModalBase.Overlay className="fixed top-0 left-0 h-screen w-screen bg-gray-600 opacity-80" />
           <Transition.Child
             as={React.Fragment}
             enter="transition ease-out duration-150"
@@ -36,10 +35,7 @@ export const Modal: React.FunctionComponent<ModalProps> = (props) => {
             leaveFrom="transform scale-100"
             leaveTo="transform scale-95"
           >
-            <div className="relative mx-auto my-24 flex w-full flex-col rounded shadow-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 max-w-4xl">
-              <header className="relative px-6 py-5 text-lg font-semibold">
-                {title}
-              </header>
+            <div className="relative mx-auto my-24 flex w-full flex-col rounded shadow-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 max-w-[500px]">
               <button
                 onClick={onClose}
                 className="cursor-base hover:text-primary-500 absolute top-4 right-4 text-sm text-gray-600 dark:text-gray-400"

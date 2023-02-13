@@ -89,7 +89,15 @@ export default defineConfig({
     .article-body {
       @apply text-lg leading-7;
     }
-
+    .article-divider:not(:first-child):before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 35px;
+      background: rgba(0, 0, 0, 0.01)
+        url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAE0lEQVQYV2NkwAIYqSy4YMGC/wAIQwLlE7lczAAAAABJRU5ErkJggg==);
+      margin: 0 0 50px;
+    }
     .article-body h1,
     .article-body h2,
     .article-body h3,
