@@ -52,6 +52,7 @@ model Article {
   id              String        @id @unique @default(uuid())
   title           String
   content         String
+  excerpt         String        
   slug            String        @unique
   author          User          @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
   authorId        String

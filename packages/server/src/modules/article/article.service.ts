@@ -1,159 +1,72 @@
-import db from "../../utils/db"
-import { CreateArticleInput } from "./article.schema"
+import { z } from "zod"
+import { buildJsonSchemas } from "fastify-zod"
 
-export async function createArticle(
-  data: CreateArticleInput & {
-    slug: string
-    authorId: string
-    featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
-  },
-) {
-  return db.article.create({
-    // @ts-ignore FIX: validation error
-    data,
-  })
+const articleInput = {
+  title: z.string({
+    required_error: "Title is required",
+    invalid_type_error: "Title must be a string",
+  }),
+  content: z.string({
+    invalid_type_error: "Content must be a string",
+  }),
+  excerpt: z
+    .string({
+      invalid_type_error: "Content must be a string",
+    })
+    .optional(),
+  featuredImageId: z.string({
+    invalid_type_error: "Featured Image must be a string",
+  }),
+  topicIds: z.array(z.string()).optional(),
 }
 
-export function getArticles(articlePage: number, perPage: number) {
-  return db.article.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    skip: (articlePage - 1) * perPage,
-    take: perPage,
-    select: {
-      content: true,
-      title: true,
-      slug: true,
-      id: true,
-      status: true,
-      featuredImage: {
-        select: {
-          id: true,
-          url: true,
-          alt: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
-      topics: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-        },
-      },
-      author: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          profilePicture: true,
-        },
-      },
-    },
-  })
+const updateArticleInput = {
+  ...articleInput,
+  slug: z
+    .string({
+      required_error: "Slug is required",
+      invalid_type_error: "Slug must be a string",
+    })
+    .regex(new RegExp(/^[a-zA-Z0-9_-]*$/), {
+      message: "Slug should be character a-z, A-Z, number, - and _",
+    }),
+  featuredImageId: z.string(),
+  topicIds: z.array(z.string()).optional(),
 }
 
-export async function findArticleById(artilceId: string) {
-  return await db.article.findUnique({
-    where: { id: artilceId },
-    select: {
-      content: true,
-      title: true,
-      slug: true,
-      id: true,
-      status: true,
-      featuredImage: {
-        select: {
-          id: true,
-          url: true,
-          alt: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
-      topics: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-        },
-      },
-      author: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          profilePicture: true,
-        },
-      },
-    },
-  })
+const articleGenerated = {
+  id: z.string(),
+  slug: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 }
 
-export async function findArticleBySlug(artilceSlug: string) {
-  return await db.article.findUnique({
-    where: { slug: artilceSlug },
-    select: {
-      content: true,
-      title: true,
-      slug: true,
-      id: true,
-      status: true,
-      featuredImage: {
-        select: {
-          id: true,
-          url: true,
-          alt: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
-      topics: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-        },
-      },
-      author: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          profilePicture: true,
-        },
-      },
-    },
-  })
+const createArticleSchema = z.object({
+  ...articleInput,
+})
+
+const updateArticleSchema = z.object({
+  ...updateArticleInput,
+})
+
+const articleResponseSchema = z.object({
+  ...articleInput,
+  ...articleGenerated,
+})
+
+const articlesResponseSchema = z.array(articleResponseSchema)
+
+export type CreateArticleInput = z.infer<typeof createArticleSchema>
+export type UpdateArticleInput = z.infer<typeof updateArticleSchema>
+
+const models = {
+  articleResponseSchema,
+  articlesResponseSchema,
+  createArticleSchema,
+  updateArticleSchema,
 }
 
-export async function updateArticle(
-  articleId: string,
-  data: CreateArticleInput & {
-    slug: string
-    featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
-  },
-) {
-  return await db.article.update({
-    where: { id: articleId },
-    data,
-  })
-}
-
-export async function deleteArticleById(articleId: string) {
-  return db.article.delete({
-    where: {
-      id: articleId,
-    },
-  })
-}
-
-export async function getTotalArticles() {
-  return await db.article.count()
-}
+export const { schemas: articleSchemas, $ref } = buildJsonSchemas(models, {
+  // @ts-ignore
+  $id: "ArticleSchema",
+})
