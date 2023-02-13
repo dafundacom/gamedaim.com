@@ -6,13 +6,20 @@ const articleInput = {
     required_error: "Title is required",
     invalid_type_error: "Title must be a string",
   }),
-  content: z.string(),
-  featuredImageId: z.string(),
+  content: z.string({
+    invalid_type_error: "Content must be a string",
+  }),
+  featuredImageId: z.string({
+    invalid_type_error: "Featured Image must be a string",
+  }),
   topicIds: z.array(z.string()).optional(),
 }
 
 const updateArticleInput = {
   ...articleInput,
+  excerpt: z.string({
+    invalid_type_error: "Content must be a string",
+  }),
   slug: z
     .string({
       required_error: "Slug is required",

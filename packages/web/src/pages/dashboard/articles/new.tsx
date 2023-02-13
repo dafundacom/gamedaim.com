@@ -16,6 +16,7 @@ import {
   IconButton,
   Input,
   Text,
+  Textarea,
   useDisclosure,
 } from "ui"
 
@@ -26,6 +27,7 @@ import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 interface FormValues {
   title: string
   content: string
+  excerpt?: string
 }
 
 export default function CreateArticlesDashboard() {
@@ -181,6 +183,17 @@ export default function CreateArticlesDashboard() {
                   </Text>
                 </div>
               )}
+              <div className="flex flex-col px-4 my-2">
+                <Heading as="h3">Excerpt</Heading>
+                <FormControl invalid={Boolean(errors.excerpt)}>
+                  <Textarea {...register("excerpt")} placeholder="optional" />
+                  {errors?.excerpt && (
+                    <FormErrorMessage>
+                      {errors.excerpt.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </div>
             </div>
           }
         >

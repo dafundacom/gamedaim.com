@@ -17,6 +17,7 @@ import {
   IconButton,
   Input,
   Text,
+  Textarea,
   useDisclosure,
 } from "ui"
 
@@ -28,6 +29,7 @@ interface FormValues {
   title: string
   slug: string
   content: string
+  excerpt?: string
 }
 
 export default function EditArticleDashboard() {
@@ -44,6 +46,7 @@ export default function EditArticleDashboard() {
   const [article, setArticle] = React.useState<any>({
     id: "",
     title: "",
+    excertp: "",
     slug: "",
   })
   const editor = useEditor({
@@ -107,6 +110,7 @@ export default function EditArticleDashboard() {
         title: data.title,
         slug: data.slug,
         content: data.content,
+        excerpt: data.excerpt,
       })
       setSelectedFeaturedImageId(data.featuredImage.id)
       setSelectedFeaturedImageUrl(data.featuredImage.url)
@@ -246,6 +250,17 @@ export default function EditArticleDashboard() {
                   </Text>
                 </div>
               )}
+              <div className="flex flex-col px-4 my-2">
+                <Heading as="h3">Excerpt</Heading>
+                <FormControl invalid={Boolean(errors.excerpt)}>
+                  <Textarea {...register("excerpt")} placeholder="optional" />
+                  {errors?.excerpt && (
+                    <FormErrorMessage>
+                      {errors.excerpt.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </div>
             </div>
           }
         >
