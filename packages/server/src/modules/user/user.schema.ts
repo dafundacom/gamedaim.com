@@ -21,7 +21,7 @@ const userCore = {
   phoneNumber: z
     .string({ invalid_type_error: "Phone Number must be a string" })
     .optional(),
-  profilePicture: z
+  profilePictureId: z
     .string({ invalid_type_error: "Profile Picture must be a string" })
     .optional(),
   about: z.string({ invalid_type_error: "About must be a string" }).optional(),
@@ -88,6 +88,10 @@ const updateUserSchema = z.object({
 
 const userResponseSchema = z.object({
   id: z.string(),
+  profilePicture: z.object({
+    id: z.string(),
+    url: z.string(),
+  }),
   ...userCore,
 })
 
@@ -110,9 +114,9 @@ const loginResponseSchema = z.object({
     name: z.string(),
     role: z.string(),
     phoneNumber: z.string().optional(),
-    //FIX: not send profile picture when login
     profilePicture: z
       .object({
+        id: z.string(),
         url: z.string(),
       })
       .optional(),
