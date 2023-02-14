@@ -11,9 +11,13 @@
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix",
     "test": "tap --node-arg=--require=ts-node/register",
     "db:generate": "pnpx prisma generate",
-    "db:migrate": "pnpx prisma migrate dev --name init",
+    "db:seed": "pnpx prisma db seed",
+    "db:migrate": "pnpx prisma migrate dev --name init && pnpm db:seed",
     "db:push": "pnpx prisma db push --skip-generate",
     "db:studio": "pnpx prisma studio"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.267.0",
