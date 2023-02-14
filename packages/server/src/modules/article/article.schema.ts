@@ -9,6 +9,21 @@ const articleInput = {
   content: z.string({
     invalid_type_error: "Content must be a string",
   }),
+  excerpt: z
+    .string({
+      invalid_type_error: "Content must be a string",
+    })
+    .optional(),
+  meta_title: z
+    .string({
+      invalid_type_error: "Meta Title must be a string",
+    })
+    .optional(),
+  meta_description: z
+    .string({
+      invalid_type_error: "Meta Description must be a string",
+    })
+    .optional(),
   featuredImageId: z.string({
     invalid_type_error: "Featured Image must be a string",
   }),
@@ -17,9 +32,6 @@ const articleInput = {
 
 const updateArticleInput = {
   ...articleInput,
-  excerpt: z.string({
-    invalid_type_error: "Content must be a string",
-  }),
   slug: z
     .string({
       required_error: "Slug is required",

@@ -17,6 +17,20 @@ export async function findUserByEmail(email: string) {
     where: {
       email,
     },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      role: true,
+      profilePicture: {
+        select: {
+          url: true,
+        },
+      },
+    },
   })
 }
 
@@ -25,6 +39,20 @@ export async function findUserByUsername(username: string) {
     where: {
       username,
     },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      role: true,
+      profilePicture: {
+        select: {
+          url: true,
+        },
+      },
+    },
   })
 }
 
@@ -32,6 +60,20 @@ export async function findUserById(userId: string) {
   return db.user.findUnique({
     where: {
       id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      role: true,
+      profilePicture: {
+        select: {
+          url: true,
+        },
+      },
     },
   })
 }
@@ -48,6 +90,8 @@ export async function findUsers(userPage: number, perPage: number) {
       email: true,
       username: true,
       name: true,
+      meta_title: true,
+      meta_description: true,
       role: true,
       profilePicture: {
         select: {

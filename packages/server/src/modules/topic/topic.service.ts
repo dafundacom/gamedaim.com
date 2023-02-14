@@ -24,6 +24,8 @@ export function getTopics(topicPage: number, perPage: number) {
     select: {
       description: true,
       title: true,
+      meta_title: true,
+      meta_description: true,
       slug: true,
       id: true,
       createdAt: true,
@@ -50,6 +52,8 @@ export async function findTopicById(topicId: string) {
     select: {
       description: true,
       title: true,
+      meta_title: true,
+      meta_description: true,
       slug: true,
       id: true,
       createdAt: true,
@@ -76,6 +80,8 @@ export async function findTopicBySlug(topicSlug: string) {
     select: {
       description: true,
       title: true,
+      meta_title: true,
+      meta_description: true,
       slug: true,
       id: true,
       createdAt: true,

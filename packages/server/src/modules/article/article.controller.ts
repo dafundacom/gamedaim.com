@@ -17,7 +17,6 @@ import { trimText } from "../../utils/trim"
 export async function createArticleHandler(
   request: FastifyRequest<{
     Body: CreateArticleInput & {
-      excerpt: string
       slug: string
       authorId: string
       featuredImageId: string
@@ -27,7 +26,15 @@ export async function createArticleHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, content, excerpt, featuredImageId, topicIds } = request.body
+    const {
+      title,
+      content,
+      excerpt,
+      meta_title,
+      meta_description,
+      featuredImageId,
+      topicIds,
+    } = request.body
     const user = request.user
     const articleSlug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
       remove: /[*+~.()'"!:@]/g,
@@ -37,12 +44,18 @@ export async function createArticleHandler(
       return reply.code(403).send({ message: "Unauthorized" })
     }
 
-    const generatedExcerpt = trimText(content, 160)
+    const generatedExcerpt = !excerpt ? trimText(content, 160) : excerpt
+    const generatedMetaTitle = !meta_title ? title : meta_title
+    const generatedMetaDescription = !meta_description
+      ? generatedExcerpt
+      : meta_description
 
     const article = await createArticle({
       title,
       content,
-      ...(!excerpt ? { excerpt: generatedExcerpt } : { excerpt }),
+      excerpt: generatedExcerpt,
+      meta_title: generatedMetaTitle,
+      meta_description: generatedMetaDescription,
       slug: articleSlug,
       topics: {
         connect: topicIds.map((id) => ({ id })),
@@ -85,8 +98,16 @@ export async function updateArticleHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, slug, content, excerpt, featuredImageId, topicIds } =
-      request.body
+    const {
+      title,
+      slug,
+      content,
+      excerpt,
+      meta_title,
+      meta_description,
+      featuredImageId,
+      topicIds,
+    } = request.body
     const user = request.user
     const articleId = request.params.articleId
 
@@ -107,6 +128,8 @@ export async function updateArticleHandler(
       title,
       content,
       excerpt,
+      meta_title,
+      meta_description,
       slug,
       topics: {
         connect: topicIds.map((id) => ({ id })),
