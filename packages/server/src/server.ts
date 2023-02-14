@@ -16,6 +16,7 @@ import commentRoutes from "./modules/comment/comment.route"
 import topicRoutes from "./modules/topic/topic.route"
 import mediaRoutes from "./modules/media/media.route"
 import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
+import settingRoutes from "./modules/setting/setting.route"
 import { adSchemas } from "./modules/ad/ad.schema"
 import { commentSchemas } from "./modules/comment/comment.schema"
 import { userSchemas } from "./modules/user/user.schema"
@@ -23,6 +24,7 @@ import { articleSchemas } from "./modules/article/article.schema"
 import { mediaSchemas } from "./modules/media/media.schema"
 import { topicSchemas } from "./modules/topic/topic.schema"
 import { wpCommentSchemas } from "./modules/wp-comment/wp-comment.schema"
+import { settingSchemas } from "./modules/setting/setting.schema"
 import { version } from "../package.json"
 
 function buildServer() {
@@ -79,6 +81,7 @@ function buildServer() {
     ...mediaSchemas,
     ...topicSchemas,
     ...wpCommentSchemas,
+    ...settingSchemas,
   ]) {
     server.addSchema(schema)
   }
@@ -114,6 +117,7 @@ function buildServer() {
   server.register(topicRoutes, { prefix: "api/topic" })
   server.register(mediaRoutes, { prefix: "api/media" })
   server.register(wpCommentRoutes, { prefix: "api/wp-comment" })
+  server.register(settingRoutes, { prefix: "api/setting" })
 
   return server
 }
