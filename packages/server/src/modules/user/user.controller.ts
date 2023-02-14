@@ -20,7 +20,16 @@ export async function registerUserHandler(
   reply: FastifyReply,
 ) {
   try {
-    const body = request.body
+    const {
+      email,
+      username,
+      name,
+      meta_title,
+      meta_description,
+      phoneNumber,
+      profilePictureId,
+      about,
+    } = request.body
 
     const emailExist = await findUserByEmail(body.email)
     if (emailExist) {
@@ -36,7 +45,21 @@ export async function registerUserHandler(
       })
     }
 
-    const user = await createUser(body)
+    const generatedMetaTitle = !meta_title ? name : meta_title
+    const generatedMetaDescription = !meta_description
+      ? about
+      : meta_description
+
+    const user = await createUser({
+      email,
+      username,
+      name,
+      meta_title: generatedMetaTitle,
+      meta_description: generatedMetaDescription,
+      phoneNumber,
+      profilePictureId,
+      about,
+    })
     return reply.code(201).send(user)
   } catch (e) {
     console.log(e)
@@ -88,7 +111,17 @@ export async function updateUserHandler(
   reply: FastifyReply,
 ) {
   try {
-    const body = request.body
+    const {
+      email,
+      username,
+      name,
+      meta_title,
+      meta_description,
+      phoneNumber,
+      profilePictureId,
+      about,
+    } = request.body
+
     const user = request.user
     const userId = request.params.userId
 
@@ -114,7 +147,17 @@ export async function updateUserHandler(
     //   })
     // }
 
-    const updatedUser = await updateUser(userId, body)
+    const updatedUser = await updateUser(userId, {
+      email,
+      username,
+      name,
+      meta_title,
+      meta_description,
+      phoneNumber,
+      profilePictureId,
+      about,
+    })
+
     return reply.code(201).send(updatedUser)
   } catch (e) {
     console.log(e)
@@ -130,7 +173,16 @@ export async function updateUserByAdminHandler(
   reply: FastifyReply,
 ) {
   try {
-    const body = request.body
+    const {
+      email,
+      username,
+      name,
+      meta_title,
+      meta_description,
+      phoneNumber,
+      profilePictureId,
+      about,
+    } = request.body
     const user = request.user
     const userId = request.params.userId
 
@@ -156,7 +208,16 @@ export async function updateUserByAdminHandler(
     //   })
     // }
 
-    const updatedUser = await updateUser(userId, body)
+    const updatedUser = await updateUser(userId, {
+      email,
+      username,
+      name,
+      meta_title,
+      meta_description,
+      phoneNumber,
+      profilePictureId,
+      about,
+    })
     return reply.code(201).send(updatedUser)
   } catch (e) {
     console.log(e)

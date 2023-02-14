@@ -20,7 +20,13 @@ export async function createTopicHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, description, featuredImageId } = request.body
+    const {
+      title,
+      description,
+      meta_title,
+      meta_description,
+      featuredImageId,
+    } = request.body
     const user = request.user
     const slug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
       remove: /[*+~.()'"!:@]/g,
@@ -30,9 +36,16 @@ export async function createTopicHandler(
       return reply.code(403).send({ message: "Unauthorized" })
     }
 
+    const generatedMetaTitle = !meta_title ? title : meta_title
+    const generatedMetaDescription = !meta_description
+      ? description
+      : meta_description
+
     const topic = await createTopic({
       title,
       description,
+      meta_title: generatedMetaTitle,
+      meta_description: generatedMetaDescription,
       slug,
       featuredImageId,
       authorId: user.id,
@@ -52,7 +65,14 @@ export async function updateTopicHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, slug, description, featuredImageId } = request.body
+    const {
+      title,
+      slug,
+      description,
+      meta_title,
+      meta_description,
+      featuredImageId,
+    } = request.body
     const user = request.user
     const topicId = request.params.topicId
 
@@ -71,6 +91,8 @@ export async function updateTopicHandler(
     const topic = await updateTopic(topicId, {
       title,
       description,
+      meta_title,
+      meta_description,
       slug,
       featuredImageId,
     })
