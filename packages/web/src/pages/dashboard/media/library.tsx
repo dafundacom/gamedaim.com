@@ -1,4 +1,3 @@
-// TODO: not yet styled
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"

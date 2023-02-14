@@ -3,6 +3,7 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+import { useQuery } from "@tanstack/react-query"
 import {
   Button,
   FormControl,
@@ -33,29 +34,29 @@ export default function EditAdDashboard() {
   const router = useRouter()
 
   React.useEffect(() => {
-    loadAd()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query?.id])
-
-  React.useEffect(() => {
     reset(ad)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ad])
 
-  const loadAd = async () => {
-    try {
+  const loadAd = useQuery({
+    queryKey: ["ads"],
+    queryFn: () => async () => {
       const { data } = await axios.get(`/ad/${router.query.id}`)
+      return data
+    },
+    keepPreviousData: true,
+    onSuccess: (data: any) => {
       setAd({
         id: data.id,
         title: data.title,
         content: data.content,
         position: data.position,
       })
-      setLoading(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   const {
     register,
@@ -88,49 +89,55 @@ export default function EditAdDashboard() {
       <DashboardLayout>
         <div className="mt-4 flex items-end justify-end">
           <div className="flex-1 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormControl invalid={Boolean(errors.title)}>
-                <FormLabel>
-                  Title
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="text"
-                  {...register("title", {
-                    required: "Title is Required",
-                  })}
-                  className="max-w-xl"
-                />
-                {errors?.title && (
-                  <FormErrorMessage>{errors.title.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.content)}>
-                <FormLabel>Content</FormLabel>
-                <Textarea {...register("content")} className="max-w-xl" />
-                {errors?.content && (
-                  <FormErrorMessage>{errors.content.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.position)}>
-                <FormLabel>
-                  Position
-                  <RequiredIndicator />
-                </FormLabel>
-                <select {...register("position")}>
-                  <option value="ABOVE_POST">Above Post</option>
-                  <option value="BELOW_POST">Below Post</option>
-                  <option value="INLINE_POST">Inline Post</option>
-                  <option value="POP_UP">Pop Up</option>
-                </select>
-                {errors?.position && (
-                  <FormErrorMessage>{errors.position.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <Button type="submit" variant="solid" loading={loading}>
-                Submit
-              </Button>
-            </form>
+            {loadAd.isSuccess && (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormControl invalid={Boolean(errors.title)}>
+                  <FormLabel>
+                    Title
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...register("title", {
+                      required: "Title is Required",
+                    })}
+                    className="max-w-xl"
+                  />
+                  {errors?.title && (
+                    <FormErrorMessage>{errors.title.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.content)}>
+                  <FormLabel>Content</FormLabel>
+                  <Textarea {...register("content")} className="max-w-xl" />
+                  {errors?.content && (
+                    <FormErrorMessage>
+                      {errors.content.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.position)}>
+                  <FormLabel>
+                    Position
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <select {...register("position")}>
+                    <option value="ABOVE_POST">Above Post</option>
+                    <option value="BELOW_POST">Below Post</option>
+                    <option value="INLINE_POST">Inline Post</option>
+                    <option value="POP_UP">Pop Up</option>
+                  </select>
+                  {errors?.position && (
+                    <FormErrorMessage>
+                      {errors.position.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button type="submit" variant="solid" loading={loading}>
+                  Submit
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </DashboardLayout>

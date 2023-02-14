@@ -1,6 +1,8 @@
 import * as React from "react"
+import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -10,9 +12,12 @@ import {
   FormLabel,
   Input,
   RequiredIndicator,
+  Text,
   Textarea,
 } from "ui"
 
+import { Modal } from "@/components/Modal"
+import { MediaUpload } from "@/components/Media"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdminRole } from "@/components/Role"
 
@@ -28,12 +33,17 @@ interface FormValues {
   email?: string
   about?: string
   phoneNumber?: string
-  profilePicture?: string
   role: UserRoles
 }
 
 export default function DashboardEditUser() {
   const [loading, setLoading] = React.useState<boolean>(false)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [loadedMedias, setLoadedMedias] = React.useState([])
+  const [selectedProfilePictureId, setSelectedProfilePictureId] =
+    React.useState<string>("")
+  const [selectedProfilePictureUrl, setSelectedProfilePictureUrl] =
+    React.useState<string>("")
   const [user, setUser] = React.useState<any>({
     id: "",
     username: "",
@@ -41,11 +51,26 @@ export default function DashboardEditUser() {
     email: "",
     about: "",
     phoneNumber: "",
-    profilePicture: "",
+    profilePictureId: "",
     role: "",
   })
 
   const router = useRouter()
+
+  const loadMedias = useQuery({
+    queryKey: ["loadedMedias"],
+    queryFn: async () => {
+      const { data } = await axios.get("/media/page/1")
+      return data
+    },
+    refetchInterval: 10000,
+    onSuccess: (data: any) => {
+      setLoadedMedias(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   React.useEffect(() => {
     loadUser()
@@ -60,16 +85,18 @@ export default function DashboardEditUser() {
   const loadUser = async () => {
     try {
       const { data } = await axios.get(`/user/${router.query.id}`)
+      console.log(data)
       setUser({
         id: data.id,
         username: data.username,
         name: data.name,
         email: data.email,
         phoneNumber: data.phoneNumber,
-        profilePicture: data.profilePicture,
         role: data.role,
         about: data.about,
       })
+      setSelectedProfilePictureId(data.profilePicture.id)
+      setSelectedProfilePictureUrl(data.profilePicture.url)
       setLoading(false)
     } catch (err) {
       console.log(err)
@@ -84,11 +111,15 @@ export default function DashboardEditUser() {
   } = useForm<FormValues>()
 
   const onSubmit = async (values: any) => {
+    setLoading(true)
     try {
-      setLoading(true)
+      const mergedValues = {
+        ...values,
+        profilePictureId: selectedProfilePictureId,
+      }
       const { data } = await axios.put(
         `/user/update-by-admin/${user.id}`,
-        values,
+        mergedValues,
       )
       if (data?.error) {
         toast.error(data?.error)
@@ -177,20 +208,30 @@ export default function DashboardEditUser() {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              {/*TODO: change this to use uploadFile*/}
-              <FormControl invalid={Boolean(errors.profilePicture)}>
-                <FormLabel>Profile Picture</FormLabel>
-                <Input
-                  type="text"
-                  {...register("profilePicture")}
-                  className="max-w-xl"
-                />
-                {errors?.profilePicture && (
-                  <FormErrorMessage>
-                    {errors.profilePicture.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+              {selectedProfilePictureId ? (
+                <>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <NextImage
+                    src={selectedProfilePictureUrl}
+                    fill
+                    alt="Profile Picture"
+                    className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                    onClick={() => setOpenModal(true)}
+                  />
+                </>
+              ) : (
+                <>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <Text
+                    size="sm"
+                    colorScheme="blue"
+                    className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                    onClick={() => setOpenModal(true)}
+                  >
+                    Select Profile Picture
+                  </Text>
+                </>
+              )}
               <FormControl invalid={Boolean(errors.role)}>
                 <FormLabel>
                   Role
@@ -216,6 +257,43 @@ export default function DashboardEditUser() {
                 Save
               </Button>
             </form>
+            <Modal
+              title="Select Profile Picture"
+              content={
+                <>
+                  <MediaUpload />
+                  <div className="grid grid-cols-5 gap-3 my-3">
+                    {loadMedias.isFetching === false &&
+                      loadedMedias.map(
+                        (media: {
+                          id: string
+                          name: string
+                          url: string
+                          alt: string
+                        }) => (
+                          <>
+                            <NextImage
+                              key={media.id}
+                              src={media.url}
+                              alt={media.alt}
+                              fill
+                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedProfilePictureId(media.id)
+                                setSelectedProfilePictureUrl(media.url)
+                                setOpenModal(false)
+                              }}
+                            />
+                          </>
+                        ),
+                      )}
+                  </div>
+                </>
+              }
+              isOpen={openModal}
+              onClose={() => setOpenModal(false)}
+            />
           </div>
         </div>
       </DashboardLayout>

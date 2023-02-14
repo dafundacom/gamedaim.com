@@ -1,12 +1,12 @@
 import * as React from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
-import Resizer from "react-image-file-resizer"
 import { useForm } from "react-hook-form"
 import { FormControl, DropZone, FormErrorMessage, Button } from "ui"
 
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { resizeImage } from "@/utils/resize-image"
 
 interface FormValues {
   file: Blob
@@ -22,26 +22,10 @@ export default function UploadMediaDashboard() {
     reset,
   } = useForm<FormValues>()
 
-  const resizeFile = (file: Blob) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        1280,
-        720,
-        "webp",
-        70,
-        0,
-        (uri) => {
-          resolve(uri)
-        },
-        "file",
-      )
-    })
-
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
-      const image = await resizeFile(values.file[0])
+      const image = await resizeImage(values.file[0])
       const { data } = await axios.post(
         "/media/image",
         { image },

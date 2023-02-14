@@ -7,7 +7,7 @@ import dynamic from "next/dynamic"
 
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
-import { parseAndSplitHTMLString } from "@/utils/splitHtml"
+import { parseAndSplitHTMLString } from "@/utils/split-html"
 
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),

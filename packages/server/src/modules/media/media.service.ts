@@ -56,6 +56,36 @@ export async function findMediaById(mediaId: string) {
   })
 }
 
+export async function findMediaByAuthorId(
+  authorId: string,
+  mediaPage: number,
+  perPage: number,
+) {
+  return await db.media.findMany({
+    where: { authorId: authorId },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip: (mediaPage - 1) * perPage,
+    take: perPage,
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      alt: true,
+      url: true,
+      createdAt: true,
+      updatedAt: true,
+      author: {
+        select: {
+          name: true,
+          username: true,
+        },
+      },
+    },
+  })
+}
+
 export async function updateMedia(mediaId: string, data: UploadMediaInput) {
   return await db.media.update({
     where: { id: mediaId },

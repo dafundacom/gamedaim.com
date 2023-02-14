@@ -5,6 +5,7 @@ const parseHTMLString = (htmlString: string) => {
     .filter((html) => html !== "</p>")
     .filter((html) => html !== "<p></p>")
 }
+
 const splitHTMLArrayToHalf = (htmlList: string[]) => {
   const half = Math.ceil(htmlList.length / 2)
   const firstHalfMarkupList = htmlList.slice(0, half)

@@ -32,8 +32,8 @@ export function getTopics(topicPage: number, perPage: number) {
       updatedAt: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
-          alt: true,
         },
       },
       author: {
@@ -60,8 +60,8 @@ export async function findTopicById(topicId: string) {
       updatedAt: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
-          alt: true,
         },
       },
       author: {
@@ -88,8 +88,8 @@ export async function findTopicBySlug(topicSlug: string) {
       updatedAt: true,
       featuredImage: {
         select: {
+          id: true,
           url: true,
-          alt: true,
         },
       },
       author: {

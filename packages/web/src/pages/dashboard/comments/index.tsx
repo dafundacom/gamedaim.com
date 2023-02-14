@@ -114,7 +114,7 @@ export default function CommentsDashboard() {
                               </Td>
                               <Td>{dayjs(comment.createdAt).fromNow()}</Td>
                               <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
-                              <Td align="right">
+                              <Td align="center">
                                 <ActionDashboard
                                   onDelete={() =>
                                     mutationDelete.mutate(comment)
