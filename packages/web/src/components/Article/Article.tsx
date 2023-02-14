@@ -20,7 +20,10 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
-import { PopupAd } from "../Ads/PopupAd"
+const PopupAd = dynamic(
+  () => import("../Ads/PopupAd").then((mod) => mod.PopupAd),
+  { ssr: false },
+)
 
 interface PostProps {
   post: {
