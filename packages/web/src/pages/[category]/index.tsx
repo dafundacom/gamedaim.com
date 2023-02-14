@@ -52,7 +52,7 @@ export default function Category(props: CategoryProps) {
     query: { category },
   } = router
   const { getCategoryBySlug }: any = useWpGetCategoryBySlug(category as string)
-  const { isFetching, isError } = getCategoryBySlug
+  const { isError, isSuccess } = getCategoryBySlug
   const { getPostsByCategorySlug }: any = useWpGetPostsByCategorySlug(
     category as string,
   )
@@ -64,7 +64,7 @@ export default function Category(props: CategoryProps) {
     <>
       <Head>{seo?.success === true && parse(seo?.head)}</Head>
       <HomeLayout>
-        {isFetching === false && (
+        {isSuccess === true && (
           <section className="flex w-full flex-col">
             <div className="flex py-10 mb-10 flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] relative">
               <div className="absolute top-1">
@@ -113,7 +113,7 @@ export default function Category(props: CategoryProps) {
             </div>
             <div className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:mx-auto lg:px-4">
               <div className="w-full px-4 flex flex-col lg:mr-4">
-                {getPostsByCategorySlug?.isFetching === false && (
+                {getPostsByCategorySlug?.isSuccess === true && (
                   <InfiniteScroll
                     pageType="category"
                     posts={getPostsByCategorySlug?.data?.posts}

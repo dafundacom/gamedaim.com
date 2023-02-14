@@ -48,12 +48,12 @@ interface PostProps {
   }
 
   posts: any
-  index?: number
+  isMain?: boolean
 }
 
 export const Article = React.forwardRef<HTMLDivElement, PostProps>(
   (props, ref) => {
-    const { post, posts, index } = props
+    const { post, posts, isMain } = props
     const { content, title, author, categories, featuredImage, date, tags } =
       post
     const { primary } = wpPrimaryCategorySlug(categories)
@@ -100,7 +100,8 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           {loadingAd === true &&
             ad.length > 0 &&
             adPopup.length > 0 &&
-            openModal === true && (
+            openModal === true &&
+            isMain && (
               <PopupAd
                 content={<>{parse(adPopup[0]?.content)}</>}
                 isOpen={openModal}
@@ -196,7 +197,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             })}
           </section>
           <section className="mb-20">
-            {index === 0 && (
+            {isMain === true && (
               <>
                 <div className="mb-2">
                   <Heading

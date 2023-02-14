@@ -116,7 +116,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           className="flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto"
         >
           <section className="w-full lg:w-8/12">
-            <Article post={post} posts={posts} />
+            <Article isMain={true} post={post} posts={posts} />
             {articles.map(
               (
                 postData: {
@@ -148,7 +148,6 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
                     key={i}
                     post={postData}
                     posts={posts}
-                    index={i}
                     ref={articleRef}
                   />
                 )

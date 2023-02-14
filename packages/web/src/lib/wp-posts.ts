@@ -43,15 +43,20 @@ export async function wpGetAllPosts() {
 }
 
 export const useWpGetAllPosts = (key: any = ["posts"]) => {
-  const { data, isError, isFetching } = useQuery(key, () => wpGetAllPosts(), {
-    staleTime: 1,
-  })
+  const { data, isError, isFetching, isSuccess } = useQuery(
+    key,
+    () => wpGetAllPosts(),
+    {
+      staleTime: 1,
+    },
+  )
 
   return {
     getAllPostsData: {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
@@ -182,7 +187,7 @@ export async function wpGetPostBySlug(slug: string) {
   }
 }
 export const useWpGetPostBySlug = (slug: string) => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["post", slug],
     () => wpGetPostBySlug(slug),
     {
@@ -196,6 +201,7 @@ export const useWpGetPostBySlug = (slug: string) => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
@@ -231,7 +237,7 @@ export async function wpGetPostsByAuthorSlug(
   }
 }
 export const useWpGetPostsByAuthorSlug = (slug: string, after = "") => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["authorPosts", slug],
     () => wpGetPostsByAuthorSlug(slug, after),
     {
@@ -245,6 +251,7 @@ export const useWpGetPostsByAuthorSlug = (slug: string, after = "") => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
@@ -275,7 +282,7 @@ export async function wpGetPostsByCategorySlug(categoryId: any, after = "") {
   }
 }
 export const useWpGetPostsByCategorySlug = (slug: string, after = "") => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["categoryPosts", slug],
     () => wpGetPostsByCategorySlug(slug, after),
     {
@@ -289,6 +296,7 @@ export const useWpGetPostsByCategorySlug = (slug: string, after = "") => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
@@ -316,7 +324,7 @@ export async function wpGetPostsByTagSlug(id: any, after = "") {
   }
 }
 export const useWpGetPostsByTagSlug = (slug: string, after = "") => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["tagPosts", slug],
     () => wpGetPostsByTagSlug(slug, after),
     {
@@ -330,6 +338,7 @@ export const useWpGetPostsByTagSlug = (slug: string, after = "") => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }

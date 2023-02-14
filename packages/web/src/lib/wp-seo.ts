@@ -14,7 +14,7 @@ export async function getSeoDatas(url: string) {
   return res.data
 }
 export const useGetSeoData = (url: any) => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["seo", url],
     () => getSeoDatas(url),
     {
@@ -27,6 +27,7 @@ export const useGetSeoData = (url: any) => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }

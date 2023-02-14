@@ -43,7 +43,7 @@ export default function Author(props: AuthorProps) {
       <HomeLayout>
         <section className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:px-4">
           <div className="w-full px-4 flex flex-col lg:mr-4">
-            {getPostsByAuthorSlug?.isFetching == false && (
+            {getPostsByAuthorSlug?.isSuccess == true && (
               <InfiniteScroll
                 pageType="author"
                 posts={getPostsByAuthorSlug?.data?.posts}

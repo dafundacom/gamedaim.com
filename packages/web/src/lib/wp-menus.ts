@@ -22,7 +22,7 @@ export async function wpGetMenusByName(id: string) {
 }
 
 export const useGetMenusByName = (id: any) => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["menus"],
     () => wpGetMenusByName(id),
     {
@@ -35,6 +35,7 @@ export const useGetMenusByName = (id: any) => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
