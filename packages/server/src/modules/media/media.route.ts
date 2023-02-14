@@ -3,6 +3,7 @@ import { FastifyInstance } from "fastify"
 import {
   getMediasHandler,
   getMediaByIdHandler,
+  getMediaByAuthorIdHandler,
   uploadMediaHandler,
   updateMediaHandler,
   deleteMediaHandler,
@@ -43,6 +44,18 @@ async function mediaRoutes(server: FastifyInstance) {
       },
     },
     getMediaByIdHandler,
+  )
+
+  server.get(
+    "/author/:authorId/:mediaPage",
+    {
+      schema: {
+        response: {
+          200: $ref("mediasResponseSchema"),
+        },
+      },
+    },
+    getMediaByAuthorIdHandler,
   )
 
   server.put(

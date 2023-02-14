@@ -5,6 +5,7 @@ import {
   updateTopicHandler,
   getTopicsHandler,
   getTopicByIdHandler,
+  getTopicBySlugHandler,
   getTotalTopicsHandler,
 } from "./topic.controller"
 
@@ -48,6 +49,18 @@ async function topicRoutes(server: FastifyInstance) {
       },
     },
     getTopicByIdHandler,
+  )
+
+  server.get(
+    "/slug/:topicSlug",
+    {
+      schema: {
+        response: {
+          200: $ref("topicsResponseSchema"),
+        },
+      },
+    },
+    getTopicBySlugHandler,
   )
 
   server.put(

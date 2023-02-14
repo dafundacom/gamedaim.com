@@ -1,6 +1,8 @@
 import * as React from "react"
+import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -10,9 +12,12 @@ import {
   FormLabel,
   Input,
   RequiredIndicator,
+  Text,
   Textarea,
 } from "ui"
 
+import { Modal } from "@/components/Modal"
+import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
@@ -20,18 +25,43 @@ interface FormValues {
   title: string
   slug: string
   description?: string
+  meta_title?: string
+  meta_description?: string
 }
 
 export default function EditTopicDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [loadedMedias, setLoadedMedias] = React.useState([])
+  const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
+    React.useState<string>("")
+  const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
+    React.useState<string>("")
   const [topic, setTopic] = React.useState<any>({
     id: "",
     title: "",
     slug: "",
     description: "",
+    meta_title: "",
+    meta_description: "",
   })
 
   const router = useRouter()
+
+  const loadMedias = useQuery({
+    queryKey: ["loadedMedias"],
+    queryFn: async () => {
+      const { data } = await axios.get("/media/page/1")
+      return data
+    },
+    refetchInterval: 10000,
+    onSuccess: (data: any) => {
+      setLoadedMedias(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   React.useEffect(() => {
     loadTopic()
@@ -46,12 +76,16 @@ export default function EditTopicDashboard() {
   const loadTopic = async () => {
     try {
       const { data } = await axios.get(`/topic/${router.query.id}`)
+      console.log(data)
       setTopic({
         id: data.id,
         title: data.title,
+        meta_title: data.meta_title,
         slug: data.slug,
-        description: data.description,
+        meta_description: data.meta_description,
       })
+      setSelectedFeaturedImageId(data.featuredImage.id)
+      setSelectedFeaturedImageUrl(data.featuredImage.url)
       setLoading(false)
     } catch (err) {
       console.log(err)
@@ -66,9 +100,13 @@ export default function EditTopicDashboard() {
   } = useForm<FormValues>()
 
   const onSubmit = async (values: any) => {
+    setLoading(true)
     try {
-      setLoading(true)
-      const { data } = await axios.put(`/topic/${topic.id}`, values)
+      const mergedValues = {
+        ...values,
+        featuredImageId: selectedFeaturedImageId,
+      }
+      const { data } = await axios.put(`/topic/${topic.id}`, mergedValues)
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)
@@ -124,10 +162,66 @@ export default function EditTopicDashboard() {
               </FormControl>
               <FormControl invalid={Boolean(errors.description)}>
                 <FormLabel>Description</FormLabel>
-                <Textarea {...register("description")} className="max-w-xl" />
+                <Textarea
+                  {...register("description")}
+                  className="max-w-xl"
+                  placeholder="Enter Description (Optional)"
+                />
                 {errors?.description && (
                   <FormErrorMessage>
                     {errors.description.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              {selectedFeaturedImageId ? (
+                <>
+                  <FormLabel>Featured Image</FormLabel>
+                  <NextImage
+                    src={selectedFeaturedImageUrl}
+                    fill
+                    alt="Featured Image"
+                    className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                    onClick={() => setOpenModal(true)}
+                  />
+                </>
+              ) : (
+                <>
+                  <FormLabel>Featured Image</FormLabel>
+                  <Text
+                    size="sm"
+                    colorScheme="blue"
+                    className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                    onClick={() => setOpenModal(true)}
+                  >
+                    Select Featured Image
+                  </Text>
+                </>
+              )}
+              <FormControl invalid={Boolean(errors.meta_title)}>
+                <FormLabel>Meta Title</FormLabel>
+                <Input
+                  type="text"
+                  {...register("meta_title")}
+                  className="max-w-xl"
+                  placeholder="Enter Meta Title (Optional)"
+                />
+                {errors?.meta_title && (
+                  <FormErrorMessage>
+                    {errors.meta_title.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              <FormControl invalid={Boolean(errors.meta_description)}>
+                <FormLabel>Meta Description</FormLabel>
+                <Textarea
+                  type="text"
+                  {...register("meta_description")}
+                  className="max-w-xl"
+                  placeholder="Enter Meta Description (Optional)"
+                />
+                {errors?.meta_description && (
+                  <FormErrorMessage>
+                    {errors.meta_description.message}
                   </FormErrorMessage>
                 )}
               </FormControl>
@@ -135,6 +229,43 @@ export default function EditTopicDashboard() {
                 Submit
               </Button>
             </form>
+            <Modal
+              title="Select Featured Image"
+              content={
+                <>
+                  <MediaUpload />
+                  <div className="grid grid-cols-5 gap-3 my-3">
+                    {loadMedias.isFetching === false &&
+                      loadedMedias.map(
+                        (media: {
+                          id: string
+                          name: string
+                          url: string
+                          alt: string
+                        }) => (
+                          <>
+                            <NextImage
+                              key={media.id}
+                              src={media.url}
+                              alt={media.alt}
+                              fill
+                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedFeaturedImageId(media.id)
+                                setSelectedFeaturedImageUrl(media.url)
+                                setOpenModal(false)
+                              }}
+                            />
+                          </>
+                        ),
+                      )}
+                  </div>
+                </>
+              }
+              isOpen={openModal}
+              onClose={() => setOpenModal(false)}
+            />
           </div>
         </div>
       </DashboardLayout>

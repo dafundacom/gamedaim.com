@@ -7,6 +7,7 @@ import env from "../../env"
 import { uniqueSlug } from "../../utils/slug"
 import {
   findMediaById,
+  findMediaByAuthorId,
   uploadMedia,
   updateMedia,
   deleteMediaById,
@@ -101,6 +102,26 @@ export async function getMediaByIdHandler(
   try {
     const { mediaId } = request.params
     const media = await findMediaById(mediaId)
+    return reply.code(201).send(media)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getMediaByAuthorIdHandler(
+  request: FastifyRequest<{
+    Params: { authorId: string; mediaPage: number }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { authorId } = request.params
+
+    const perPage = 10
+    const mediaPage = Number(request.params.mediaPage || 1)
+
+    const media = await findMediaByAuthorId(authorId, mediaPage, perPage)
     return reply.code(201).send(media)
   } catch (e) {
     console.log(e)

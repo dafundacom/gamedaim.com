@@ -9,6 +9,7 @@ import {
   deleteArticleById,
   updateArticle,
   findArticleById,
+  findArticleByAuthorId,
   findArticleBySlug,
   getTotalArticles,
 } from "./article.service"
@@ -152,6 +153,42 @@ export async function getArticleByIdHandler(
   try {
     const { articleId } = request.params
     const article = await findArticleById(articleId)
+    return reply.code(201).send(article)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getArticleBySlugHandler(
+  request: FastifyRequest<{
+    Params: { articleSlug: string }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { articleSlug } = request.params
+    const article = await findArticleBySlug(articleSlug)
+    return reply.code(201).send(article)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getArticleByAuthorIdHandler(
+  request: FastifyRequest<{
+    Params: { authorId: string; articlePage: number }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { authorId } = request.params
+
+    const perPage = 10
+    const articlePage = Number(request.params.articlePage || 1)
+
+    const article = await findArticleByAuthorId(authorId, articlePage, perPage)
     return reply.code(201).send(article)
   } catch (e) {
     console.log(e)

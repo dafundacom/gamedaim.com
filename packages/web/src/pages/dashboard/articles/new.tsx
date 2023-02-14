@@ -3,6 +3,7 @@ import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
@@ -21,6 +22,7 @@ import {
 } from "ui"
 
 import { Modal } from "@/components/Modal"
+import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 
@@ -28,6 +30,8 @@ interface FormValues {
   title: string
   content: string
   excerpt?: string
+  meta_title?: string
+  meta_description?: string
 }
 
 export default function CreateArticlesDashboard() {
@@ -44,29 +48,34 @@ export default function CreateArticlesDashboard() {
 
   const { isOpen, onToggle } = useDisclosure()
 
-  const loadTopics = async () => {
-    try {
-      const { data } = await axios.get("/topic/page/1")
-      setLoadedTopics(data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const loadMedias = async () => {
-    try {
+  const loadMedias = useQuery({
+    queryKey: ["loadedMedias"],
+    queryFn: async () => {
       const { data } = await axios.get("/media/page/1")
+      return data
+    },
+    refetchInterval: 10000,
+    onSuccess: (data: any) => {
       setLoadedMedias(data)
-    } catch (err: any) {
-      toast.error(err.response.data.message)
-    }
-  }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
-  React.useEffect(() => {
-    loadTopics()
-    loadMedias()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const loadTopics = useQuery({
+    queryKey: ["loadedTopics"],
+    queryFn: async () => {
+      const { data } = await axios.get("/topic/page/1")
+      return data
+    },
+    onSuccess: (data: any) => {
+      setLoadedTopics(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
   const editor = useEditor({
     extensions: [EditorKitExtension],
@@ -148,20 +157,25 @@ export default function CreateArticlesDashboard() {
           sidebar={
             <div className="flex flex-col min-w-[300px] space-y-4">
               <div className="flex flex-col px-4 my-2">
-                <Heading as="h3">Topics</Heading>
-                {loadedTopics.map((topic: { title: string; id: string }) => (
-                  <Checkbox
-                    key={topic.title}
-                    value={topic.id}
-                    onClick={() => assignTopic(topic.id as string)}
-                  >
-                    {topic.title}
-                  </Checkbox>
-                ))}
+                <Heading as="h3" size="md">
+                  Topics
+                </Heading>
+                {loadTopics.isFetching === false &&
+                  loadedTopics.map((topic: { title: string; id: string }) => (
+                    <Checkbox
+                      key={topic.title}
+                      value={topic.id}
+                      onClick={() => assignTopic(topic.id as string)}
+                    >
+                      {topic.title}
+                    </Checkbox>
+                  ))}
               </div>
               {selectedFeaturedImageId ? (
                 <div className="flex flex-col px-4 my-2">
-                  <Heading as="h3">Featured Image</Heading>
+                  <Heading as="h3" size="md">
+                    Featured Image
+                  </Heading>
                   <NextImage
                     src={selectedFeaturedImageUrl}
                     fill
@@ -172,7 +186,9 @@ export default function CreateArticlesDashboard() {
                 </div>
               ) : (
                 <div className="flex flex-col px-4 my-2">
-                  <Heading as="h3">Featured Image</Heading>
+                  <Heading as="h3" size="md">
+                    Featured Image
+                  </Heading>
                   <Text
                     size="sm"
                     colorScheme="blue"
@@ -184,12 +200,49 @@ export default function CreateArticlesDashboard() {
                 </div>
               )}
               <div className="flex flex-col px-4 my-2">
-                <Heading as="h3">Excerpt</Heading>
+                <Heading as="h3" size="md">
+                  Excerpt
+                </Heading>
                 <FormControl invalid={Boolean(errors.excerpt)}>
-                  <Textarea {...register("excerpt")} placeholder="optional" />
+                  <Textarea
+                    {...register("excerpt")}
+                    placeholder="Enter Meta Title (Optional)"
+                  />
                   {errors?.excerpt && (
                     <FormErrorMessage>
                       {errors.excerpt.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </div>
+              <div className="flex flex-col px-4 my-2">
+                <Heading as="h3" size="md">
+                  Meta Title
+                </Heading>
+                <FormControl invalid={Boolean(errors.meta_title)}>
+                  <Input
+                    {...register("meta_title")}
+                    placeholder="Enter Meta Title (Optional)"
+                  />
+                  {errors?.meta_title && (
+                    <FormErrorMessage>
+                      {errors.meta_title.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </div>
+              <div className="flex flex-col px-4 my-2">
+                <Heading as="h3" size="md">
+                  Meta Description
+                </Heading>
+                <FormControl invalid={Boolean(errors.meta_description)}>
+                  <Textarea
+                    {...register("meta_description")}
+                    placeholder="Enter Meta Description (Optional)"
+                  />
+                  {errors?.meta_description && (
+                    <FormErrorMessage>
+                      {errors.meta_description.message}
                     </FormErrorMessage>
                   )}
                 </FormControl>
@@ -229,31 +282,33 @@ export default function CreateArticlesDashboard() {
         title="Select Featured Image"
         content={
           <>
+            <MediaUpload />
             <div className="grid grid-cols-5 gap-3 my-3">
-              {loadedMedias.map(
-                (media: {
-                  id: string
-                  name: string
-                  url: string
-                  alt: string
-                }) => (
-                  <>
-                    <NextImage
-                      key={media.id}
-                      src={media.url}
-                      alt={media.alt}
-                      fill
-                      className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setSelectedFeaturedImageId(media.id)
-                        setSelectedFeaturedImageUrl(media.url)
-                        setOpenModal(false)
-                      }}
-                    />
-                  </>
-                ),
-              )}
+              {loadMedias.isFetching === false &&
+                loadedMedias.map(
+                  (media: {
+                    id: string
+                    name: string
+                    url: string
+                    alt: string
+                  }) => (
+                    <>
+                      <NextImage
+                        key={media.id}
+                        src={media.url}
+                        alt={media.id}
+                        fill
+                        className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedFeaturedImageId(media.id)
+                          setSelectedFeaturedImageUrl(media.url)
+                          setOpenModal(false)
+                        }}
+                      />
+                    </>
+                  ),
+                )}
             </div>
           </>
         }

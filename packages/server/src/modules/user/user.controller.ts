@@ -24,6 +24,7 @@ export async function registerUserHandler(
       email,
       username,
       name,
+      password,
       meta_title,
       meta_description,
       phoneNumber,
@@ -31,14 +32,14 @@ export async function registerUserHandler(
       about,
     } = request.body
 
-    const emailExist = await findUserByEmail(body.email)
+    const emailExist = await findUserByEmail(email)
     if (emailExist) {
       return reply.code(401).send({
         message: "Email is taken",
       })
     }
 
-    const usernameExist = await findUserByUsername(body.username)
+    const usernameExist = await findUserByUsername(username)
     if (usernameExist) {
       return reply.code(401).send({
         message: "Username is already exist",
@@ -54,6 +55,7 @@ export async function registerUserHandler(
       email,
       username,
       name,
+      password,
       meta_title: generatedMetaTitle,
       meta_description: generatedMetaDescription,
       phoneNumber,
@@ -194,14 +196,14 @@ export async function updateUserByAdminHandler(
 
     // TODO: check username and email if already exist
 
-    // const emailExist = await findUserByEmail(body.email)
+    // const emailExist = await findUserByEmail(email)
     // if (emailExist) {
     //   return reply.code(401).send({
     //     message: "Email is taken",
     //   })
     // }
     //
-    // const usernameExist = await findUserByUsername(body.username)
+    // const usernameExist = await findUserByUsername(username)
     // if (usernameExist) {
     //   return reply.code(401).send({
     //     message: "Username is already exist",

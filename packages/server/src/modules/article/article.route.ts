@@ -6,6 +6,8 @@ import {
   deleteArticleHandler,
   updateArticleHandler,
   getArticleByIdHandler,
+  getArticleBySlugHandler,
+  getArticleByAuthorIdHandler,
   getTotalArticlesHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
@@ -48,6 +50,30 @@ async function articleRoutes(server: FastifyInstance) {
       },
     },
     getArticleByIdHandler,
+  )
+
+  server.get(
+    "/slug/:articleSlug",
+    {
+      schema: {
+        response: {
+          200: $ref("articlesResponseSchema"),
+        },
+      },
+    },
+    getArticleBySlugHandler,
+  )
+
+  server.get(
+    "/author/:authorId/:articlePage",
+    {
+      schema: {
+        response: {
+          200: $ref("articlesResponseSchema"),
+        },
+      },
+    },
+    getArticleByAuthorIdHandler,
   )
 
   server.put(

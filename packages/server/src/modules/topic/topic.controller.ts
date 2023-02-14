@@ -80,14 +80,6 @@ export async function updateTopicHandler(
       return reply.code(403).send({ message: "Unauthorized" })
     }
 
-    const slugExist = await findTopicBySlug(slug)
-
-    if (slugExist) {
-      return reply.code(401).send({
-        message: "Slug is already exist",
-      })
-    }
-
     const topic = await updateTopic(topicId, {
       title,
       description,
@@ -112,6 +104,22 @@ export async function getTopicByIdHandler(
   try {
     const { topicId } = request.params
     const topic = await findTopicById(topicId)
+    return reply.code(201).send(topic)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTopicBySlugHandler(
+  request: FastifyRequest<{
+    Params: { topicSlug: string }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { topicSlug } = request.params
+    const topic = await findTopicBySlug(topicSlug)
     return reply.code(201).send(topic)
   } catch (e) {
     console.log(e)

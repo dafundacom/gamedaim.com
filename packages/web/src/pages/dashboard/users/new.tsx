@@ -1,6 +1,8 @@
 import * as React from "react"
+import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 import {
@@ -10,9 +12,12 @@ import {
   FormLabel,
   Input,
   RequiredIndicator,
+  Text,
   Textarea,
 } from "ui"
 
+import { Modal } from "@/components/Modal"
+import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
@@ -22,15 +27,22 @@ interface FormValues {
   email: string
   password: string
   phoneNumber?: string
-  profilePicture?: string
   about?: string
   role: string
+  meta_title?: string
+  meta_description?: string
 }
 
 export default function CreateUsersDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [loadedMedias, setLoadedMedias] = React.useState([])
+  const [selectedprofilePictureId, setSelectedprofilePictureId] =
+    React.useState<string>("")
+  const [selectedprofilePictureUrl, setSelectedprofilePictureUrl] =
+    React.useState<string>("")
 
   const {
     register,
@@ -39,10 +51,30 @@ export default function CreateUsersDashboard() {
     reset,
   } = useForm<FormValues>()
 
+  const loadMedias = useQuery({
+    queryKey: ["loadedMedias"],
+    queryFn: async () => {
+      const { data } = await axios.get("/media/page/1")
+      return data
+    },
+    refetchInterval: 10000,
+    onSuccess: (data: any) => {
+      setLoadedMedias(data)
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
+
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
-      const { data } = await axios.post("/user/signup", values)
+      const mergedValues = {
+        ...values,
+        profilePictureId: selectedprofilePictureId,
+      }
+      console.log(mergedValues)
+      const { data } = await axios.post("/user/signup", mergedValues)
       if (data?.error) {
         toast.error(data.error)
       } else {
@@ -194,21 +226,31 @@ export default function CreateUsersDashboard() {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              {/* TODO: change to file upload*/}
-              <FormControl invalid={Boolean(errors.profilePicture)}>
-                <FormLabel>Profile Picture</FormLabel>
-                <Input
-                  type="text"
-                  {...register("profilePicture")}
-                  placeholder="Optional"
-                  className="max-w-xl"
-                />
-                {errors?.profilePicture && (
-                  <FormErrorMessage>
-                    {errors.profilePicture.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+
+              {selectedprofilePictureId ? (
+                <>
+                  <FormLabel>Featured Image</FormLabel>
+                  <NextImage
+                    src={selectedprofilePictureUrl}
+                    fill
+                    alt="Featured Image"
+                    className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                    onClick={() => setOpenModal(true)}
+                  />
+                </>
+              ) : (
+                <>
+                  <FormLabel>Featured Image</FormLabel>
+                  <Text
+                    size="sm"
+                    colorScheme="blue"
+                    className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                    onClick={() => setOpenModal(true)}
+                  >
+                    Select Featured Image
+                  </Text>
+                </>
+              )}
               <FormControl invalid={Boolean(errors.role)}>
                 <FormLabel>
                   Role
@@ -238,6 +280,43 @@ export default function CreateUsersDashboard() {
                 Submit
               </Button>
             </form>
+            <Modal
+              title="Select Featured Image"
+              content={
+                <>
+                  <MediaUpload />
+                  <div className="grid grid-cols-5 gap-3 my-3">
+                    {loadMedias.isFetching === false &&
+                      loadedMedias.map(
+                        (media: {
+                          id: string
+                          name: string
+                          url: string
+                          alt: string
+                        }) => (
+                          <>
+                            <NextImage
+                              key={media.id}
+                              src={media.url}
+                              alt={media.alt}
+                              fill
+                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setSelectedprofilePictureId(media.id)
+                                setSelectedprofilePictureUrl(media.url)
+                                setOpenModal(false)
+                              }}
+                            />
+                          </>
+                        ),
+                      )}
+                  </div>
+                </>
+              }
+              isOpen={openModal}
+              onClose={() => setOpenModal(false)}
+            />
           </div>
         </div>
       </DashboardLayout>
