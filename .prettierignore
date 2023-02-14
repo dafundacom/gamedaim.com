@@ -12,11 +12,10 @@ coverage
 # next.js
 .next/
 out/
-build
 
 # production
-build
-dist
+build/
+dist/
 src/style/output.css
 
 # misc
