@@ -37,46 +37,51 @@ model User {
   profilePicture   Media?    @relation(name: "UserProfilePictures", fields: [profilePictureId], references: [id])
   about            String?
   password         String
+  meta_title       String?
+  meta_description String?
   role             UserRole  @default(USER)
   articles         Article[] @relation("ArticleAuthors")
   topics           Topic[]   @relation("TopicAuthors")
   medias           Media[]   @relation("MediaAuthors")
   comments         Comment[] @relation("CommentAuthors")
-  wpComments       WpComment[]   @relation("WpCommentAuthors")
-  ads              Ad[]   @relation("AdAuthors")
+  ads              Ad[]      @relation("AdAuthors")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
 
 model Article {
-  id              String        @id @unique @default(uuid())
-  title           String
-  content         String
-  excerpt         String        
-  slug            String        @unique
-  author          User          @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
-  authorId        String
-  topics          Topic[]       @relation(name: "ArticleTopics")
-  comments        Comment[]     @relation(name: "ArticleComments")
-  featuredImageId String
-  featuredImage   Media         @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
-  status          ArticleStatus @default(PUBLISHED)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id               String        @id @unique @default(uuid())
+  title            String
+  content          String
+  excerpt          String
+  slug             String        @unique
+  meta_title       String?
+  meta_description String?
+  author           User          @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
+  authorId         String
+  topics           Topic[]       @relation(name: "ArticleTopics")
+  comments         Comment[]     @relation(name: "ArticleComments")
+  featuredImageId  String
+  featuredImage    Media         @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
+  status           ArticleStatus @default(PUBLISHED)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 }
 
 model Topic {
-  id              String    @id @unique @default(uuid())
-  title           String
-  description     String?
-  slug            String    @unique
-  featuredImageId String?
-  featuredImage   Media?    @relation(name: "TopicFeaturedImages", fields: [featuredImageId], references: [id])
-  author          User      @relation(name: "TopicAuthors", fields: [authorId], references: [id])
-  authorId        String
-  articles        Article[] @relation(name: "ArticleTopics")
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id               String    @id @unique @default(uuid())
+  title            String
+  description      String?
+  slug             String    @unique
+  meta_title       String?
+  meta_description String?
+  featuredImageId  String?
+  featuredImage    Media?    @relation(name: "TopicFeaturedImages", fields: [featuredImageId], references: [id])
+  author           User      @relation(name: "TopicAuthors", fields: [authorId], references: [id])
+  authorId         String
+  articles         Article[] @relation(name: "ArticleTopics")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model Media {
@@ -96,33 +101,23 @@ model Media {
 }
 
 model Comment {
-  id          String @id @unique @default(uuid())
-  content     String
-  articles    Article @relation(name: "ArticleComments", fields: [articleId], references: [id])
-  articleId   String 
-  author      User      @relation(name: "CommentAuthors", fields: [authorId], references: [id])
-  authorId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-model WpComment {
-  id          String @id @unique @default(uuid())
-  content     String
-  wpPostId    String @unique
-  author      User      @relation(name: "WpCommentAuthors", fields: [authorId], references: [id])
-  authorId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @unique @default(uuid())
+  content   String
+  articles  Article  @relation(name: "ArticleComments", fields: [articleId], references: [id])
+  articleId String
+  author    User     @relation(name: "CommentAuthors", fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Ad {
-  id String @id @unique @default(uuid())
-  title String @unique
-  content String
-  position AdPosition @default(ABOVE_POST)
-  author      User      @relation(name: "AdAuthors", fields: [authorId], references: [id])
-  authorId    String
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  id        String     @id @unique @default(uuid())
+  title     String     @unique
+  content   String
+  position  AdPosition @default(ABOVE_POST)
+  author    User       @relation(name: "AdAuthors", fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
