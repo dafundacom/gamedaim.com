@@ -8,7 +8,6 @@ import {
   getArticleByIdHandler,
   getArticleBySlugHandler,
   getArticleByAuthorIdHandler,
-  getArticleByTopicIdHandler,
   getTotalArticlesHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
@@ -75,18 +74,6 @@ async function articleRoutes(server: FastifyInstance) {
       },
     },
     getArticleByAuthorIdHandler,
-  )
-
-  server.get(
-    "/topic/:topicId/:articlePage",
-    {
-      schema: {
-        response: {
-          200: $ref("articlesResponseSchema"),
-        },
-      },
-    },
-    getArticleByTopicIdHandler,
   )
 
   server.put(
