@@ -8,17 +8,18 @@ interface PostCardSlideProps {
   slug: string
   src: string
   alt: string
+  isWP?: boolean
 }
 
 export const PostCardSide = React.forwardRef<
   HTMLDivElement,
   PostCardSlideProps
 >((props, ref) => {
-  const { src, alt, slug, title, ...rest } = props
+  const { src, alt, slug, isWP = true, title, ...rest } = props
   const [image, setImage] = React.useState("/image/imgloader.gif") as any
 
   return (
-    <NextLink href={slug}>
+    <NextLink href={isWP ? slug : `/article/${slug}`}>
       <article
         className="flex w-full flex-col rounded-lg drop-shadow-md mb-4 border-separate"
         ref={ref}

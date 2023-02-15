@@ -2,54 +2,54 @@ import env from "@/env"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-export const getArticlesCount = async () => {
-  let articlesCountData
+export const getTopicsCount = async () => {
+  let topicsCountData
   try {
-    const { data } = await axios.get("/article/count")
-    articlesCountData = data
+    const { data } = await axios.get("/topic/count")
+    topicsCountData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
     throw e
   }
 
-  return { articlesCount: articlesCountData }
+  return { topicsCount: topicsCountData }
 }
 
-export const getArticles = async (page = 1) => {
-  let articlesData
+export const getTopics = async (page = 1) => {
+  let topicsData
   try {
-    const { data } = await axios.get(`/article/page/${page}`)
-    articlesData = data
+    const { data } = await axios.get(`/topic/page/${page}`)
+    topicsData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
     throw e
   }
 
-  return { articles: articlesData }
+  return { topics: topicsData }
 }
-export const getArticleBySlug = async (slug: string) => {
+export const getTopicBySlug = async (slug: string, page = 1) => {
   let postData
   try {
-    const { data } = await axios.get(`/article/slug/${slug}`)
+    const { data } = await axios.get(`/topic/slug/${slug}/${page}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
     throw e
   }
 
-  return { article: postData }
+  return { topic: postData }
 }
-export const useGetArticleBySlug = (slug: string) => {
+export const useGetTopicBySlug = (slug: string) => {
   const { data, isError, isFetching, isSuccess } = useQuery(
-    ["article", slug],
-    () => getArticleBySlug(slug),
+    ["topic", slug],
+    () => getTopicBySlug(slug),
     {
       staleTime: env.STALE_FIVE_MINUTES,
     },
   )
 
   return {
-    getArticleBySlugData: {
+    getTopicBySlugData: {
       data: data,
       isError,
       isFetching,
@@ -57,10 +57,10 @@ export const useGetArticleBySlug = (slug: string) => {
     },
   } as const
 }
-export const useGetArticles = (page = 1) => {
+export const useGetTopics = (page: number) => {
   const { data, isError, isFetching, isSuccess } = useQuery(
-    ["articles", page],
-    () => getArticles(page),
+    ["topics", page],
+    () => getTopics(page),
     {
       staleTime: env.STALE_FIVE_MINUTES,
       keepPreviousData: true,
@@ -68,7 +68,7 @@ export const useGetArticles = (page = 1) => {
   )
 
   return {
-    getArticlesData: {
+    getTopicsData: {
       data: data,
       isError,
       isFetching,
@@ -76,17 +76,17 @@ export const useGetArticles = (page = 1) => {
     },
   } as const
 }
-export const useGetArticlesCount = () => {
+export const useGetTopicsCount = () => {
   const { data, isError, isFetching, isSuccess } = useQuery(
-    ["articlesCount"],
-    () => getArticlesCount(),
+    ["topicsCount"],
+    () => getTopicsCount(),
     {
       staleTime: env.STALE_FIVE_MINUTES,
     },
   )
 
   return {
-    getArticlesCountData: {
+    getTopicsCountData: {
       data: data,
       isError,
       isFetching,

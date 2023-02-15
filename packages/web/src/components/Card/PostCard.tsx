@@ -17,6 +17,7 @@ interface PostCardProps {
   authorUri: string
   authorAvatarUrl: string
   date: string
+  isWP?: boolean
 }
 
 export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
@@ -31,6 +32,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
       authorUri,
       authorAvatarUrl,
       date,
+      isWP = true,
       ...rest
     } = props
     const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl) as any
@@ -44,7 +46,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
       >
         <div className="relative w-full justify-between lg:!justify-start flex flex-row">
           <NextLink
-            href={slug}
+            href={isWP ? slug : `/article/${slug}`}
             shallow={true}
             className="order-2 md:order-1 md:mr-[30px]"
           >
@@ -61,7 +63,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
             />
           </NextLink>
           <div className="order-1 md:order-2 mr-3 md:mr-[unset] flex flex-col">
-            <NextLink href={slug}>
+            <NextLink href={isWP ? slug : `/article/${slug}`}>
               <Heading
                 as="h3"
                 className="!text-xl !font-bold hover:text-primary-400"

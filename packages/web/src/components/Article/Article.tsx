@@ -63,7 +63,12 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
       slug,
       tags,
     } = postData
-    const { primary } = wpPrimaryCategorySlug(categories)
+    let primaryData
+    if (isWP) {
+      const { primary } = wpPrimaryCategorySlug(categories)
+      primaryData = primary
+    }
+
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
     const [ad, setAd]: any = React.useState()
@@ -126,7 +131,11 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                     colorScheme="slate"
                     className="!rounded-full uppercase"
                   >
-                    <NextLink href={`/${category.slug}`}>
+                    <NextLink
+                      href={
+                        isWP ? `/${category.slug}` : `/topic/${category.slug}`
+                      }
+                    >
                       {isWP ? category.name : category.title}
                     </NextLink>
                   </Button>
@@ -168,7 +177,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           )}
           <div className="flex">
             <StickyShare
-              categorySlug={isWP ? primary.slug : "article"}
+              categorySlug={isWP ? primaryData.slug : "article"}
               postSlug={slug}
             />
             <section ref={articleRef} className="article-body">
