@@ -53,7 +53,20 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const articleRef = React.useRef(null)
     const router = useRouter()
     const [seo, setSeo] = React.useState(seoData)
-
+    const postData = {
+      content: post.content,
+      title: post.title,
+      authorName: post.author.name,
+      authorUrl: post.author.slug,
+      authorImg: post.author.avatar.url,
+      categories: post.categories,
+      featuredImageUrl: post.featuredImage.sourceUrl,
+      featuredImageAlt: post.featuredImage.altText,
+      featuredImageCaption: post.featuredImage.caption,
+      date: post.date,
+      slug: post.slug,
+      tags: post.tags,
+    }
     const handleObserver = React.useCallback(
       async (entries: any) => {
         const [target] = entries
@@ -116,10 +129,15 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           className="flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto"
         >
           <section className="w-full lg:w-8/12">
-            <Article isMain={true} post={post} posts={posts} />
+            <Article
+              isMain={true}
+              posts={posts}
+              postData={postData}
+              isWP={true}
+            />
             {articles.map(
               (
-                postData: {
+                post: {
                   title: string
                   content: string
                   author: {
@@ -140,15 +158,30 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
                 i: number,
                 arr: { [x: string]: { slug: string } },
               ) => {
+                const postData = {
+                  content: post.content,
+                  title: post.title,
+                  authorName: post.author.name,
+                  authorUrl: post.author.slug,
+                  authorImg: post.author.avatar.url,
+                  categories: post.categories,
+                  featuredImageUrl: post.featuredImage.sourceUrl,
+                  featuredImageAlt: post.featuredImage.altText,
+                  featuredImageCaption: post.featuredImage.caption,
+                  date: post.date,
+                  slug: post.slug,
+                  tags: post.tags,
+                }
                 if (i > 0 && arr[i].slug == post.slug) {
                   return null
                 }
                 return (
                   <Article
                     key={i}
-                    post={postData}
                     posts={posts}
                     ref={articleRef}
+                    postData={postData}
+                    isWP={true}
                   />
                 )
               },

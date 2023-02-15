@@ -26,36 +26,43 @@ const PopupAd = dynamic(
 )
 
 interface PostProps {
-  post: {
+  postData: {
     title: string
     content: string
-    author: {
-      name: string
-      slug: string
-      avatar: {
-        url: string
-      }
-    }
+    authorName: string
+    authorUrl: string
+    authorImg: string
     slug: string
     categories: any
-    featuredImage: {
-      altText: string
-      sourceUrl: string
-      caption: string
-    }
-    tags: any
+    tags?: any
     date: string
+    featuredImageCaption: string
+    featuredImageUrl: string
+    featuredImageAlt: string
   }
 
   posts: any
   isMain?: boolean
+  isWP?: boolean
 }
 
 export const Article = React.forwardRef<HTMLDivElement, PostProps>(
   (props, ref) => {
-    const { post, posts, isMain } = props
-    const { content, title, author, categories, featuredImage, date, tags } =
-      post
+    const { posts, isMain, isWP, postData } = props
+    const {
+      content,
+      title,
+      authorName,
+      authorUrl,
+      authorImg,
+      categories,
+      featuredImageCaption,
+      featuredImageUrl,
+      featuredImageAlt,
+      date,
+      slug,
+      tags,
+    } = postData
     const { primary } = wpPrimaryCategorySlug(categories)
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
@@ -96,7 +103,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     }, [article])
     return (
       <>
-        <article id={post.slug} ref={ref} className="px-4 article-divider">
+        <article id={postData.slug} ref={ref} className="px-4 article-divider">
           {loadingAd === true &&
             ad.length > 0 &&
             adPopup.length > 0 &&
@@ -111,23 +118,21 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             )}
 
           <div>
-            {categories.map(
-              (category: { slug: string; name: string }, i: number) => {
-                return (
-                  <ButtonGroup className="p-1" key={i}>
-                    <Button
-                      size="xs"
-                      colorScheme="slate"
-                      className="!rounded-full uppercase"
-                    >
-                      <NextLink href={`/${category.slug}`}>
-                        {category.name}
-                      </NextLink>
-                    </Button>
-                  </ButtonGroup>
-                )
-              },
-            )}
+            {categories.map((category: any, i: number) => {
+              return (
+                <ButtonGroup className="p-1" key={i}>
+                  <Button
+                    size="xs"
+                    colorScheme="slate"
+                    className="!rounded-full uppercase"
+                  >
+                    <NextLink href={`/${category.slug}`}>
+                      {isWP ? category.name : category.title}
+                    </NextLink>
+                  </Button>
+                </ButtonGroup>
+              )
+            })}
           </div>
           <Heading
             as="h1"
@@ -139,30 +144,33 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           />
           <div className="mb-2">
             <MetadataPost
-              authorName={author.name}
-              authorAvatarUrl={author.avatar.url}
-              authorSlug={author.slug}
+              authorName={authorName}
+              authorAvatarUrl={authorImg}
+              authorSlug={authorUrl}
               date={date}
             />
           </div>
-          {featuredImage && (
+          {featuredImageUrl && (
             <>
               <NextImage
                 width="1280"
                 height="720"
-                alt={featuredImage.altText}
+                alt={featuredImageAlt}
                 className={`rounded-lg object-cover bg-[url('/image/imgloader.gif')]`}
-                src={featuredImage.sourceUrl}
+                src={featuredImageUrl}
               />
-              {featuredImage.caption && (
+              {featuredImageCaption && (
                 <span className="text-center text-xs italic text-gray-600 dark:text-gray-500">
-                  {parse(featuredImage.caption)}
+                  {parse(featuredImageCaption)}
                 </span>
               )}
             </>
           )}
           <div className="flex">
-            <StickyShare categorySlug={primary.slug} postSlug={post.slug} />
+            <StickyShare
+              categorySlug={isWP ? primary.slug : "article"}
+              postSlug={slug}
+            />
             <section ref={articleRef} className="article-body">
               {loadingAd === true && ad.length > 0 && adAbove.length > 0 && (
                 <div className="py-2">{parse(adAbove[0]?.content)}</div>
@@ -178,23 +186,24 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             </section>
           </div>
           <section className="mx-4 md:mx-12 my-6" id="tag">
-            {tags.map((tag: { slug: string; name: string }, i: number) => {
-              return (
-                <ButtonGroup className="p-1" key={i}>
-                  <Button
-                    size="sm"
-                    colorScheme="blue"
-                    variant="outline"
-                    className="mx-1"
-                    key={tag.slug}
-                  >
-                    <NextLink href={wpTagPathBySlug(tag.slug)}>
-                      {tag.name}
-                    </NextLink>
-                  </Button>
-                </ButtonGroup>
-              )
-            })}
+            {tags &&
+              tags.map((tag: { slug: string; name: string }, i: number) => {
+                return (
+                  <ButtonGroup className="p-1" key={i}>
+                    <Button
+                      size="sm"
+                      colorScheme="blue"
+                      variant="outline"
+                      className="mx-1"
+                      key={tag.slug}
+                    >
+                      <NextLink href={wpTagPathBySlug(tag.slug)}>
+                        {tag.name}
+                      </NextLink>
+                    </Button>
+                  </ButtonGroup>
+                )
+              })}
           </section>
           <section className="mb-20">
             {isMain === true && (
@@ -208,13 +217,15 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                   </Heading>
                 </div>
                 <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
-                  {posts.map((post: { title: string; uri: string }) => {
+                  {posts.map((post: any) => {
                     return (
                       <article
                         className="border-b-2 border-gray-200"
-                        key={title}
+                        key={post.title}
                       >
-                        <NextLink href={post.uri}>
+                        <NextLink
+                          href={isWP ? post.uri : "/article/" + post.slug}
+                        >
                           <Text
                             size="lg"
                             className="font-semibold hover:text-primary-400"
