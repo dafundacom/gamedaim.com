@@ -1,6 +1,24 @@
+import env from "../src/env"
 import db from "../src/utils/db"
+import { hashPassword } from "../src/utils/password"
 
 async function main() {
+  const hashedPassword = hashPassword(env.DEFAULT_ADMIN_PASSWORD)
+
+  const admin = await db.user.upsert({
+    where: { email: env.DEFAULT_ADMIN_EMAIL },
+    update: {
+      role: "ADMIN",
+    },
+    create: {
+      email: env.DEFAULT_ADMIN_EMAIL,
+      username: "admin",
+      name: "Admin",
+      role: "ADMIN",
+      password: hashedPassword,
+    },
+  })
+
   const url = await db.setting.upsert({
     where: { key: "url" },
     update: {},
@@ -94,6 +112,7 @@ async function main() {
   })
 
   console.log(
+    admin,
     url,
     title,
     description,
