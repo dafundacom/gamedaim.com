@@ -24,7 +24,6 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Home() {
   const router = useRouter()
-  console.log(router)
   const { getAllPostsData } = useWpGetAllPosts()
   const { data }: any = getAllPostsData
   const featured = data?.posts?.slice(0, 9)
