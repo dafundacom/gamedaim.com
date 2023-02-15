@@ -88,10 +88,12 @@ const updateUserSchema = z.object({
 
 const userResponseSchema = z.object({
   id: z.string(),
-  profilePicture: z.object({
-    id: z.string(),
-    url: z.string(),
-  }),
+  profilePicture: z
+    .object({
+      id: z.string(),
+      url: z.string(),
+    })
+    .optional(),
   ...userCore,
 })
 
