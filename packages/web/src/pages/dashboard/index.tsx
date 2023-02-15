@@ -1,6 +1,8 @@
 import * as React from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
 import { useQueries } from "@tanstack/react-query"
 import {
   MdOutlineAdsClick,
@@ -12,11 +14,14 @@ import {
 } from "react-icons/md"
 import { Heading } from "ui"
 
+import env from "@/env"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { BoxDashboard } from "@/components/Box"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
 export default function Dashboard() {
+  const router = useRouter()
+
   const [totalAds, setTotalAds]: any = React.useState<number>()
   const [totalArticles, setTotalArticles]: any = React.useState<number>()
   const [totalComments, setTotalComments]: any = React.useState<number>()
@@ -121,58 +126,70 @@ export default function Dashboard() {
   })
 
   return (
-    <AdminOrAuthorRole>
-      <DashboardLayout>
-        <div className="my-8">
-          <Heading size="3xl" as="h2">
-            Statistics
-          </Heading>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-8">
-            {getCounts[1].isSuccess && (
-              <BoxDashboard
-                icon={<MdOutlineArticle className="h-5 w-5" />}
-                count={totalArticles}
-                text="article"
-              />
-            )}
-            {getCounts[4].isSuccess && (
-              <BoxDashboard
-                icon={<MdOutlineTopic className="h-5 w-5" />}
-                count={totalTopics}
-                text="topic"
-              />
-            )}
-            {getCounts[0].isSuccess && (
-              <BoxDashboard
-                icon={<MdOutlineAdsClick className="h-5 w-5" />}
-                count={totalAds}
-                text="ad"
-              />
-            )}
-            {getCounts[3].isSuccess && (
-              <BoxDashboard
-                icon={<MdOutlinePermMedia className="h-5 w-5" />}
-                count={totalMedias}
-                text="media"
-              />
-            )}
-            {getCounts[2].isSuccess && (
-              <BoxDashboard
-                icon={<MdOutlineComment className="h-5 w-5" />}
-                count={totalComments}
-                text="comment"
-              />
-            )}
-            {getCounts[5].isSuccess && (
-              <BoxDashboard
-                icon={<MdSupervisedUserCircle className="h-5 w-5" />}
-                count={totalUsers}
-                text="user"
-              />
-            )}
+    <>
+      <NextSeo
+        title={`Dashboard | ${env.SITE_TITLE}`}
+        description={`Dashboard | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Dashboard | ${env.SITE_TITLE}`,
+          description: `Dashboard | ${env.SITE_TITLE}`,
+        }}
+      />
+      <AdminOrAuthorRole>
+        <DashboardLayout>
+          <div className="my-8">
+            <Heading size="3xl" as="h2">
+              Statistics
+            </Heading>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-8">
+              {getCounts[1].isSuccess && (
+                <BoxDashboard
+                  icon={<MdOutlineArticle className="h-5 w-5" />}
+                  count={totalArticles}
+                  text="article"
+                />
+              )}
+              {getCounts[4].isSuccess && (
+                <BoxDashboard
+                  icon={<MdOutlineTopic className="h-5 w-5" />}
+                  count={totalTopics}
+                  text="topic"
+                />
+              )}
+              {getCounts[0].isSuccess && (
+                <BoxDashboard
+                  icon={<MdOutlineAdsClick className="h-5 w-5" />}
+                  count={totalAds}
+                  text="ad"
+                />
+              )}
+              {getCounts[3].isSuccess && (
+                <BoxDashboard
+                  icon={<MdOutlinePermMedia className="h-5 w-5" />}
+                  count={totalMedias}
+                  text="media"
+                />
+              )}
+              {getCounts[2].isSuccess && (
+                <BoxDashboard
+                  icon={<MdOutlineComment className="h-5 w-5" />}
+                  count={totalComments}
+                  text="comment"
+                />
+              )}
+              {getCounts[5].isSuccess && (
+                <BoxDashboard
+                  icon={<MdSupervisedUserCircle className="h-5 w-5" />}
+                  count={totalUsers}
+                  text="user"
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </DashboardLayout>
-    </AdminOrAuthorRole>
+        </DashboardLayout>
+      </AdminOrAuthorRole>
+    </>
   )
 }

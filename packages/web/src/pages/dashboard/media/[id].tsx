@@ -2,6 +2,7 @@ import * as React from "react"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -14,6 +15,7 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
@@ -89,65 +91,82 @@ export default function EditMediaDashboard() {
   }
 
   return (
-    <AdminRole>
-      <DashboardLayout>
-        <div className="flex justify-between space-x-8 mt-4">
-          <div>
-            <NextImage
-              src={media.url}
-              alt={media.alt}
-              fill
-              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
-            />
-          </div>
-          <div className="flex-1 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormControl invalid={Boolean(errors.name)}>
-                <FormLabel>
-                  Name
-                  <RequiredIndicator />
-                </FormLabel>
+    <>
+      <NextSeo
+        title={`Edit Media | ${env.SITE_TITLE}`}
+        description={`Edit Media | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Edit Media | ${env.SITE_TITLE}`,
+          description: `Edit Media | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
+      <AdminRole>
+        <DashboardLayout>
+          <div className="flex justify-between space-x-8 mt-4">
+            <div>
+              <NextImage
+                src={media.url}
+                alt={media.alt}
+                fill
+                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+              />
+            </div>
+            <div className="flex-1 space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormControl invalid={Boolean(errors.name)}>
+                  <FormLabel>
+                    Name
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...register("name", {
+                      required: "Name is Required",
+                    })}
+                    className="max-w-xl"
+                  />
+                  {errors?.name && (
+                    <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormLabel>URL</FormLabel>
                 <Input
                   type="text"
-                  {...register("name", {
-                    required: "Name is Required",
-                  })}
+                  disabled
                   className="max-w-xl"
+                  {...register("url")}
                 />
-                {errors?.name && (
-                  <FormErrorMessage>{errors.name.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormLabel>URL</FormLabel>
-              <Input
-                type="text"
-                disabled
-                className="max-w-xl"
-                {...register("url")}
-              />
-              <FormControl invalid={Boolean(errors.alt)}>
-                <FormLabel>Alt</FormLabel>
-                <Input type="text" {...register("alt")} className="max-w-xl" />
-                {errors?.alt && (
-                  <FormErrorMessage>{errors.alt.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.description)}>
-                <FormLabel>Description</FormLabel>
-                <Textarea {...register("description")} className="max-w-xl" />
-                {errors?.description && (
-                  <FormErrorMessage>
-                    {errors.description.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-              <Button type="submit" variant="solid" loading={loading}>
-                Save
-              </Button>
-            </form>
+                <FormControl invalid={Boolean(errors.alt)}>
+                  <FormLabel>Alt</FormLabel>
+                  <Input
+                    type="text"
+                    {...register("alt")}
+                    className="max-w-xl"
+                  />
+                  {errors?.alt && (
+                    <FormErrorMessage>{errors.alt.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.description)}>
+                  <FormLabel>Description</FormLabel>
+                  <Textarea {...register("description")} className="max-w-xl" />
+                  {errors?.description && (
+                    <FormErrorMessage>
+                      {errors.description.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button type="submit" variant="solid" loading={loading}>
+                  Save
+                </Button>
+              </form>
+            </div>
           </div>
-        </div>
-      </DashboardLayout>
-    </AdminRole>
+        </DashboardLayout>
+      </AdminRole>
+    </>
   )
 }

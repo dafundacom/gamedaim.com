@@ -141,6 +141,47 @@ export async function findArticleByAuthorId(
   })
 }
 
+export async function findArticleByTopicId(
+  topicId: string,
+  articlePage: number,
+  perPage: number,
+) {
+  return await db.article.findMany({
+    where: { topicId: topicId },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip: (articlePage - 1) * perPage,
+    take: perPage,
+    select: {
+      content: true,
+      excerpt: true,
+      title: true,
+      meta_title: true,
+      meta_description: true,
+      slug: true,
+      id: true,
+      status: true,
+      featuredImage: {
+        select: {
+          id: true,
+          url: true,
+          alt: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+      topics: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+        },
+      },
+    },
+  })
+}
+
 export async function findArticleBySlug(artilceSlug: string) {
   return await db.article.findUnique({
     where: { slug: artilceSlug },
