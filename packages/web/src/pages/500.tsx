@@ -1,6 +1,6 @@
-import Head from "next/head"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
 
 import { Button } from "ui"
 import env from "@/env"
@@ -9,16 +9,17 @@ export default function Custom500() {
   const router = useRouter()
   return (
     <>
-      <Head>
-        <title>{env.SITE_TITLE} | 500</title>
-        <meta name="description" content={env.ABOUT} />
-        <meta property="og:title" content={`${env.SITE_TITLE} | 500`} />
-        <meta property="og:description" content={env.ABOUT} />
-        <link
-          rel="canonical"
-          href={`https://${env.DOMAIN}${router.pathname}`}
-        />
-      </Head>
+      <NextSeo
+        title={`500 | ${env.SITE_TITLE}`}
+        description={`500 | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `500 | ${env.SITE_TITLE}`,
+          description: `500 | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
       <section className="flex h-screen items-center justify-center bg-white dark:bg-gray-900">
         <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div className="mx-auto max-w-screen-sm text-center">

@@ -1,8 +1,12 @@
 import * as React from "react"
-import { useRouter } from "next/router"
 import NextLink from "next/link"
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
+
+import env from "@/env"
 import { wpGetPostsBySearch, wpGetAllPosts } from "@/lib/wp-posts"
+
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -51,6 +55,17 @@ export default function Search(props: SearchProps) {
 
   return (
     <>
+      <NextSeo
+        title={`Search | ${env.SITE_TITLE}`}
+        description={`Search | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Search | ${env.SITE_TITLE}`,
+          description: `Search | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
       <HomeLayout>
         <section className="w-full flex flex-col">
           <div className="flex py-10 mb-10 flex-col bg-gradient-to-r from-[#1e3799] to-[#0984e3] relative">

@@ -1,6 +1,8 @@
 import * as React from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -12,6 +14,7 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 
@@ -23,6 +26,8 @@ interface FormValues {
 
 export default function CreateAdsDashBoard() {
   const [loading, setLoading] = React.useState<boolean>(false)
+
+  const router = useRouter()
 
   const {
     register,
@@ -50,61 +55,78 @@ export default function CreateAdsDashBoard() {
   }
 
   return (
-    <AdminRole>
-      <DashboardLayout>
-        <div className="mt-4 flex items-end justify-end">
-          <div className="flex-1 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormControl invalid={Boolean(errors.title)}>
-                <FormLabel>
-                  Title
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="text"
-                  {...register("title", {
-                    required: "Title is Required",
-                  })}
-                  className="max-w-xl"
-                  placeholder="Enter Title"
-                />
-                {errors?.title && (
-                  <FormErrorMessage>{errors.title.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.content)}>
-                <FormLabel>Content</FormLabel>
-                <Textarea
-                  {...register("content")}
-                  className="max-w-xl"
-                  placeholder="Enter Script"
-                />
-                {errors?.content && (
-                  <FormErrorMessage>{errors.content.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.position)}>
-                <FormLabel>
-                  Position
-                  <RequiredIndicator />
-                </FormLabel>
-                <select {...register("position")}>
-                  <option value="ABOVE_POST">Above Post</option>
-                  <option value="BELOW_POST">Below Post</option>
-                  <option value="INLINE_POST">Inline Post</option>
-                  <option value="POP_UP">Pop Up</option>
-                </select>
-                {errors?.position && (
-                  <FormErrorMessage>{errors.position.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <Button type="submit" variant="solid" loading={loading}>
-                Submit
-              </Button>
-            </form>
+    <>
+      <NextSeo
+        title={`Add New Ad | ${env.SITE_TITLE}`}
+        description={`Add New Ad | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Add New Ad | ${env.SITE_TITLE}`,
+          description: `Add New Ad | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
+      <AdminRole>
+        <DashboardLayout>
+          <div className="mt-4 flex items-end justify-end">
+            <div className="flex-1 space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormControl invalid={Boolean(errors.title)}>
+                  <FormLabel>
+                    Title
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...register("title", {
+                      required: "Title is Required",
+                    })}
+                    className="max-w-xl"
+                    placeholder="Enter Title"
+                  />
+                  {errors?.title && (
+                    <FormErrorMessage>{errors.title.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.content)}>
+                  <FormLabel>Content</FormLabel>
+                  <Textarea
+                    {...register("content")}
+                    className="max-w-xl"
+                    placeholder="Enter Script"
+                  />
+                  {errors?.content && (
+                    <FormErrorMessage>
+                      {errors.content.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.position)}>
+                  <FormLabel>
+                    Position
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <select {...register("position")}>
+                    <option value="ABOVE_POST">Above Post</option>
+                    <option value="BELOW_POST">Below Post</option>
+                    <option value="INLINE_POST">Inline Post</option>
+                    <option value="POP_UP">Pop Up</option>
+                  </select>
+                  {errors?.position && (
+                    <FormErrorMessage>
+                      {errors.position.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button type="submit" variant="solid" loading={loading}>
+                  Submit
+                </Button>
+              </form>
+            </div>
           </div>
-        </div>
-      </DashboardLayout>
-    </AdminRole>
+        </DashboardLayout>
+      </AdminRole>
+    </>
   )
 }

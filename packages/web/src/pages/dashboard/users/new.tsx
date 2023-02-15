@@ -2,6 +2,8 @@ import * as React from "react"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { NextSeo } from "next-seo"
+import { useRouter } from "next/router"
 import { useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { HiEye, HiEyeOff } from "react-icons/hi"
@@ -16,6 +18,7 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
@@ -43,6 +46,8 @@ export default function CreateUsersDashboard() {
     React.useState<string>("")
   const [selectedprofilePictureUrl, setSelectedprofilePictureUrl] =
     React.useState<string>("")
+
+  const router = useRouter()
 
   const {
     register,
@@ -89,237 +94,257 @@ export default function CreateUsersDashboard() {
   }
 
   return (
-    <AdminRole>
-      <DashboardLayout>
-        <div className="mt-4 flex items-end justify-end">
-          <div className="flex-1 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormControl invalid={Boolean(errors.email)}>
-                <FormLabel>
-                  Email
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="email"
-                  {...register("email", {
-                    required: "Email is Required",
-                    pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1, 3}\.[0-9]{1, 3}\.[0-9]{1, 3}\.[0-9]{1, 3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: "Email is Invalid",
-                    },
-                  })}
-                  placeholder="Enter email"
-                  className="max-w-xl"
-                />
-                {errors?.email && (
-                  <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.name)}>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="name"
-                  {...register("name", {
-                    required: "Name is required",
-                    min: { value: 1, message: "Minimal name 1 characters" },
-                    max: { value: 64, message: "Maximum name 64 characters" },
-                  })}
-                  placeholder="Enter name"
-                  className="max-w-xl"
-                />
-                {errors?.name && (
-                  <FormErrorMessage>{errors.name.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.username)}>
-                <FormLabel>
-                  Username
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  {...register("username", {
-                    required: "Username is Required",
-                    pattern: {
-                      value: /^[a-z0-9]{3,16}$/i,
-                      message:
-                        "Username should be 3-20 characters without spaces, symbol or any special characters.",
-                    },
-                    min: { value: 3, message: "Minimal username 3 characters" },
-                    max: {
-                      value: 20,
-                      message: "Maximum username 20 characters",
-                    },
-                  })}
-                  placeholder="Enter your username"
-                  className="max-w-xl"
-                />
-                {errors?.username && (
-                  <FormErrorMessage>{errors.username.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.password)}>
-                <FormLabel>
-                  Password
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input.Group>
+    <>
+      <NextSeo
+        title={`Add New User | ${env.SITE_TITLE}`}
+        description={`Add New User | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Add New User | ${env.SITE_TITLE}`,
+          description: `Add New User | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
+      <AdminRole>
+        <DashboardLayout>
+          <div className="mt-4 flex items-end justify-end">
+            <div className="flex-1 space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormControl invalid={Boolean(errors.email)}>
+                  <FormLabel>
+                    Email
+                    <RequiredIndicator />
+                  </FormLabel>
                   <Input
-                    className="pr-20 max-w-xl"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter password"
-                    {...register("password", {
-                      required: "Password Requird",
+                    type="email"
+                    {...register("email", {
+                      required: "Email is Required",
                       pattern: {
                         value:
-                          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,64}$/i,
-                        message:
-                          "Password should be 8-64 characters and include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character!",
-                      },
-                      min: {
-                        value: 8,
-                        message: "Minimal password 8 characters",
-                      },
-                      max: {
-                        value: 64,
-                        message: "Maximum password 64 characters",
+                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1, 3}\.[0-9]{1, 3}\.[0-9]{1, 3}\.[0-9]{1, 3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: "Email is Invalid",
                       },
                     })}
+                    placeholder="Enter email"
+                    className="max-w-xl"
                   />
-                  {/*FIX: not appear on mobile*/}
-                  <Input.RightElement className="w-2">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handleToggleShowPassword()
-                      }}
-                      className="absolute inset-y-0 right-[970px] mr-3 flex items-center rounded-lg p-1 focus:outline-none"
-                    >
-                      {showPassword ? (
-                        <HiEyeOff className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
-                      ) : (
-                        <HiEye className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
-                      )}
-                    </button>
-                  </Input.RightElement>
-                </Input.Group>
-                {errors?.password && (
-                  <FormErrorMessage>{errors.password.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.phoneNumber)}>
-                <FormLabel>Phone Number</FormLabel>
-                <Input
-                  type="text"
-                  {...register("phoneNumber", {
-                    pattern: {
-                      value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                      message: "Number is Invalid",
-                    },
-                  })}
-                  placeholder="Optional"
-                  className="max-w-xl"
-                />
-                {errors?.phoneNumber && (
-                  <FormErrorMessage>
-                    {errors.phoneNumber.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                  {errors?.email && (
+                    <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.name)}>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    type="name"
+                    {...register("name", {
+                      required: "Name is required",
+                      min: { value: 1, message: "Minimal name 1 characters" },
+                      max: { value: 64, message: "Maximum name 64 characters" },
+                    })}
+                    placeholder="Enter name"
+                    className="max-w-xl"
+                  />
+                  {errors?.name && (
+                    <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.username)}>
+                  <FormLabel>
+                    Username
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    {...register("username", {
+                      required: "Username is Required",
+                      pattern: {
+                        value: /^[a-z0-9]{3,16}$/i,
+                        message:
+                          "Username should be 3-20 characters without spaces, symbol or any special characters.",
+                      },
+                      min: {
+                        value: 3,
+                        message: "Minimal username 3 characters",
+                      },
+                      max: {
+                        value: 20,
+                        message: "Maximum username 20 characters",
+                      },
+                    })}
+                    placeholder="Enter your username"
+                    className="max-w-xl"
+                  />
+                  {errors?.username && (
+                    <FormErrorMessage>
+                      {errors.username.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.password)}>
+                  <FormLabel>
+                    Password
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input.Group>
+                    <Input
+                      className="pr-20 max-w-xl"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter password"
+                      {...register("password", {
+                        required: "Password Requird",
+                        pattern: {
+                          value:
+                            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,64}$/i,
+                          message:
+                            "Password should be 8-64 characters and include at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character!",
+                        },
+                        min: {
+                          value: 8,
+                          message: "Minimal password 8 characters",
+                        },
+                        max: {
+                          value: 64,
+                          message: "Maximum password 64 characters",
+                        },
+                      })}
+                    />
+                    {/*FIX: not appear on mobile*/}
+                    <Input.RightElement className="w-2">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleToggleShowPassword()
+                        }}
+                        className="absolute inset-y-0 right-[970px] mr-3 flex items-center rounded-lg p-1 focus:outline-none"
+                      >
+                        {showPassword ? (
+                          <HiEyeOff className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
+                        ) : (
+                          <HiEye className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
+                        )}
+                      </button>
+                    </Input.RightElement>
+                  </Input.Group>
+                  {errors?.password && (
+                    <FormErrorMessage>
+                      {errors.password.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.phoneNumber)}>
+                  <FormLabel>Phone Number</FormLabel>
+                  <Input
+                    type="text"
+                    {...register("phoneNumber", {
+                      pattern: {
+                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                        message: "Number is Invalid",
+                      },
+                    })}
+                    placeholder="Optional"
+                    className="max-w-xl"
+                  />
+                  {errors?.phoneNumber && (
+                    <FormErrorMessage>
+                      {errors.phoneNumber.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
 
-              {selectedprofilePictureId ? (
-                <>
-                  <FormLabel>Featured Image</FormLabel>
-                  <NextImage
-                    src={selectedprofilePictureUrl}
-                    fill
-                    alt="Featured Image"
-                    className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
-                    onClick={() => setOpenModal(true)}
+                {selectedprofilePictureId ? (
+                  <>
+                    <FormLabel>Featured Image</FormLabel>
+                    <NextImage
+                      src={selectedprofilePictureUrl}
+                      fill
+                      alt="Featured Image"
+                      className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                      onClick={() => setOpenModal(true)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FormLabel>Featured Image</FormLabel>
+                    <Text
+                      size="sm"
+                      colorScheme="blue"
+                      className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Select Featured Image
+                    </Text>
+                  </>
+                )}
+                <FormControl invalid={Boolean(errors.role)}>
+                  <FormLabel>
+                    Role
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <select {...register("role")}>
+                    <option value="USER">USER</option>
+                    <option value="AUTHOR">AUTHOR</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                  {errors?.role && (
+                    <FormErrorMessage>{errors.role.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.about)}>
+                  <FormLabel>About</FormLabel>
+                  <Textarea
+                    {...register("about")}
+                    className="max-w-xl"
+                    placeholder="Optional"
                   />
-                </>
-              ) : (
-                <>
-                  <FormLabel>Featured Image</FormLabel>
-                  <Text
-                    size="sm"
-                    colorScheme="blue"
-                    className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
-                    onClick={() => setOpenModal(true)}
-                  >
-                    Select Featured Image
-                  </Text>
-                </>
-              )}
-              <FormControl invalid={Boolean(errors.role)}>
-                <FormLabel>
-                  Role
-                  <RequiredIndicator />
-                </FormLabel>
-                <select {...register("role")}>
-                  <option value="USER">USER</option>
-                  <option value="AUTHOR">AUTHOR</option>
-                  <option value="ADMIN">ADMIN</option>
-                </select>
-                {errors?.role && (
-                  <FormErrorMessage>{errors.role.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.about)}>
-                <FormLabel>About</FormLabel>
-                <Textarea
-                  {...register("about")}
-                  className="max-w-xl"
-                  placeholder="Optional"
-                />
-                {errors?.about && (
-                  <FormErrorMessage>{errors.about.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <Button type="submit" variant="solid" loading={loading}>
-                Submit
-              </Button>
-            </form>
-            <Modal
-              title="Select Featured Image"
-              content={
-                <>
-                  <MediaUpload />
-                  <div className="grid grid-cols-5 gap-3 my-3">
-                    {loadMedias.isFetching === false &&
-                      loadedMedias.map(
-                        (media: {
-                          id: string
-                          name: string
-                          url: string
-                          alt: string
-                        }) => (
-                          <>
-                            <NextImage
-                              key={media.id}
-                              src={media.url}
-                              alt={media.alt}
-                              fill
-                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedprofilePictureId(media.id)
-                                setSelectedprofilePictureUrl(media.url)
-                                setOpenModal(false)
-                              }}
-                            />
-                          </>
-                        ),
-                      )}
-                  </div>
-                </>
-              }
-              isOpen={openModal}
-              onClose={() => setOpenModal(false)}
-            />
+                  {errors?.about && (
+                    <FormErrorMessage>{errors.about.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button type="submit" variant="solid" loading={loading}>
+                  Submit
+                </Button>
+              </form>
+              <Modal
+                title="Select Featured Image"
+                content={
+                  <>
+                    <MediaUpload />
+                    <div className="grid grid-cols-5 gap-3 my-3">
+                      {loadMedias.isFetching === false &&
+                        loadedMedias.map(
+                          (media: {
+                            id: string
+                            name: string
+                            url: string
+                            alt: string
+                          }) => (
+                            <>
+                              <NextImage
+                                key={media.id}
+                                src={media.url}
+                                alt={media.alt}
+                                fill
+                                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedprofilePictureId(media.id)
+                                  setSelectedprofilePictureUrl(media.url)
+                                  setOpenModal(false)
+                                }}
+                              />
+                            </>
+                          ),
+                        )}
+                    </div>
+                  </>
+                }
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+              />
+            </div>
           </div>
-        </div>
-      </DashboardLayout>
-    </AdminRole>
+        </DashboardLayout>
+      </AdminRole>
+    </>
   )
 }
