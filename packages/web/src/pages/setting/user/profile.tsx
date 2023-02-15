@@ -2,6 +2,7 @@ import * as React from "react"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { NextSeo } from "next-seo"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -16,6 +17,7 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
@@ -120,152 +122,167 @@ export default function SettingUserProfile() {
   }
 
   return (
-    <UserRole>
-      <DefaultLayout>
-        <div className="mt-4 flex items-end justify-end">
-          <div className="flex-1 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormControl invalid={Boolean(errors.username)}>
-                <FormLabel>
-                  Username
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="text"
-                  {...register("username", {
-                    required: "Username is Required",
-                  })}
-                  className="max-w-xl"
-                />
-                {errors?.username && (
-                  <FormErrorMessage>{errors.username.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.name)}>
-                <FormLabel>
-                  Name
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="text"
-                  {...register("name", {
-                    required: "Name is Required",
-                  })}
-                  className="max-w-xl"
-                />
-                {errors?.name && (
-                  <FormErrorMessage>{errors.name.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.email)}>
-                <FormLabel>
-                  Email
-                  <RequiredIndicator />
-                </FormLabel>
-                <Input
-                  type="email"
-                  {...register("email", {
-                    required: "Email is Required",
-                  })}
-                  className="max-w-xl"
-                />
-                {errors?.email && (
-                  <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl invalid={Boolean(errors.phoneNumber)}>
-                <FormLabel>Phone Number</FormLabel>
-                <Input
-                  type="text"
-                  {...register("phoneNumber", {
-                    pattern: {
-                      value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                      message: "Number is Invalid",
-                    },
-                  })}
-                  className="max-w-xl"
-                />
-                {errors?.phoneNumber && (
-                  <FormErrorMessage>
-                    {errors.phoneNumber.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-              {selectedProfilePictureId ? (
-                <>
-                  <FormLabel>Profile Picture</FormLabel>
-                  <NextImage
-                    src={selectedProfilePictureUrl}
-                    fill
-                    alt="Profile Picture"
-                    className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
-                    onClick={() => setOpenModal(true)}
+    <>
+      <NextSeo
+        title={`Edit Profile | ${env.SITE_TITLE}`}
+        description={`Edit Profile | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Edit Profile | ${env.SITE_TITLE}`,
+          description: `Edit Profile | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
+      <UserRole>
+        <DefaultLayout>
+          <div className="mt-4 flex items-end justify-end">
+            <div className="flex-1 space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <FormControl invalid={Boolean(errors.username)}>
+                  <FormLabel>
+                    Username
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...register("username", {
+                      required: "Username is Required",
+                    })}
+                    className="max-w-xl"
                   />
-                </>
-              ) : (
-                <>
-                  <FormLabel>Profile Picture</FormLabel>
-                  <Text
-                    size="sm"
-                    colorScheme="blue"
-                    className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
-                    onClick={() => setOpenModal(true)}
-                  >
-                    Select Profile Picture
-                  </Text>
-                </>
-              )}
-              <FormControl invalid={Boolean(errors.about)}>
-                <FormLabel>About</FormLabel>
-                <Textarea {...register("about")} className="max-w-xl" />
-                {errors?.about && (
-                  <FormErrorMessage>{errors.about.message}</FormErrorMessage>
+                  {errors?.username && (
+                    <FormErrorMessage>
+                      {errors.username.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.name)}>
+                  <FormLabel>
+                    Name
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...register("name", {
+                      required: "Name is Required",
+                    })}
+                    className="max-w-xl"
+                  />
+                  {errors?.name && (
+                    <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.email)}>
+                  <FormLabel>
+                    Email
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="email"
+                    {...register("email", {
+                      required: "Email is Required",
+                    })}
+                    className="max-w-xl"
+                  />
+                  {errors?.email && (
+                    <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.phoneNumber)}>
+                  <FormLabel>Phone Number</FormLabel>
+                  <Input
+                    type="text"
+                    {...register("phoneNumber", {
+                      pattern: {
+                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                        message: "Number is Invalid",
+                      },
+                    })}
+                    className="max-w-xl"
+                  />
+                  {errors?.phoneNumber && (
+                    <FormErrorMessage>
+                      {errors.phoneNumber.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+                {selectedProfilePictureId ? (
+                  <>
+                    <FormLabel>Profile Picture</FormLabel>
+                    <NextImage
+                      src={selectedProfilePictureUrl}
+                      fill
+                      alt="Profile Picture"
+                      className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                      onClick={() => setOpenModal(true)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FormLabel>Profile Picture</FormLabel>
+                    <Text
+                      size="sm"
+                      colorScheme="blue"
+                      className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Select Profile Picture
+                    </Text>
+                  </>
                 )}
-              </FormControl>
-              <Button type="submit" variant="solid" loading={loading}>
-                Save
-              </Button>
-            </form>
-            <Modal
-              title="Select Profile Picture"
-              content={
-                <>
-                  <MediaUpload />
-                  <div className="grid grid-cols-5 gap-3 my-3">
-                    {loadMedias.isFetching === false &&
-                      loadedMedias.map(
-                        (media: {
-                          id: string
-                          name: string
-                          url: string
-                          alt: string
-                        }) => (
-                          <>
-                            <NextImage
-                              key={media.id}
-                              src={media.url}
-                              alt={media.alt}
-                              fill
-                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setSelectedProfilePictureId(media.id)
-                                setSelectedProfilePictureUrl(media.url)
-                                setOpenModal(false)
-                              }}
-                            />
-                          </>
-                        ),
-                      )}
-                  </div>
-                </>
-              }
-              isOpen={openModal}
-              onClose={() => setOpenModal(false)}
-            />
+                <FormControl invalid={Boolean(errors.about)}>
+                  <FormLabel>About</FormLabel>
+                  <Textarea {...register("about")} className="max-w-xl" />
+                  {errors?.about && (
+                    <FormErrorMessage>{errors.about.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button type="submit" variant="solid" loading={loading}>
+                  Save
+                </Button>
+              </form>
+              <Modal
+                title="Select Profile Picture"
+                content={
+                  <>
+                    <MediaUpload />
+                    <div className="grid grid-cols-5 gap-3 my-3">
+                      {loadMedias.isFetching === false &&
+                        loadedMedias.map(
+                          (media: {
+                            id: string
+                            name: string
+                            url: string
+                            alt: string
+                          }) => (
+                            <>
+                              <NextImage
+                                key={media.id}
+                                src={media.url}
+                                alt={media.alt}
+                                fill
+                                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setSelectedProfilePictureId(media.id)
+                                  setSelectedProfilePictureUrl(media.url)
+                                  setOpenModal(false)
+                                }}
+                              />
+                            </>
+                          ),
+                        )}
+                    </div>
+                  </>
+                }
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+              />
+            </div>
           </div>
-        </div>
-      </DefaultLayout>
-    </UserRole>
+        </DefaultLayout>
+      </UserRole>
+    </>
   )
 }

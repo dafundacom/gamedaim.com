@@ -3,10 +3,13 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
+import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { IconButton, Text } from "ui"
 import { MdChevronLeft, MdChevronRight } from "react-icons/md"
 
+import env from "@/env"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
@@ -20,6 +23,7 @@ export default function CommentsDashboard() {
 
   const { comments } = post
 
+  const router = useRouter()
   dayjs.extend(relativeTime)
 
   const { isFetching }: any = useQuery({
@@ -76,95 +80,108 @@ export default function CommentsDashboard() {
   const lastPage = commentsCount.isSuccess && Math.ceil(totalComments / 10)
 
   return (
-    <AdminRole>
-      <DashboardLayout>
-        <div className="my-6 rounded">
-          {comments.length > 0 ? (
-            <>
-              <Table>
-                <Thead>
-                  <Tr isTitle>
-                    <Th>Content</Th>
-                    <Th>Published Date</Th>
-                    <Th>Last Modified</Th>
-                    <Th className="!text-center">Actions</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {comments && (
-                    <>
-                      {isFetching === false &&
-                        comments.map(
-                          (
-                            comment: {
-                              id: string
-                              content: string
-                              createdAt: string
-                              updatedAt: string
-                            },
-                            i: number,
-                          ) => (
-                            <Tr key={i}>
-                              <Td className="whitespace-nowrap">
-                                <div className="flex">
-                                  <span className="font-medium">
-                                    {comment.content}
-                                  </span>
-                                </div>
-                              </Td>
-                              <Td>{dayjs(comment.createdAt).fromNow()}</Td>
-                              <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
-                              <Td align="center">
-                                <ActionDashboard
-                                  onDelete={() =>
-                                    mutationDelete.mutate(comment)
-                                  }
-                                />
-                              </Td>
-                            </Tr>
-                          ),
-                        )}
-                    </>
-                  )}
-                </Tbody>
-              </Table>
-
-              {page && (
-                <div className="flex justify-center items-center align-center mt-2 space-x-2">
-                  <>
-                    {page !== 1 && (
-                      <IconButton
-                        onClick={() => setPage((old) => Math.max(old - 1, 0))}
-                        disabled={page === 1}
-                        className="!rounded-full !px-0"
-                      >
-                        <MdChevronLeft />
-                      </IconButton>
+    <>
+      <NextSeo
+        title={`Comment Dashboard | ${env.SITE_TITLE}`}
+        description={`Comment Dashboard | ${env.SITE_TITLE}`}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `Comment Dashboard | ${env.SITE_TITLE}`,
+          description: `Comment Dashboard | ${env.SITE_TITLE}`,
+        }}
+        noindex={true}
+      />
+      <AdminRole>
+        <DashboardLayout>
+          <div className="my-6 rounded">
+            {comments.length > 0 ? (
+              <>
+                <Table>
+                  <Thead>
+                    <Tr isTitle>
+                      <Th>Content</Th>
+                      <Th>Published Date</Th>
+                      <Th>Last Modified</Th>
+                      <Th className="!text-center">Actions</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {comments && (
+                      <>
+                        {isFetching === false &&
+                          comments.map(
+                            (
+                              comment: {
+                                id: string
+                                content: string
+                                createdAt: string
+                                updatedAt: string
+                              },
+                              i: number,
+                            ) => (
+                              <Tr key={i}>
+                                <Td className="whitespace-nowrap">
+                                  <div className="flex">
+                                    <span className="font-medium">
+                                      {comment.content}
+                                    </span>
+                                  </div>
+                                </Td>
+                                <Td>{dayjs(comment.createdAt).fromNow()}</Td>
+                                <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
+                                <Td align="center">
+                                  <ActionDashboard
+                                    onDelete={() =>
+                                      mutationDelete.mutate(comment)
+                                    }
+                                  />
+                                </Td>
+                              </Tr>
+                            ),
+                          )}
+                      </>
                     )}
-                    {commentsCount.isFetching === false &&
-                      page !== lastPage && (
+                  </Tbody>
+                </Table>
+
+                {page && (
+                  <div className="flex justify-center items-center align-center mt-2 space-x-2">
+                    <>
+                      {page !== 1 && (
                         <IconButton
-                          onClick={() => {
-                            setPage((old) => old + 1)
-                          }}
+                          onClick={() => setPage((old) => Math.max(old - 1, 0))}
+                          disabled={page === 1}
                           className="!rounded-full !px-0"
                         >
-                          <MdChevronRight />
+                          <MdChevronLeft />
                         </IconButton>
                       )}
-                  </>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="flex items-center justify-center my-48">
-              <Text size="4xl" as="h3" className="text-center font-bold">
-                Comments Not found
-              </Text>
-            </div>
-          )}
-        </div>
-      </DashboardLayout>
-    </AdminRole>
+                      {commentsCount.isFetching === false &&
+                        page !== lastPage && (
+                          <IconButton
+                            onClick={() => {
+                              setPage((old) => old + 1)
+                            }}
+                            className="!rounded-full !px-0"
+                          >
+                            <MdChevronRight />
+                          </IconButton>
+                        )}
+                    </>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex items-center justify-center my-48">
+                <Text size="4xl" as="h3" className="text-center font-bold">
+                  Comments Not found
+                </Text>
+              </div>
+            )}
+          </div>
+        </DashboardLayout>
+      </AdminRole>
+    </>
   )
 }

@@ -1,11 +1,11 @@
 import * as React from "react"
-import Head from "next/head"
-import parse from "html-react-parser"
 import dynamic from "next/dynamic"
-import env from "@/env"
-import { wpGetAllPosts, useWpGetAllPosts } from "../lib/wp-posts"
-import { getSeoDatas } from "@/lib/wp-seo"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { useRouter } from "next/router"
+import { NextSeo } from "next-seo"
+
+import env from "@/env"
+import { wpGetAllPosts, useWpGetAllPosts } from "@/lib/wp-posts"
 import { wpGetMenusByName } from "@/lib/wp-menus"
 
 const HomeLayout = dynamic(() =>
@@ -22,17 +22,9 @@ const InfiniteScroll = dynamic(() =>
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-interface HomeProps {
-  posts: any
-  pageInfo: any
-  seo: {
-    head: string
-    success: boolean
-  }
-}
-
-export default function Home(props: HomeProps) {
-  const { seo } = props
+export default function Home() {
+  const router = useRouter()
+  console.log(router)
   const { getAllPostsData } = useWpGetAllPosts()
   const { data }: any = getAllPostsData
   const featured = data?.posts?.slice(0, 9)
@@ -42,7 +34,16 @@ export default function Home(props: HomeProps) {
   )
   return (
     <>
-      <Head>{seo.success === true && parse(seo.head)}</Head>
+      <NextSeo
+        title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
+        description={env.DESCRIPTION}
+        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        openGraph={{
+          url: `https/${env.DOMAIN}${router.pathname}`,
+          title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
+          description: env.DESCRIPTION,
+        }}
+      />
       <HomeLayout>
         <section className="flex w-full flex-col">
           <ListPostFeatured featured={featured} />
@@ -102,10 +103,9 @@ export async function getStaticProps() {
     wpGetMenusByName(env.MENU_PRIMARY),
   )
   await queryClient.prefetchQuery(["posts"], () => wpGetAllPosts())
-  const seo = await getSeoDatas(`https://${env.DOMAIN}`)
 
   return {
-    props: { dehydratedState: dehydrate(queryClient), seo },
+    props: { dehydratedState: dehydrate(queryClient) },
     revalidate: 60,
   }
 }
