@@ -3,6 +3,7 @@ import { FastifyInstance } from "fastify"
 import {
   createSettingHandler,
   updateSettingHandler,
+  getSettingByKeyHandler,
   getSettingsHandler,
 } from "./setting.controller"
 
@@ -35,6 +36,18 @@ async function settingRoutes(server: FastifyInstance) {
       },
     },
     updateSettingHandler,
+  )
+
+  server.get(
+    "/:settingKey",
+    {
+      schema: {
+        response: {
+          200: $ref("settingsResponseSchema"),
+        },
+      },
+    },
+    getSettingByKeyHandler,
   )
 
   server.get(

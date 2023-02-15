@@ -20,3 +20,5 @@
 - [ ] [web]: enable eslint during docker build
 - [x] [web]: image not showing if deploy with docker
 - [x] [server]: cannot connect to postgres 
+- [ ] [web]: setting page
+- [ ] [web]: meta data for all page

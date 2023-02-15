@@ -14,6 +14,12 @@ export function getSettings() {
   })
 }
 
+export async function findSettingByKey(settingKey: string) {
+  return await db.setting.findUnique({
+    where: { key: settingKey },
+  })
+}
+
 export async function updateSetting(
   settingKey: string,
   data: CreateSettingInput,
