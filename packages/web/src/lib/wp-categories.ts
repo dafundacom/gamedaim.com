@@ -64,7 +64,7 @@ export async function wpGetCategoryBySlug(slug: string) {
   }
 }
 export const useWpGetCategoryBySlug = (slug: string) => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["category", slug],
     () => wpGetCategoryBySlug(slug),
     {
@@ -78,6 +78,7 @@ export const useWpGetCategoryBySlug = (slug: string) => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }

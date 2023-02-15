@@ -16,7 +16,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
       <div
         className={`${
           open ? "max-lg:!translate-x-0" : null
-        } w-[250px] max-lg:w-[250px] w-3/12 z-[9] transition-[transform] h-full max-lg:fixed max-lg:-translate-x-full`}
+        } w-[250px] max-lg:w-[250px] w-3/12 z-[99] transition-[transform] h-full max-lg:fixed max-lg:-translate-x-full`}
       >
         <SidebarDashboard />
       </div>

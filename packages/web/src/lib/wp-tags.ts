@@ -54,7 +54,7 @@ export async function wpGetTagBySlug(slug: string) {
   }
 }
 export const useWpGetTagBySlug = (slug: string) => {
-  const { data, isError, isFetching } = useQuery(
+  const { data, isError, isFetching, isSuccess } = useQuery(
     ["tag", slug],
     () => wpGetTagBySlug(slug),
     {
@@ -68,6 +68,7 @@ export const useWpGetTagBySlug = (slug: string) => {
       data: data,
       isError,
       isFetching,
+      isSuccess,
     },
   } as const
 }
