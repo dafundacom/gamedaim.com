@@ -74,7 +74,11 @@ export async function findTopicById(topicId: string) {
   })
 }
 
-export async function findTopicBySlug(topicSlug: string) {
+export async function findTopicBySlug(
+  topicSlug: string,
+  topicPage: number,
+  perPage: number,
+) {
   return await db.topic.findUnique({
     where: { slug: topicSlug },
     select: {
@@ -84,7 +88,35 @@ export async function findTopicBySlug(topicSlug: string) {
       slug: true,
       meta_title: true,
       meta_description: true,
-      articles: true,
+      articles: {
+        skip: (topicPage - 1) * perPage,
+        take: perPage,
+        select: {
+          content: true,
+          excerpt: true,
+          title: true,
+          meta_title: true,
+          meta_description: true,
+          slug: true,
+          id: true,
+          status: true,
+          featuredImage: {
+            select: {
+              id: true,
+              url: true,
+              alt: true,
+            },
+          },
+          author: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              profilePicture: true,
+            },
+          },
+        },
+      },
       createdAt: true,
       updatedAt: true,
       featuredImage: {
