@@ -277,6 +277,7 @@ importers:
       html-react-parser: ^3.0.9
       next: ^13.1.6
       next-pwa: ^5.6.0
+      next-seo: ^5.15.0
       next-sitemap: ^3.1.52
       next-themes: ^0.2.1
       prettier-plugin-tailwindcss: ^0.2.2
@@ -307,6 +308,7 @@ importers:
       html-react-parser: 3.0.9_react@18.2.0
       next: 13.1.6_pjwopsidmaokadturxaafygjp4
       next-pwa: 5.6.0_k2seot55bsmlm52vxz6m7rtrky
+      next-seo: 5.15.0_3vryta7zmbcsw4rrqf4axjqggm
       next-sitemap: 3.1.52_dlcnecpznf2wc36zwuq5m2ie5q
       next-themes: 0.2.1_3vryta7zmbcsw4rrqf4axjqggm
       react: 18.2.0
@@ -3970,7 +3972,7 @@ packages:
         optional: true
     dependencies:
       '@twind/core': 1.1.3_typescript@4.9.5
-      next: 13.1.6_biqbaboplfbrettd7655fr4n2y
+      next: 13.1.6_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       typescript: 4.9.5
     dev: false
@@ -3983,13 +3985,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.1
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 
@@ -8139,6 +8141,18 @@ packages:
       - supports-color
       - uglify-js
       - webpack
+    dev: false
+
+  /next-seo/5.15.0_3vryta7zmbcsw4rrqf4axjqggm:
+    resolution: {integrity: sha512-LGbcY91yDKGMb7YI+28n3g+RuChUkt6pXNpa8FkfKkEmNiJkeRDEXTnnjVtwT9FmMhG6NH8qwHTelGrlYm9rgg==}
+    peerDependencies:
+      next: ^8.1.1-canary.54 || >=9.0.0
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      next: 13.1.6_pjwopsidmaokadturxaafygjp4
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /next-sitemap/3.1.52_dlcnecpznf2wc36zwuq5m2ie5q:
