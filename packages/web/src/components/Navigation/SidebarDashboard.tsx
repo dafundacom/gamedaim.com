@@ -8,7 +8,7 @@ import {
   MdOutlineArticle,
   MdOutlineComment,
   MdOutlinePermMedia,
-  MdOutlineSettings,
+  // MdOutlineSettings,
   MdOutlineTopic,
   MdPerson,
   MdSpaceDashboard,
@@ -116,9 +116,9 @@ export const SidebarDashboard = React.forwardRef<
               Add new
             </Sidebar.ToggleItem>
           </Sidebar.Toggle>
-          <Sidebar.Item icon={<MdOutlineSettings />} href="/dashboard/settings">
-            Settings
-          </Sidebar.Item>
+          {/* <Sidebar.Item icon={<MdOutlineSettings />} href="/dashboard/settings"> */}
+          {/*   Settings */}
+          {/* </Sidebar.Item> */}
         </>
       )}
       <div className="py-5">
