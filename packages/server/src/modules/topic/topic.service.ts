@@ -78,12 +78,13 @@ export async function findTopicBySlug(topicSlug: string) {
   return await db.topic.findUnique({
     where: { slug: topicSlug },
     select: {
-      description: true,
+      id: true,
       title: true,
+      description: true,
+      slug: true,
       meta_title: true,
       meta_description: true,
-      slug: true,
-      id: true,
+      articles: true,
       createdAt: true,
       updatedAt: true,
       featuredImage: {

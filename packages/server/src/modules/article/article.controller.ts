@@ -10,6 +10,7 @@ import {
   updateArticle,
   findArticleById,
   findArticleByAuthorId,
+  findArticleByTopicId,
   findArticleBySlug,
   getTotalArticles,
 } from "./article.service"
@@ -189,6 +190,26 @@ export async function getArticleByAuthorIdHandler(
     const articlePage = Number(request.params.articlePage || 1)
 
     const article = await findArticleByAuthorId(authorId, articlePage, perPage)
+    return reply.code(201).send(article)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getArticleByTopicIdHandler(
+  request: FastifyRequest<{
+    Params: { topicId: string; articlePage: number }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { topicId } = request.params
+
+    const perPage = 10
+    const articlePage = Number(request.params.articlePage || 1)
+
+    const article = await findArticleByTopicId(topicId, articlePage, perPage)
     return reply.code(201).send(article)
   } catch (e) {
     console.log(e)
