@@ -6,7 +6,7 @@ async function main() {
     update: {},
     create: {
       key: "url",
-      value: "http://localhost:3000",
+      value: "https://gamedaim.com",
     },
   })
 
@@ -15,7 +15,7 @@ async function main() {
     update: {},
     create: {
       key: "title",
-      value: "Website Title",
+      value: "Gamedaim | Everlasting Gaming Knowledge",
     },
   })
 
@@ -24,7 +24,7 @@ async function main() {
     update: {},
     create: {
       key: "meta_title",
-      value: "Website Meta Title",
+      value: "Gamedaim | Everlasting Gaming Knowledge",
     },
   })
 
@@ -33,7 +33,8 @@ async function main() {
     update: {},
     create: {
       key: "description",
-      value: "Website Description",
+      value:
+        "Gamedaim.com adalah Portal Berita Game Platform PC, Xbox, Playstation, Nintendo, Android, iOS, dan VR. berita Esports Terbaru",
     },
   })
 
@@ -42,7 +43,8 @@ async function main() {
     update: {},
     create: {
       key: "meta_description",
-      value: "Website Meta Description",
+      value:
+        "Gamedaim.com adalah Portal Berita Game Platform PC, Xbox, Playstation, Nintendo, Android, iOS, dan VR. berita Esports Terbaru",
     },
   })
 
@@ -51,7 +53,7 @@ async function main() {
     update: {},
     create: {
       key: "facebook_username",
-      value: "Facebook Username",
+      value: "gamedaim",
     },
   })
 
@@ -60,7 +62,7 @@ async function main() {
     update: {},
     create: {
       key: "twitter_username",
-      value: "Twitter Username",
+      value: "gamedaim",
     },
   })
 
@@ -69,7 +71,7 @@ async function main() {
     update: {},
     create: {
       key: "instagram_username",
-      value: "Instagram Username",
+      value: "gamedaim",
     },
   })
 
@@ -78,7 +80,7 @@ async function main() {
     update: {},
     create: {
       key: "pinterest_username",
-      value: "Pintereset Username",
+      value: "gamedaim",
     },
   })
 
@@ -87,7 +89,7 @@ async function main() {
     update: {},
     create: {
       key: "youtube_username",
-      value: "Youtube Username",
+      value: "UCBWMNCeDFfyYddZDtNHH2Vw",
     },
   })
 
