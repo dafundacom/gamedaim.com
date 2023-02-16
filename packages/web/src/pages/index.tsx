@@ -31,6 +31,7 @@ export default function Home() {
     data?.posts?.length / 2,
     data?.posts?.length,
   )
+
   return (
     <>
       <NextSeo
@@ -79,8 +80,8 @@ export default function Home() {
                     return (
                       <PostCardSide
                         key={post.id}
-                        src={post.featuredImage.sourceUrl}
-                        alt={post.featuredImage.altText}
+                        src={post.featuredImage?.sourceUrl ?? ""}
+                        alt={post.featuredImage?.altText ?? ""}
                         title={post.title}
                         slug={post.uri}
                       />
