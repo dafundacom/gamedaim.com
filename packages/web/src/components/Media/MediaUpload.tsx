@@ -42,7 +42,7 @@ export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
         }
       } catch (err: any) {
         console.log(err)
-        toast.error(err.response.data.message)
+        toast.error(err.response)
       }
       setLoading(false)
     }

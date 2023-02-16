@@ -28,8 +28,9 @@ export async function uploadMediaHandler(
     })
 
     const s3Config = {
+      region: "us-east-1",
       endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-      region: "auto",
+      forcePathStyle: true,
       credentials: {
         accessKeyId: `${env.R2_ACCESS_KEY}`,
         secretAccessKey: `${env.R2_SECRET_KEY}`,
