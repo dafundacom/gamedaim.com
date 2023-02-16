@@ -495,6 +495,12 @@ export default defineConfig({
       //   transform: scale(var(--hover-scale));
       // }
     }
+    /* Dafunda Blocks */
+    /* Dafunda Blocks - Review */
+    .review_block.wp-block > div > div > p {
+      margin: 0px;
+    }
+    /* Dafunda Blocks END */
   `,
   presets: [
     presetAutoprefix(),
