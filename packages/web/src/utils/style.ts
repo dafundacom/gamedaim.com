@@ -417,6 +417,7 @@ export default defineConfig({
       --hover-scale: 1.4;
       --thumb-size: 10px;
     }
+
     .costum-slider {
       .track {
         position: absolute;
@@ -458,6 +459,11 @@ export default defineConfig({
           height: var(--thumb-size);
         }
       }
+
+      // .range:hover {
+      //   box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3);
+      // }
+
       .range::-webkit-slider-thumb {
         -webkit-appearance: none;
         opacity: 0;
@@ -469,6 +475,7 @@ export default defineConfig({
         cursor: pointer;
         transition: var(--transition);
       }
+
       .range::-moz-range-thumb {
         -webkit-appearance: none;
         opacity: 0;
@@ -479,6 +486,14 @@ export default defineConfig({
         cursor: pointer;
         transition: var(--transition);
       }
+
+      // .range::-webkit-slider-thumb:hover {
+      //   transform: scale(var(--hover-scale));
+      // }
+
+      // .range::-moz-range-thumb:hover {
+      //   transform: scale(var(--hover-scale));
+      // }
     }
   `,
   presets: [
