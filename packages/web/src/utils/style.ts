@@ -398,6 +398,88 @@ export default defineConfig({
     .tippybox {
       @apply !max-w-5xl;
     }
+    /* costum-slider */
+    :root {
+      --clr-1: white;
+      --clr-2: linear-gradient(
+        90deg,
+        rgba(171, 0, 0, 1) 0%,
+        rgba(255, 100, 100, 1) 100%
+      );
+      --clr-3: rgb(255, 100, 100);
+      --range-height: 8px;
+      --range-radius: 3px;
+      --output-width: 36px;
+      --range-width: 100%;
+      --range-inline-margin: 20px;
+
+      --transition: 200ms;
+      --hover-scale: 1.4;
+      --thumb-size: 10px;
+    }
+    .costum-slider {
+      .track {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        height: var(--range-height);
+        left: 0;
+        background: var(--clr-2);
+        border: none;
+        border-radius: var(--range-radius) 0 0 var(--range-radius);
+        z-index: 20;
+        opacity: 1;
+        /* avoid interference with thumb */
+        pointer-events: none;
+      }
+
+      .range {
+        -webkit-appearance: none;
+        outline: none;
+        border: none;
+        width: var(--range-width);
+        position: relative;
+        cursor: pointer;
+        height: var(--range-height);
+        border-radius: var(--range-radius);
+        background-color: var(--clr-1);
+        box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        z-index: 10;
+
+        .thumb {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translate(50%, -50%);
+          box-shadow: 0px 0px 0px 4px rgba(255, 100, 100, 1);
+          cursor: pointer;
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+        }
+      }
+      .range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        opacity: 0;
+        width: var(--thumb-size);
+        height: var(--thumb-size);
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 0px 0px 4px rgba(255, 100, 100, 1);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .range::-moz-range-thumb {
+        -webkit-appearance: none;
+        opacity: 0;
+        width: var(--thumb-size);
+        height: var(--thumb-size);
+        border-radius: 50%;
+        background-color: white;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+    }
   `,
   presets: [
     presetAutoprefix(),
