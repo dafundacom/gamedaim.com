@@ -181,7 +181,11 @@ export async function wpGetPostBySlug(slug: string) {
     return { post }
   }
   const post = [postData?.data.post].map(wpMapPostData)[0]
-
+  if (postData.data.post === null) {
+    return {
+      error: "Something went wrong.",
+    }
+  }
   return {
     post,
   }
@@ -230,6 +234,9 @@ export async function wpGetPostsByAuthorSlug(
   }
   const posts = postData?.data.posts.edges.map(({ node = {} }) => node)
   const authorId = posts[0]?.author.node.id
+  if (posts.length === 0) {
+    return { error: "Ada yang salah" }
+  }
   return {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
     pageInfo: postData?.data.posts.pageInfo,
@@ -276,9 +283,15 @@ export async function wpGetPostsByCategorySlug(categoryId: any, after = "") {
   }
 
   const posts = postData?.data.posts.edges.map(({ node = {} }) => node)
+  // if (posts.length === 0) {
+  //   return {
+  //     error: "data tidak ditemukan.",
+  //   }
+  // }
   return {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
     pageInfo: postData?.data.posts.pageInfo,
+    data: postData?.data,
   }
 }
 export const useWpGetPostsByCategorySlug = (slug: string, after = "") => {

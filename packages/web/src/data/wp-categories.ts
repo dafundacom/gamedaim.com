@@ -43,6 +43,7 @@ export const QUERY_WP_CATEGORY_BY_SLUG = `
           children {
           nodes {
           uri
+          taxonomyName
           name
           slug
                }

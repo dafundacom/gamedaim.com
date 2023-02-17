@@ -58,7 +58,11 @@ export async function wpGetCategoryBySlug(slug: string) {
     category.error = "Something went wrong"
     return { category }
   }
-
+  if (category === undefined) {
+    return {
+      error: "Something went wrong",
+    }
+  }
   return {
     category,
   }

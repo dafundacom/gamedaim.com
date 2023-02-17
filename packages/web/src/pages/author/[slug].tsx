@@ -8,8 +8,10 @@ import { getSeoDatas } from "@/lib/wp-seo"
 import {
   wpGetPostsByAuthorSlug,
   useWpGetPostsByAuthorSlug,
+  wpGetAllPosts,
+  useWpGetAllPosts,
 } from "@/lib/wp-posts"
-import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -37,13 +39,15 @@ export default function Author(props: AuthorProps) {
     query: { slug },
   } = router
   const { getPostsByAuthorSlug }: any = useWpGetPostsByAuthorSlug(slug)
+  const { getAllPostsData }: any = useWpGetAllPosts()
+
   return (
     <>
       <Head>{seo.success === true && parse(seo.head)}</Head>
       <HomeLayout>
         <section className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:px-4">
           <div className="w-full px-4 flex flex-col lg:mr-4">
-            {getPostsByAuthorSlug?.isSuccess == true && (
+            {getPostsByAuthorSlug?.isSuccess === true && (
               <InfiniteScroll
                 pageType="author"
                 posts={getPostsByAuthorSlug?.data?.posts}
@@ -62,7 +66,7 @@ export default function Author(props: AuthorProps) {
                   </span>
                 </Heading>
               </div>
-              {getPostsByAuthorSlug?.data?.posts.map(
+              {getAllPostsData?.data?.posts?.map(
                 (post: {
                   id: number
                   featuredImage: {
@@ -99,16 +103,24 @@ export const getServerSideProps = async ({ params, res }: any) => {
     "Cache-Control",
     "public, s-maxage=120, stale-while-revalidate=600",
   )
-
+  let isError = false
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onSuccess: async (data: any) => {
+        if (data.error) {
+          isError = true
+        }
+      },
+    }),
+  })
   const seo = await getSeoDatas(`https://${env.DOMAIN}/author/${params.slug}`)
 
-  const queryClient = new QueryClient()
   const slug = params?.slug
-  let isError = false
   try {
     await queryClient.prefetchQuery(["authorPosts", slug], () =>
       wpGetPostsByAuthorSlug(slug),
     )
+    await queryClient.prefetchQuery(["posts"], () => wpGetAllPosts())
   } catch (error: any) {
     isError = true
     res.statusCode = error.response.status

@@ -113,10 +113,10 @@ export default function MediaLibraryDashboard() {
                       alt: string
                     }) => (
                       <>
-                        <div className="relative">
+                        <div className="relative rounded-[18px] overflow-hidden">
                           <IconButton
                             colorScheme="red"
-                            className="!rounded-full absolute z-20 !p-0"
+                            className="!rounded-full !absolute z-20 !p-0"
                             onClick={() => mutationDelete.mutate(media)}
                           >
                             <MdDeleteOutline />
