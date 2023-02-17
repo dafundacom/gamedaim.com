@@ -11,6 +11,7 @@ const nextConfig = {
     domains: [
       "assets.gamedaim.com",
       "gamedaim.com",
+      "caragame.id",
       "secure.gravatar.com",
       "i.postimg.cc",
     ],

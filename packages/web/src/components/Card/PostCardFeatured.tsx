@@ -38,7 +38,7 @@ export const PostCardFeatured = React.forwardRef<
                 onLoadingComplete={() => {
                   setImage(featuredImage?.sourceUrl)
                 }}
-                alt={featuredImage.altText}
+                alt={featuredImage?.altText ?? ""}
               />
             </div>
           </NextLink>

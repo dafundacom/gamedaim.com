@@ -17,7 +17,14 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
         <ul className="flex flex-col p-4 border-b border-gray-100 dark:border-gray-700">
           {data?.menu &&
             data?.menu.map((menu: { url: string; label: string }) => {
-              const domainUrl = `https://${env.DOMAIN}`
+              //   const domainUrl = `https://${env.DOMAIN}`
+              let domainUrl
+              if (menu.url.startsWith("http")) {
+                domainUrl = new URL(menu.url)
+                domainUrl = domainUrl.origin
+              } else {
+                domainUrl = ""
+              }
               const fullUrl = menu.url.includes(domainUrl)
               let slicedUrl
               if (fullUrl) {

@@ -24,7 +24,6 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Home() {
   const router = useRouter()
-  console.log(router)
   const { getAllPostsData } = useWpGetAllPosts()
   const { data }: any = getAllPostsData
   const featured = data?.posts?.slice(0, 9)
@@ -32,6 +31,7 @@ export default function Home() {
     data?.posts?.length / 2,
     data?.posts?.length,
   )
+
   return (
     <>
       <NextSeo
@@ -80,8 +80,8 @@ export default function Home() {
                     return (
                       <PostCardSide
                         key={post.id}
-                        src={post.featuredImage.sourceUrl}
-                        alt={post.featuredImage.altText}
+                        src={post.featuredImage?.sourceUrl ?? ""}
+                        alt={post.featuredImage?.altText ?? ""}
                         title={post.title}
                         slug={post.uri}
                       />
