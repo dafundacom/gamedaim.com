@@ -178,6 +178,9 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     await queryClient.prefetchQuery(["category", slug], () =>
       wpGetCategoryBySlug(slug),
     )
+    await queryClient.prefetchQuery(["categoryPosts", slug], () =>
+      wpGetPostsByCategorySlug(slug),
+    )
   } catch (error: any) {
     isError = true
     res.statusCode = error.response.status
