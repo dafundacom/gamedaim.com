@@ -15,6 +15,7 @@ const env = {
   DEFAULT_ADMIN_EMAIL: process.env.DEFAULT_ADMIN_EMAIL,
   DEFAULT_ADMIN_PASSWORD: process.env.DEFAULT_ADMIN_PASSWORD,
   R2_BUCKET: process.env.R2_BUCKET,
+  R2_REGION: process.env.R2_REGION,
   R2_DOMAIN: process.env.R2_DOMAIN,
   R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
   R2_ACCESS_KEY: process.env.R2_ACCESS_KEY,
