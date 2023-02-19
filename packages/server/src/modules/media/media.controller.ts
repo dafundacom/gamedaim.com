@@ -1,9 +1,9 @@
 import slugify from "slugify"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { S3Client } from "@aws-sdk/client-s3"
-import { Upload } from "@aws-sdk/lib-storage"
+import { PutObjectCommand } from "@aws-sdk/client-s3"
 
 import env from "../../env"
+import { s3Client } from "../../utils/s3-client"
 import { uniqueSlug } from "../../utils/slug"
 import {
   findMediaById,
@@ -27,38 +27,19 @@ export async function uploadMediaHandler(
       remove: /[*+~()'"!:@]/g,
     })
 
-    const s3Config = {
-      region: env.R2_REGION,
-      endpoint: `https://${env.R2_DOMAIN}`,
-      forcePathStyle: true,
-      credentials: {
-        accessKeyId: `${env.R2_ACCESS_KEY}`,
-        secretAccessKey: `${env.R2_SECRET_KEY}`,
-      },
-      signatureVersion: "v4",
-    }
-
     const fileProperties = {
       Bucket: env.R2_BUCKET,
       Key: uniqueName,
       ContentType: data.mimetype,
       Body: data.file,
+      ACL: "public-read",
     }
 
-    const uploadToBucket = new Upload({
-      client: new S3Client(s3Config),
-      leavePartsOnError: false,
-      params: fileProperties,
-    })
-
-    uploadToBucket.on("httpUploadProgress", (progress) => {
-      console.log(progress)
-    })
-
-    await uploadToBucket.done()
+    await s3Client.send(new PutObjectCommand(fileProperties))
 
     const upload = await uploadMedia({
       name: uniqueName,
+      // url: "https://" + env.R2_DOMAIN + "/" + uniqueName,
       url: "https://" + env.R2_DOMAIN + "/" + env.R2_BUCKET + "/" + uniqueName,
       type: data.mimetype,
       authorId: user.id,
@@ -162,6 +143,7 @@ export async function getMediasHandler(
     const medias = await getMedias(mediaPage, perPage)
     return reply.code(201).send(medias)
   } catch (e) {
+    console.log(e)
     console.log(e)
     return reply.code(500).send(e)
   }
