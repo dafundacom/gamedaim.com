@@ -139,7 +139,7 @@ export default function Dashboard() {
       />
       <AdminOrAuthorRole>
         <DashboardLayout>
-          <div className="my-8">
+          <div className="my-8 dark:text-white">
             <Heading size="3xl" as="h2">
               Statistics
             </Heading>

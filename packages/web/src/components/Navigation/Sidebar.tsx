@@ -10,7 +10,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
     return (
       <aside
-        className={`h-[inherit] flex-col flex-wrap transition-[width] duration-300 overflow-y-auto rounded bg-white py-4 px-3 shadow-xl dark:bg-gray-800 flex scrollbar`}
+        className={`h-[inherit] flex-col flex-wrap transition-[width] duration-300 overflow-y-auto rounded bg-white pt-4 pb-12 px-3 shadow-xl dark:bg-gray-800 flex scrollbar`}
         aria-label="Sidebar"
         ref={ref}
         {...rest}
