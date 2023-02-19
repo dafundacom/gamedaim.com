@@ -15,7 +15,7 @@ import {
 
 export async function createTopicHandler(
   request: FastifyRequest<{
-    Body: CreateTopicInput & { featuredImageId?: string }
+    Body: CreateTopicInput
   }>,
   reply: FastifyReply,
 ) {
