@@ -78,7 +78,6 @@ export default function EditTopicDashboard() {
   const loadTopic = async () => {
     try {
       const { data } = await axios.get(`/topic/${router.query.id}`)
-      console.log(data)
       setTopic({
         id: data.id,
         title: data.title,
