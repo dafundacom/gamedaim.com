@@ -58,7 +58,7 @@ function App({ Component, pageProps }: AppProps) {
                       colorScheme="blue"
                       variant="ghost"
                       loading={loading}
-                      className="!w-auto !mx-auto !p-1 !rounded-full !cursor-default"
+                      className="!w-auto !border !bg-white !mx-auto !p-1 !rounded-full !cursor-default"
                     />
                   </div>
                 )}

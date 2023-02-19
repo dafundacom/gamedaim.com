@@ -137,7 +137,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
             />
             {articles.map(
               (
-                post: {
+                postData: {
                   title: string
                   content: string
                   author: {
@@ -158,19 +158,19 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
                 i: number,
                 arr: { [x: string]: { slug: string } },
               ) => {
-                const postData = {
-                  content: post.content,
-                  title: post.title,
-                  authorName: post.author.name,
-                  authorUrl: post.author.slug,
-                  authorImg: post.author.avatar.url,
-                  categories: post.categories,
-                  featuredImageUrl: post.featuredImage.sourceUrl,
-                  featuredImageAlt: post.featuredImage.altText,
-                  featuredImageCaption: post.featuredImage.caption,
-                  date: post.date,
-                  slug: post.slug,
-                  tags: post.tags,
+                const postDatas = {
+                  content: postData.content,
+                  title: postData.title,
+                  authorName: postData.author.name,
+                  authorUrl: postData.author.slug,
+                  authorImg: postData.author.avatar.url,
+                  categories: postData.categories,
+                  featuredImageUrl: postData.featuredImage.sourceUrl,
+                  featuredImageAlt: postData.featuredImage.altText,
+                  featuredImageCaption: postData.featuredImage.caption,
+                  date: postData.date,
+                  slug: postData.slug,
+                  tags: postData.tags,
                 }
                 if (i > 0 && arr[i].slug == post.slug) {
                   return null
@@ -180,7 +180,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
                     key={i}
                     posts={posts}
                     ref={articleRef}
-                    postData={postData}
+                    postData={postDatas}
                     isWP={true}
                   />
                 )

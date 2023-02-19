@@ -165,7 +165,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImageAlt}
-                className={`rounded-lg object-cover bg-[url('/image/imgloader.gif')]`}
+                className={`rounded-lg object-cover img-skeleton`}
                 src={featuredImageUrl}
               />
               {featuredImageCaption && (
@@ -182,15 +182,21 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             />
             <section ref={articleRef} className="article-body">
               {loadingAd === true && ad.length > 0 && adAbove.length > 0 && (
-                <div className="py-2">{parse(adAbove[0]?.content)}</div>
+                <div className="p-2 rounded border">
+                  {parse(adAbove[0]?.content)}
+                </div>
               )}
               {parse(firstHalf)}
               {loadingAd === true && ad.length > 0 && adInline.length > 0 && (
-                <div className="py-2">{parse(adInline[0]?.content)}</div>
+                <div className="p-2 rounded border">
+                  {parse(adInline[0]?.content)}
+                </div>
               )}
               {parse(secondHalf)}
               {loadingAd === true && ad.length > 0 && adBelow.length > 0 && (
-                <div className="py-2">{parse(adBelow[0]?.content)}</div>
+                <div className="p-2 rounded border">
+                  {parse(adBelow[0]?.content)}
+                </div>
               )}
             </section>
           </div>

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { GetStaticProps, GetStaticPaths } from "next"
 
@@ -42,9 +42,16 @@ export default function Post(props: { seo: any }) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
-  const queryClient = new QueryClient()
-
   let isError = false
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onSuccess: async (data: any) => {
+        if (data.error) {
+          isError = true
+        }
+      },
+    }),
+  })
 
   const seo = await getSeoDatas(
     `https://${env.DOMAIN}/${params.category}/${params.slug}`,
@@ -59,6 +66,8 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     res.statusCode = error.response.status
   }
   if (isError) {
+    // queryClient.resetQueries({ queryKey: ["post", params?.slug], exact: true })
+
     return {
       notFound: true,
     }

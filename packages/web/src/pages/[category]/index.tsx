@@ -16,7 +16,7 @@ import {
   useWpGetPostsByCategorySlug,
 } from "@/lib/wp-posts"
 import { useRouter } from "next/router"
-import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
 const InfiniteScroll = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
 )
@@ -52,14 +52,12 @@ export default function Category(props: CategoryProps) {
     query: { category },
   } = router
   const { getCategoryBySlug }: any = useWpGetCategoryBySlug(category as string)
-  const { isError, isSuccess } = getCategoryBySlug
+  const { isSuccess } = getCategoryBySlug
   const { getPostsByCategorySlug }: any = useWpGetPostsByCategorySlug(
     category as string,
   )
   const categoryChild = getCategoryBySlug?.data?.category?.children?.nodes
-  if (isError) {
-    router.push("/404")
-  }
+
   return (
     <>
       <Head>{seo?.success === true && parse(seo?.head)}</Head>
@@ -93,22 +91,30 @@ export default function Category(props: CategoryProps) {
                   {getCategoryBySlug?.data?.category.name}
                 </Heading>
               </div>
-              <div className="self-center">
+              <div className="self-center mt-2">
                 <NextLink href={`/${getCategoryBySlug?.data?.category.slug}`}>
                   <Button className="!mr-2 border border-[#24272f] !bg-[#1e3799]">
                     All
                   </Button>
                 </NextLink>
                 {categoryChild !== undefined &&
-                  categoryChild.map((child: { slug: string; name: string }) => {
-                    return (
-                      <NextLink href={`/${child.slug}`} key={child.name}>
-                        <Button className="!mr-2 border border-[#24272f] !bg-[#ffffff33] hover:!bg-[#1e3799]">
-                          {child.name}
-                        </Button>
-                      </NextLink>
-                    )
-                  })}
+                  categoryChild.map(
+                    (child: {
+                      slug: string
+                      name: string
+                      taxonomyName: string
+                    }) => {
+                      if (child.taxonomyName === "category") {
+                        return (
+                          <NextLink href={`/${child.slug}`} key={child.name}>
+                            <Button className="!mr-2 border border-[#24272f] !bg-[#ffffff33] hover:!bg-[#1e3799]">
+                              {child.name}
+                            </Button>
+                          </NextLink>
+                        )
+                      }
+                    },
+                  )}
               </div>
             </div>
             <div className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:mx-auto lg:px-4">
@@ -166,9 +172,17 @@ export default function Category(props: CategoryProps) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
-  const queryClient = new QueryClient()
-  const slug = params?.category
   let isError = false
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onSuccess: async (data: any) => {
+        if (data.error) {
+          isError = true
+        }
+      },
+    }),
+  })
+  const slug = params?.category
 
   const seo = await getSeoDatas(`https://${env.DOMAIN}/${slug}`)
   await queryClient.prefetchQuery(["categoryPosts", slug], () =>
