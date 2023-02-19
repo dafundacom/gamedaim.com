@@ -143,7 +143,6 @@ importers:
   packages/server:
     specifiers:
       '@aws-sdk/client-s3': ^3.272.0
-      '@aws-sdk/lib-storage': ^3.272.0
       '@faker-js/faker': ^7.6.0
       '@fastify/cors': ^8.2.0
       '@fastify/jwt': ^6.5.0
@@ -177,7 +176,6 @@ importers:
       zod-to-json-schema: ^3.20.4
     dependencies:
       '@aws-sdk/client-s3': 3.272.0
-      '@aws-sdk/lib-storage': 3.272.0_o3vqneccxyod357ermu46v2q4a
       '@faker-js/faker': 7.6.0
       '@fastify/cors': 8.2.0
       '@fastify/jwt': 6.5.0
@@ -822,23 +820,6 @@ packages:
     resolution: {integrity: sha512-UPez5qLh3dNgt0DYnPD/q0mVJY84rA17QE26hVNOW3fAji8W2wrwrxdacWOxyXvlxWsVRcKmr+lay1MDqpAMfg==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      tslib: 2.5.0
-    dev: false
-
-  /@aws-sdk/lib-storage/3.272.0_o3vqneccxyod357ermu46v2q4a:
-    resolution: {integrity: sha512-HVgPSztekEGXsy0SA9MxEq+ya/HbXpYpLeZpFcdxbvOm0nztlxoQJrTAZC4VsKq64JlVjEP+12QcSIFJVbUwrQ==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@aws-sdk/abort-controller': ^3.0.0
-      '@aws-sdk/client-s3': ^3.0.0
-    dependencies:
-      '@aws-sdk/abort-controller': 3.272.0
-      '@aws-sdk/client-s3': 3.272.0
-      '@aws-sdk/middleware-endpoint': 3.272.0
-      '@aws-sdk/smithy-client': 3.272.0
-      buffer: 5.6.0
-      events: 3.3.0
-      stream-browserify: 3.0.0
       tslib: 2.5.0
     dev: false
 
@@ -4793,13 +4774,6 @@ packages:
 
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-
-  /buffer/5.6.0:
-    resolution: {integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==}
-    dependencies:
-      base64-js: 1.5.1
-      ieee754: 1.2.1
-    dev: false
 
   /buffer/5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -9731,13 +9705,6 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       internal-slot: 1.0.5
-    dev: false
-
-  /stream-browserify/3.0.0:
-    resolution: {integrity: sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA==}
-    dependencies:
-      inherits: 2.0.4
-      readable-stream: 3.6.0
     dev: false
 
   /stream-wormhole/1.1.0:
