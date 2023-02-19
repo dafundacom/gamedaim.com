@@ -165,7 +165,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImageAlt}
-                className={`rounded-lg object-cover bg-[url('/image/imgloader.gif')]`}
+                className={`rounded-lg object-cover img-skeleton`}
                 src={featuredImageUrl}
               />
               {featuredImageCaption && (

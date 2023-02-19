@@ -25,7 +25,6 @@ export default function Post(props: { seo: any }) {
   const { getAllPostsData } = useWpGetAllPosts()
 
   const { getPostBySlug } = useWpGetPostBySlug(slug as string)
-  console.log(getPostBySlug)
   return (
     <>
       <HomeLayout>

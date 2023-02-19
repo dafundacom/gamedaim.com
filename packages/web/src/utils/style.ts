@@ -83,6 +83,9 @@ export default defineConfig({
     .scrollbar::-webkit-scrollbar-track:hover {
       background: transparent;
     }
+    .img-skeleton {
+      @apply bg-cover bg-[url('/image/imgloader.gif')];
+    }
     .post-card-thumbnail:hover img {
       @apply scale-150;
     }
