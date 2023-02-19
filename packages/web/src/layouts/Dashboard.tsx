@@ -21,7 +21,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
         <SidebarDashboard />
       </div>
       <div className="px-3 max-lg:w-full w-9/12 transition-all">{children}</div>
-      <div className="flex lg:hidden py-3 items-center justify-around fixed bottom-0 inset-x-0 bg-white border-t z-[9999]">
+      <div className="flex lg:hidden py-3 items-center justify-around fixed bottom-0 inset-x-0 bg-white border-t z-[9999] dark:bg-gray-800">
         <NextLink
           className="h-12 text-center cursor-pointer text-gray-800 flex flex-col items-center justify-around basis-1/3"
           href="/dashboard"

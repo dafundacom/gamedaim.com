@@ -8,7 +8,7 @@ import env from "@/env"
 import { wpGetTagBySlug, useWpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug, useWpGetPostsByTagSlug } from "@/lib/wp-posts"
 import { getSeoDatas } from "@/lib/wp-seo"
-import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
@@ -44,6 +44,7 @@ export default function Tag(props: TagProps) {
   } = router
   const { getTagBySlug }: any = useWpGetTagBySlug(slug)
   const { getPostsByTagSlug }: any = useWpGetPostsByTagSlug(slug)
+
   return (
     <>
       <Head>{seo.success === true && parse(seo.head)}</Head>
@@ -136,10 +137,19 @@ export default function Tag(props: TagProps) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  const queryClient = new QueryClient()
+  let isError = false
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onSuccess: async (data: any) => {
+        if (data.error) {
+          isError = true
+        }
+      },
+    }),
+  })
+
   const slug = params?.slug
   const seo = await getSeoDatas(`https://${env.DOMAIN}/tag/${slug}`)
-  let isError = false
   await queryClient.prefetchQuery(["tag", slug], () => wpGetTagBySlug(slug))
   try {
     await queryClient.prefetchQuery(["tagPosts", slug], () =>

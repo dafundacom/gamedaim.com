@@ -323,11 +323,7 @@ export async function wpGetPostsByTagSlug(id: any, after = "") {
     throw e
   }
   if (postData.data.tag === null) {
-    let posts: { error: string } = {
-      error: "",
-    }
-    posts.error = "Something went wrong"
-    return { posts }
+    return { error: "Something went wrong" }
   }
   const posts = postData?.data.tag.posts.edges.map(({ node = {} }) => node)
 
