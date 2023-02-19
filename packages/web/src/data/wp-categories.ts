@@ -1,6 +1,6 @@
 export const QUERY_WP_ALL_CATEGORIES = `
   {
-    categories(first: 100) {
+    categories(first: 25) {
       edges {
         node {
           categoryId
