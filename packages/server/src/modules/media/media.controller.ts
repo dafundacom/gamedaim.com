@@ -28,8 +28,8 @@ export async function uploadMediaHandler(
     })
 
     const s3Config = {
-      region: "us-east-1",
-      endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+      region: env.R2_REGION,
+      endpoint: `https://${env.R2_DOMAIN}`,
       forcePathStyle: true,
       credentials: {
         accessKeyId: `${env.R2_ACCESS_KEY}`,
@@ -59,7 +59,7 @@ export async function uploadMediaHandler(
 
     const upload = await uploadMedia({
       name: uniqueName,
-      url: "https://" + env.R2_DOMAIN + "/" + uniqueName,
+      url: "https://" + env.R2_DOMAIN + "/" + env.R2_BUCKET + "/" + uniqueName,
       type: data.mimetype,
       authorId: user.id,
     })
