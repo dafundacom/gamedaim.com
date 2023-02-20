@@ -24,6 +24,7 @@ export function getAds(adPage: number, perPage: number) {
       title: true,
       content: true,
       position: true,
+      active: true,
       createdAt: true,
       updatedAt: true,
       author: {
@@ -44,6 +45,7 @@ export async function findAdById(adId: string) {
       title: true,
       content: true,
       position: true,
+      active: true,
       createdAt: true,
       updatedAt: true,
       author: {
