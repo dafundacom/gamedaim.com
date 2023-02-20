@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require("next-pwa")
-const runtimeCaching = require("next-pwa/cache")
 const { withSentryConfig } = require("@sentry/nextjs")
+// const withPWA = require("next-pwa")
+// const runtimeCaching = require("next-pwa/cache")
 
 const nextConfig = {
   eslint: {
@@ -19,18 +19,17 @@ const nextConfig = {
       "i.postimg.cc",
     ],
   },
+  transpilePackages: ["editor", "ui"],
+  // pwa: {
+  //   dest: "public",
+  //   runtimeCaching,
+  //   register: true,
+  //   skipWaiting: true,
+  // },
   sentry: {
     silent: true,
     hideSourceMaps: true,
   },
-  pwa: {
-    dest: "public",
-    runtimeCaching,
-    register: true,
-    skipWaiting: true,
-  },
-
-  transpilePackages: ["editor", "ui"],
 }
 
-module.exports = withSentryConfig(withPWA(nextConfig), { silent: true })
+module.exports = withSentryConfig(nextConfig)
