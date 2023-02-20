@@ -17,13 +17,25 @@ import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"
 import { ContentProvider } from "@/contexts/content.context"
 import { Button } from "ui"
-
+import { getScripts } from "@/lib/script"
+import Head from "next/head"
+import parse from "html-react-parser"
 const queryClient = new QueryClient()
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
-
+  const [scripts, setScripts] = React.useState<any>()
+  React.useEffect(() => {
+    const getScriptHead = async () => {
+      const data = await getScripts(1)
+      if (data?.scripts) {
+        setScripts(data?.scripts)
+      }
+    }
+    getScriptHead()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   React.useEffect(() => {
     const handleRouteStart = () => setLoading(true)
     const handleRouteDone = () => setLoading(false)
@@ -199,6 +211,16 @@ function App({ Component, pageProps }: AppProps) {
                     maxVideoPreview: -1,
                   }}
                 />
+                <Head>
+                  {Array.isArray(scripts) &&
+                    scripts.map((script: { id: string; content: string }) => {
+                      return (
+                        <React.Fragment key={script.id}>
+                          {parse(script.content)}
+                        </React.Fragment>
+                      )
+                    })}
+                </Head>
                 <Component {...pageProps} />
               </ContentProvider>
             </AuthProvider>

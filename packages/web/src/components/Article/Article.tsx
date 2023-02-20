@@ -93,9 +93,9 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     React.useEffect(() => {
       getAds()
       setOpenModal(true)
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
     React.useEffect(() => {
       if (article) {
         const toc = article.querySelector(".ez-toc-title")

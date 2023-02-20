@@ -15,6 +15,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { getScriptsCount } from "@/lib/script"
 
 export default function ScriptsDashboard() {
   const [script, setScript] = React.useContext(ContentContext)
@@ -25,19 +26,32 @@ export default function ScriptsDashboard() {
 
   const router = useRouter()
   dayjs.extend(relativeTime)
+  const getScripts = async (page: number) => {
+    let scriptsData
+    try {
+      const { data } = await axios.get(`/script/page/${page}`)
+      scriptsData = data
+    } catch (e) {
+      console.log(`Failed to query post data: ${e}`)
+      throw e
+    }
+
+    return { scripts: scriptsData }
+  }
 
   const { isFetching }: any = useQuery({
     queryKey: ["scripts", page],
     queryFn: () => getScripts(page),
     keepPreviousData: true,
     onSuccess: (data) => {
-      setScript((prev: any) => ({ ...prev, scripts: data }))
+      if (data?.scripts) {
+        setScript((prev: any) => ({ ...prev, scripts: data?.scripts }))
+      }
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
   })
-  console.log(scripts)
 
   const scriptsCount: any = useQuery({
     queryKey: ["scriptsCount"],
@@ -49,16 +63,6 @@ export default function ScriptsDashboard() {
       toast.error(error.message)
     },
   })
-
-  const getScriptsCount = async () => {
-    const { data } = await axios.get("/script/count")
-    return data
-  }
-
-  const getScripts = async (page: number) => {
-    const { data } = await axios.get(`/script/page/${page}`)
-    return data
-  }
 
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
@@ -97,7 +101,7 @@ export default function ScriptsDashboard() {
         <DashboardLayout>
           <div className="mt-4 flex items-end justify-end">
             <NextLink href="/dashboard/scripts/new">
-              <Button leftIcon={<MdAdd />}>Scriptd New</Button>
+              <Button leftIcon={<MdAdd />}>Add New</Button>
             </NextLink>
           </div>
           <div className="my-6 rounded">
@@ -137,7 +141,7 @@ export default function ScriptsDashboard() {
                             <Td className="whitespace-nowrap">
                               <div className="flex">
                                 <span className="font-medium">
-                                  {script.active}
+                                  {script.active ? "Yes" : "No"}
                                 </span>
                               </div>
                             </Td>
