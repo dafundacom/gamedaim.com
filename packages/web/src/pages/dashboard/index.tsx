@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { useQueries } from "@tanstack/react-query"
 import {
+  MdCode,
   MdOutlineAdsClick,
   MdOutlineArticle,
   MdOutlineComment,
@@ -26,6 +27,7 @@ export default function Dashboard() {
   const [totalArticles, setTotalArticles]: any = React.useState<number>()
   const [totalComments, setTotalComments]: any = React.useState<number>()
   const [totalMedias, setTotalMedias]: any = React.useState<number>()
+  const [totalScripts, setTotalScripts]: any = React.useState<number>()
   const [totalTopics, setTotalTopics]: any = React.useState<number>()
   const [totalUsers, setTotalUsers]: any = React.useState<number>()
 
@@ -46,6 +48,11 @@ export default function Dashboard() {
 
   const getMediasCount = async () => {
     const { data } = await axios.get("/media/count")
+    return data
+  }
+
+  const getScriptsCount = async () => {
+    const { data } = await axios.get("/script/count")
     return data
   }
 
@@ -91,7 +98,6 @@ export default function Dashboard() {
           toast.error(error.message)
         },
       },
-
       {
         queryKey: ["mediasCount"],
         queryFn: () => getMediasCount(),
@@ -117,6 +123,16 @@ export default function Dashboard() {
         queryFn: () => getUsersCount(),
         onSuccess: (data: number) => {
           setTotalUsers(data)
+        },
+        onError: (error: any) => {
+          toast.error(error.message)
+        },
+      },
+      {
+        queryKey: ["scriptsCount"],
+        queryFn: () => getScriptsCount(),
+        onSuccess: (data: number) => {
+          setTotalScripts(data)
         },
         onError: (error: any) => {
           toast.error(error.message)
@@ -163,6 +179,13 @@ export default function Dashboard() {
                   icon={<MdOutlineAdsClick className="h-5 w-5" />}
                   count={totalAds}
                   text="ad"
+                />
+              )}
+              {getCounts[6].isSuccess && (
+                <BoxDashboard
+                  icon={<MdCode className="h-5 w-5" />}
+                  count={totalScripts}
+                  text="Script"
                 />
               )}
               {getCounts[3].isSuccess && (
