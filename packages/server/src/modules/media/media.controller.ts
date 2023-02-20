@@ -31,8 +31,8 @@ export async function uploadMediaHandler(
       region: env.R2_REGION,
       endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
       credentials: {
-        accessKeyId: `${env.R2_ACCESS_KEY}`,
-        secretAccessKey: `${env.R2_SECRET_KEY}`,
+        accessKeyId: env.R2_ACCESS_KEY,
+        secretAccessKey: env.R2_SECRET_KEY,
       },
     }
 
