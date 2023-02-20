@@ -70,7 +70,10 @@ export default function CreateTopicsDashboard() {
         ...values,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.post("/topic", mergedValues)
+      const { data } = await axios.post(
+        "/topic",
+        selectedFeaturedImageId ? mergedValues : values,
+      )
       if (data?.error) {
         toast.error(data.error)
       } else {
