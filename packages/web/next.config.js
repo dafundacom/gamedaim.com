@@ -2,7 +2,6 @@
 const withPWA = require("next-pwa")
 const runtimeCaching = require("next-pwa/cache")
 const { withSentryConfig } = require("@sentry/nextjs")
-const { withPlugins } = require("next-compose-plugins")
 
 const nextConfig = {
   eslint: {
@@ -12,7 +11,6 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   images: {
     domains: [
-      "dev-assets.gamedaim.com",
       "assets.gamedaim.com",
       "gamedaim.com",
       "gamedaim.sg-sin1.upcloudobjects.com",
@@ -21,32 +19,18 @@ const nextConfig = {
       "i.postimg.cc",
     ],
   },
+  sentry: {
+    silent: true,
+    hideSourceMaps: true,
+  },
+  pwa: {
+    dest: "public",
+    runtimeCaching,
+    register: true,
+    skipWaiting: true,
+  },
 
   transpilePackages: ["editor", "ui"],
 }
 
-module.exports = withPlugins(
-  [
-    [
-      withPWA,
-      {
-        pwa: {
-          dest: "public",
-          runtimeCaching,
-          register: true,
-          skipWaiting: true,
-        },
-      },
-    ],
-    [
-      withSentryConfig,
-      {
-        sentry: {
-          silent: true,
-          hideSourceMaps: true,
-        },
-      },
-    ],
-  ],
-  nextConfig,
-)
+module.exports = withSentryConfig(withPWA(nextConfig), { silent: true })
