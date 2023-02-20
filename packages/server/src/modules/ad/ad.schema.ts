@@ -18,6 +18,11 @@ const adInput = {
       (position) => AD_POSITION.includes(position),
       "only ABOVE_POST, BELOW_POST, INLINE_POST, and POP_UP are accepted",
     ),
+  active: z
+    .boolean({
+      invalid_type_error: "Active must be a boolean",
+    })
+    .optional(),
 }
 
 const updateAdInput = {
