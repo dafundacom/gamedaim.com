@@ -23,6 +23,7 @@ export function getScripts(scriptPage: number, perPage: number) {
       id: true,
       title: true,
       content: true,
+      active: true,
       createdAt: true,
       updatedAt: true,
       author: {
@@ -42,6 +43,7 @@ export async function findScriptById(scriptId: string) {
       id: true,
       title: true,
       content: true,
+      active: true,
       createdAt: true,
       updatedAt: true,
       author: {
