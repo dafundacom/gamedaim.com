@@ -140,6 +140,7 @@ export default function TopicsDashboard() {
                                 viewLink={`/topic/${topic.slug}`}
                                 onDelete={() => mutationDelete.mutate(topic)}
                                 editLink={`/dashboard/topics/${topic.id}`}
+                                content={topic.title}
                               />
                             </Td>
                           </Tr>

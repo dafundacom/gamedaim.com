@@ -52,7 +52,7 @@ function App({ Component, pageProps }: AppProps) {
               <ContentProvider>
                 <Toaster />
                 {loading && (
-                  <div className="fixed w-full flex mx-auto top-[10px] z-[999]">
+                  <div className="fixed w-full flex mx-auto mt-10 top-[10px] z-[999]">
                     <Button
                       size="xl"
                       colorScheme="blue"

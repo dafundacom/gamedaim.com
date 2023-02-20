@@ -143,6 +143,7 @@ export default function AdsDashboard() {
                               <ActionDashboard
                                 onDelete={() => mutationDelete.mutate(ad)}
                                 editLink={`/dashboard/ads/${ad.id}`}
+                                content={ad.title}
                               />
                             </Td>
                           </Tr>

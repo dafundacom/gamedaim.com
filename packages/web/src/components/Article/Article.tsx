@@ -181,23 +181,38 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
               postSlug={slug}
             />
             <section ref={articleRef} className="article-body">
-              {loadingAd === true && ad.length > 0 && adAbove.length > 0 && (
-                <div className="p-2 rounded border">
-                  {parse(adAbove[0]?.content)}
-                </div>
-              )}
+              {loadingAd === true &&
+                ad.length > 0 &&
+                adAbove.length > 0 &&
+                adAbove.map((ad: { content: string }) => {
+                  return (
+                    <div className="p-2 my-2 rounded border">
+                      {parse(ad?.content)}
+                    </div>
+                  )
+                })}
               {parse(firstHalf)}
-              {loadingAd === true && ad.length > 0 && adInline.length > 0 && (
-                <div className="p-2 rounded border">
-                  {parse(adInline[0]?.content)}
-                </div>
-              )}
+              {loadingAd === true &&
+                ad.length > 0 &&
+                adInline.length > 0 &&
+                adInline.map((ad: { content: string }) => {
+                  return (
+                    <div className="p-2 my-2 rounded border">
+                      {parse(ad?.content)}
+                    </div>
+                  )
+                })}
               {parse(secondHalf)}
-              {loadingAd === true && ad.length > 0 && adBelow.length > 0 && (
-                <div className="p-2 rounded border">
-                  {parse(adBelow[0]?.content)}
-                </div>
-              )}
+              {loadingAd === true &&
+                ad.length > 0 &&
+                adBelow.length > 0 &&
+                adBelow.map((ad: { content: string }) => {
+                  return (
+                    <div className="p-2 my-2 rounded border">
+                      {parse(ad?.content)}
+                    </div>
+                  )
+                })}
             </section>
           </div>
           <section className="mx-4 md:mx-12 my-6" id="tag">
