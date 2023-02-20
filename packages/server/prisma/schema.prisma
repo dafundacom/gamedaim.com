@@ -44,8 +44,9 @@ model User {
   topics           Topic[]   @relation("TopicAuthors")
   medias           Media[]   @relation("MediaAuthors")
   comments         Comment[] @relation("CommentAuthors")
- wpComments       WpComment[]   @relation("WpCommentAuthors")
+  wpComments       WpComment[]   @relation("WpCommentAuthors")
   ads              Ad[]      @relation("AdAuthors")
+  scripts          Script[]      @relation("ScriptAuthors")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
@@ -127,7 +128,19 @@ model Ad {
   title     String     @unique
   content   String
   position  AdPosition @default(ABOVE_POST)
+  active    Boolean    @default(false)
   author    User       @relation(name: "AdAuthors", fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Script {
+  id        String     @id @unique @default(uuid())
+  title     String     @unique
+  content   String
+  active    Boolean    @default(false)
+  author    User       @relation(name: "ScriptAuthors", fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
