@@ -120,11 +120,6 @@ export async function updateArticleHandler(
         .send({ message: "Only Author and Admin can update article" })
     }
 
-    const slugExist = await findArticleBySlug(slug)
-    if (slugExist) {
-      return reply.code(401).send({ message: "Slug is Already Exist" })
-    }
-
     const updatedArticle = await updateArticle(articleId, {
       title,
       content,

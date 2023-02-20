@@ -12,6 +12,7 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   images: {
     domains: [
+      "dev-assets.gamedaim.com",
       "assets.gamedaim.com",
       "gamedaim.com",
       "gamedaim.sg-sin1.upcloudobjects.com",
