@@ -17,7 +17,7 @@ export async function createAdHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, content, position } = request.body
+    const { title, content, position, active } = request.body
     const user = request.user
 
     if (user.role !== "ADMIN") {
@@ -28,6 +28,7 @@ export async function createAdHandler(
       title,
       content,
       position,
+      active,
       authorId: user.id,
     })
     return reply.code(201).send(ad)
@@ -45,7 +46,7 @@ export async function updateAdHandler(
   reply: FastifyReply,
 ) {
   try {
-    const { title, content, position } = request.body
+    const { title, content, position, active } = request.body
     const user = request.user
     const adId = request.params.adId
 
@@ -57,6 +58,7 @@ export async function updateAdHandler(
       title,
       content,
       position,
+      active,
     })
     return reply.code(201).send(ad)
   } catch (e) {
