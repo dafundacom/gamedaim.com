@@ -19,6 +19,7 @@ const ContentProvider: React.FunctionComponent<ContentProviderProps> = (
     medias: [],
     topics: [],
     users: [],
+    scripts: [],
   })
 
   return (
