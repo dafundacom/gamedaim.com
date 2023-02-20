@@ -11,6 +11,7 @@ import {
   FormLabel,
   Input,
   RequiredIndicator,
+  Select,
   Textarea,
 } from "ui"
 
@@ -107,12 +108,18 @@ export default function CreateAdsDashBoard() {
                     Position
                     <RequiredIndicator />
                   </FormLabel>
-                  <select {...register("position")}>
-                    <option value="ABOVE_POST">Above Post</option>
-                    <option value="BELOW_POST">Below Post</option>
-                    <option value="INLINE_POST">Inline Post</option>
-                    <option value="POP_UP">Pop Up</option>
-                  </select>
+                  <Select
+                    id="position"
+                    className="max-w-sm"
+                    {...register("position")}
+                  >
+                    <Select.Option value="ABOVE_POST">Above Post</Select.Option>
+                    <Select.Option value="BELOW_POST">Below Post</Select.Option>
+                    <Select.Option value="INLINE_POST">
+                      Inline Post
+                    </Select.Option>
+                    <Select.Option value="POP_UP">Pop Up</Select.Option>
+                  </Select>
                   {errors?.position && (
                     <FormErrorMessage>
                       {errors.position.message}
