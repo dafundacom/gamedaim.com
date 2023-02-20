@@ -4,6 +4,7 @@ import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useTheme } from "next-themes"
 import {
+  MdCode,
   MdOutlineAdsClick,
   MdOutlineArticle,
   MdOutlineComment,
@@ -86,6 +87,16 @@ export const SidebarDashboard = React.forwardRef<
           <Sidebar.ToggleItem href="/dashboard/ads">All Ads</Sidebar.ToggleItem>
           <Sidebar.ToggleItem href="/dashboard/ads/new">
             Add new ad
+          </Sidebar.ToggleItem>
+        </Sidebar.Toggle>
+      )}
+      {auth?.user?.role === "ADMIN" && (
+        <Sidebar.Toggle icon={<MdCode />} title="Scripts">
+          <Sidebar.ToggleItem href="/dashboard/scripts">
+            All scripts
+          </Sidebar.ToggleItem>
+          <Sidebar.ToggleItem href="/dashboard/scripts/new">
+            Add new script
           </Sidebar.ToggleItem>
         </Sidebar.Toggle>
       )}

@@ -4,6 +4,7 @@ import { tx } from "@twind/core"
 
 import { HiOutlineEye, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { UrlObject } from "url"
+import { ModalDelete } from "../Modal"
 
 export interface ActionDashboardProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,6 +15,7 @@ export interface ActionDashboardProps
   editLink?: string | UrlObject
   viewLink?: string | UrlObject
   className?: string
+  content?: string
 }
 
 export const ActionDashboard = React.forwardRef<
@@ -28,8 +30,10 @@ export const ActionDashboard = React.forwardRef<
     editLink,
     viewLink,
     className,
+    content,
     ...rest
   } = props
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
 
   return (
     <div
@@ -73,10 +77,19 @@ export const ActionDashboard = React.forwardRef<
       )}
 
       {onDelete && (
-        <HiOutlineTrash
-          className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500"
-          onClick={onDelete}
-        />
+        <>
+          <HiOutlineTrash
+            className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500"
+            onClick={() => setOpenModal(true)}
+          />
+          <ModalDelete
+            desc={<>{content}</>}
+            isOpen={openModal}
+            className="max-w-[366px]"
+            onDelete={onDelete}
+            onClose={() => setOpenModal(false)}
+          />
+        </>
       )}
     </div>
   )

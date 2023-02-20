@@ -162,6 +162,7 @@ export default function ArticlesDashboard() {
                                 viewLink={`/article/${article.slug}`}
                                 onDelete={() => mutationDelete.mutate(article)}
                                 editLink={`/dashboard/articles/${article.id}`}
+                                content={article.title}
                               />
                             </Td>
                           </Tr>
