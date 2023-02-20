@@ -3,7 +3,7 @@ import { Dialog as ModalBase, Transition } from "@headlessui/react"
 import { Button, CrossIcon } from "ui"
 
 interface ModalProps {
-  content?: React.ReactNode
+  desc?: React.ReactNode
   placeholder?: string
   isOpen: boolean
   onClose: () => void
@@ -12,7 +12,7 @@ interface ModalProps {
 }
 
 export const ModalDelete: React.FunctionComponent<ModalProps> = (props) => {
-  const { content, isOpen, onClose, className, onDelete } = props
+  const { desc, isOpen, onClose, className, onDelete } = props
 
   const completeButtonRef = React.useRef(null)
   function handleDeleteAndClose() {
@@ -48,7 +48,7 @@ export const ModalDelete: React.FunctionComponent<ModalProps> = (props) => {
               </button>
               <div className="flex-1 p-6">
                 <p className="text-base font-normal text-gray-500">
-                  Are you sure to delete {content}?
+                  Are you sure to delete {desc}?
                 </p>
                 <div className="flex justify-between mt-4">
                   <Button

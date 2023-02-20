@@ -83,7 +83,7 @@ export const ActionDashboard = React.forwardRef<
             onClick={() => setOpenModal(true)}
           />
           <ModalDelete
-            content={<>{content}</>}
+            desc={<>{content}</>}
             isOpen={openModal}
             className="max-w-[366px]"
             onDelete={onDelete}
