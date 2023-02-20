@@ -14,6 +14,7 @@ import {
   FormLabel,
   Input,
   RequiredIndicator,
+  Select,
   Text,
   Textarea,
 } from "ui"
@@ -280,11 +281,11 @@ export default function CreateUsersDashboard() {
                     Role
                     <RequiredIndicator />
                   </FormLabel>
-                  <select {...register("role")}>
-                    <option value="USER">USER</option>
-                    <option value="AUTHOR">AUTHOR</option>
-                    <option value="ADMIN">ADMIN</option>
-                  </select>
+                  <Select id="role" className="max-w-sm" {...register("role")}>
+                    <Select.Option value="USER">USER</Select.Option>
+                    <Select.Option value="AUTHOR">AUTHOR</Select.Option>
+                    <Select.Option value="ADMIN">ADMIN</Select.Option>
+                  </Select>
                   {errors?.role && (
                     <FormErrorMessage>{errors.role.message}</FormErrorMessage>
                   )}
