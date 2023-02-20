@@ -274,6 +274,7 @@ importers:
       eslint-config: workspace:*
       html-react-parser: ^3.0.9
       next: ^13.1.6
+      next-compose-plugins: ^2.2.1
       next-pwa: ^5.6.0
       next-seo: ^5.15.0
       next-sitemap: ^3.1.52
@@ -305,6 +306,7 @@ importers:
       editor: link:../editor
       html-react-parser: 3.0.9_react@18.2.0
       next: 13.1.6_pjwopsidmaokadturxaafygjp4
+      next-compose-plugins: 2.2.1
       next-pwa: 5.6.0_k2seot55bsmlm52vxz6m7rtrky
       next-seo: 5.15.0_3vryta7zmbcsw4rrqf4axjqggm
       next-sitemap: 3.1.52_dlcnecpznf2wc36zwuq5m2ie5q
@@ -3952,7 +3954,7 @@ packages:
         optional: true
     dependencies:
       '@twind/core': 1.1.3_typescript@4.9.5
-      next: 13.1.6_biqbaboplfbrettd7655fr4n2y
+      next: 13.1.6_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       typescript: 4.9.5
     dev: false
@@ -3965,13 +3967,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.1
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 
@@ -8031,6 +8033,10 @@ packages:
 
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+    dev: false
+
+  /next-compose-plugins/2.2.1:
+    resolution: {integrity: sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==}
     dev: false
 
   /next-pwa/5.6.0_k2seot55bsmlm52vxz6m7rtrky:
