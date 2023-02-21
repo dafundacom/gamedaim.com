@@ -1,6 +1,9 @@
 import * as React from "react"
+import Head from "next/head"
+import dynamic from "next/dynamic"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+
 import { HomeLayout } from "@/layouts/Home"
 import {
   getArticleBySlug,
@@ -9,9 +12,6 @@ import {
   useGetArticles,
 } from "@/lib/articles"
 
-import dynamic from "next/dynamic"
-
-import Head from "next/head"
 import { PostCardSide } from "@/components/Card"
 import { Article } from "@/components/Article"
 
