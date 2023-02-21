@@ -105,13 +105,13 @@ export default function EditMediaDashboard() {
       />
       <AdminRole>
         <DashboardLayout>
-          <div className="flex justify-between space-x-8 mt-4">
+          <div className="mt-4 flex justify-between space-x-8">
             <div>
               <NextImage
                 src={media.url}
                 alt={media.alt}
                 fill
-                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+                className="!relative max-h-[500px] max-w-[500px] rounded-sm border-2 border-gray-300 object-cover"
               />
             </div>
             <div className="flex-1 space-y-4">

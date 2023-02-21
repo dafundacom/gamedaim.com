@@ -11,6 +11,7 @@ importers:
       husky: ^8.0.3
       lint-staged: ^13.1.2
       prettier: ^2.8.4
+      prettier-plugin-tailwindcss: ^0.2.3
       rimraf: ^4.1.2
       turbo: ^1.8.1
     devDependencies:
@@ -21,6 +22,7 @@ importers:
       husky: 8.0.3
       lint-staged: 13.1.2
       prettier: 2.8.4
+      prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
       rimraf: 4.1.2
       turbo: 1.8.1
 
@@ -226,7 +228,6 @@ importers:
       eslint: 8.34.0
       eslint-config: workspace:*
       next: ^13.1.6
-      prettier-plugin-tailwindcss: ^0.2.3
       react: ^18.2.0
       react-dom: ^18.2.0
       typescript: 4.9.5
@@ -248,7 +249,6 @@ importers:
       '@types/react-dom': 18.0.11
       eslint: 8.34.0
       eslint-config: link:../../configs/eslint-config
-      prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
       typescript: 4.9.5
       typescript-config: link:../../configs/typescript-config
 
@@ -280,7 +280,6 @@ importers:
       next-seo: ^5.15.0
       next-sitemap: ^3.1.52
       next-themes: ^0.2.1
-      prettier-plugin-tailwindcss: ^0.2.3
       react: ^18.2.0
       react-dom: ^18.2.0
       react-hook-form: ^7.43.1
@@ -327,7 +326,6 @@ importers:
       '@types/react-dom': 18.0.11
       eslint: 8.34.0
       eslint-config: link:../../configs/eslint-config
-      prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
       typescript: 4.9.5
       typescript-config: link:../../configs/typescript-config
 
@@ -3979,7 +3977,7 @@ packages:
         optional: true
     dependencies:
       '@twind/core': 1.1.3_typescript@4.9.5
-      next: 13.1.6_6m24vuloj5ihw4zc5lbsktc4fu
+      next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       typescript: 4.9.5
     dev: false
@@ -3992,13 +3990,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.1
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 

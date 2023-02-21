@@ -103,7 +103,7 @@ export default function MediaLibraryDashboard() {
           </div>
           {medias.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-3">
+              <div className="my-3 grid grid-cols-2 gap-3 md:grid-cols-5">
                 {isFetching === false &&
                   medias.map(
                     (media: {
@@ -113,10 +113,10 @@ export default function MediaLibraryDashboard() {
                       alt: string
                     }) => (
                       <>
-                        <div className="relative rounded-[18px] overflow-hidden">
+                        <div className="relative overflow-hidden rounded-[18px]">
                           <IconButton
                             colorScheme="red"
-                            className="!rounded-full !absolute z-20 !p-0"
+                            className="!absolute z-20 !rounded-full !p-0"
                             onClick={() => mutationDelete.mutate(media)}
                           >
                             <MdDeleteOutline />
@@ -127,7 +127,7 @@ export default function MediaLibraryDashboard() {
                               src={media.url}
                               alt={media.alt}
                               fill
-                              className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300"
+                              className="!relative max-h-[500px] max-w-[500px] rounded-sm border-2 border-gray-300 object-cover"
                             />
                           </NextLink>
                         </div>
@@ -136,7 +136,7 @@ export default function MediaLibraryDashboard() {
                   )}
               </div>
               {page && (
-                <div className="flex justify-center items-center align-center mt-2 space-x-2">
+                <div className="align-center mt-2 flex items-center justify-center space-x-2">
                   {page !== 1 && (
                     <IconButton
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
@@ -160,7 +160,7 @@ export default function MediaLibraryDashboard() {
               )}
             </>
           ) : (
-            <div className="flex items-center justify-center my-48">
+            <div className="my-48 flex items-center justify-center">
               <Text size="4xl" as="h3" className="text-center font-bold">
                 Medias Not found
               </Text>

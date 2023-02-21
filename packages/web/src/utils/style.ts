@@ -84,7 +84,7 @@ export default defineConfig({
       background: transparent;
     }
     .img-skeleton {
-      @apply bg-cover bg-[url('/image/imgloader.gif')];
+      @apply bg-[url('/image/imgloader.gif')] bg-cover;
     }
     .post-card-thumbnail:hover img {
       @apply scale-150;
@@ -127,7 +127,7 @@ export default defineConfig({
     }
 
     .article-body a {
-      @apply text-primary-500 duration-200 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400;
+      @apply text-primary-500 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 duration-200;
     }
 
     .article-body {
@@ -135,7 +135,7 @@ export default defineConfig({
     }
 
     .article-body p {
-      @apply text-base leading-[24px] md:text-lg md:leading-[32px] text-black dark:text-gray-100;
+      @apply text-base leading-[24px] text-black dark:text-gray-100 md:text-lg md:leading-[32px];
     }
 
     .article-body p:not(:last-child) {
@@ -206,11 +206,11 @@ export default defineConfig({
 
     .article-body .wp-block-table th,
     .article-body .wp-block-table td {
-      @apply p-3 border border-gray-300;
+      @apply border border-gray-300 p-3;
     }
 
     .article-body .wp-block-button {
-      @apply inline-flex flex-shrink-0 relative items-center justify-center align-middle rounded-xl m-0 font-medium leading-tight transition-colors duration-75 ease-out outline-none appearance-none cursor-pointer focus:outline-none select-none whitespace-nowrap disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 h-9 px-4 text-base min-w-[2.5rem] shadow-sm text-white bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800;
+      @apply relative m-0 inline-flex h-9 min-w-[2.5rem] flex-shrink-0 cursor-pointer select-none appearance-none items-center justify-center whitespace-nowrap rounded-xl border border-gray-200 bg-white px-4 align-middle text-base font-medium leading-tight text-white shadow-sm outline-none transition-colors duration-75 ease-out hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-purple-300 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none dark:focus:ring-purple-800;
     }
 
     #ez-toc-container.ez-toc-transparent {
@@ -301,10 +301,10 @@ export default defineConfig({
     }
     /* editor */
     .ProseMirror {
-      @apply min-h-screen px-3 py-2 text-base items-center min-w-0 dark:text-white outline-none space-y-2;
+      @apply min-h-screen min-w-0 items-center space-y-2 px-3 py-2 text-base outline-none dark:text-white;
     }
     .ProseMirror p.is-editor-empty:first-child::before {
-      @apply text-gray-500 dark:text-gray-200 float-left h-0 pointer-events-none;
+      @apply pointer-events-none float-left h-0 text-gray-500 dark:text-gray-200;
       content: attr(data-placeholder);
     }
     .ProseMirror h1,
@@ -334,25 +334,25 @@ export default defineConfig({
       @apply text-base md:text-lg;
     }
     .ProseMirror a {
-      @apply text-primary-500 duration-200 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 hover:underline;
+      @apply text-primary-500 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 duration-200 hover:underline;
     }
     .ProseMirror ul li {
-      @apply list-disc ml-12;
+      @apply ml-12 list-disc;
     }
     .ProseMirror ol li {
-      @apply list-decimal ml-12;
+      @apply ml-12 list-decimal;
     }
     .ProseMirror blockquote {
-      @apply p-4 my-4 bg-gray-50 border-l-4 border-gray-300 dark:border-gray-500 dark:bg-gray-700 rounded-sm italic;
+      @apply my-4 rounded-sm border-l-4 border-gray-300 bg-gray-50 p-4 italic dark:border-gray-500 dark:bg-gray-700;
     }
     .ProseMirror img {
       @apply rounded-md;
     }
     .ProseMirror pre {
-      @apply bg-black rounded-lg text-white px-3 py-2 font-mono;
+      @apply rounded-lg bg-black px-3 py-2 font-mono text-white;
     }
     .ProseMirror code {
-      @apply text-xs p-0 bg-[none] text-[inherit];
+      @apply bg-[none] p-0 text-xs text-[inherit];
     }
     .hljs-comment,
     .hljs-quote {

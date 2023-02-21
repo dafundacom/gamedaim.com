@@ -45,8 +45,8 @@ export default function Author(props: AuthorProps) {
     <>
       <Head>{seo.success === true && parse(seo.head)}</Head>
       <HomeLayout>
-        <section className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:px-4">
-          <div className="w-full px-4 flex flex-col lg:mr-4">
+        <section className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:px-4 min-[1200px]:max-w-[1170px]">
+          <div className="flex w-full flex-col px-4 lg:mr-4">
             {getPostsByAuthorSlug?.isSuccess === true && (
               <InfiniteScroll
                 pageType="author"
@@ -57,11 +57,11 @@ export default function Author(props: AuthorProps) {
             )}
           </div>
 
-          <aside className="w-4/12 hidden px-4 lg:block">
-            <div className="rounded-xl border border-gray-100 dark:border-gray-700 p-4 sticky top-8">
+          <aside className="hidden w-4/12 px-4 lg:block">
+            <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">
               <div className="mb-4">
                 <Heading as="h4" className="!text-transparent">
-                  <span className="after:absolute after:border after:border-[#1e3799] after:bg-[#1e3799] after:h-[3px] after:w-[50px] after:ml-[-25px] after:left-1/2 after:top-[40px]">
+                  <span className="after:absolute after:left-1/2 after:top-[40px] after:ml-[-25px] after:h-[3px] after:w-[50px] after:border after:border-[#1e3799] after:bg-[#1e3799]">
                     Trending
                   </span>
                 </Heading>

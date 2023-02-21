@@ -39,7 +39,7 @@ export const ModalDelete: React.FunctionComponent<ModalProps> = (props) => {
             leaveFrom="transform scale-100"
             leaveTo="transform scale-95"
           >
-            <div className="relative mx-auto my-24 flex w-full flex-col rounded shadow-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 max-w-[500px]">
+            <div className="relative mx-auto my-24 flex w-full max-w-[500px] flex-col rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <button
                 onClick={onClose}
                 className="cursor-base hover:text-primary-500 absolute top-4 right-4 text-sm text-gray-600 dark:text-gray-400"
@@ -50,7 +50,7 @@ export const ModalDelete: React.FunctionComponent<ModalProps> = (props) => {
                 <p className="text-base font-normal text-gray-500">
                   Are you sure to delete {desc}?
                 </p>
-                <div className="flex justify-between mt-4">
+                <div className="mt-4 flex justify-between">
                   <Button
                     className="!bg-red-700"
                     onClick={handleDeleteAndClose}

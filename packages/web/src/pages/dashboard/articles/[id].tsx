@@ -188,7 +188,7 @@ export default function EditArticleDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="my-5 mx-3 flex justify-between items-center">
+          <div className="my-5 mx-3 flex items-center justify-between">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/articles">Articles</NextLink>
             </Button>
@@ -210,8 +210,8 @@ export default function EditArticleDashboard() {
             isOpen={isOpen}
             sidebar={
               <div className="px-3">
-                <div className="flex flex-col min-w-[300px] space-y-4">
-                  <div className="flex flex-col px-4 my-2">
+                <div className="flex min-w-[300px] flex-col space-y-4">
+                  <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Slug
                     </Heading>
@@ -232,7 +232,7 @@ export default function EditArticleDashboard() {
                     </FormControl>
                   </div>
                 </div>
-                <div className="flex flex-col px-4 my-2">
+                <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Topics
                   </Heading>
@@ -261,7 +261,7 @@ export default function EditArticleDashboard() {
                     ))}
                 </div>
                 {selectedFeaturedImageId ? (
-                  <div className="flex flex-col px-4 my-2">
+                  <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Featured Image
                     </Heading>
@@ -269,26 +269,26 @@ export default function EditArticleDashboard() {
                       src={selectedFeaturedImageUrl}
                       fill
                       alt="Featured Image"
-                      className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                      className="!relative mt-2 max-h-[200px] max-w-[200px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
                       onClick={() => setOpenModal(true)}
                     />
                   </div>
                 ) : (
-                  <div className="flex flex-col px-4 my-2">
+                  <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Featured Image
                     </Heading>
                     <Text
                       size="sm"
                       colorScheme="blue"
-                      className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer"
+                      className="border-1 cursor-pointer rounded-md border-gray-200 p-8 text-center"
                       onClick={() => setOpenModal(true)}
                     >
                       Select Featured Image
                     </Text>
                   </div>
                 )}
-                <div className="flex flex-col px-4 my-2">
+                <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Excerpt
                   </Heading>
@@ -304,7 +304,7 @@ export default function EditArticleDashboard() {
                     )}
                   </FormControl>
                 </div>
-                <div className="flex flex-col px-4 my-2">
+                <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Meta Title
                   </Heading>
@@ -320,7 +320,7 @@ export default function EditArticleDashboard() {
                     )}
                   </FormControl>
                 </div>
-                <div className="flex flex-col px-4 my-2">
+                <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Meta Description
                   </Heading>
@@ -339,7 +339,7 @@ export default function EditArticleDashboard() {
               </div>
             }
           >
-            <div className="mt-4 relative flex items-center justify-center">
+            <div className="relative mt-4 flex items-center justify-center">
               <div className="flex-1 space-y-4">
                 <FormControl invalid={Boolean(errors.title)}>
                   <Input
@@ -359,7 +359,7 @@ export default function EditArticleDashboard() {
                 <FormControl invalid={Boolean(errors.content)}>
                   <EditorMenu editor={editor} />
                   <EditorContent editor={editor} />
-                  <Text size="xs" className="right-0 bottom-0 absolute">
+                  <Text size="xs" className="absolute right-0 bottom-0">
                     {editor?.storage.characterCount.words()} words
                   </Text>
                 </FormControl>
@@ -373,7 +373,7 @@ export default function EditArticleDashboard() {
           content={
             <>
               <MediaUpload />
-              <div className="grid grid-cols-5 gap-3 my-3">
+              <div className="my-3 grid grid-cols-5 gap-3">
                 {loadMedias.isFetching === false &&
                   loadedMedias.map(
                     (media: {
@@ -388,7 +388,7 @@ export default function EditArticleDashboard() {
                           src={media.url}
                           alt={media.alt}
                           fill
-                          className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                          className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
                           onClick={(e) => {
                             e.preventDefault()
                             setSelectedFeaturedImageId(media.id)
