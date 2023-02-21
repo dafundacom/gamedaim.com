@@ -186,9 +186,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adAbove.length > 0 &&
                 adAbove.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded border">
-                      {parse(ad?.content)}
-                    </div>
+                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
                   )
                 })}
               {parse(firstHalf)}
@@ -197,9 +195,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adInline.length > 0 &&
                 adInline.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded border">
-                      {parse(ad?.content)}
-                    </div>
+                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
                   )
                 })}
               {parse(secondHalf)}
@@ -208,9 +204,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adBelow.length > 0 &&
                 adBelow.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded border">
-                      {parse(ad?.content)}
-                    </div>
+                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
                   )
                 })}
             </section>

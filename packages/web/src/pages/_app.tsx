@@ -64,13 +64,13 @@ function App({ Component, pageProps }: AppProps) {
               <ContentProvider>
                 <Toaster />
                 {loading && (
-                  <div className="fixed w-full flex mx-auto mt-10 top-[10px] z-[999]">
+                  <div className="fixed w-full flex mx-auto mt-[75px] top-[10px] z-[999]">
                     <Button
-                      size="xl"
-                      colorScheme="blue"
+                      size="lg"
+                      colorScheme="red"
                       variant="ghost"
-                      loading={loading}
-                      className="!w-auto !bg-white dark:!bg-gray-800 !border !mx-auto !p-1 !rounded-full !cursor-default"
+                      loading={true}
+                      className="!w-auto !text-blue-800 !opacity-100 !bg-white dark:!bg-gray-800 !border !mx-auto !p-1 !rounded-full !cursor-default"
                     />
                   </div>
                 )}

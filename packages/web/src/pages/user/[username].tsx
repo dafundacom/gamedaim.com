@@ -2,21 +2,22 @@ import * as React from "react"
 import axios from "axios"
 import dayjs from "dayjs"
 import NextImage from "next/image"
-import env from "@/env"
 import { useRouter } from "next/router"
 import { HomeLayout } from "@/layouts/Home"
-import { Heading } from "@/../../ui"
+import { Button, Heading, Text } from "@/../../ui"
+import { NextSeo } from "next-seo"
+import env from "@/env"
 
-interface UserProps {
-  username: string
-  name: string
-  email: string
-  slug: string
-  about: string
-  phoneNumber: number
-  profilePicture: string
-  createdAt: string
-}
+// interface UserProps {
+//   username: string
+//   name: string
+//   email: string
+//   slug: string
+//   about: string
+//   phoneNumber: number
+//   profilePicture: string
+//   createdAt: string
+// }
 
 export default function User() {
   const router = useRouter()
@@ -37,6 +38,7 @@ export default function User() {
       setUser(data)
     }
     userData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   console.log(user?.data)
   return (
@@ -44,29 +46,47 @@ export default function User() {
       <div className="mt-[70px] h-screen w-full mx-4 px-4 rounded">
         {user !== undefined ? (
           <>
-            <div className="flex">
+            <NextSeo
+              title={`${user?.data?.name} | ${env.SITE_TITLE}`}
+              description={`${user?.data?.name} | ${env.SITE_TITLE}`}
+              canonical={`https/${env.DOMAIN}${router.pathname}`}
+              openGraph={{
+                url: `https/${env.DOMAIN}${router.pathname}`,
+                title: `${user?.data?.name} | ${env.SITE_TITLE}`,
+                description: `${user?.data?.about} | ${env.SITE_TITLE}`,
+              }}
+              noindex={true}
+            />
+            <div className="flex flex-col items-center space-y-2">
               <div className="mr-4">
                 <NextImage
                   src={user?.data?.profilePicture?.url}
                   alt={user?.data?.name}
                   width={400}
                   height={400}
-                  className="rounded-full aspect-[1/1] w-[150px] lg:!w-[350px] object-cover"
+                  className="rounded-full aspect-[1/1] max-w-[unset] w-[150px] lg:!w-[200px] object-cover"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="flex flex-col items-center space-y-2">
                 <Heading>{user?.data?.name}</Heading>
                 <div className="rounded p-2 bg-primary-500 text-white inline-block">
                   {user?.data?.email}
                 </div>
-                <div>{dayjs(user?.data?.createdAt).format("DD/MM/YYYY")}</div>
-                <div>{user?.data?.about}</div>
-                <div>{user?.data?.phoneNumber}</div>
+                <Text>{dayjs(user?.data?.createdAt).format("DD/MM/YYYY")}</Text>
+                <Text>{user?.data?.about}</Text>
               </div>
             </div>
           </>
         ) : (
-          <div>Loading...</div>
+          <div className="w-full flex mx-auto">
+            <Button
+              size="xl"
+              colorScheme="blue"
+              variant="ghost"
+              loading={true}
+              className="!w-auto !bg-white dark:!bg-gray-800 !border !mx-auto !p-1 !rounded-full !cursor-default"
+            />
+          </div>
         )}
       </div>
     </HomeLayout>
