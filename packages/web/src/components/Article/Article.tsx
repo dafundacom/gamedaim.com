@@ -123,7 +123,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             )}
 
           <div>
-            {categories.map((category: any, i: number) => {
+            {categories?.map((category: any, i: number) => {
               return (
                 <ButtonGroup className="p-1" key={i}>
                   <Button
@@ -247,7 +247,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                   </Heading>
                 </div>
                 <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
-                  {posts.map((post: any) => {
+                  {posts?.map((post: any) => {
                     return (
                       <article
                         className="border-b-2 border-gray-200"

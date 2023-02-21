@@ -28,7 +28,6 @@ export default function Post() {
 
   const articleRef = React.useRef(null)
   const article: any = articleRef.current
-
   const postData = {
     content: getArticleBySlugData?.data?.article?.content,
     title: getArticleBySlugData?.data?.article?.title,
@@ -62,11 +61,13 @@ export default function Post() {
         </Head>
         <div className="flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto">
           <section className="w-full lg:w-8/12">
-            <Article
-              isMain={true}
-              posts={getArticlesData?.data?.articles}
-              postData={postData}
-            />
+            {getArticleBySlugData?.isSuccess && (
+              <Article
+                isMain={true}
+                posts={getArticlesData?.data?.articles}
+                postData={postData}
+              />
+            )}
             {/* {articles.map(
               (
                 post: {
