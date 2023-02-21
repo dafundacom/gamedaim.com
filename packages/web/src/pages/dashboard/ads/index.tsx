@@ -152,7 +152,7 @@ export default function AdsDashboard() {
                   </Tbody>
                 </Table>
                 {page && (
-                  <div className="flex justify-center items-center align-center mt-2 space-x-2">
+                  <div className="align-center mt-2 flex items-center justify-center space-x-2">
                     <>
                       {page !== 1 && (
                         <IconButton
@@ -178,7 +178,7 @@ export default function AdsDashboard() {
                 )}
               </>
             ) : (
-              <div className="flex items-center justify-center my-48">
+              <div className="my-48 flex items-center justify-center">
                 <Text size="4xl" as="h3" className="text-center font-bold">
                   Ads Not found
                 </Text>

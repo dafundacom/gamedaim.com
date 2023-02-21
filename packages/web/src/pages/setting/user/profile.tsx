@@ -214,7 +214,7 @@ export default function SettingUserProfile() {
                       src={selectedProfilePictureUrl}
                       fill
                       alt="Profile Picture"
-                      className="max-w-[200px] max-h-[200px] object-cover !relative rounded-sm border-2 border-gray-300 mt-2 cursor-pointer"
+                      className="!relative mt-2 max-h-[200px] max-w-[200px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
                       onClick={() => setOpenModal(true)}
                     />
                   </>
@@ -224,7 +224,7 @@ export default function SettingUserProfile() {
                     <Text
                       size="sm"
                       colorScheme="blue"
-                      className="text-center p-8 border-1 border-gray-200 rounded-md cursor-pointer max-w-xl"
+                      className="border-1 max-w-xl cursor-pointer rounded-md border-gray-200 p-8 text-center"
                       onClick={() => setOpenModal(true)}
                     >
                       Select Profile Picture
@@ -247,7 +247,7 @@ export default function SettingUserProfile() {
                 content={
                   <>
                     <MediaUpload />
-                    <div className="grid grid-cols-5 gap-3 my-3">
+                    <div className="my-3 grid grid-cols-5 gap-3">
                       {loadMedias.isFetching === false &&
                         loadedMedias.map(
                           (media: {
@@ -262,7 +262,7 @@ export default function SettingUserProfile() {
                                 src={media.url}
                                 alt={media.alt}
                                 fill
-                                className="max-w-[500px] max-h-[500px] object-cover !relative rounded-sm border-2 border-gray-300 cursor-pointer"
+                                className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
                                 onClick={(e) => {
                                   e.preventDefault()
                                   setSelectedProfilePictureId(media.id)

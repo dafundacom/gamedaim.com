@@ -38,7 +38,7 @@ export const MetadataPost = React.forwardRef<HTMLDivElement, MetadataPostProps>(
                 className="rounded-full object-cover"
               />
             )}
-            <div className="flex flex-col ml-[5px]">
+            <div className="ml-[5px] flex flex-col">
               <NextLink href={wpAuthorPathBySlug(authorSlug)}>
                 <Heading as="h4" className="ml-2 !text-base">
                   {authorName}
@@ -46,7 +46,7 @@ export const MetadataPost = React.forwardRef<HTMLDivElement, MetadataPostProps>(
               </NextLink>
               {date && (
                 <div>
-                  <MdAccessTime className="h-3 w-3 text-gray-700 dark:text-gray-200 inline-block" />
+                  <MdAccessTime className="inline-block h-3 w-3 text-gray-700 dark:text-gray-200" />
                   <time
                     className="ml-[6px] text-xs text-gray-700 dark:text-gray-200"
                     dateTime={date}

@@ -39,47 +39,47 @@ export const ActionDashboard = React.forwardRef<
     <div
       ref={ref}
       className={tx(
-        "flex items-center justify-center content-center text-center",
+        "flex content-center items-center justify-center text-center",
         className,
       )}
       {...rest}
     >
       {viewLink && (
         <NextLink href={viewLink} target="_blank">
-          <HiOutlineEye className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500" />
+          <HiOutlineEye className="hover:text-primary-500 mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110" />
         </NextLink>
       )}
 
       {onView && (
         <HiOutlineEye
-          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500"
+          className="hover:text-primary-500 mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110"
           onClick={onView}
         />
       )}
 
       {editLink && (
         <NextLink href={editLink}>
-          <HiOutlinePencil className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500" />
+          <HiOutlinePencil className="hover:text-primary-500 mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110" />
         </NextLink>
       )}
 
       {onEdit && (
         <HiOutlinePencil
-          className="mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110 hover:text-primary-500"
+          className="hover:text-primary-500 mr-2 w-4 transform cursor-not-allowed cursor-pointer hover:scale-110"
           onClick={onEdit}
         />
       )}
 
       {deleteLink && (
         <NextLink href={deleteLink}>
-          <HiOutlineTrash className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500" />
+          <HiOutlineTrash className="hover:text-primary-500 mr-2 w-4 transform cursor-pointer hover:scale-110" />
         </NextLink>
       )}
 
       {onDelete && (
         <>
           <HiOutlineTrash
-            className="mr-2 w-4 transform cursor-pointer hover:scale-110 hover:text-primary-500"
+            className="hover:text-primary-500 mr-2 w-4 transform cursor-pointer hover:scale-110"
             onClick={() => setOpenModal(true)}
           />
           <ModalDelete

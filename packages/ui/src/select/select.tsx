@@ -16,7 +16,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <select
         id={id}
         className={tx(
-          `bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-${colorScheme}-500 focus:border-${colorScheme}-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-${colorScheme}-500 dark:focus:border-${colorScheme}-500`,
+          `rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:ring-${colorScheme}-500 focus:border-${colorScheme}-500 block w-full p-2.5 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-${colorScheme}-500 dark:focus:border-${colorScheme}-500`,
           className,
         )}
         ref={ref}

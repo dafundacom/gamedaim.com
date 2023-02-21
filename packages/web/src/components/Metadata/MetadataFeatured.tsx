@@ -43,7 +43,7 @@ export const MetadataFeatured = React.forwardRef<
           <>
             <div className="flex flex-row items-center">
               <NextLink
-                className={`cursor-pointer line-clamp-1 hover:text-primary-400`}
+                className={`line-clamp-1 hover:text-primary-400 cursor-pointer`}
                 href={wpCategoryPathBySlug(primary.slug)}
               >
                 {categoryIcon && (
@@ -56,7 +56,7 @@ export const MetadataFeatured = React.forwardRef<
         )}
         <span className="ml-1 text-sm">&bull;</span>
         {date && (
-          <time className={`pl-1 text-sm line-clamp-1`} dateTime={date}>
+          <time className={`line-clamp-1 pl-1 text-sm`} dateTime={date}>
             {dayjs(date).fromNow()}
           </time>
         )}

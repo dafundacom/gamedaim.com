@@ -74,7 +74,7 @@ export default function UploadMediaDashboard() {
                   )}
                 </FormControl>
                 {/* {loading && ( */}
-                <div className="flex justify-center align-center">
+                <div className="align-center flex justify-center">
                   <Button variant="solid" loading={loading}>
                     Submit
                   </Button>

@@ -36,7 +36,7 @@ export const Modal: React.FunctionComponent<ModalProps> = (props) => {
             leaveFrom="transform scale-100"
             leaveTo="transform scale-95"
           >
-            <div className="relative mx-auto my-24 flex w-full flex-col rounded shadow-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 max-w-4xl">
+            <div className="relative mx-auto my-24 flex w-full max-w-4xl flex-col rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <header className="relative px-6 py-5 text-lg font-semibold">
                 {title}
               </header>

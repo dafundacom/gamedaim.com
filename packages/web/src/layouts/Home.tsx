@@ -30,8 +30,8 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
           <div
             className={`${
               isOpen == true &&
-              "!opacity-100 md:!opacity-0 !translate-x-0 md:!-translate-x-full"
-            } -translate-x-full md:translate-x-0 transition-[transform] ease-in-out delay-150 border-r border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 !z-20 fixed pt-20 top-0 overflow-x-auto h-full opacity-0 md:opacity-100 flex flex-row w-[250px] scrollbar`}
+              "!translate-x-0 !opacity-100 md:!-translate-x-full md:!opacity-0"
+            } scrollbar fixed top-0 !z-20 flex h-full w-[250px] -translate-x-full flex-row overflow-x-auto border-r border-gray-100 bg-white pt-20 opacity-0 transition-[transform] delay-150 ease-in-out dark:border-gray-700 dark:bg-gray-900 md:translate-x-0 md:opacity-100`}
           >
             <SideNav primaryMenus={primaryMenus} />
           </div>
@@ -39,19 +39,19 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
             onClick={onToggle}
             className={`${
               isOpen == true && "!block md:!hidden"
-            } hidden bg-black z-[19] opacity-80 transition-all w-full top-0 bottom-0 fixed`}
+            } fixed top-0 bottom-0 z-[19] hidden w-full bg-black opacity-80 transition-all`}
           />
         </div>
         <div
           id="container"
-          className={`flex w-full mt-20 ${
+          className={`mt-20 flex w-full ${
             isOpen == true && "md:!pl-[0]"
-          } md:pl-[250px] transition-[padding] ease-in-out delay-150`}
+          } transition-[padding] delay-150 ease-in-out md:pl-[250px]`}
         >
           {children}
         </div>
         <Footer
-          className={`md:pl-[250px] transition-[padding] ease-in-out delay-150 ${
+          className={`transition-[padding] delay-150 ease-in-out md:pl-[250px] ${
             isOpen == true && "md:!pl-[0]"
           }`}
         />

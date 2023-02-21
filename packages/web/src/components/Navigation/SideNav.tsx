@@ -39,8 +39,8 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
       }
     }
     return (
-      <nav className="flex w-full flex-col w-56 relative" ref={ref}>
-        <ul className="flex flex-col p-4 border-b border-gray-100 dark:border-gray-700">
+      <nav className="relative flex w-full w-56 flex-col" ref={ref}>
+        <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
           {data?.menu &&
             data?.menu.map((menu: { url: string; label: string }) => {
               //   const domainUrl = `https://${env.DOMAIN}`
@@ -62,9 +62,9 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
                 <li key={menu.label}>
                   <NextLink
                     href={`/${fullUrl ? slicedUrl : menu.url}`}
-                    className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+                    className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
                   >
-                    <Text className="font-bold hover:text-primary-400 !inline-flex items-center">
+                    <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
                       {icon} {menu.label}
                     </Text>
                   </NextLink>
