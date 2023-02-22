@@ -43,7 +43,7 @@ export default function User() {
   console.log(user?.data)
   return (
     <HomeLayout>
-      <div className="mt-[70px] h-screen w-full mx-4 px-4 rounded">
+      <div className="mx-4 mt-[70px] h-screen w-full rounded px-4">
         {user !== undefined ? (
           <>
             <NextSeo
@@ -64,12 +64,12 @@ export default function User() {
                   alt={user?.data?.name}
                   width={400}
                   height={400}
-                  className="rounded-full aspect-[1/1] max-w-[unset] w-[150px] lg:!w-[200px] object-cover"
+                  className="aspect-[1/1] w-[150px] max-w-[unset] rounded-full object-cover lg:!w-[200px]"
                 />
               </div>
               <div className="flex flex-col items-center space-y-2">
                 <Heading>{user?.data?.name}</Heading>
-                <div className="rounded p-2 bg-primary-500 text-white inline-block">
+                <div className="bg-primary-500 inline-block rounded p-2 text-white">
                   {user?.data?.email}
                 </div>
                 <Text>{dayjs(user?.data?.createdAt).format("DD/MM/YYYY")}</Text>
@@ -78,13 +78,13 @@ export default function User() {
             </div>
           </>
         ) : (
-          <div className="w-full flex mx-auto">
+          <div className="mx-auto flex w-full">
             <Button
               size="xl"
               colorScheme="blue"
               variant="ghost"
               loading={true}
-              className="!w-auto !bg-white dark:!bg-gray-800 !border !mx-auto !p-1 !rounded-full !cursor-default"
+              className="!mx-auto !w-auto !cursor-default !rounded-full !border !bg-white !p-1 dark:!bg-gray-800"
             />
           </div>
         )}
