@@ -13,11 +13,36 @@ enum UserRole {
   ADMIN
 }
 
-enum ArticleStatus {
+enum PostStatus {
   PUBLISHED
   DRAFT
   REJECTED
   IN_REVIEW
+}
+
+enum DownloadSchema {
+  GameApp
+  BusinessApp
+  MultimediaApp
+  MobileApp
+  WebApp
+  SocialNetworkingApp
+  TravelApp
+  ShoppingApp
+  SportsApp
+  LifeStyleApp
+  DesignApp
+  DeveloperApp
+  DriverApp
+  EducationalApp
+  HealthApp
+  FinanceApp
+  SecurityApp
+  BrowserApp
+  CommunicationApp
+  HomeApp
+  UtilitiesApp
+  RefereceApp
 }
 
 enum AdPosition {
@@ -28,46 +53,48 @@ enum AdPosition {
 }
 
 model User {
-  id               String    @id @unique @default(uuid())
-  email            String    @unique
-  username         String    @unique
+  id               String      @id @unique @default(uuid())
+  email            String      @unique
+  username         String      @unique
   name             String?
   phoneNumber      String?
   profilePictureId String?
-  profilePicture   Media?    @relation(name: "UserProfilePictures", fields: [profilePictureId], references: [id])
+  profilePicture   Media?      @relation(name: "UserProfilePictures", fields: [profilePictureId], references: [id])
   about            String?
   password         String
   meta_title       String?
   meta_description String?
-  role             UserRole  @default(USER)
-  articles         Article[] @relation("ArticleAuthors")
-  topics           Topic[]   @relation("TopicAuthors")
-  medias           Media[]   @relation("MediaAuthors")
-  comments         Comment[] @relation("CommentAuthors")
-  wpComments       WpComment[]   @relation("WpCommentAuthors")
-  ads              Ad[]      @relation("AdAuthors")
-  scripts          Script[]      @relation("ScriptAuthors")
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  role             UserRole    @default(USER)
+  articles         Article[]   @relation("ArticleAuthors")
+  topics           Topic[]     @relation("TopicAuthors")
+  medias           Media[]     @relation("MediaAuthors")
+  games            Game[]      @relation("GameAuthors")
+  gameFiles        GameFile[]  @relation("GameFileAuthors")
+  comments         Comment[]   @relation("CommentAuthors")
+  wpComments       WpComment[] @relation("WpCommentAuthors")
+  ads              Ad[]        @relation("AdAuthors")
+  scripts          Script[]    @relation("ScriptAuthors")
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 }
 
 model Article {
-  id               String        @id @unique @default(uuid())
+  id               String     @id @unique @default(uuid())
   title            String
   content          String
   excerpt          String
-  slug             String        @unique
+  slug             String     @unique
   meta_title       String?
   meta_description String?
-  author           User          @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
+  author           User       @relation(name: "ArticleAuthors", fields: [authorId], references: [id])
   authorId         String
-  topics           Topic[]       @relation(name: "ArticleTopics")
-  comments         Comment[]     @relation(name: "ArticleComments")
+  topics           Topic[]    @relation(name: "ArticleTopics")
+  comments         Comment[]  @relation(name: "ArticleComments")
   featuredImageId  String
-  featuredImage    Media         @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
-  status           ArticleStatus @default(PUBLISHED)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  featuredImage    Media      @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
+  status           PostStatus @default(PUBLISHED)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
 }
 
 model Topic {
@@ -82,24 +109,27 @@ model Topic {
   author           User      @relation(name: "TopicAuthors", fields: [authorId], references: [id])
   authorId         String
   articles         Article[] @relation(name: "ArticleTopics")
+  games            Game[]    @relation(name: "GameTopics")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
 
 model Media {
-  id          String    @id @unique @default(uuid())
-  name        String    @unique
-  url         String    @unique
+  id          String     @id @unique @default(uuid())
+  name        String     @unique
+  url         String     @unique
   type        String
   description String?
   alt         String?
-  author      User      @relation(name: "MediaAuthors", fields: [authorId], references: [id])
+  author      User       @relation(name: "MediaAuthors", fields: [authorId], references: [id])
   authorId    String
-  articles    Article[] @relation(name: "ArticleFeaturedImages")
-  topics      Topic[]   @relation(name: "TopicFeaturedImages")
-  users       User[]    @relation(name: "UserProfilePictures")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  articles    Article[]  @relation(name: "ArticleFeaturedImages")
+  games       Game[]     @relation(name: "GameFeaturedImages")
+  gameFiles   GameFile[] @relation(name: "GameFileFeaturedImages")
+  topics      Topic[]    @relation(name: "TopicFeaturedImages")
+  users       User[]     @relation(name: "UserProfilePictures")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Comment {
@@ -107,6 +137,8 @@ model Comment {
   content   String
   articles  Article  @relation(name: "ArticleComments", fields: [articleId], references: [id])
   articleId String
+  games     Game     @relation(name: "GameComments", fields: [gameId], references: [id])
+  gameId    String
   author    User     @relation(name: "CommentAuthors", fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime @default(now())
@@ -114,13 +146,59 @@ model Comment {
 }
 
 model WpComment {
-  id          String @id @unique @default(uuid())
-  content     String
-  wpPostId    String @unique
-  author      User      @relation(name: "WpCommentAuthors", fields: [authorId], references: [id])
-  authorId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @unique @default(uuid())
+  content   String
+  wpPostId  String   @unique
+  author    User     @relation(name: "WpCommentAuthors", fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id               String         @id @unique @default(uuid())
+  title            String
+  content          String
+  excerpt          String
+  slug             String         @unique
+  meta_title       String?
+  meta_description String?
+  topics           Topic[]        @relation(name: "GameTopics")
+  comments         Comment[]      @relation(name: "GameComments")
+  gameFiles        GameFile[]     @relation(name: "GameFilesToGame")
+  featuredImageId  String
+  featuredImage    Media          @relation(name: "GameFeaturedImages", fields: [featuredImageId], references: [id])
+  author           User           @relation(name: "GameAuthors", fields: [authorId], references: [id])
+  authorId         String
+  developer        String
+  version          String
+  operationSystem  String
+  license          String
+  officialWeb      String
+  schemaType       DownloadSchema @default(GameApp)
+  status           PostStatus     @default(PUBLISHED)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model GameFile {
+  id               String   @id @unique @default(uuid())
+  title            String
+  slug             String   @unique
+  meta_title       String?
+  meta_description String?
+  featuredImageId  String
+  featuredImage    Media    @relation(name: "GameFileFeaturedImages", fields: [featuredImageId], references: [id])
+  author           User     @relation(name: "GameFileAuthors", fields: [authorId], references: [id])
+  authorId         String
+  games            Game[]   @relation(name: "GameFilesToGame")
+  version          String
+  downloadLink     String
+  fileSize         String
+  currency         String
+  price            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Ad {
@@ -136,19 +214,19 @@ model Ad {
 }
 
 model Script {
-  id        String     @id @unique @default(uuid())
-  title     String     @unique
+  id        String   @id @unique @default(uuid())
+  title     String   @unique
   content   String
-  active    Boolean    @default(false)
-  author    User       @relation(name: "ScriptAuthors", fields: [authorId], references: [id])
+  active    Boolean  @default(false)
+  author    User     @relation(name: "ScriptAuthors", fields: [authorId], references: [id])
   authorId  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Setting {
-  id        String     @id @unique @default(uuid())
-  key       String     @unique
+  id        String   @id @unique @default(uuid())
+  key       String   @unique
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
