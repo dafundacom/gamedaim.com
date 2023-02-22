@@ -13,6 +13,8 @@ import adRoutes from "./modules/ad/ad.route"
 import userRoutes from "./modules/user/user.route"
 import articleRoutes from "./modules/article/article.route"
 import commentRoutes from "./modules/comment/comment.route"
+import downloadRoutes from "./modules/download/download.route"
+import downloadFileRoutes from "./modules/download-file/download-file.route"
 import topicRoutes from "./modules/topic/topic.route"
 import mediaRoutes from "./modules/media/media.route"
 import scriptRoutes from "./modules/script/script.route"
@@ -20,6 +22,8 @@ import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
 import settingRoutes from "./modules/setting/setting.route"
 import { adSchemas } from "./modules/ad/ad.schema"
 import { commentSchemas } from "./modules/comment/comment.schema"
+import { downloadSchemas } from "./modules/download/download.schema"
+import { downloadFileSchemas } from "./modules/download-file/download-file.schema"
 import { userSchemas } from "./modules/user/user.schema"
 import { articleSchemas } from "./modules/article/article.schema"
 import { mediaSchemas } from "./modules/media/media.schema"
@@ -80,6 +84,8 @@ function buildServer() {
     ...userSchemas,
     ...articleSchemas,
     ...commentSchemas,
+    ...downloadSchemas,
+    ...downloadFileSchemas,
     ...mediaSchemas,
     ...scriptSchemas,
     ...topicSchemas,
@@ -97,8 +103,8 @@ function buildServer() {
       staticCSP: true,
       openapi: {
         info: {
-          title: "Gamedaim API",
-          description: "Gamedaim API",
+          title: "Downloaddaim API",
+          description: "Downloaddaim API",
           version,
         },
       },
@@ -117,6 +123,8 @@ function buildServer() {
   server.register(userRoutes, { prefix: "api/user" })
   server.register(articleRoutes, { prefix: "api/article" })
   server.register(commentRoutes, { prefix: "api/comment" })
+  server.register(downloadRoutes, { prefix: "api/download" })
+  server.register(downloadFileRoutes, { prefix: "api/download-file" })
   server.register(topicRoutes, { prefix: "api/topic" })
   server.register(mediaRoutes, { prefix: "api/media" })
   server.register(scriptRoutes, { prefix: "api/script" })
