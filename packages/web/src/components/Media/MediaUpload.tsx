@@ -61,7 +61,7 @@ export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
                   <FormErrorMessage>{errors.file.message}</FormErrorMessage>
                 )}
               </FormControl>
-              <div className="flex justify-center align-center">
+              <div className="align-center flex justify-center">
                 <Button variant="solid" loading={loading}>
                   Submit
                 </Button>

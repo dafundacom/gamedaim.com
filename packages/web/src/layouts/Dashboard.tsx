@@ -12,35 +12,35 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
   const { children, ...rest } = props
   const [open, setOpen] = React.useState(false)
   return (
-    <div className="flex relative h-screen flex-col flex-wrap" {...rest}>
+    <div className="relative flex h-screen flex-col flex-wrap" {...rest}>
       <div
         className={`${
           open ? "max-lg:!translate-x-0" : null
-        } w-[250px] max-lg:w-[250px] w-3/12 z-[99] transition-[transform] h-full max-lg:fixed max-lg:-translate-x-full`}
+        } z-[99] h-full w-[250px] w-3/12 transition-[transform] max-lg:fixed max-lg:w-[250px] max-lg:-translate-x-full`}
       >
         <SidebarDashboard />
       </div>
-      <div className="px-3 max-lg:w-full w-9/12 transition-all">{children}</div>
-      <div className="flex lg:hidden py-3 items-center justify-around fixed bottom-0 inset-x-0 bg-white border-t z-[9999] dark:bg-gray-800">
+      <div className="w-9/12 px-3 transition-all max-lg:w-full">{children}</div>
+      <div className="fixed inset-x-0 bottom-0 z-[9999] flex items-center justify-around border-t bg-white py-3 dark:bg-gray-800 lg:hidden">
         <NextLink
-          className="h-12 text-center cursor-pointer text-gray-800 flex flex-col items-center justify-around basis-1/3"
+          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-gray-800"
           href="/dashboard"
         >
           <Button
             variant="ghost"
-            className="items-center justify-around flex-col h-12 !rounded"
+            className="h-12 flex-col items-center justify-around !rounded"
           >
             <MdDashboard />
             Dashboard
           </Button>
         </NextLink>
         <NextLink
-          className="h-12 text-center cursor-pointer text-gray-800 flex flex-col items-center justify-around basis-1/3"
+          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-gray-800"
           href="/dashboard/articles"
         >
           <Button
             variant="ghost"
-            className="items-center justify-around flex-col h-12 !rounded"
+            className="h-12 flex-col items-center justify-around !rounded"
           >
             <MdArticle />
             Articles
@@ -49,7 +49,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
         <Button
           variant="ghost"
           onClick={() => setOpen((prev) => !prev)}
-          className="h-12 text-center flex-col cursor-pointer text-gray-800 flex items-center justify-around basis-1/3 !rounded"
+          className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around !rounded text-center text-gray-800"
         >
           <MdMenu />
           More

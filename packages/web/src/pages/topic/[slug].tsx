@@ -36,14 +36,14 @@ export default function Topic() {
       <HomeLayout>
         {getTopicBySlugData?.isSuccess === true && (
           <section className="flex w-full flex-col">
-            <div className="flex py-10 mb-10 flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] relative">
+            <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
               <div className="absolute top-1">
                 <nav className="ml-2 flex" aria-label="Breadcrumb">
                   <ol className="inline-flex items-center text-white">
                     <li className="inline-flex items-center">
                       <NextLink
                         href="/"
-                        className="inline-flex items-center text-sm font-medium text-white dark:text-gray-400 dark:hover:text-white after:inline-block after:not-italic after:font-normal after:ml-2 after:mr-2 after:align-top after:content-['>']"
+                        className="inline-flex items-center text-sm font-medium text-white after:ml-2 after:mr-2 after:inline-block after:align-top after:font-normal after:not-italic after:content-['>'] dark:text-gray-400 dark:hover:text-white"
                       >
                         Home
                       </NextLink>
@@ -64,8 +64,8 @@ export default function Topic() {
                 </Heading>
               </div>
             </div>
-            <div className="mx-auto w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] flex flex-row lg:mx-auto lg:px-4">
-              <div className="w-full px-4 flex flex-col lg:mr-4">
+            <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
+              <div className="flex w-full flex-col px-4 lg:mr-4">
                 {getTopicBySlugData?.data?.topic?.articles.map(
                   (post: {
                     id: string
@@ -98,11 +98,11 @@ export default function Topic() {
                   },
                 )}
               </div>
-              <aside className="w-4/12 px-4 hidden lg:block">
-                <div className="rounded-xl border border-gray-100 dark:border-gray-700 p-4 sticky top-8">
+              <aside className="hidden w-4/12 px-4 lg:block">
+                <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">
                   <div className="mb-4">
                     <Heading as="h4" className="!text-transparent">
-                      <span className="after:absolute after:border after:border-[#1e3799] after:bg-[#1e3799] after:h-[3px] after:w-[50px] after:ml-[-25px] after:left-1/2 after:top-[40px]">
+                      <span className="after:absolute after:left-1/2 after:top-[40px] after:ml-[-25px] after:h-[3px] after:w-[50px] after:border after:border-[#1e3799] after:bg-[#1e3799]">
                         Trending
                       </span>
                     </Heading>

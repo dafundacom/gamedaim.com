@@ -13,12 +13,12 @@ export const ArticleDashboardLayout: React.FunctionComponent<
 
   return (
     <div className="flex h-screen flex-row flex-wrap" {...rest}>
-      <div className="w-full md:px-64 lg:w-10/12 order-1">{children}</div>
+      <div className="order-1 w-full md:px-64 lg:w-10/12">{children}</div>
       <div
         className={`${
           isOpen == false
             ? "hidden"
-            : "border-l border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 z-20 fixed pt-20 top-0 overflow-x-auto h-full opacity-100 flex flex-row mt-16 right-0"
+            : "fixed top-0 right-0 z-20 mt-16 flex h-full flex-row overflow-x-auto border-l border-gray-100 bg-white pt-20 opacity-100 dark:border-gray-700 dark:bg-gray-900"
         } `}
       >
         {sidebar}

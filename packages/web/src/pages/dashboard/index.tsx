@@ -159,7 +159,7 @@ export default function Dashboard() {
             <Heading size="3xl" as="h2">
               Statistics
             </Heading>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-8">
+            <div className="my-8 grid grid-cols-2 gap-3 md:grid-cols-5">
               {getCounts[1].isSuccess && (
                 <BoxDashboard
                   icon={<MdOutlineArticle className="h-5 w-5" />}

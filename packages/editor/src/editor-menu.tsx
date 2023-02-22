@@ -65,7 +65,7 @@ export function EditorMenu(props: any) {
     <>
       {editor && (
         <BubbleMenu
-          className="flex w-full space-x-2 bg-white dark:bg-gray-700 p-1 rounded-lg shadow-sm border border-gray-100 dark:border-gray-300"
+          className="flex w-full space-x-2 rounded-lg border border-gray-100 bg-white p-1 shadow-sm dark:border-gray-300 dark:bg-gray-700"
           tippyOptions={{ duration: 100 }}
           editor={editor}
         >
@@ -145,7 +145,7 @@ export function EditorMenu(props: any) {
               <div
                 className={`${
                   showMenu == true ? "flex" : "hidden"
-                } flex-col justify-start items-start transition-all space-y-2 space-x-2 px-3 w-full bg-white dark:bg-gray-700 py-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-300`}
+                } w-full flex-col items-start justify-start space-y-2 space-x-2 rounded-lg border border-gray-100 bg-white px-3 py-3 shadow-sm transition-all dark:border-gray-300 dark:bg-gray-700`}
               >
                 <Button
                   className="ml-2 mt-2"

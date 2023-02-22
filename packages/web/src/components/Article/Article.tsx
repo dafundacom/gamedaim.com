@@ -108,7 +108,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     }, [article])
     return (
       <>
-        <article id={postData.slug} ref={ref} className="px-4 article-divider">
+        <article id={postData.slug} ref={ref} className="article-divider px-4">
           {loadingAd === true &&
             ad.length > 0 &&
             adPopup.length > 0 &&
@@ -165,7 +165,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImageAlt}
-                className={`rounded-lg object-cover img-skeleton`}
+                className={`img-skeleton rounded-lg object-cover`}
                 src={featuredImageUrl}
               />
               {featuredImageCaption && (
@@ -186,7 +186,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adAbove.length > 0 &&
                 adAbove.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
+                    <div className="my-2 rounded p-2">{parse(ad?.content)}</div>
                   )
                 })}
               {parse(firstHalf)}
@@ -195,7 +195,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adInline.length > 0 &&
                 adInline.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
+                    <div className="my-2 rounded p-2">{parse(ad?.content)}</div>
                   )
                 })}
               {parse(secondHalf)}
@@ -204,12 +204,12 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 adBelow.length > 0 &&
                 adBelow.map((ad: { content: string }) => {
                   return (
-                    <div className="p-2 my-2 rounded">{parse(ad?.content)}</div>
+                    <div className="my-2 rounded p-2">{parse(ad?.content)}</div>
                   )
                 })}
             </section>
           </div>
-          <section className="mx-4 md:mx-12 my-6" id="tag">
+          <section className="mx-4 my-6 md:mx-12" id="tag">
             {tags &&
               tags.map((tag: { slug: string; name: string }, i: number) => {
                 return (
@@ -235,13 +235,13 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 <div className="mb-2">
                   <Heading
                     as="h4"
-                    className="border-b-4 !text-primary-400 border-primary-400"
+                    className="!text-primary-400 border-primary-400 border-b-4"
                   >
                     Related Posts
                   </Heading>
                 </div>
-                <div className="grid grid-cols-[repeat(1,1fr)] md:grid-cols-2 gap-4">
-                  {posts?.map((post: any) => {
+                <div className="grid grid-cols-[repeat(1,1fr)] gap-4 md:grid-cols-2">
+                  {posts.map((post: any) => {
                     return (
                       <article
                         className="border-b-2 border-gray-200"
@@ -252,7 +252,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                         >
                           <Text
                             size="lg"
-                            className="font-semibold hover:text-primary-400"
+                            className="hover:text-primary-400 font-semibold"
                           >
                             {post.title}
                           </Text>

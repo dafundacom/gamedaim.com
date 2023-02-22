@@ -19,7 +19,7 @@ export const PostCardFeatured = React.forwardRef<
   return (
     <>
       <article
-        className="post-card-thumbnail whitspace-normal relative h-full rounded-xl overflow-hidden"
+        className="post-card-thumbnail whitspace-normal relative h-full overflow-hidden rounded-xl"
         {...props}
         ref={ref}
       >
@@ -33,7 +33,7 @@ export const PostCardFeatured = React.forwardRef<
                 priority={true}
                 height={500}
                 width={600}
-                className="!w-auto rounded-md aspect-[8/16] md:!aspect-[9/16] object-cover !h-[300px] transition-all"
+                className="aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
                 src={image}
                 onLoadingComplete={() => {
                   setImage(featuredImage?.sourceUrl)
@@ -43,10 +43,10 @@ export const PostCardFeatured = React.forwardRef<
             </div>
           </NextLink>
         </div>
-        <div className="featured-meta absolute bottom-0 left-0 z-[7] w-full p-[20px] min-[992px]:p-[25px] md:py-5 md:px-4">
+        <div className="featured-meta absolute bottom-0 left-0 z-[7] w-full p-[20px] md:py-5 md:px-4 min-[992px]:p-[25px]">
           <NextLink href={uri}>
             <h3
-              className={`text-xl font-bold !leading-[1.3] !text-white line-clamp-4 hover:text-primary-400 dark:text-gray-100`}
+              className={`line-clamp-4 hover:text-primary-400 text-xl font-bold !leading-[1.3] !text-white dark:text-gray-100`}
             >
               {title}
             </h3>
@@ -93,12 +93,12 @@ export const ListPostFeatured = (props: { featured: any }) => {
   }
 
   return (
-    <div className="mx-auto max-[991px]:px-4 w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px] relative">
+    <div className="relative mx-auto w-full min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">
       <Button
         onClick={handlePrevClick}
         id="prev"
         variant="outline"
-        className={`${arrowClass} ${prevDisplay} left-0 hidden top-[50%] translate-x-2/4 -translate-y-2/4	!z-[8]`}
+        className={`${arrowClass} ${prevDisplay} left-0 top-[50%] !z-[8] hidden translate-x-2/4	-translate-y-2/4`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
         onClick={handleNextClick}
         id="next"
         variant="outline"
-        className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] -translate-y-2/4	translate-x-2/4 !z-[8]`}
+        className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] !z-[8]	-translate-y-2/4 translate-x-2/4`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +128,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
       </Button>
       <div
         ref={contentRef}
-        className="mb-4 block h-auto min-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-3 scrollbarhide scrollbar relative"
+        className="scrollbarhide scrollbar relative mb-4 block h-auto min-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-3"
       >
         {featured.map((featuredItem: any, i: number) => {
           return (

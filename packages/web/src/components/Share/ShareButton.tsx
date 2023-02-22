@@ -46,7 +46,7 @@ export const ShareButton = React.forwardRef<HTMLDivElement, ShareButtonProps>(
           <IconButton
             variant={variant}
             colorScheme={colorScheme}
-            className={`${additionalClassName} mb-0 h-12 w-12 md:!mb-1 !h-10`}
+            className={`${additionalClassName} mb-0 h-12 !h-10 w-12 md:!mb-1`}
           >
             {icon}
           </IconButton>

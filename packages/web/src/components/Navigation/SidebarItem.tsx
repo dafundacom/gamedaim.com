@@ -30,7 +30,7 @@ export const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(
           </NextLink>
         ) : (
           <div
-            className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer"
+            className="flex cursor-pointer items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             onClick={onClick}
           >
             {icon}
