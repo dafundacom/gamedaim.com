@@ -17,6 +17,7 @@ const nextConfig = {
       "gamedaim.sg-sin1.upcloudobjects.com",
       "caragame.id",
       "secure.gravatar.com",
+      "dev-assets.gamedaim.com",
       "i.postimg.cc",
     ],
   },

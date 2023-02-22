@@ -159,7 +159,7 @@ export default function UsersDashboard() {
                             <Td>{dayjs(user.createdAt).fromNow()}</Td>
                             <Td align="right">
                               <ActionDashboard
-                                viewLink={`/user/${user.slug}`}
+                                viewLink={`/user/${user.id}`}
                                 onDelete={() => mutationDelete.mutate(user)}
                                 editLink={`/dashboard/users/${user.id}`}
                               />
