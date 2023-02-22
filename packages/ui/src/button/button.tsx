@@ -84,7 +84,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               loadingText ? "relative" : "absolute",
               loadingText ? `mr-2` : "mr-0",
             )}
-            size="sm"
+            size="md"
           />
         )}
         {loading
