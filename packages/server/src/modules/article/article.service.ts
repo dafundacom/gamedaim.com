@@ -196,6 +196,18 @@ export async function updateArticle(
   })
 }
 
+export async function searchArticles(searchArticleQuery: string) {
+  return db.article.findMany({
+    where: {
+      OR: [
+        { title: { contains: searchArticleQuery } },
+        { content: { contains: searchArticleQuery } },
+        { slug: { contains: searchArticleQuery } },
+      ],
+    },
+  })
+}
+
 export async function deleteArticleById(articleId: string) {
   return db.article.delete({
     where: {

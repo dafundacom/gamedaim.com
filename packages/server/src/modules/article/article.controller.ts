@@ -12,6 +12,7 @@ import {
   findArticleByAuthorId,
   findArticleBySlug,
   getTotalArticles,
+  searchArticles,
 } from "./article.service"
 import { trimText } from "../../utils/trim"
 
@@ -82,6 +83,21 @@ export async function getArticlesHandler(
     const articles = await getArticles(articlePage, perPage)
     return reply.code(201).send(articles)
   } catch (e) {
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchArticlesHandler(
+  request: FastifyRequest<{ Params: { searchArticleQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchArticleQuery
+
+    const articles = await searchArticles(searchQuery)
+    return reply.code(201).send(articles)
+  } catch (e) {
+    console.log(e)
     return reply.code(500).send(e)
   }
 }

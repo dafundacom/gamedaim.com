@@ -8,6 +8,7 @@ import {
   getComments,
   updateComment,
   getTotalComments,
+  searchComments,
 } from "./comment.service"
 
 export async function createCommentHandler(
@@ -100,6 +101,21 @@ export async function getCommentsHandler(
     const perPage = 10
     const commentPage = Number(request.params.commentPage || 1)
     const comments = await getComments(commentPage, perPage)
+    return reply.code(201).send(comments)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchCommentsHandler(
+  request: FastifyRequest<{ Params: { searchCommentQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchCommentQuery
+
+    const comments = await searchComments(searchQuery)
     return reply.code(201).send(comments)
   } catch (e) {
     console.log(e)

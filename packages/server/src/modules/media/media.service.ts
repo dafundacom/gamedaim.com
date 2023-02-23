@@ -93,6 +93,18 @@ export async function updateMedia(mediaId: string, data: UploadMediaInput) {
   })
 }
 
+export async function searchMedias(searchMediaQuery: string) {
+  return db.media.findMany({
+    where: {
+      OR: [
+        { name: { contains: searchMediaQuery } },
+        { description: { contains: searchMediaQuery } },
+        { alt: { contains: searchMediaQuery } },
+      ],
+    },
+  })
+}
+
 export async function deleteMediaById(mediaId: string) {
   return db.media.delete({
     where: {

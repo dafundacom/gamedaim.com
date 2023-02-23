@@ -15,6 +15,7 @@ import {
   findDownloadFileByAuthorId,
   findDownloadFileBySlug,
   getTotalDownloadFiles,
+  searchDownloadFiles,
 } from "./download-file.service"
 
 export async function createDownloadFileHandler(
@@ -132,8 +133,6 @@ export async function updateDownloadFileHandler(
 
     const updatedDownloadFile = await updateDownloadFile(downloadFileId, {
       title,
-      content,
-      excerpt,
       meta_title,
       meta_description,
       slug,
@@ -204,6 +203,21 @@ export async function getDownloadFileByAuthorIdHandler(
       perPage,
     )
     return reply.code(201).send(downloadFile)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchDownloadFilesHandler(
+  request: FastifyRequest<{ Params: { searchDownloadFileQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchDownloadFileQuery
+
+    const downloadFiles = await searchDownloadFiles(searchQuery)
+    return reply.code(201).send(downloadFiles)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

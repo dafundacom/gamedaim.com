@@ -13,6 +13,7 @@ import {
   deleteMediaById,
   getMedias,
   getTotalMedias,
+  searchMedias,
 } from "./media.service"
 import { UpdateMediaInput } from "./media.schema"
 
@@ -158,6 +159,21 @@ export async function getMediasHandler(
     const mediaPage = Number(request.params.mediaPage || 1)
 
     const medias = await getMedias(mediaPage, perPage)
+    return reply.code(201).send(medias)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchMediasHandler(
+  request: FastifyRequest<{ Params: { searchMediaQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchMediaQuery
+
+    const medias = await searchMedias(searchQuery)
     return reply.code(201).send(medias)
   } catch (e) {
     console.log(e)

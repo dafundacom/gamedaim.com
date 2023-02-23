@@ -6,6 +6,7 @@ import {
   getCommentsHandler,
   getCommentByIdHandler,
   getTotalCommentsHandler,
+  searchCommentsHandler,
 } from "./comment.controller"
 
 import { $ref } from "./comment.schema"
@@ -36,6 +37,19 @@ async function commentRoutes(server: FastifyInstance) {
     },
 
     getCommentsHandler,
+  )
+
+  server.get(
+    "/search/:searchCommentQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("commentsResponseSchema"),
+        },
+      },
+    },
+
+    searchCommentsHandler,
   )
 
   server.get(

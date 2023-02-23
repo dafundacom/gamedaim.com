@@ -10,6 +10,7 @@ import {
   getDownloadByTypeHandler,
   getDownloadByAuthorIdHandler,
   getTotalDownloadsHandler,
+  searchDownloadsHandler,
 } from "./download.controller"
 import { $ref } from "./download.schema"
 
@@ -39,6 +40,19 @@ async function downloadRoutes(server: FastifyInstance) {
     },
 
     getDownloadsHandler,
+  )
+
+  server.get(
+    "/search/:searchDownloadQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("downloadsResponseSchema"),
+        },
+      },
+    },
+
+    searchDownloadsHandler,
   )
 
   server.get(
