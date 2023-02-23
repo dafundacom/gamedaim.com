@@ -2,19 +2,10 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import NextImage from "next/image"
 import env from "@/env"
-import { Button, Heading, IconButton, Text } from "@/../../ui"
-import {
-  FaWindows,
-  FaApple,
-  FaLinux,
-  FaAndroid,
-  FaAppleAlt,
-  FaXbox,
-  FaPlaystation,
-} from "react-icons/fa"
-import { SiNintendoswitch } from "react-icons/si"
+import NextLink from "next/link"
+import { ListDownload } from "@/components/Download/List/ListDownload"
+import { Button, ChevronDownIcon, Heading } from "@/../../ui"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
@@ -156,59 +147,37 @@ export default function Download() {
       ],
     },
   ]
-  function getIconSistemOperasi(sistemOperasi: string) {
-    switch (sistemOperasi) {
-      case "Windows":
-        return <FaWindows />
-      case "macOS":
-        return <FaApple />
-      case "Linux":
-        return <FaLinux />
-      case "Android":
-        return <FaAndroid />
-      case "iOS":
-        return <FaAppleAlt />
-      case "Xbox One":
-        return <FaXbox />
-      case "PlayStation 4":
-        return <FaPlaystation />
-      case "Nintendo Switch":
-        return <SiNintendoswitch />
-      default:
-        return <FaWindows />
-    }
-  }
-  const [prevDisplay, setPrevDisplay] = React.useState("md:!hidden")
-  const [nextDisplay, setNextDisplay] = React.useState("md:!flex")
-  const arrowClass =
-    "!hidden justify-center content-center bg-white p-2 cursor-pointer !absolute !rounded-full"
+  const daftarGames = [
+    {
+      judul: "Red Dead Redemption 2",
+      link: "https://example.com/red-dead-redemption-2",
+    },
+    {
+      judul: "The Legend of Zelda: Breath of the Wild",
+      link: "https://example.com/breath-of-the-wild",
+    },
+    { judul: "Grand Theft Auto V", link: "https://example.com/gta-v" },
+    {
+      judul: "Super Mario Odyssey",
+      link: "https://example.com/super-mario-odyssey",
+    },
+    { judul: "Minecraft", link: "https://example.com/minecraft" },
+    {
+      judul: "The Witcher 3: Wild Hunt",
+      link: "https://example.com/witcher-3",
+    },
+    { judul: "Overwatch", link: "https://example.com/overwatch" },
+    { judul: "Fortnite", link: "https://example.com/fortnite" },
+    {
+      judul: "League of Legends",
+      link: "https://example.com/league-of-legends",
+    },
+    { judul: "Among Us", link: "https://example.com/among-us" },
+  ]
+  const [isOpen, setIsOpen] = React.useState(false)
 
-  const contentRef: any = React.useRef(null)
-
-  const content: any = contentRef.current
-  function handleNextClick() {
-    if (content) {
-      content.scrollBy(250, 0)
-      if (content.scrollLeft > 190) {
-        setPrevDisplay("md:!flex")
-      }
-      if (
-        content.scrollLeft >=
-        content.scrollWidth - content.offsetWidth - 200
-      ) {
-        setNextDisplay("md:!hidden")
-      }
-    }
-  }
-
-  function handlePrevClick() {
-    content.scrollBy(-250, 0)
-    if (content.scrollLeft < 200) {
-      setPrevDisplay("md:!hidden")
-    }
-    if (content.scrollLeft - 210) {
-      setNextDisplay("md:!flex")
-    }
+  function toggleDropdown() {
+    setIsOpen(!isOpen)
   }
   return (
     <>
@@ -223,73 +192,52 @@ export default function Download() {
         }}
       />
       <HomeLayout>
-        <div className="relative mx-auto w-full min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">
-          <Button
-            onClick={handlePrevClick}
-            id="prev"
-            variant="outline"
-            className={`${arrowClass} ${prevDisplay} left-0 top-[50%] !z-[8] hidden translate-x-2/4	-translate-y-2/4`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z" />
-              <path d="M15.61 7.41L14.2 6l-6 6 6 6 1.41-1.41L11.03 12l4.58-4.59z" />
-            </svg>
-          </Button>
-          <Button
-            onClick={handleNextClick}
-            id="next"
-            variant="outline"
-            className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] !z-[8]	-translate-y-2/4 translate-x-2/4`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z" />
-              <path d="M10.02 6L8.61 7.41 13.19 12l-4.58 4.59L10.02 18l6-6-6-6z" />
-            </svg>
-          </Button>
-          <div
-            ref={contentRef}
-            className="scrollbarhide scrollbar relative mb-4 block h-auto min-w-full space-x-5 overflow-x-auto overflow-y-auto whitespace-nowrap px-3"
-          >
-            {listGames.map((list) => {
-              const icon = getIconSistemOperasi(list.sistemOperasi[0])
-              return (
-                <>
-                  <div className="inline-block min-h-[350px] w-[200px] flex-col overflow-hidden rounded-lg shadow-lg">
-                    <div className="relative">
-                      <NextImage
-                        src={list.gambar}
-                        alt={list.judul}
-                        width={400}
-                        height={400}
-                        className="h-[185px] w-[200px] max-w-[unset] object-cover"
-                      />
-                      <IconButton className="!text-primary-800 !absolute top-[5px] right-[5px] !w-[25px] !rounded-full bg-white !p-[1px]">
-                        {icon}
-                      </IconButton>
-                    </div>
-                    <Heading className="mt-3 whitespace-normal px-3 !text-base">
-                      {list.judul}
-                    </Heading>
-                    <div className="mt-6 mb-3 flex justify-between px-3">
-                      <Text className="!inline-block whitespace-normal">
-                        {list.genre}
-                      </Text>
-                      <Text className="!text-[14px]">{list.ukuran}</Text>
-                    </div>
-                  </div>
-                </>
-              )
-            })}
+        <div className="mx-auto flex w-full flex-col min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">
+          <div>
+            <div className="relative">
+              <Button
+                className="focus:shadow-outline rounded bg-gray-500 py-2 px-4 font-medium text-white focus:outline-none"
+                onClick={toggleDropdown}
+              >
+                <span className="mr-2">Category</span>
+                <ChevronDownIcon className="h-6 w-6" />
+              </Button>
+              {isOpen && (
+                <div className="absolute z-10 mt-1 rounded bg-white shadow-lg">
+                  {daftarGames.map((game, index) => (
+                    <a
+                      key={index}
+                      href={game.link}
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+                    >
+                      {game.judul}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="w-full px-4">
+            <div className={"my-2 flex flex-row justify-between"}>
+              <Heading as="h2" size="2xl" bold>
+                Games
+              </Heading>
+              <NextLink href="/game/" className="text-[#00695C]">
+                See more
+              </NextLink>
+            </div>
+            <ListDownload listDownloads={listGames} />
+          </div>
+          <div className="w-full px-4">
+            <div className={"my-2 flex flex-row justify-between"}>
+              <Heading as="h2" size="2xl" bold>
+                Apps
+              </Heading>
+              <NextLink href="/game/" className="text-[#00695C]">
+                See more
+              </NextLink>
+            </div>
+            <ListDownload listDownloads={listGames} />
           </div>
         </div>
       </HomeLayout>

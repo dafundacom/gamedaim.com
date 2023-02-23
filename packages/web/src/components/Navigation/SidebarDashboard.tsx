@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useTheme } from "next-themes"
 import {
   MdCode,
+  MdDownload,
   MdOutlineAdsClick,
   MdOutlineArticle,
   MdOutlineComment,
@@ -79,6 +80,19 @@ export const SidebarDashboard = React.forwardRef<
           </Sidebar.ToggleItem>
           <Sidebar.ToggleItem href="/dashboard/topics/new">
             Add new topic
+          </Sidebar.ToggleItem>
+        </Sidebar.Toggle>
+      )}
+      {auth?.user?.role === "ADMIN" && (
+        <Sidebar.Toggle icon={<MdDownload />} title="Downloads">
+          <Sidebar.ToggleItem href="/dashboard/downloads">
+            All Downloads
+          </Sidebar.ToggleItem>
+          <Sidebar.ToggleItem href="/dashboard/downloads/new">
+            Add new download
+          </Sidebar.ToggleItem>
+          <Sidebar.ToggleItem href="/dashboard/downloads/newversion">
+            Add new file version
           </Sidebar.ToggleItem>
         </Sidebar.Toggle>
       )}
