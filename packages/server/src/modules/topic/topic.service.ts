@@ -148,6 +148,18 @@ export async function updateTopic(
   })
 }
 
+export async function searchTopics(searchTopicQuery: string) {
+  return db.topic.findMany({
+    where: {
+      OR: [
+        { title: { contains: searchTopicQuery } },
+        { description: { contains: searchTopicQuery } },
+        { slug: { contains: searchTopicQuery } },
+      ],
+    },
+  })
+}
+
 export async function deleteTopicById(topicId: string) {
   return db.topic.delete({
     where: {

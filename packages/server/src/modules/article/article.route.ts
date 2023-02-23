@@ -9,6 +9,7 @@ import {
   getArticleBySlugHandler,
   getArticleByAuthorIdHandler,
   getTotalArticlesHandler,
+  searchArticlesHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
 
@@ -38,6 +39,19 @@ async function articleRoutes(server: FastifyInstance) {
     },
 
     getArticlesHandler,
+  )
+
+  server.get(
+    "/search/:searchArticleQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("articlesResponseSchema"),
+        },
+      },
+    },
+
+    searchArticlesHandler,
   )
 
   server.get(

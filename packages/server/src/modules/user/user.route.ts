@@ -9,6 +9,7 @@ import {
   getUserByIdHandler,
   getUserByUsernameHandler,
   getTotalUsersHandler,
+  searchUsersHandler,
 } from "./user.controller"
 import { $ref } from "./user.schema"
 
@@ -45,6 +46,22 @@ async function userRoutes(server: FastifyInstance) {
       preHandler: [server.authenticate],
     },
     getUsersHandler,
+  )
+
+  server.get(
+    "/search/:searchUserQuery",
+    {
+      preHandler: [server.authenticate],
+    },
+    // {
+    // schema: {
+    //   response: {
+    //     200: $ref("usersResponseSchema"),
+    //   },
+    // },
+    // },
+
+    searchUsersHandler,
   )
 
   server.get(

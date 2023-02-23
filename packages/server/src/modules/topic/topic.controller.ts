@@ -9,6 +9,7 @@ import {
   findTopicById,
   findTopicBySlug,
   getTopics,
+  searchTopics,
   updateTopic,
   getTotalTopics,
 } from "./topic.service"
@@ -159,6 +160,21 @@ export async function getTopicsHandler(
     const perPage = 10
     const topicPage = Number(request.params.topicPage || 1)
     const topics = await getTopics(topicPage, perPage)
+    return reply.code(201).send(topics)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchTopicsHandler(
+  request: FastifyRequest<{ Params: { searchTopicQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchTopicQuery
+
+    const topics = await searchTopics(searchQuery)
     return reply.code(201).send(topics)
   } catch (e) {
     console.log(e)

@@ -13,6 +13,7 @@ import {
   findDownloadByAuthorId,
   findDownloadBySlug,
   getTotalDownloads,
+  searchDownloads,
 } from "./download.service"
 import { trimText } from "../../utils/trim"
 
@@ -239,6 +240,21 @@ export async function getDownloadByAuthorIdHandler(
       perPage,
     )
     return reply.code(201).send(download)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchDownloadsHandler(
+  request: FastifyRequest<{ Params: { searchDownloadQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchDownloadQuery
+
+    const downloads = await searchDownloads(searchQuery)
+    return reply.code(201).send(downloads)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)
