@@ -20,7 +20,6 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Articles() {
   const router = useRouter()
-  console.log(router)
   const { getArticlesData } = useGetArticles()
 
   return (
