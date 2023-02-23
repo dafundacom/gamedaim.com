@@ -107,7 +107,10 @@ export default function EditTopicDashboard() {
         ...values,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.put(`/topic/${topic.id}`, mergedValues)
+      const { data } = await axios.put(
+        "/topic",
+        selectedFeaturedImageId ? mergedValues : values,
+      )
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)
