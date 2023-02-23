@@ -47,7 +47,7 @@ export const SidebarDashboard = React.forwardRef<
     localStorage.removeItem("auth")
     setAuth({
       user: null,
-      token: "",
+      accessToken: "",
     })
     router.push("/auth/login")
   }

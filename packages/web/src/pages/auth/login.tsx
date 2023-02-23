@@ -36,7 +36,7 @@ export default function Login() {
   const router = useRouter()
 
   React.useEffect(() => {
-    if (auth?.token) {
+    if (auth?.accessToken) {
       router.push("/")
     }
   }, [auth, router])

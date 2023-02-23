@@ -55,7 +55,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
       localStorage.removeItem("auth")
       setAuth({
         user: null,
-        token: "",
+        accessToken: "",
       })
       router.push("/auth/login")
     }
