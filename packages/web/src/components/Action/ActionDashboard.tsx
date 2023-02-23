@@ -4,7 +4,7 @@ import { tx } from "@twind/core"
 
 import { HiOutlineEye, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { UrlObject } from "url"
-import { ModalDelete } from "../Modal"
+import { ModalDelete } from "@/components/Modal"
 
 export interface ActionDashboardProps
   extends React.HTMLAttributes<HTMLDivElement> {

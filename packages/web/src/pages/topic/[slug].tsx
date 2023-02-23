@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import Head from "next/head"
 import { GetServerSideProps } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
@@ -20,19 +19,17 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Topic() {
   const router = useRouter()
+
   const {
     query: { slug },
   } = router
   const { getTopicBySlugData }: any = useGetTopicBySlug(slug as string)
-  console.log(getTopicBySlugData)
+
   if (getTopicBySlugData?.isError) {
     router.push("/404")
   }
   return (
     <>
-      <Head>
-        <title>Gamedaim.com</title>
-      </Head>
       <HomeLayout>
         {getTopicBySlugData?.isSuccess === true && (
           <section className="flex w-full flex-col">
