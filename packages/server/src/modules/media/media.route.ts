@@ -8,6 +8,7 @@ import {
   updateMediaHandler,
   deleteMediaHandler,
   getTotalMediasHandler,
+  searchMediasHandler,
 } from "./media.controller"
 import { $ref } from "./media.schema"
 
@@ -32,6 +33,19 @@ async function mediaRoutes(server: FastifyInstance) {
     },
 
     getMediasHandler,
+  )
+
+  server.get(
+    "/search/:searchMediaQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("mediasResponseSchema"),
+        },
+      },
+    },
+
+    searchMediasHandler,
   )
 
   server.get(

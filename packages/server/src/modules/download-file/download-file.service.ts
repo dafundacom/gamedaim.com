@@ -232,6 +232,17 @@ export async function updateDownloadFile(
   })
 }
 
+export async function searchDownloadFiles(searchDownloadFileQuery: string) {
+  return db.downloadFile.findMany({
+    where: {
+      OR: [
+        { title: { contains: searchDownloadFileQuery } },
+        { version: { contains: searchDownloadFileQuery } },
+      ],
+    },
+  })
+}
+
 export async function deleteDownloadFileById(downloadFileId: string) {
   return db.downloadFile.delete({
     where: {

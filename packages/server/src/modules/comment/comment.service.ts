@@ -63,6 +63,14 @@ export async function updateComment(
   })
 }
 
+export async function searchComments(searchCommentQuery: string) {
+  return db.comment.findMany({
+    where: {
+      content: { contains: searchCommentQuery },
+    },
+  })
+}
+
 export async function deleteCommentById(commentId: string) {
   return db.comment.delete({
     where: {

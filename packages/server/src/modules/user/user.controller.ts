@@ -11,6 +11,7 @@ import {
   findUsers,
   updateUser,
   getTotalUsers,
+  searchUsers,
 } from "./user.service"
 
 export async function registerUserHandler(
@@ -256,6 +257,21 @@ export async function getUsersHandler(
     }
 
     const users = await findUsers(userPage, perPage)
+    return reply.code(201).send(users)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function searchUsersHandler(
+  request: FastifyRequest<{ Params: { searchUserQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchUserQuery
+
+    const users = await searchUsers(searchQuery)
     return reply.code(201).send(users)
   } catch (e) {
     console.log(e)

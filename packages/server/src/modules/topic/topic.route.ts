@@ -7,6 +7,7 @@ import {
   getTopicByIdHandler,
   getTopicBySlugHandler,
   getTotalTopicsHandler,
+  searchTopicsHandler,
 } from "./topic.controller"
 
 import { $ref } from "./topic.schema"
@@ -37,6 +38,19 @@ async function topicRoutes(server: FastifyInstance) {
     },
 
     getTopicsHandler,
+  )
+
+  server.get(
+    "/search/:searchTopicQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("topicsResponseSchema"),
+        },
+      },
+    },
+
+    searchTopicsHandler,
   )
 
   server.get(

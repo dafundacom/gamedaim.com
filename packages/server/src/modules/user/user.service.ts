@@ -86,6 +86,18 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
   })
 }
 
+export async function searchUsers(searchUserQuery: string) {
+  return db.user.findMany({
+    where: {
+      OR: [
+        { email: { contains: searchUserQuery } },
+        { name: { contains: searchUserQuery } },
+        { username: { contains: searchUserQuery } },
+      ],
+    },
+  })
+}
+
 export async function deleteUserById(userId: string) {
   return db.user.delete({
     where: {
