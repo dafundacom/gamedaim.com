@@ -6,8 +6,8 @@ export async function createDownloadFile(
     slug: string
     authorId: string
     featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
+    downloadIds?: string[]
+    downloads: { connect: { id: string }[] }
   },
 ) {
   return db.downloadFile.create({
@@ -222,8 +222,8 @@ export async function updateDownloadFile(
   data: CreateDownloadFileInput & {
     slug: string
     featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
+    downloadIds?: string[]
+    downloads: { connect: { id: string }[] }
   },
 ) {
   return await db.downloadFile.update({
