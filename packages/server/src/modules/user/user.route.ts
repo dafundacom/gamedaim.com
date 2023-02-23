@@ -51,12 +51,15 @@ async function userRoutes(server: FastifyInstance) {
   server.get(
     "/search/:searchUserQuery",
     {
-      schema: {
-        response: {
-          200: $ref("usersResponseSchema"),
-        },
-      },
+      preHandler: [server.authenticate],
     },
+    // {
+    // schema: {
+    //   response: {
+    //     200: $ref("usersResponseSchema"),
+    //   },
+    // },
+    // },
 
     searchUsersHandler,
   )
