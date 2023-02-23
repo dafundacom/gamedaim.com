@@ -203,7 +203,7 @@ export default function CreateDownloadsDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="flex min-w-[300px] flex-col space-y-4 pb-[40px]">
+              <div className="flex min-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
                 <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Topics

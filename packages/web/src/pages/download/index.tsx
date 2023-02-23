@@ -4,181 +4,58 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import env from "@/env"
 import NextLink from "next/link"
-import { ListDownload } from "@/components/Download/List/ListDownload"
-import { Button, ChevronDownIcon, Heading } from "@/../../ui"
+import { ListDownload } from "@/components/Download/List"
+import { Heading } from "ui"
+import { DropdownLink } from "@/components/Dropdown/DropdownLink"
+import { SearchInput } from "@/components/Search"
+import { dehydrate, QueryClient } from "@tanstack/react-query"
+import { wpGetMenusByName } from "@/lib/wp-menus"
+import {
+  getDownloadByType,
+  useGetDownloads,
+  getDownloads,
+  useGetDownloadByType,
+} from "@/lib/download"
+import { DownloadCard } from "@/components/Download/Card"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 
 export default function Download() {
   const router = useRouter()
-  const listGames = [
-    {
-      judul: "Red Dead Redemption 2",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2019/06/The-Witcher-3-Wild-Hunt.jpg",
-      ukuran: "150 GB",
-      genre: "Open-world action-adventure",
-      sistemOperasi: ["Windows", "Xbox One", "PlayStation 4"],
-    },
 
-    {
-      judul: "The Legend of Zelda: Breath of the Wild",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Half-Life-Alyx.jpg",
-      ukuran: "14 GB",
-      genre: "Action-adventure",
-      sistemOperasi: [
-        "Windows",
-        "macOS",
-        "Linux",
-        "Android",
-        "iOS",
-        "Xbox One",
-        "PlayStation 4",
-        "Nintendo Switch",
-        "Wii U",
-      ],
-    },
-
-    {
-      judul: "Grand Theft Auto V",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/It-Takes-Two-800x450.jpg",
-      ukuran: "72 GB",
-      genre: "Open-world action-adventure",
-      sistemOperasi: [
-        "Windows",
-        "macOS",
-        "Linux",
-        "Android",
-        "iOS",
-        "Xbox One",
-        "PlayStation 4",
-        "Nintendo Switch",
-        "Wii U",
-      ],
-    },
-
-    {
-      judul: "Super Mario Odyssey",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Devil-May-Cry-5-800x450.jpg",
-      ukuran: "5 GB",
-      genre: "Platformer",
-      sistemOperasi: [
-        "Windows",
-        "macOS",
-        "Linux",
-        "Android",
-        "iOS",
-        "Xbox One",
-        "PlayStation 4",
-        "Nintendo Switch",
-        "Wii U",
-      ],
-    },
-
-    {
-      judul: "Minecraft",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2020/03/Resident-Evil-4.jpg",
-      ukuran: "500 MB",
-      genre: "Sandbox, survival",
-      sistemOperasi: ["PlayStation 4", "Nintendo Switch", "Wii U"],
-    },
-
-    {
-      judul: "The Witcher 3: Wild Hunt",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2019/06/The-Witcher-3-Wild-Hunt.jpg",
-      ukuran: "40 GB",
-      genre: "Action RPG",
-      sistemOperasi: ["Xbox One", "PlayStation 4", "Nintendo Switch", "Wii U"],
-    },
-
-    {
-      judul: "Overwatch",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Horizon-Zero-Dawn.jpeg",
-      ukuran: "15 GB",
-      genre: "Hero shooter",
-      sistemOperasi: [
-        "Android",
-        "iOS",
-        "Xbox One",
-        "PlayStation 4",
-        "Nintendo Switch",
-        "Wii U",
-      ],
-    },
-
-    {
-      judul: "Fortnite",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Horizon-Zero-Dawn.jpeg",
-      ukuran: "30 GB",
-      genre: "Battle Royale",
-      sistemOperasi: ["Nintendo Switch", "Wii U"],
-    },
-
-    {
-      judul: "League of Legends",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Horizon-Zero-Dawn.jpeg",
-      ukuran: "10 GB",
-      genre: "MOBA",
-      sistemOperasi: ["PlayStation 4", "Nintendo Switch", "Wii U"],
-    },
-
-    {
-      judul: "Among Us",
-      gambar:
-        "https://gamedaim.com/wp-content/uploads/2021/12/Horizon-Zero-Dawn.jpeg",
-      ukuran: "200 MB",
-      genre: "Social deduction",
-      sistemOperasi: [
-        "Android",
-        "iOS",
-        "Xbox One",
-        "PlayStation 4",
-        "Nintendo Switch",
-        "Wii U",
-      ],
-    },
-  ]
   const daftarGames = [
     {
-      judul: "Red Dead Redemption 2",
-      link: "https://example.com/red-dead-redemption-2",
+      title: "Red Dead Redemption 2",
+      slug: "https://example.com/red-dead-redemption-2",
     },
     {
-      judul: "The Legend of Zelda: Breath of the Wild",
-      link: "https://example.com/breath-of-the-wild",
+      title: "The Legend of Zelda: Breath of the Wild",
+      slug: "https://example.com/breath-of-the-wild",
     },
-    { judul: "Grand Theft Auto V", link: "https://example.com/gta-v" },
+    { title: "Grand Theft Auto V", slug: "https://example.com/gta-v" },
     {
-      judul: "Super Mario Odyssey",
-      link: "https://example.com/super-mario-odyssey",
+      title: "Super Mario Odyssey",
+      slug: "https://example.com/super-mario-odyssey",
     },
-    { judul: "Minecraft", link: "https://example.com/minecraft" },
+    { title: "Minecraft", slug: "https://example.com/minecraft" },
     {
-      judul: "The Witcher 3: Wild Hunt",
-      link: "https://example.com/witcher-3",
+      title: "The Witcher 3: Wild Hunt",
+      slug: "https://example.com/witcher-3",
     },
-    { judul: "Overwatch", link: "https://example.com/overwatch" },
-    { judul: "Fortnite", link: "https://example.com/fortnite" },
+    { title: "Overwatch", slug: "https://example.com/overwatch" },
+    { title: "Fortnite", slug: "https://example.com/fortnite" },
     {
-      judul: "League of Legends",
-      link: "https://example.com/league-of-legends",
+      title: "League of Legends",
+      slug: "https://example.com/league-of-legends",
     },
-    { judul: "Among Us", link: "https://example.com/among-us" },
+    { title: "Among Us", slug: "https://example.com/among-us" },
   ]
-  const [isOpen, setIsOpen] = React.useState(false)
+  const { getDownloadsData } = useGetDownloads()
+  const downloadsByApp = useGetDownloadByType("App")
+  const downloadsByGame = useGetDownloadByType("Game")
+  console.log(getDownloadsData)
 
-  function toggleDropdown() {
-    setIsOpen(!isOpen)
-  }
   return (
     <>
       <NextSeo
@@ -193,51 +70,68 @@ export default function Download() {
       />
       <HomeLayout>
         <div className="mx-auto flex w-full flex-col min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">
-          <div>
-            <div className="relative">
-              <Button
-                className="focus:shadow-outline rounded bg-gray-500 py-2 px-4 font-medium text-white focus:outline-none"
-                onClick={toggleDropdown}
-              >
-                <span className="mr-2">Category</span>
-                <ChevronDownIcon className="h-6 w-6" />
-              </Button>
-              {isOpen && (
-                <div className="absolute z-10 mt-1 rounded bg-white shadow-lg">
-                  {daftarGames.map((game, index) => (
-                    <a
-                      key={index}
-                      href={game.link}
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
-                    >
-                      {game.judul}
-                    </a>
-                  ))}
-                </div>
-              )}
+          <div className="flex flex-col rounded-md bg-gray-100 p-5 dark:bg-gray-800">
+            <div className="flex justify-between">
+              <div className="flex space-x-2">
+                <DropdownLink list={daftarGames} title={"Category"} />
+                <DropdownLink list={daftarGames} title={"Platform"} />
+              </div>
+              <div>
+                <SearchInput />
+              </div>
             </div>
           </div>
+
           <div className="w-full px-4">
             <div className={"my-2 flex flex-row justify-between"}>
               <Heading as="h2" size="2xl" bold>
                 Games
               </Heading>
-              <NextLink href="/game/" className="text-[#00695C]">
+              <NextLink href="/download/game/" className="text-[#00695C]">
                 See more
               </NextLink>
             </div>
-            <ListDownload listDownloads={listGames} />
+            {downloadsByGame?.getDownloadByTypeData?.data !== undefined && (
+              <ListDownload
+                listDownloads={
+                  downloadsByGame?.getDownloadByTypeData?.data?.download
+                }
+              />
+            )}
           </div>
           <div className="w-full px-4">
             <div className={"my-2 flex flex-row justify-between"}>
               <Heading as="h2" size="2xl" bold>
                 Apps
               </Heading>
-              <NextLink href="/game/" className="text-[#00695C]">
+              <NextLink href="/download/app/" className="text-[#00695C]">
                 See more
               </NextLink>
             </div>
-            <ListDownload listDownloads={listGames} />
+            {downloadsByApp?.getDownloadByTypeData?.data !== undefined && (
+              <ListDownload
+                listDownloads={
+                  downloadsByApp?.getDownloadByTypeData?.data?.download
+                }
+              />
+            )}
+          </div>
+          <div className="w-full px-4">
+            <div className={"my-2 flex flex-row justify-between"}>
+              <Heading as="h2" size="2xl" bold>
+                Newest
+              </Heading>
+              <NextLink href="/download/app/" className="text-[#00695C]">
+                See more
+              </NextLink>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              {getDownloadsData?.data !== undefined && (
+                <DownloadCard
+                  listDownloads={getDownloadsData?.data?.downloads}
+                />
+              )}
+            </div>
           </div>
         </div>
       </HomeLayout>
@@ -246,8 +140,18 @@ export default function Download() {
 }
 
 export async function getStaticProps() {
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(["menus"], () =>
+    wpGetMenusByName(env.MENU_PRIMARY),
+  )
+  await queryClient.prefetchQuery(["downloads", 1], () => getDownloads())
+  await queryClient.prefetchQuery(["downloadType", "App"], () =>
+    getDownloadByType("App"),
+  )
+  await queryClient.prefetchQuery(["downloadType", "Game"], () =>
+    getDownloadByType("Game"),
+  )
   return {
-    props: {},
-    revalidate: 60,
+    props: { dehydratedState: dehydrate(queryClient) },
   }
 }

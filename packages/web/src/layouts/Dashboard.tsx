@@ -12,11 +12,11 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
   const { children, ...rest } = props
   const [open, setOpen] = React.useState(false)
   return (
-    <div className="relative flex h-screen flex-col flex-wrap" {...rest}>
+    <div className="relative flex h-auto" {...rest}>
       <div
         className={`${
           open ? "max-lg:!translate-x-0" : null
-        } z-[99] h-full w-[250px] w-3/12 transition-[transform] max-lg:fixed max-lg:w-[250px] max-lg:-translate-x-full`}
+        } sticky top-0 z-[99] h-screen w-[250px] w-3/12 transition-[transform] max-lg:!fixed max-lg:w-[250px] max-lg:-translate-x-full`}
       >
         <SidebarDashboard />
       </div>

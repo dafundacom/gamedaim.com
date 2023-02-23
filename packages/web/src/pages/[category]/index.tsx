@@ -57,7 +57,6 @@ export default function Category(props: CategoryProps) {
     category as string,
   )
   const categoryChild = getCategoryBySlug?.data?.category?.children?.nodes
-
   return (
     <>
       <Head>{seo?.success === true && parse(seo?.head)}</Head>

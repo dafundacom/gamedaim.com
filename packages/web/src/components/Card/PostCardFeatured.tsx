@@ -67,6 +67,7 @@ export const ListPostFeatured = (props: { featured: any }) => {
   const contentRef: any = React.useRef(null)
 
   const content: any = contentRef.current
+
   function handleNextClick() {
     if (content) {
       content.scrollBy(200, 0)
