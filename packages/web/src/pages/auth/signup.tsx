@@ -38,7 +38,7 @@ export default function Signup() {
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
-    if (auth?.token) {
+    if (auth?.accessToken) {
       router.push("/")
     }
   }, [auth, router])
