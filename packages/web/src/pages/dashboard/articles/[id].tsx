@@ -149,6 +149,7 @@ export default function EditArticleDashboard() {
       setLoading(true)
       const mergedValues = {
         ...values,
+        content: editorContent,
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
