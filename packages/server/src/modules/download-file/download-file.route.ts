@@ -55,19 +55,6 @@ async function downloadFileRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/page/:topicPage",
-    {
-      schema: {
-        response: {
-          200: $ref("topicsResponseSchema"),
-        },
-      },
-    },
-
-    getTopicsHandler,
-  )
-
-  server.get(
     "/:downloadFileId",
     {
       schema: {
