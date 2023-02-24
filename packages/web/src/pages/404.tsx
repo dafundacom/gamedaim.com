@@ -12,9 +12,9 @@ export default function Custom404() {
       <NextSeo
         title={`404 | ${env.SITE_TITLE}`}
         description={`404 | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `404 | ${env.SITE_TITLE}`,
           description: `404 | ${env.SITE_TITLE}`,
         }}

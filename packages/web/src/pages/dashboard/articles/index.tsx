@@ -85,9 +85,9 @@ export default function ArticlesDashboard() {
       <NextSeo
         title={`Article Dashboard | ${env.SITE_TITLE}`}
         description={`Article Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Article Dashboard | ${env.SITE_TITLE}`,
           description: `Article Dashboard | ${env.SITE_TITLE}`,
         }}

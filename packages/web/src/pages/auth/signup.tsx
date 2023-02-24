@@ -74,9 +74,9 @@ export default function Signup() {
       <NextSeo
         title={`Sign Up | ${env.SITE_TITLE}`}
         description={`Sign Up | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Sign Up | ${env.SITE_TITLE}`,
           description: `Sign Up | ${env.SITE_TITLE}`,
         }}

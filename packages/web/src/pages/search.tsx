@@ -58,9 +58,9 @@ export default function Search(props: SearchProps) {
       <NextSeo
         title={`Search | ${env.SITE_TITLE}`}
         description={`Search | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Search | ${env.SITE_TITLE}`,
           description: `Search | ${env.SITE_TITLE}`,
         }}

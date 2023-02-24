@@ -126,9 +126,9 @@ export default function SettingUserProfile() {
       <NextSeo
         title={`Edit Profile | ${env.SITE_TITLE}`}
         description={`Edit Profile | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Edit Profile | ${env.SITE_TITLE}`,
           description: `Edit Profile | ${env.SITE_TITLE}`,
         }}

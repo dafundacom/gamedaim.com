@@ -2,7 +2,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
-import { NextSeo } from "next-seo"
+import { BreadcrumbJsonLd, NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import env from "@/env"
 import { wpGetAllPosts, useWpGetAllPosts } from "@/lib/wp-posts"
@@ -37,12 +37,30 @@ export default function Home() {
       <NextSeo
         title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
         description={env.DESCRIPTION}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
           description: env.DESCRIPTION,
         }}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+        ]}
+      />
+      <SiteLinksSearchBoxJsonLd
+        url={`https://${env.DOMAIN}${router.pathname}`}
+        potentialActions={[
+          {
+            target: `https://${env.DOMAIN}/search?q`,
+            queryInput: "search_term_string",
+          },
+        ]}
       />
       <HomeLayout>
         <section className="flex w-full flex-col">

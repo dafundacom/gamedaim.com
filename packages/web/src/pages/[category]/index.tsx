@@ -17,6 +17,7 @@ import {
 } from "@/lib/wp-posts"
 import { useRouter } from "next/router"
 import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+
 const InfiniteScroll = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
 )

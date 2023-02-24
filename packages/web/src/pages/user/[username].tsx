@@ -48,9 +48,9 @@ export default function User() {
             <NextSeo
               title={`${user?.data?.name} | ${env.SITE_TITLE}`}
               description={`${user?.data?.name} | ${env.SITE_TITLE}`}
-              canonical={`https/${env.DOMAIN}${router.pathname}`}
+              canonical={`https://${env.DOMAIN}${router.pathname}`}
               openGraph={{
-                url: `https/${env.DOMAIN}${router.pathname}`,
+                url: `https://${env.DOMAIN}${router.pathname}`,
                 title: `${user?.data?.name} | ${env.SITE_TITLE}`,
                 description: `${user?.data?.about} | ${env.SITE_TITLE}`,
               }}

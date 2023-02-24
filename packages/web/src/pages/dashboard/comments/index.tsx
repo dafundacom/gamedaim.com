@@ -84,9 +84,9 @@ export default function CommentsDashboard() {
       <NextSeo
         title={`Comment Dashboard | ${env.SITE_TITLE}`}
         description={`Comment Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Comment Dashboard | ${env.SITE_TITLE}`,
           description: `Comment Dashboard | ${env.SITE_TITLE}`,
         }}
