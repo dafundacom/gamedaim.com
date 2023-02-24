@@ -138,7 +138,7 @@ export default function CreateDownloadfilesDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Download-file | ${env.SITE_TITLE}`}
+        title={`Add New Download File | ${env.SITE_TITLE}`}
         description={`Add New Download File | ${env.SITE_TITLE}`}
         canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
@@ -171,7 +171,9 @@ export default function CreateDownloadfilesDashboard() {
                   )}
                 </FormControl>
                 <div>
-                  <FormLabel>Downloads:</FormLabel>
+                  <FormLabel>
+                    Downloads: <RequiredIndicator />
+                  </FormLabel>
                   <div className="max-w-xl border	border-gray-300 p-2">
                     <div className="flex flex-row flex-wrap items-center justify-start gap-2">
                       {selectedDownloads.length > 0 &&
@@ -223,9 +225,13 @@ export default function CreateDownloadfilesDashboard() {
                   </div>
                 </div>
                 <FormControl invalid={Boolean(errors.version)}>
-                  <FormLabel>Version</FormLabel>
+                  <FormLabel>
+                    Version <RequiredIndicator />
+                  </FormLabel>
                   <Input
-                    {...register("version")}
+                    {...register("version", {
+                      required: "Version is Required",
+                    })}
                     className="max-w-xl"
                     placeholder="Enter Version"
                   />
@@ -288,10 +294,14 @@ export default function CreateDownloadfilesDashboard() {
                   )}
                 </FormControl>
                 <FormControl invalid={Boolean(errors.downloadLink)}>
-                  <FormLabel>Download Link</FormLabel>
+                  <FormLabel>
+                    Download Link <RequiredIndicator />
+                  </FormLabel>
                   <Input
                     type="text"
-                    {...register("downloadLink")}
+                    {...register("downloadLink", {
+                      required: "Download link is Required",
+                    })}
                     className="max-w-xl"
                     placeholder="Enter Download Link"
                   />

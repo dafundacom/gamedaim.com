@@ -256,28 +256,24 @@ export default function EditDownloadDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="px-3">
-                <div className="flex min-w-[300px] flex-col space-y-4">
-                  <div className="my-2 flex flex-col px-4">
-                    <Heading as="h3" size="md">
-                      Slug
-                    </Heading>
-                    <FormControl invalid={Boolean(errors.slug)}>
-                      <Input
-                        type="text"
-                        size="sm"
-                        {...register("slug", {
-                          required: "Slug is Required",
-                        })}
-                        placeholder="Slug"
-                      />
-                      {errors?.slug && (
-                        <FormErrorMessage>
-                          {errors.slug.message}
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
-                  </div>
+              <div className="flex min-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
+                <div className="my-2 flex flex-col px-4">
+                  <Heading as="h3" size="md">
+                    Slug
+                  </Heading>
+                  <FormControl invalid={Boolean(errors.slug)}>
+                    <Input
+                      type="text"
+                      size="sm"
+                      {...register("slug", {
+                        required: "Slug is Required",
+                      })}
+                      placeholder="Slug"
+                    />
+                    {errors?.slug && (
+                      <FormErrorMessage>{errors.slug.message}</FormErrorMessage>
+                    )}
+                  </FormControl>
                 </div>
                 <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">

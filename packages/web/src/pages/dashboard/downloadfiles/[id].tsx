@@ -167,7 +167,10 @@ export default function EditDownloadFileDashboard() {
         downloadIds: downloads,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.post("/download-file", mergedValues)
+      const { data } = await axios.put(
+        `/download-file/${downloadFile.id}`,
+        mergedValues,
+      )
 
       if (data?.error) {
         toast.error(data.error)
@@ -270,9 +273,13 @@ export default function EditDownloadFileDashboard() {
                   </div>
                 </div>
                 <FormControl invalid={Boolean(errors.version)}>
-                  <FormLabel>Version</FormLabel>
+                  <FormLabel>
+                    Version <RequiredIndicator />
+                  </FormLabel>
                   <Input
-                    {...register("version")}
+                    {...register("version", {
+                      required: "Version is Required",
+                    })}
                     className="max-w-xl"
                     placeholder="Enter Version"
                   />
@@ -335,10 +342,14 @@ export default function EditDownloadFileDashboard() {
                   )}
                 </FormControl>
                 <FormControl invalid={Boolean(errors.downloadLink)}>
-                  <FormLabel>Download Link</FormLabel>
+                  <FormLabel>
+                    Download Link <RequiredIndicator />
+                  </FormLabel>
                   <Input
                     type="text"
-                    {...register("downloadLink")}
+                    {...register("downloadLink", {
+                      required: "Download link is Required",
+                    })}
                     className="max-w-xl"
                     placeholder="Enter Download Link"
                   />

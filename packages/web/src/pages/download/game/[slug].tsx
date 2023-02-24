@@ -7,16 +7,9 @@ import env from "@/env"
 import NextLink from "next/link"
 import { ListDownload } from "@/components/List"
 import { Breadcrumb, Button, Heading, Text } from "ui"
-import { dehydrate, QueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import {
-  useGetDownloads,
-  getDownloads,
-  useGetDownloadByType,
-  getDownloadBySlug,
-  useGetDownloadBySlug,
-} from "@/lib/download"
+import { getDownloads, getDownloadBySlug } from "@/lib/download"
 import { DownloadCardSide } from "@/components/Card"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
@@ -32,13 +25,37 @@ import {
   MdVpnKey,
 } from "react-icons/md"
 import { SpecBox } from "@/components/Box"
-export default function Download() {
+import { CounterdownDownload } from "@/components/Counter"
+
+export default function Download(props: { download: any; downloads: any }) {
+  const { download, downloads } = props
   const router: any = useRouter()
   dayjs.extend(relativeTime)
-  const { getDownloadsData } = useGetDownloads()
-  const { getDownloadBySlugData } = useGetDownloadBySlug(router.query.slug)
-  const downloadsByGame = useGetDownloadByType("Game")
-  console.log(getDownloadBySlugData)
+
+  const [showCountdown, setShowCountdown] = React.useState(false)
+  const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
+  //   const [fileVersion, setFileVersion] = React.useState(
+  //     download?.downloadFiles[0],
+  //   )
+  React.useEffect(() => {
+    return () => {
+      if (countdownInterval) {
+        clearInterval(countdownInterval)
+      }
+    }
+  }, [countdownInterval])
+
+  const handleDownloadClick = () => {
+    setShowCountdown(true)
+    setCountdownInterval(
+      setInterval(() => {
+        setShowCountdown(false)
+        setCountdownInterval(null)
+        router.push(download?.downloadFiles[0].downloadLink)
+      }, 10000),
+    )
+  }
+
   return (
     <>
       <NextSeo
@@ -63,10 +80,8 @@ export default function Download() {
                   <Breadcrumb.Link href="/download/game">Game</Breadcrumb.Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item currentPage>
-                  <Breadcrumb.Link
-                    href={`/${getDownloadBySlugData?.data?.download?.slug}`}
-                  >
-                    {getDownloadBySlugData?.data?.download?.title}
+                  <Breadcrumb.Link href={`/${download?.slug}`}>
+                    {download?.title}
                   </Breadcrumb.Link>
                 </Breadcrumb.Item>
               </Breadcrumb>
@@ -80,11 +95,8 @@ export default function Download() {
                         <NextImage
                           height={200}
                           width={200}
-                          src={
-                            getDownloadBySlugData?.data?.download?.featuredImage
-                              .url
-                          }
-                          alt={getDownloadBySlugData?.data?.download?.title}
+                          src={download?.featuredImage.url}
+                          alt={download?.title}
                           className="rounded-lg"
                         />
                       </div>
@@ -94,71 +106,74 @@ export default function Download() {
                           lineClamp={1}
                           className="text-xl md:text-3xl"
                         >
-                          {getDownloadBySlugData?.data?.download?.title}
+                          {download?.title}
                         </Heading>
                         <span className={"inline-flex align-middle"}>
                           <AiFillStar className={"h-5 w-5 text-green-200"} />
                           <Text>4/5 (33 Reviewer)</Text>
                         </span>
-                        <Text>
-                          {getDownloadBySlugData?.data?.download?.developer}
-                        </Text>
+                        <Text>{download?.developer}</Text>
                         <div className={"inline-flex space-x-2 pt-12"}>
-                          <Button colorScheme="gray">Official Web</Button>
-                          {getDownloadBySlugData?.data?.download?.downloadFiles
-                            .length >= 1 && (
-                            <NextLink
-                              href={
-                                getDownloadBySlugData?.data?.download
-                                  ?.downloadFiles[0]?.downloadLink
-                              }
-                            >
-                              <Button colorScheme="primary">Download</Button>
+                          <Button colorScheme="gray">
+                            <NextLink href={download?.officialWeb}>
+                              Official Web
                             </NextLink>
+                          </Button>
+                          {download?.downloadFiles.length >= 1 && (
+                            <>
+                              <Button
+                                onClick={handleDownloadClick}
+                                colorScheme="primary"
+                                disabled={showCountdown}
+                              >
+                                Download
+                              </Button>
+                            </>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
+                  {showCountdown && (
+                    <>
+                      <div className="bg-green-100 p-7 text-black">
+                        Link download akan terbuka pada{" "}
+                        {<CounterdownDownload />} detik
+                      </div>
+                    </>
+                  )}
                   <div
                     className="p-7"
                     dangerouslySetInnerHTML={{
-                      __html: getDownloadBySlugData?.data?.download?.content,
+                      __html: download?.content,
                     }}
                   />
                   <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
                     <SpecBox
                       icon={HiChip}
                       title="Sistem Operasi"
-                      value={
-                        getDownloadBySlugData?.data?.download?.operationSystem
-                      }
+                      value={download?.operationSystem}
                     />
                     <SpecBox
                       icon={MdCode}
                       title="Developer"
-                      value={getDownloadBySlugData?.data?.download?.developer}
+                      value={download?.developer}
                     />
                     <SpecBox icon={MdCategory} title="Category" value={"ss"} />
                     <SpecBox
                       icon={MdUpdate}
                       title="Last Update"
-                      value={dayjs(
-                        getDownloadBySlugData?.data?.download?.updatedAt,
-                      ).fromNow()}
+                      value={dayjs(download?.updatedAt).fromNow()}
                     />
                     <SpecBox
                       icon={MdFolder}
                       title="File Size"
-                      value={
-                        getDownloadBySlugData?.data?.download?.downloadFiles[0]
-                          .fileSize
-                      }
+                      value={download?.downloadFiles[0].fileSize}
                     />
                     <SpecBox
                       icon={MdVpnKey}
                       title="License"
-                      value={getDownloadBySlugData?.data?.download?.license}
+                      value={download?.license}
                     />
                   </div>
                   <div className="w-full px-4">
@@ -167,14 +182,7 @@ export default function Download() {
                         Related
                       </Heading>
                     </div>
-                    {downloadsByGame?.getDownloadByTypeData?.data !==
-                      undefined && (
-                      <ListDownload
-                        listDownloads={
-                          downloadsByGame?.getDownloadByTypeData?.data?.download
-                        }
-                      />
-                    )}
+                    {<ListDownload listDownloads={downloads} />}
                   </div>
                 </div>
               </div>
@@ -188,7 +196,7 @@ export default function Download() {
                     </span>
                   </Heading>
                 </div>
-                {getDownloadsData?.data?.downloads.map(
+                {downloads.map(
                   (post: {
                     id: number
                     featuredImage: {
@@ -220,14 +228,11 @@ export default function Download() {
 }
 
 export async function getServerSideProps({ params }: any) {
-  const queryClient = new QueryClient()
   const slug = params.slug
-  await queryClient.prefetchQuery(["downloads", 1], () => getDownloads())
-  await queryClient.prefetchQuery(["downloadSlug", slug], () =>
-    getDownloadBySlug(slug),
-  )
 
+  const { downloads } = await getDownloads()
+  const { download } = await getDownloadBySlug(slug)
   return {
-    props: { dehydratedState: dehydrate(queryClient) },
+    props: { downloads: downloads, download: download },
   }
 }
