@@ -131,9 +131,9 @@ export default function EditTopicDashboard() {
       <NextSeo
         title={`Edit Topic | ${env.SITE_TITLE}`}
         description={`Edit Topic | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Edit Topic | ${env.SITE_TITLE}`,
           description: `Edit Topic | ${env.SITE_TITLE}`,
         }}

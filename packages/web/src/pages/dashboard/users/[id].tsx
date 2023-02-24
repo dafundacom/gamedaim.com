@@ -143,9 +143,9 @@ export default function DashboardEditUser() {
       <NextSeo
         title={`Edit User | ${env.SITE_TITLE}`}
         description={`Edit User | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Edit User | ${env.SITE_TITLE}`,
           description: `Edit User | ${env.SITE_TITLE}`,
         }}

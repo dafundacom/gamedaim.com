@@ -58,9 +58,9 @@ export default function CreateScriptsDashBoard() {
       <NextSeo
         title={`Add New Script | ${env.SITE_TITLE}`}
         description={`Add New Script | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Add New Script | ${env.SITE_TITLE}`,
           description: `Add New Script | ${env.SITE_TITLE}`,
         }}

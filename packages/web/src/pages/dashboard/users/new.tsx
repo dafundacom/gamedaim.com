@@ -98,9 +98,9 @@ export default function CreateUsersDashboard() {
       <NextSeo
         title={`Add New User | ${env.SITE_TITLE}`}
         description={`Add New User | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Add New User | ${env.SITE_TITLE}`,
           description: `Add New User | ${env.SITE_TITLE}`,
         }}
