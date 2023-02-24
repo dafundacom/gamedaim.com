@@ -8,34 +8,13 @@ import { HomeLayout } from "@/layouts/Home"
 import { PostCardSide } from "@/components/Card"
 import { Article } from "@/components/Article"
 import { getArticleBySlug, getArticles } from "@/lib/articles"
+import { ArticleDataProps, ArticlesDataProps } from "@/lib/data-types"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface SingleArticleProps {
-  [x: string]: any
-  article: {
-    title: string
-    featuredImage: {
-      url: string
-      name: string
-    }
-    content: string
-    excerpt: string
-    topics: {
-      title: string
-    }
-    slug: string
-    author: {
-      name: string
-      username: string
-      profilePicture: {
-        url: string
-      }
-    }
-    createdAt: string
-    updatedAt: string
-  }
-  articles: any
+  article: ArticleDataProps
+  articles: ArticlesDataProps
 }
 
 export default function SingleArticle(props: SingleArticleProps) {
@@ -115,7 +94,7 @@ export default function SingleArticle(props: SingleArticleProps) {
                 </Heading>
               </div>
               {articles.map(
-                (post: {
+                (article: {
                   id: number
                   featuredImage: {
                     url: string
@@ -128,11 +107,11 @@ export default function SingleArticle(props: SingleArticleProps) {
                 }) => {
                   return (
                     <PostCardSide
-                      key={post.id}
-                      src={post.featuredImage.url}
-                      alt={post.featuredImage.alt}
-                      slug={`/article/${post.slug}`}
-                      title={post.title}
+                      key={article.id}
+                      src={article.featuredImage.url}
+                      alt={article.featuredImage.alt}
+                      slug={`/article/${article.slug}`}
+                      title={article.title}
                     />
                   )
                 },

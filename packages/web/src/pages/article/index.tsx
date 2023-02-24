@@ -7,6 +7,7 @@ import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import env from "@/env"
 import { PostCard } from "@/components/Card"
 import { getArticles } from "@/lib/articles"
+import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
 
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
@@ -17,28 +18,7 @@ const PostCardSide = dynamic(() =>
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-interface ArticleProps {
-  id: string
-  featuredImage: { url: string; alt: string }
-  slug: string
-  title: string
-  description: string
-  author: {
-    name: string
-    profilPicture: string
-    username: string
-  }
-  createdAt: string
-}
-
-interface ArticlesProps {
-  articles: {
-    [x: string]: any
-    article: ArticlesProps
-  }
-}
-
-export default function Articles(props: ArticlesProps) {
+export default function Articles(props: ArticlesDataProps) {
   const { articles } = props
 
   const router = useRouter()
@@ -101,7 +81,7 @@ export default function Articles(props: ArticlesProps) {
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4">
-              {articles.map((article: ArticleProps) => {
+              {articles.map((article: ArticleDataProps) => {
                 return (
                   <PostCard
                     key={article.id}
@@ -109,9 +89,9 @@ export default function Articles(props: ArticlesProps) {
                     alt={article.featuredImage.alt}
                     slug={article.slug}
                     title={article.title}
-                    excerpt={article.description}
+                    excerpt={article.excerpt}
                     authorName={article.author.name}
-                    authorAvatarUrl={article.author.profilPicture}
+                    authorAvatarUrl={article.author.profilePicture.url}
                     authorUri={article.author?.username}
                     date={article.createdAt}
                     isWP={false}
@@ -128,12 +108,12 @@ export default function Articles(props: ArticlesProps) {
                     </span>
                   </Heading>
                 </div>
-                {articles.map((article: ArticleProps) => {
+                {articles.map((article: ArticleDataProps) => {
                   return (
                     <PostCardSide
                       key={article.id}
-                      src={article.featuredImage?.url}
-                      alt={article.featuredImage?.alt}
+                      src={article.featuredImage.url}
+                      alt={article.featuredImage.alt}
                       title={article.title}
                       slug={article.slug}
                       isWP={false}
