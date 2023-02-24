@@ -1,10 +1,11 @@
 import slugify from "slugify"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { S3Client } from "@aws-sdk/client-s3"
+import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 
 import env from "../../env"
 import { uniqueSlug } from "../../utils/slug"
+import { s3Client } from "../../utils/s3-client"
 import {
   findMediaById,
   findMediaByAuthorId,
@@ -14,9 +15,11 @@ import {
   getMedias,
   getTotalMedias,
   searchMedias,
+  deleteMediaByName,
 } from "./media.service"
 import { UpdateMediaInput } from "./media.schema"
 
+// NOTE: cannot use PutObjectCommand because fastify/multipart doesnt provide contentLengt for S3
 export async function uploadMediaHandler(
   request: FastifyRequest,
   reply: FastifyReply,
@@ -24,18 +27,10 @@ export async function uploadMediaHandler(
   try {
     const data = await request.file()
     const user = request.user
+
     const uniqueName = slugify(uniqueSlug() + "-" + data.filename, {
       remove: /[*+~()'"!:@]/g,
     })
-
-    const s3Config = {
-      region: env.R2_REGION,
-      endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-      credentials: {
-        accessKeyId: env.R2_ACCESS_KEY,
-        secretAccessKey: env.R2_SECRET_KEY,
-      },
-    }
 
     const fileProperties = {
       Bucket: env.R2_BUCKET,
@@ -45,7 +40,7 @@ export async function uploadMediaHandler(
     }
 
     const uploadToBucket = new Upload({
-      client: new S3Client(s3Config),
+      client: s3Client,
       leavePartsOnError: false,
       params: fileProperties,
     })
@@ -129,27 +124,54 @@ export async function getMediaByAuthorIdHandler(
   }
 }
 
-export async function deleteMediaHandler(
+export async function deleteMediaByIdHandler(
   request: FastifyRequest<{ Params: { mediaId: string } }>,
   reply: FastifyReply,
 ) {
   try {
     const { mediaId } = request.params
     const user = request.user
-    const deleteTopic = await deleteMediaById(mediaId)
+    const deleteMedia = await deleteMediaById(mediaId)
 
     if (user.role !== "ADMIN") {
       return reply.code(403).send({ message: "Unauthorized" })
     }
 
-    return reply.code(201).send(deleteTopic)
+    return reply.code(201).send(deleteMedia)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)
   }
 }
 
-//TODO: make function that delete on R2 too
+export async function deleteMediaByNameHandler(
+  request: FastifyRequest<{ Params: { mediaName: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { mediaName } = request.params
+    const user = request.user
+
+    if (user.role !== "ADMIN") {
+      return reply.code(403).send({ message: "Unauthorized" })
+    }
+
+    const fileProperties = {
+      Bucket: env.R2_BUCKET,
+      Key: mediaName,
+    }
+
+    await s3Client.send(new DeleteObjectCommand(fileProperties))
+
+    const deleteMedia = await deleteMediaByName(mediaName)
+
+    return reply.code(201).send(deleteMedia)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
 export async function getMediasHandler(
   request: FastifyRequest<{ Params: { mediaPage: number } }>,
   reply: FastifyReply,

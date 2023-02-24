@@ -6,7 +6,8 @@ import {
   getMediaByAuthorIdHandler,
   uploadMediaHandler,
   updateMediaHandler,
-  deleteMediaHandler,
+  deleteMediaByIdHandler,
+  deleteMediaByNameHandler,
   getTotalMediasHandler,
   searchMediasHandler,
 } from "./media.controller"
@@ -89,7 +90,13 @@ async function mediaRoutes(server: FastifyInstance) {
   server.delete(
     "/:mediaId",
     { preHandler: [server.authenticate] },
-    deleteMediaHandler,
+    deleteMediaByIdHandler,
+  )
+
+  server.delete(
+    "/name/:mediaName",
+    { preHandler: [server.authenticate] },
+    deleteMediaByNameHandler,
   )
 
   server.get(

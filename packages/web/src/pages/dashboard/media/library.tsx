@@ -63,13 +63,13 @@ export default function MediaLibraryDashboard() {
 
   const mutationDelete: any = useMutation({
     mutationFn: (item: any) => {
-      return axios.delete(`/media/${item.id}`)
+      return axios.delete(`/media/name/${item.name}`)
     },
     onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
         medias: medias.filter(
-          (media: { id: string }) => media.id !== datas.data.id,
+          (media: { name: string }) => media.name !== datas.data.name,
         ),
       }))
       toast.success("Media deleted successfully")
