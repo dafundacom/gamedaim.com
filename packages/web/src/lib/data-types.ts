@@ -50,6 +50,7 @@ export enum AdPositionData {
 }
 
 export interface ArticleDataProps {
+  [x: string]: any
   id: string
   title: string
   content: string
@@ -67,7 +68,9 @@ export interface ArticleDataProps {
 }
 
 export interface ArticlesDataProps {
+  [x: string]: any
   articles: {
+    [x: string]: any
     article: ArticlesDataProps
   }
 }
@@ -75,12 +78,13 @@ export interface ArticlesDataProps {
 export interface TopicDataProps {
   id: string
   title: string
+  slug: string
   description: string
   meta_title: string
   meta_description: string
   featuredImage?: MediaDataProps
   author: UserDataProps
-  articles?: ArticleDataProps
+  articles: ArticleDataProps
   downloads?: DownloadDataProps
   createdAt: string
   updatedAt: string
@@ -96,7 +100,7 @@ export interface MediaDataProps {
   url: string
   type: string
   description: string
-  alt?: string
+  alt: string
   author: MediaDataProps
   downloads?: DownloadDataProps
   topics?: TopicDataProps
