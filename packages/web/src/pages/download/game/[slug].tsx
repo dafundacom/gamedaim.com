@@ -34,10 +34,9 @@ export default function Download(props: { download: any; downloads: any }) {
 
   const [showCountdown, setShowCountdown] = React.useState(false)
   const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
-  const [fileVersion, setFileVersion] = React.useState(
-    download?.downloadFiles[0],
-  )
-  console.log(fileVersion)
+  //   const [fileVersion, setFileVersion] = React.useState(
+  //     download?.downloadFiles[0],
+  //   )
   React.useEffect(() => {
     return () => {
       if (countdownInterval) {
