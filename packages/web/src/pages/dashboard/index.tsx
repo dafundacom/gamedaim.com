@@ -6,12 +6,14 @@ import { NextSeo } from "next-seo"
 import { useQueries } from "@tanstack/react-query"
 import {
   MdCode,
+  MdDownload,
   MdOutlineAdsClick,
   MdOutlineArticle,
   MdOutlineComment,
   MdOutlinePermMedia,
   MdOutlineTopic,
   MdSupervisedUserCircle,
+  MdUploadFile,
 } from "react-icons/md"
 import { Heading } from "ui"
 
@@ -30,6 +32,9 @@ export default function Dashboard() {
   const [totalScripts, setTotalScripts]: any = React.useState<number>()
   const [totalTopics, setTotalTopics]: any = React.useState<number>()
   const [totalUsers, setTotalUsers]: any = React.useState<number>()
+  const [totalDownloads, setTotalDownloads]: any = React.useState<number>()
+  const [totalDownloadFiles, setTotalDownloadFiles]: any =
+    React.useState<number>()
 
   const getAdsCount = async () => {
     const { data } = await axios.get("/ad/count")
@@ -65,7 +70,14 @@ export default function Dashboard() {
     const { data } = await axios.get("/user/count")
     return data
   }
-
+  const getDownloadsCount = async () => {
+    const { data } = await axios.get("/download/count")
+    return data
+  }
+  const getDownloadFilesCount = async () => {
+    const { data } = await axios.get("/download-file/count")
+    return data
+  }
   const getCounts = useQueries({
     queries: [
       {
@@ -133,6 +145,26 @@ export default function Dashboard() {
         queryFn: () => getScriptsCount(),
         onSuccess: (data: number) => {
           setTotalScripts(data)
+        },
+        onError: (error: any) => {
+          toast.error(error.message)
+        },
+      },
+      {
+        queryKey: ["downloadsCount"],
+        queryFn: () => getDownloadsCount(),
+        onSuccess: (data: number) => {
+          setTotalDownloads(data)
+        },
+        onError: (error: any) => {
+          toast.error(error.message)
+        },
+      },
+      {
+        queryKey: ["downloadFilesCount"],
+        queryFn: () => getDownloadFilesCount(),
+        onSuccess: (data: number) => {
+          setTotalDownloadFiles(data)
         },
         onError: (error: any) => {
           toast.error(error.message)
@@ -207,6 +239,20 @@ export default function Dashboard() {
                   icon={<MdSupervisedUserCircle className="h-5 w-5" />}
                   count={totalUsers}
                   text="user"
+                />
+              )}
+              {getCounts[7].isSuccess && (
+                <BoxDashboard
+                  icon={<MdDownload className="h-5 w-5" />}
+                  count={totalDownloads}
+                  text="download"
+                />
+              )}
+              {getCounts[8].isSuccess && (
+                <BoxDashboard
+                  icon={<MdUploadFile className="h-5 w-5" />}
+                  count={totalDownloadFiles}
+                  text="download file"
                 />
               )}
             </div>
