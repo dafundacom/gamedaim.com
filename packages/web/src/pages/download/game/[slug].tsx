@@ -1,7 +1,12 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
-import { NextSeo } from "next-seo"
+import {
+  ArticleJsonLd,
+  BreadcrumbJsonLd,
+  NextSeo,
+  SoftwareAppJsonLd,
+} from "next-seo"
 import NextImage from "next/image"
 import env from "@/env"
 import NextLink from "next/link"
@@ -59,14 +64,53 @@ export default function Download(props: { download: any; downloads: any }) {
   return (
     <>
       <NextSeo
-        title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`${download.title} | ${env.SITE_TITLE}`}
+        description={download.excerpt}
+        canonical={`https://${env.DOMAIN}/${download.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
-          description: env.DESCRIPTION,
+          url: `https://${env.DOMAIN}/${download.slug}`,
+          title: `${download.title} | ${env.SITE_TITLE}`,
+          description: download.excerpt,
         }}
+      />
+      <ArticleJsonLd
+        url={`https://${env.DOMAIN}/${download.slug}`}
+        title={`${download.title} | ${env.SITE_TITLE}`}
+        images={[download.featuredImage.url]}
+        datePublished={download.createdAt}
+        dateModified={download.createdAt}
+        authorName={[
+          {
+            name: env.SITE_TITLE,
+            url: `https://${env.DOMAIN}`,
+          },
+        ]}
+        publisherName={env.SITE_TITLE}
+        publisherLogo={env.LOGO_URL}
+        description={download.excerpt}
+        isAccessibleForFree={true}
+      />
+      <SoftwareAppJsonLd
+        name={download.title}
+        price={download.downloadFiles[0].price}
+        priceCurrency={download.downloadFiles[0].currency}
+        aggregateRating={{ ratingValue: "5.0", reviewCount: "1" }}
+        operatingSystem={download.operationSystem}
+        applicationCategory={download.schemaType}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+          {
+            position: 2,
+            name: download.topics[0].title,
+            item: `https://${env.DOMAIN}/topic/${download.topics[0].slug}`,
+          },
+        ]}
       />
       <HomeLayout>
         <section className="flex w-full flex-col">
@@ -197,7 +241,7 @@ export default function Download(props: { download: any; downloads: any }) {
                   </Heading>
                 </div>
                 {downloads.map(
-                  (post: {
+                  (download: {
                     id: number
                     featuredImage: {
                       url: string
@@ -208,11 +252,11 @@ export default function Download(props: { download: any; downloads: any }) {
                   }) => {
                     return (
                       <DownloadCardSide
-                        key={post.id}
-                        src={post.featuredImage?.url}
-                        title={post.title}
-                        slug={`/download/${post.type.toLowerCase()}/${
-                          post.slug
+                        key={download.id}
+                        src={download.featuredImage?.url}
+                        title={download.title}
+                        slug={`/download/${download.type.toLowerCase()}/${
+                          download.slug
                         }`}
                       />
                     )
