@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import env from "@/env"
 import NextLink from "next/link"
-import { ListDownload } from "@/components/List"
+import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { Heading } from "ui"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
@@ -25,9 +25,8 @@ const HomeLayout = dynamic(() =>
 export default function Download() {
   const router = useRouter()
 
-  const { getTopicsData } = useGetTopics()
-
   const { getDownloadsData } = useGetDownloads()
+  const { getTopicsData } = useGetTopics()
   const downloadsByApp = useGetDownloadByType("App")
   const downloadsByGame = useGetDownloadByType("Game")
 
@@ -45,7 +44,7 @@ export default function Download() {
       />
       <HomeLayout>
         <div className="mx-auto flex w-full flex-col min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">
-          <div className="flex flex-col rounded-md bg-gray-100 p-5 dark:bg-gray-800">
+          <div className="flex flex-col space-y-8 rounded-md bg-gray-100 p-5 dark:bg-gray-800">
             <div className="flex justify-between">
               <div className="flex space-x-2">
                 <DropdownLink
@@ -61,6 +60,16 @@ export default function Download() {
                 <SearchInput />
               </div>
             </div>
+            {getTopicsData?.isSuccess && (
+              <div>
+                <div className="mb-2">
+                  <Heading>Pilih Kategori</Heading>
+                </div>
+                <ListDownloadCategory
+                  listCategories={getTopicsData?.data?.topics}
+                />
+              </div>
+            )}
           </div>
 
           <div className="w-full px-4">
@@ -127,10 +136,10 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery(["downloadType", "App"], () =>
     getDownloadByType("App"),
   )
-  await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
   await queryClient.prefetchQuery(["downloadType", "Game"], () =>
     getDownloadByType("Game"),
   )
+  await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
   return {
     props: { dehydratedState: dehydrate(queryClient) },
   }

@@ -40,7 +40,6 @@ export default function User() {
     userData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(user?.data)
   return (
     <HomeLayout>
       <div className="mx-4 mt-[70px] h-screen w-full rounded px-4">

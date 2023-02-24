@@ -88,7 +88,6 @@ export default function DashboardEditUser() {
   const loadUser = async () => {
     try {
       const { data } = await axios.get(`/user/${router.query.id}`)
-      console.log(data)
       setUser({
         id: data.id,
         username: data.username,

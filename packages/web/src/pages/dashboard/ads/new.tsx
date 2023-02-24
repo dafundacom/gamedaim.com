@@ -39,7 +39,6 @@ export default function CreateAdsDashBoard() {
 
   const onSubmit = async (values: any) => {
     setLoading(true)
-    console.log(values)
     try {
       const { data } = await axios.post("/ad", values)
       if (data?.error) {

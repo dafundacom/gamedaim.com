@@ -38,7 +38,6 @@ export default function CreateScriptsDashBoard() {
 
   const onSubmit = async (values: any) => {
     setLoading(true)
-    console.log(values)
     try {
       const { data } = await axios.post("/script", values)
       if (data?.error) {
