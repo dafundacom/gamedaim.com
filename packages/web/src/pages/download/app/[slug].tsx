@@ -32,18 +32,16 @@ import {
 import { SpecBox } from "@/components/Box"
 import { CounterdownDownload } from "@/components/Counter"
 
-export default function DownloadGame(props: { download: any; downloads: any }) {
+export default function Download(props: { download: any; downloads: any }) {
   const { download, downloads } = props
   const router: any = useRouter()
   dayjs.extend(relativeTime)
 
   const [showCountdown, setShowCountdown] = React.useState(false)
   const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
-  const [fileVersion, setFileVersion] = React.useState(
-    download?.downloadFiles[0],
-  )
-  const [showAllVersion, setShowAllVersion] = React.useState(false)
-  console.log(download?.downloadFiles)
+  //   const [fileVersion, setFileVersion] = React.useState(
+  //     download?.downloadFiles[0],
+  //   )
   React.useEffect(() => {
     return () => {
       if (countdownInterval) {
@@ -51,17 +49,14 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
       }
     }
   }, [countdownInterval])
-  const handleChangeVersion = (element: any) => {
-    setFileVersion(element)
-    router.push(`/download/game/${router.query.slug}#version`)
-  }
+
   const handleDownloadClick = () => {
     setShowCountdown(true)
     setCountdownInterval(
       setInterval(() => {
         setShowCountdown(false)
         setCountdownInterval(null)
-        router.push(fileVersion.downloadLink)
+        router.push(download?.downloadFiles[0].downloadLink)
       }, 10000),
     )
   }
@@ -157,15 +152,6 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                         >
                           {download?.title}
                         </Heading>
-                        <div id="version" className="flex flex-wrap gap-2">
-                          <Text>{fileVersion.version}</Text>
-                          <span
-                            onClick={() => setShowAllVersion(true)}
-                            className="cursor-pointer text-green-500"
-                          >
-                            Show All Version
-                          </span>
-                        </div>
                         <span className={"inline-flex align-middle"}>
                           <AiFillStar className={"h-5 w-5 text-green-200"} />
                           <Text>4/5 (33 Reviewer)</Text>
@@ -226,7 +212,7 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                     <SpecBox
                       icon={MdFolder}
                       title="File Size"
-                      value={fileVersion.fileSize}
+                      value={download?.downloadFiles[0].fileSize}
                     />
                     <SpecBox
                       icon={MdVpnKey}
@@ -234,27 +220,6 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                       value={download?.license}
                     />
                   </div>
-                  {showAllVersion && (
-                    <div className="space-y-2">
-                      <Heading>All version</Heading>
-                      <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
-                        {download.downloadFiles.map((post: any) => {
-                          return (
-                            <>
-                              <div
-                                onClick={() => handleChangeVersion(post)}
-                                className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
-                              >
-                                <Text>{post.version}</Text>
-                                <Text>{post.title}</Text>
-                                <Text>{post.fileSize}</Text>
-                              </div>
-                            </>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
                   <div className="w-full px-4">
                     <div className={"my-2 flex flex-row justify-start"}>
                       <Heading as="h2" size="2xl" bold>
