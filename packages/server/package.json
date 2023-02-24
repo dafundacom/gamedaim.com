@@ -20,8 +20,8 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.276.0",
-    "@aws-sdk/lib-storage": "^3.276.0",
+    "@aws-sdk/client-s3": "^3.278.0",
+    "@aws-sdk/lib-storage": "^3.278.0",
     "@faker-js/faker": "^7.6.0",
     "@fastify/cors": "^8.2.0",
     "@fastify/jwt": "^6.6.0",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
-    "@types/node": "^18.14.0",
+    "@types/node": "^18.14.1",
     "@types/tap": "^15.0.8",
     "eslint-config": "workspace:*",
     "prisma": "^4.10.1",
