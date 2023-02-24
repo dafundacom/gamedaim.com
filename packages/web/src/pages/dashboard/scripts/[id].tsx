@@ -90,9 +90,9 @@ export default function EditScriptDashboard() {
       <NextSeo
         title={`Edit Script | ${env.SITE_TITLE}`}
         description={`Edit Script | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Edit Script | ${env.SITE_TITLE}`,
           description: `Edit Script | ${env.SITE_TITLE}`,
         }}

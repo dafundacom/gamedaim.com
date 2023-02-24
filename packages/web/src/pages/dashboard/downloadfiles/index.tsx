@@ -86,9 +86,9 @@ export default function DownloadFilesDashboard() {
       <NextSeo
         title={`Download-file Dashboard | ${env.SITE_TITLE}`}
         description={`Download-file Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Download-file Dashboard | ${env.SITE_TITLE}`,
           description: `Download-file Dashboard | ${env.SITE_TITLE}`,
         }}

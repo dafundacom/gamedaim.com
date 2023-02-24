@@ -91,9 +91,9 @@ export default function EditAdDashboard() {
       <NextSeo
         title={`Edit Ad | ${env.SITE_TITLE}`}
         description={`Edit Ad | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Edit Ad | ${env.SITE_TITLE}`,
           description: `Edit Ad | ${env.SITE_TITLE}`,
         }}

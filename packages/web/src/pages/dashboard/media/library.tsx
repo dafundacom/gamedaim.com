@@ -86,9 +86,9 @@ export default function MediaLibraryDashboard() {
       <NextSeo
         title={`Media Library | ${env.SITE_TITLE}`}
         description={`Media Library | ${env.SITE_TITLE}`}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `Media Library | ${env.SITE_TITLE}`,
           description: `Media Library | ${env.SITE_TITLE}`,
         }}

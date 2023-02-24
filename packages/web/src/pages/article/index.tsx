@@ -27,9 +27,9 @@ export default function Articles() {
       <NextSeo
         title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
         description={env.DESCRIPTION}
-        canonical={`https/${env.DOMAIN}${router.pathname}`}
+        canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
-          url: `https/${env.DOMAIN}${router.pathname}`,
+          url: `https://${env.DOMAIN}${router.pathname}`,
           title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
           description: env.DESCRIPTION,
         }}

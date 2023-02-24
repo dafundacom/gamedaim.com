@@ -1,9 +1,10 @@
 import * as React from "react"
-import Head from "next/head"
 import dynamic from "next/dynamic"
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+import { NextSeo, ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
 
+import env from "@/env"
 import { HomeLayout } from "@/layouts/Home"
 import {
   getArticleBySlug,
@@ -55,10 +56,48 @@ export default function Post() {
   }, [article])
   return (
     <>
+      <NextSeo
+        title={`${article.title} — ${env.SITE_TITLE}`}
+        description={article.excerpt}
+        canonical={`https://${env.DOMAIN}/${article.slug}`}
+        openGraph={{
+          url: `https://${env.DOMAIN}/${article.slug}`,
+          title: `${article.title} — ${env.SITE_TITLE}`,
+          description: article.excerpt,
+        }}
+      />
+      <ArticleJsonLd
+        url={`https://${env.DOMAIN}/${article.slug}`}
+        title={`${article.title} — ${env.SITE_TITLE}`}
+        images={[article.featuredImage.url]}
+        datePublished={article.createdAt}
+        dateModified={article.createdAt}
+        authorName={[
+          {
+            name: article.author.name,
+            url: `https://${env.DOMAIN}/user/${article.author.username}`,
+          },
+        ]}
+        publisherName={env.SITE_TITLE}
+        publisherLogo={env.LOGO_URL}
+        description={article.excerpt}
+        isAccessibleForFree={true}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: "Article",
+            item: `https://${env.domain}/article`,
+          },
+          {
+            position: 2,
+            name: article.topics[0].title,
+            item: `https://${env.domain}/topic/${article.topics[0].slug}`,
+          },
+        ]}
+      />
       <HomeLayout>
-        <Head>
-          <title>{getArticleBySlugData?.data?.article?.title}</title>
-        </Head>
         <div className="mx-auto flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px]">
           <section className="w-full lg:w-8/12">
             {getArticleBySlugData?.isSuccess && (
@@ -193,22 +232,5 @@ export const getServerSideProps = async ({ params, res }: any) => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-    // revalidate: 100,
   }
 }
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const { articles }: any = await getArticles(1)
-
-//   const paths = articles.map((post: any) => {
-//     const { slug } = post
-//     return {
-//       params: {
-//         slug: slug,
-//       },
-//     }
-//   })
-//   return {
-//     paths,
-//     fallback: "blocking",
-//   }
-// }
