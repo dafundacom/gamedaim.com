@@ -21,6 +21,7 @@ const ContentProvider: React.FunctionComponent<ContentProviderProps> = (
     users: [],
     scripts: [],
     downloads: [],
+    downloadFiles: [],
   })
 
   return (

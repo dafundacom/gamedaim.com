@@ -88,10 +88,13 @@ export const SidebarDashboard = React.forwardRef<
           <Sidebar.ToggleItem href="/dashboard/downloads">
             All Downloads
           </Sidebar.ToggleItem>
+          <Sidebar.ToggleItem href="/dashboard/downloadfiles">
+            All Files
+          </Sidebar.ToggleItem>
           <Sidebar.ToggleItem href="/dashboard/downloads/new">
             Add new download
           </Sidebar.ToggleItem>
-          <Sidebar.ToggleItem href="/dashboard/downloads/new-version">
+          <Sidebar.ToggleItem href="/dashboard/downloadfiles/new">
             Add new file version
           </Sidebar.ToggleItem>
         </Sidebar.Toggle>
