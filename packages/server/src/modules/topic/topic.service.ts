@@ -85,6 +85,7 @@ export async function findTopicBySlug(topicSlug: string) {
       meta_title: true,
       meta_description: true,
       articles: {
+        take: 10,
         select: {
           content: true,
           excerpt: true,
@@ -112,6 +113,7 @@ export async function findTopicBySlug(topicSlug: string) {
         },
       },
       downloads: {
+        take: 10,
         select: {
           id: true,
           content: true,
