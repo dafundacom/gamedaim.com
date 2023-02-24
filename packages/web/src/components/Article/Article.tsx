@@ -147,10 +147,9 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
             as="h1"
             className="mt-4 mb-2 border-b border-gray-200 pb-2 !text-[25px] font-bold !leading-[1.7] dark:border-gray-600 md:border-none md:!text-[40px] md:!leading-[43px]"
             lineClamp={0}
-            dangerouslySetInnerHTML={{
-              __html: title,
-            }}
-          />
+          >
+            {title}
+          </Heading>
           <div className="mb-2">
             <MetadataPost
               authorName={authorName}

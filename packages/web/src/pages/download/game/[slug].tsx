@@ -1,5 +1,10 @@
 import * as React from "react"
+import NextImage from "next/image"
+import NextLink from "next/link"
 import dynamic from "next/dynamic"
+import dayjs from "dayjs"
+import parse from "html-react-parser"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { useRouter } from "next/router"
 import {
   ArticleJsonLd,
@@ -7,18 +12,6 @@ import {
   NextSeo,
   SoftwareAppJsonLd,
 } from "next-seo"
-import NextImage from "next/image"
-import env from "@/env"
-import NextLink from "next/link"
-import { ListDownload } from "@/components/List"
-import { Breadcrumb, Button, Heading, Text } from "ui"
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
-import { DownloadCardSide } from "@/components/Card"
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
 import { HiChip } from "react-icons/hi"
 import {
   MdCode,
@@ -28,9 +21,26 @@ import {
   MdFolder,
   MdVpnKey,
 } from "react-icons/md"
-import { SpecBox } from "@/components/Box"
-import { CounterdownDownload } from "@/components/Counter"
+import { Breadcrumb, Button, Heading, Text } from "ui"
 
+import env from "@/env"
+import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
+
+const DownloadCardSide = dynamic(() =>
+  import("@/components/Card").then((mod) => mod.DownloadCardSide),
+)
+const CounterdownDownload = dynamic(() =>
+  import("@/components/Counter").then((mod) => mod.CounterdownDownload),
+)
+const ListDownload = dynamic(() =>
+  import("@/components/List").then((mod) => mod.ListDownload),
+)
+const SpecBox = dynamic(() =>
+  import("@/components/Box").then((mod) => mod.SpecBox),
+)
+const HomeLayout = dynamic(() =>
+  import("@/layouts/Home").then((mod) => mod.HomeLayout),
+)
 export default function DownloadGame(props: { download: any; downloads: any }) {
   const { download, downloads } = props
   const router: any = useRouter()
@@ -207,17 +217,12 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                   {showCountdown && (
                     <>
                       <div className="bg-green-100 p-7 text-black">
-                        Link download akan terbuka pada{" "}
+                        Link download akan terbuka pada
                         {<CounterdownDownload />} detik
                       </div>
                     </>
                   )}
-                  <div
-                    className="p-7"
-                    dangerouslySetInnerHTML={{
-                      __html: download?.content,
-                    }}
-                  />
+                  <div className="p-7">{parse(download.content)}</div>
                   <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
                     <SpecBox
                       icon={HiChip}
