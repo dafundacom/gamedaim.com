@@ -71,10 +71,9 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               >
                 {title}
               </Heading>
-              <div
-                className="md:!line-clamp-2 hidden text-[15px] text-gray-500 dark:text-gray-300 md:my-[10px] md:inline-flex"
-                dangerouslySetInnerHTML={{ __html: excerpt }}
-              />
+              <div className="md:!line-clamp-2 hidden text-[15px] text-gray-500 dark:text-gray-300 md:my-[10px] md:inline-flex">
+                {excerpt}
+              </div>
             </NextLink>
             <div className="flex-column flex">
               <div className="flex flex-row items-center">
