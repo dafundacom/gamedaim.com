@@ -113,6 +113,13 @@ export async function deleteMediaById(mediaId: string) {
   })
 }
 
+export async function deleteMediaByName(mediaName: string) {
+  return db.media.delete({
+    where: {
+      name: mediaName,
+    },
+  })
+}
 export async function getTotalMedias() {
   return await db.media.count()
 }
