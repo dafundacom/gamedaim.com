@@ -68,7 +68,7 @@ export const Input = React.forwardRef<HTMLElement, InputProps>((props, ref) => {
 
   const variantClasses = {
     plain: tx(
-      `relative  w-full min-w-0 inline-flex px-3 items-center appearance-none outline-none focus:outline-none border-none focus:border-none hover:border-none focus:ring-0 text-${colorScheme}-900 invalid:text-red-500`,
+      `relative  w-full min-w-0 inline-flex px-3 items-center appearance-none outline-none focus:outline-none border-none focus:border-none hover:border-none focus:ring-0 text-${colorScheme}-900 bg-white dark:bg-${colorScheme}-900 dark:text-${colorScheme}-200 invalid:text-red-500`,
       sizeClasses[size],
       disabled &&
         `disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-60 disabled:border-${colorScheme}-200 disabled:bg-${colorScheme}-200 dark:disabled:border-transparent dark:disabled:bg-${colorScheme}-200`,
