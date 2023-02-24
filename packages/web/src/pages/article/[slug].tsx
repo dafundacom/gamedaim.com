@@ -61,18 +61,18 @@ export default function SingleArticle(props: SingleArticleProps) {
   return (
     <>
       <NextSeo
-        title={`${article.title} — ${env.SITE_TITLE}`}
+        title={`${article.title} | ${env.SITE_TITLE}`}
         description={article.excerpt}
         canonical={`https://${env.DOMAIN}/${article.slug}`}
         openGraph={{
           url: `https://${env.DOMAIN}/${article.slug}`,
-          title: `${article.title} — ${env.SITE_TITLE}`,
+          title: `${article.title} | ${env.SITE_TITLE}`,
           description: article.excerpt,
         }}
       />
       <ArticleJsonLd
         url={`https://${env.DOMAIN}/${article.slug}`}
-        title={`${article.title} — ${env.SITE_TITLE}`}
+        title={`${article.title} | ${env.SITE_TITLE}`}
         images={[article.featuredImage.url]}
         datePublished={article.createdAt}
         dateModified={article.createdAt}

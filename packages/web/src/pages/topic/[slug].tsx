@@ -52,12 +52,12 @@ export default function Topic(props: TopicProps) {
   return (
     <>
       <NextSeo
-        title={`${topic.title} — ${env.SITE_TITLE}`}
+        title={`${topic.title} | ${env.SITE_TITLE}`}
         description={topic.description}
         canonical={`https://${env.DOMAIN}/${topic.slug}`}
         openGraph={{
           url: `https://${env.DOMAIN}/${topic.slug}`,
-          title: `${topic.title} — ${env.SITE_TITLE}`,
+          title: `${topic.title} | ${env.SITE_TITLE}`,
           description: topic.description,
         }}
       />
