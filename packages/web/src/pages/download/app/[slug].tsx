@@ -32,7 +32,7 @@ import {
 import { SpecBox } from "@/components/Box"
 import { CounterdownDownload } from "@/components/Counter"
 
-export default function DownloadGame(props: { download: any; downloads: any }) {
+export default function Download(props: { download: any; downloads: any }) {
   const { download, downloads } = props
   const router: any = useRouter()
   dayjs.extend(relativeTime)
