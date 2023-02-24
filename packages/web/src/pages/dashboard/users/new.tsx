@@ -79,7 +79,6 @@ export default function CreateUsersDashboard() {
         ...values,
         profilePictureId: selectedprofilePictureId,
       }
-      console.log(mergedValues)
       const { data } = await axios.post("/user/signup", mergedValues)
       if (data?.error) {
         toast.error(data.error)

@@ -29,7 +29,6 @@ export default function Download() {
   const { getTopicsData } = useGetTopics()
   const downloadsByApp = useGetDownloadByType("App")
   const downloadsByGame = useGetDownloadByType("Game")
-  console.log(getDownloadsData)
 
   return (
     <>

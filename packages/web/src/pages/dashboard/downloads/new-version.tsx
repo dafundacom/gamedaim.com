@@ -120,9 +120,8 @@ export default function CreateDownloadfilesDashboard() {
         downloadIds: downloads,
         featuredImageId: selectedFeaturedImageId,
       }
-      console.log(mergedValues)
       const { data } = await axios.post("/download-file", mergedValues)
-      console.log(data)
+
       if (data?.error) {
         toast.error(data.error)
       } else {

@@ -153,7 +153,6 @@ export default function CreateDownloadsDashboard() {
       } else {
         reset()
         toast.success("Download Successfully created")
-        console.log(data)
       }
     } catch (err: any) {
       console.log("err => ", err)

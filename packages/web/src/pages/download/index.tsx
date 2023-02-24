@@ -17,6 +17,7 @@ import {
   useGetDownloadByType,
 } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
+import { getTopics, useGetTopics } from "@/lib/topics"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
@@ -24,37 +25,11 @@ const HomeLayout = dynamic(() =>
 export default function Download() {
   const router = useRouter()
 
-  const daftarGames = [
-    {
-      title: "Red Dead Redemption 2",
-      slug: "https://example.com/red-dead-redemption-2",
-    },
-    {
-      title: "The Legend of Zelda: Breath of the Wild",
-      slug: "https://example.com/breath-of-the-wild",
-    },
-    { title: "Grand Theft Auto V", slug: "https://example.com/gta-v" },
-    {
-      title: "Super Mario Odyssey",
-      slug: "https://example.com/super-mario-odyssey",
-    },
-    { title: "Minecraft", slug: "https://example.com/minecraft" },
-    {
-      title: "The Witcher 3: Wild Hunt",
-      slug: "https://example.com/witcher-3",
-    },
-    { title: "Overwatch", slug: "https://example.com/overwatch" },
-    { title: "Fortnite", slug: "https://example.com/fortnite" },
-    {
-      title: "League of Legends",
-      slug: "https://example.com/league-of-legends",
-    },
-    { title: "Among Us", slug: "https://example.com/among-us" },
-  ]
+  const { getTopicsData } = useGetTopics()
+
   const { getDownloadsData } = useGetDownloads()
   const downloadsByApp = useGetDownloadByType("App")
   const downloadsByGame = useGetDownloadByType("Game")
-  console.log(getDownloadsData)
 
   return (
     <>
@@ -73,8 +48,14 @@ export default function Download() {
           <div className="flex flex-col rounded-md bg-gray-100 p-5 dark:bg-gray-800">
             <div className="flex justify-between">
               <div className="flex space-x-2">
-                <DropdownLink list={daftarGames} title={"Category"} />
-                <DropdownLink list={daftarGames} title={"Platform"} />
+                <DropdownLink
+                  list={getTopicsData?.data?.topics}
+                  title={"Category"}
+                />
+                <DropdownLink
+                  list={getTopicsData?.data?.topics}
+                  title={"Platform"}
+                />
               </div>
               <div>
                 <SearchInput />
@@ -146,6 +127,7 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery(["downloadType", "App"], () =>
     getDownloadByType("App"),
   )
+  await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
   await queryClient.prefetchQuery(["downloadType", "Game"], () =>
     getDownloadByType("Game"),
   )
