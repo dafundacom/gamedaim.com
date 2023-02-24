@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import dynamic from "next/dynamic"
 import { NextSeo, ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
 
@@ -8,7 +7,7 @@ import { HomeLayout } from "@/layouts/Home"
 
 import { PostCardSide } from "@/components/Card"
 import { Article } from "@/components/Article"
-import { getArticles } from "@/lib/articles"
+import { getArticleBySlug, getArticles } from "@/lib/articles"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
@@ -146,11 +145,15 @@ export default function SingleArticle(props: SingleArticleProps) {
   )
 }
 
-export const getServerSideProps = async ({ params }: any) => {
-  const { data } = await axios.get(`/article/slug/${params.slug}`)
+export const getServerSideProps = async ({
+  params,
+}: {
+  params: { slug: string }
+}) => {
+  const { article } = await getArticleBySlug(params.slug)
   const { articles } = await getArticles()
 
-  if (!data) {
+  if (!article) {
     return {
       notFound: true,
     }
@@ -158,7 +161,7 @@ export const getServerSideProps = async ({ params }: any) => {
 
   return {
     props: {
-      article: data,
+      article: article,
       articles: articles,
     },
   }
