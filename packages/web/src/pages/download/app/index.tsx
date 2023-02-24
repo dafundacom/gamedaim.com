@@ -5,7 +5,7 @@ import { NextSeo } from "next-seo"
 import env from "@/env"
 import NextLink from "next/link"
 import { ListDownload, ListDownloadCategory } from "@/components/List"
-import { Heading } from "ui"
+import { Heading, Text } from "ui"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
 import { dehydrate, QueryClient } from "@tanstack/react-query"
@@ -76,8 +76,10 @@ export default function Download() {
               <Heading as="h2" size="2xl" bold>
                 Apps
               </Heading>
-              <NextLink href="/download/app/" className="text-[#00695C]">
-                See more
+              <NextLink href="/download/app/">
+                <Text size="sm" colorScheme="blue">
+                  See more
+                </Text>
               </NextLink>
             </div>
             {downloadsByApp?.getDownloadByTypeData?.data !== undefined && (
@@ -93,8 +95,10 @@ export default function Download() {
               <Heading as="h2" size="2xl" bold>
                 Newest
               </Heading>
-              <NextLink href="/download/app/" className="text-[#00695C]">
-                See more
+              <NextLink href="/download/app/">
+                <Text size="sm" colorScheme="blue">
+                  See more
+                </Text>
               </NextLink>
             </div>
             <div className="flex flex-wrap gap-4">

@@ -31,7 +31,7 @@ export const SearchInput = ({ onSearch }: SearchInputProps) => {
       <form onSubmit={handleSubmit} autoComplete="off">
         <InputGroup size="md">
           <InputLeftElement>
-            <MdSearch />
+            <MdSearch className="text-gray-800 dark:text-gray-200" />
           </InputLeftElement>
           <Input
             type="search"

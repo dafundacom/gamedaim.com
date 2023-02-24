@@ -12,7 +12,7 @@ export const DropdownLink = (props: { list: any; title: any }) => {
     <>
       <div className="relative">
         <Button
-          className="focus:shadow-outline rounded !bg-gray-400 py-2 px-4 font-medium !font-bold !text-black focus:outline-none"
+          className="focus:shadow-outline !dark:bg-gray-700 !dark:text-gray-200 rounded !bg-gray-300 py-2 px-4 font-medium !font-bold !text-gray-800 focus:outline-none"
           onClick={toggleDropdown}
         >
           <span className="mr-2">{title}</span>
