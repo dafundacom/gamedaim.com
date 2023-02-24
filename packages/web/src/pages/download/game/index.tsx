@@ -83,7 +83,7 @@ export default function Download() {
             {downloadsByGame?.getDownloadByTypeData?.data !== undefined && (
               <ListDownload
                 listDownloads={
-                  downloadsByGame?.getDownloadByTypeData?.data?.download
+                  downloadsByGame?.getDownloadByTypeData?.data?.downloadByType
                 }
               />
             )}
