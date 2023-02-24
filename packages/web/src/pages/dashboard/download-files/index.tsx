@@ -89,8 +89,8 @@ export default function DownloadFilesDashboard() {
         canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
           url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Download-file Dashboard | ${env.SITE_TITLE}`,
-          description: `Download-file Dashboard | ${env.SITE_TITLE}`,
+          title: `Download File Dashboard | ${env.SITE_TITLE}`,
+          description: `Download File Dashboard | ${env.SITE_TITLE}`,
         }}
         noindex={true}
       />
@@ -163,7 +163,7 @@ export default function DownloadFilesDashboard() {
                                 onDelete={() =>
                                   mutationDelete.mutate(downloadFile)
                                 }
-                                editLink={`/dashboard/downloadfiles/${downloadFile.id}`}
+                                editLink={`/dashboard/download-files/${downloadFile.id}`}
                                 content={downloadFile.title}
                               />
                             </Td>

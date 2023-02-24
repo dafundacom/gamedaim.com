@@ -14,12 +14,11 @@ import { ListDownload } from "@/components/List"
 import { Breadcrumb, Button, Heading, Text } from "ui"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { getDownloads, getDownloadBySlug } from "@/lib/download"
+import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
 import { DownloadCardSide } from "@/components/Card"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
-import { AiFillStar } from "react-icons/ai"
 import { HiChip } from "react-icons/hi"
 import {
   MdCode,
@@ -109,8 +108,8 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
       />
       <SoftwareAppJsonLd
         name={download.title}
-        price={download.downloadFiles[0].price}
-        priceCurrency={download.downloadFiles[0].currency}
+        price={download.downloadFiles[0]?.price}
+        priceCurrency={download.downloadFiles[0]?.currency}
         aggregateRating={{ ratingValue: "5.0", reviewCount: "1" }}
         operatingSystem={download.operationSystem}
         applicationCategory={download.schemaType}
@@ -124,8 +123,8 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
           },
           {
             position: 2,
-            name: download.topics[0].title,
-            item: `https://${env.DOMAIN}/topic/${download.topics[0].slug}`,
+            name: download.topics[0]?.title,
+            item: `https://${env.DOMAIN}/topic/${download.topics[0]?.slug}`,
           },
         ]}
       />
@@ -172,19 +171,17 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                         >
                           {download?.title}
                         </Heading>
-                        <div className="flex flex-wrap gap-2">
-                          <Text>{fileVersion.version}</Text>
-                          <span
-                            onClick={handleShowAllVersion}
-                            className="cursor-pointer text-green-500"
-                          >
-                            Show All Version
-                          </span>
-                        </div>
-                        <span className={"inline-flex align-middle"}>
-                          <AiFillStar className={"h-5 w-5 text-green-200"} />
-                          <Text>4/5 (33 Reviewer)</Text>
-                        </span>
+                        {download.downloadFiles.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            <Text>{fileVersion.version}</Text>
+                            <span
+                              onClick={handleShowAllVersion}
+                              className="cursor-pointer text-green-500"
+                            >
+                              Show All Version
+                            </span>
+                          </div>
+                        )}
                         <Text>{download?.developer}</Text>
                         <div className={"inline-flex space-x-2 pt-12"}>
                           <Button colorScheme="gray">
@@ -238,11 +235,13 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                       title="Last Update"
                       value={dayjs(download?.updatedAt).fromNow()}
                     />
-                    <SpecBox
-                      icon={MdFolder}
-                      title="File Size"
-                      value={fileVersion.fileSize}
-                    />
+                    {download.downloadFiles.length > 0 && (
+                      <SpecBox
+                        icon={MdFolder}
+                        title="File Size"
+                        value={fileVersion.fileSize}
+                      />
+                    )}
                     <SpecBox
                       icon={MdVpnKey}
                       title="License"
@@ -253,20 +252,21 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                     <div id="all-version" className="space-y-2">
                       <Heading>All version</Heading>
                       <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
-                        {download.downloadFiles.map((post: any) => {
-                          return (
-                            <>
-                              <div
-                                onClick={() => handleChangeVersion(post)}
-                                className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
-                              >
-                                <Text>{post.version}</Text>
-                                <Text>{post.title}</Text>
-                                <Text>{post.fileSize}</Text>
-                              </div>
-                            </>
-                          )
-                        })}
+                        {download.downloadFiles.length > 0 &&
+                          download.downloadFiles.map((post: any) => {
+                            return (
+                              <>
+                                <div
+                                  onClick={() => handleChangeVersion(post)}
+                                  className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
+                                >
+                                  <Text>{post.version}</Text>
+                                  <Text>{post.title}</Text>
+                                  <Text>{post.fileSize}</Text>
+                                </div>
+                              </>
+                            )
+                          })}
                       </div>
                     </div>
                   )}
@@ -324,9 +324,14 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
 export async function getServerSideProps({ params }: any) {
   const slug = params.slug
 
-  const { downloads } = await getDownloads()
+  const { downloadByType } = await getDownloadByType("Game")
   const { download } = await getDownloadBySlug(slug)
+  if (!download || download.type !== "Game") {
+    return {
+      notFound: true,
+    }
+  }
   return {
-    props: { downloads: downloads, download: download },
+    props: { downloads: downloadByType, download: download },
   }
 }
