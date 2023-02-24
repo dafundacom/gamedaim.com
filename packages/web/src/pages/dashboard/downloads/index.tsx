@@ -125,6 +125,7 @@ export default function DownloadsDashboard() {
                             author: {
                               name: string
                             }
+                            type: string
                             status: string
                             createdAt: string
                             updatedAt: string
@@ -159,7 +160,9 @@ export default function DownloadsDashboard() {
                             </Td>
                             <Td align="right">
                               <ActionDashboard
-                                viewLink={`/download/${download.slug}`}
+                                viewLink={`/download/${download.type.toLowerCase()}/${
+                                  download.slug
+                                }`}
                                 onDelete={() => mutationDelete.mutate(download)}
                                 editLink={`/dashboard/downloads/${download.id}`}
                                 content={download.title}
