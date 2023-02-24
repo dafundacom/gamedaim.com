@@ -203,6 +203,7 @@ model DownloadFile {
   fileSize         String
   currency         String
   price            String
+  status           PostStatus     @default(PUBLISHED)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
