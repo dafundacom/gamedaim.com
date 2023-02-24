@@ -103,32 +103,45 @@ export default defineConfig({
         url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAE0lEQVQYV2NkwAIYqSy4YMGC/wAIQwLlE7lczAAAAABJRU5ErkJggg==);
       margin: 0 0 50px;
     }
+
     .article-body h1,
     .article-body h2,
     .article-body h3,
     .article-body h4,
     .article-body h5,
-    .article-body h6 {
+    .article-body h6,
+    .download-body h1,
+    .download-body h2,
+    .download-body h3,
+    .download-body h4,
+    .download-body h5,
+    .download-body h6 {
+      {
       @apply my-4 font-bold text-black dark:text-gray-100;
     }
 
-    .article-body h1 {
+    .article-body h1,
+    .download-body h1 {
       @apply text-2xl md:text-4xl;
     }
 
-    .article-body h2 {
+    .article-body h2,
+    .download-body h2 {
       @apply text-xl md:text-3xl;
     }
 
-    .article-body h3 {
+    .article-body h3,
+    .download-body h3 {
       @apply text-lg md:text-2xl;
     }
 
-    .article-body h4 {
+    .article-body h4,
+    .download-body h4 {
       @apply text-base md:text-xl;
     }
 
-    .article-body a {
+    .article-body a,
+    .download-body a {
       @apply text-primary-500 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 duration-200;
     }
 
@@ -136,7 +149,8 @@ export default defineConfig({
       @apply pt-4;
     }
 
-    .article-body p {
+    .article-body p,
+    .download-body p {
       @apply text-base leading-[24px] text-black dark:text-gray-100 md:text-lg md:leading-[32px];
     }
 
@@ -144,51 +158,45 @@ export default defineConfig({
       @apply mb-6;
     }
 
-    .article-body img {
+    .article-body img, .download-body img {
       @apply h-auto max-h-full max-w-full rounded-md;
     }
 
-    .article-body blockquote {
+    .article-body blockquote, .download-body blockquote {
       @apply border-l-4 border-gray-200 p-4;
     }
 
-    .article-body li {
+    .article-body li, .download-body li {
       @apply ml-6 mb-2 text-base md:ml-12 md:text-lg;
     }
 
-    .article-body ul {
+    .article-body ul, .download-body ul {
       position: relative;
     }
 
-    .article-body ul::before {
-      content: " ";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 5px;
-      height: 100%;
-      background: #0000001c;
-      border-radius: 10px;
+    .article-body ul::before, .download-body ul::before {
     }
 
-    .article-body ul::before {
-      @apply left-[3px] dark:bg-[#ffffff1c] md:left-[20px];
+    .article-body ul::before, .download-body ul::before {
+      @apply left-[3px] dark:bg-[#ffffff1c] md:left-[20px] absolute top-0 bottom-0 w-[5px] h-full rounded-[10px];
+      content: " ";
+      background: #0000001c;
     }
 
     .article-body ul,
-    .article-body figure {
+    .article-body figure, .download-body ul, .download-body figure {
       @apply my-4;
     }
 
-    .article-body iframe {
+    .article-body iframe, .download-body iframe {
       @apply relative m-0 aspect-video h-auto w-full rounded-md align-baseline;
     }
 
-    .article-body figcaption {
+    .article-body figcaption, .download-body figcapiton {
       @apply text-center text-xs italic;
     }
 
-    .article-body hr {
+    .article-body hr, .download-body hr {
       @apply mx-4 mb-4 text-gray-400;
     }
 
