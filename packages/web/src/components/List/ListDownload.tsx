@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Button } from "ui"
 
-import { DownloadCard } from "@/components/Download/Card"
+import { DownloadCard } from "@/components/Card"
 
 export const ListDownload = (props: { listDownloads: any }) => {
   const { listDownloads } = props

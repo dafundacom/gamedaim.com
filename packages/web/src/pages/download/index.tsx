@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import env from "@/env"
 import NextLink from "next/link"
-import { ListDownload } from "@/components/Download/List"
+import { ListDownload } from "@/components/List"
 import { Heading } from "ui"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
@@ -16,7 +16,7 @@ import {
   getDownloads,
   useGetDownloadByType,
 } from "@/lib/download"
-import { DownloadCard } from "@/components/Download/Card"
+import { DownloadCard } from "@/components/Card"
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
