@@ -83,7 +83,7 @@ export default function Download() {
             {downloadsByApp?.getDownloadByTypeData?.data !== undefined && (
               <ListDownload
                 listDownloads={
-                  downloadsByApp?.getDownloadByTypeData?.data?.download
+                  downloadsByApp?.getDownloadByTypeData?.data?.downloadByType
                 }
               />
             )}
