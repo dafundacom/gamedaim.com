@@ -6,6 +6,8 @@ import {
   getTopicsHandler,
   getTopicByIdHandler,
   getTopicBySlugHandler,
+  getTopicBySlugAndGetArticlesHandler,
+  getTopicBySlugAndGetDownloadsHandler,
   getTotalTopicsHandler,
   searchTopicsHandler,
 } from "./topic.controller"
@@ -66,7 +68,7 @@ async function topicRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/slug/:topicSlug/:topicPage",
+    "/slug/:topicSlug",
     {
       schema: {
         response: {
@@ -75,6 +77,30 @@ async function topicRoutes(server: FastifyInstance) {
       },
     },
     getTopicBySlugHandler,
+  )
+
+  server.get(
+    "/slug/:topicSlug/articles/:topicPage",
+    {
+      schema: {
+        response: {
+          200: $ref("topicsResponseSchema"),
+        },
+      },
+    },
+    getTopicBySlugAndGetArticlesHandler,
+  )
+
+  server.get(
+    "/slug/:topicSlug/downloads/:topicPage",
+    {
+      schema: {
+        response: {
+          200: $ref("topicsResponseSchema"),
+        },
+      },
+    },
+    getTopicBySlugAndGetDownloadsHandler,
   )
 
   server.put(

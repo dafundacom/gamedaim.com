@@ -12,6 +12,8 @@ import {
   searchTopics,
   updateTopic,
   getTotalTopics,
+  findTopicBySlugAndGetArticles,
+  findTopicBySlugAndGetDownloads,
 } from "./topic.service"
 
 export async function createTopicHandler(
@@ -114,6 +116,23 @@ export async function getTopicByIdHandler(
 
 export async function getTopicBySlugHandler(
   request: FastifyRequest<{
+    Params: { topicSlug: string }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { topicSlug } = request.params
+
+    const topic = await findTopicBySlug(topicSlug)
+    return reply.code(201).send(topic)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTopicBySlugAndGetArticlesHandler(
+  request: FastifyRequest<{
     Params: { topicSlug: string; topicPage: number }
   }>,
   reply: FastifyReply,
@@ -124,7 +143,35 @@ export async function getTopicBySlugHandler(
     const perPage = 10
     const topicPage = Number(request.params.topicPage || 1)
 
-    const topic = await findTopicBySlug(topicSlug, topicPage, perPage)
+    const topic = await findTopicBySlugAndGetArticles(
+      topicSlug,
+      topicPage,
+      perPage,
+    )
+    return reply.code(201).send(topic)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTopicBySlugAndGetDownloadsHandler(
+  request: FastifyRequest<{
+    Params: { topicSlug: string; topicPage: number }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { topicSlug } = request.params
+
+    const perPage = 10
+    const topicPage = Number(request.params.topicPage || 1)
+
+    const topic = await findTopicBySlugAndGetDownloads(
+      topicSlug,
+      topicPage,
+      perPage,
+    )
     return reply.code(201).send(topic)
   } catch (e) {
     console.log(e)
