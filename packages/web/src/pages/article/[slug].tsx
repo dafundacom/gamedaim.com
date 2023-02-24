@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import dynamic from "next/dynamic"
 import { NextSeo, ArticleJsonLd, BreadcrumbJsonLd } from "next-seo"
 
@@ -8,35 +7,14 @@ import { HomeLayout } from "@/layouts/Home"
 
 import { PostCardSide } from "@/components/Card"
 import { Article } from "@/components/Article"
-import { getArticles } from "@/lib/articles"
+import { getArticleBySlug, getArticles } from "@/lib/articles"
+import { ArticleDataProps, ArticlesDataProps } from "@/lib/data-types"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface SingleArticleProps {
-  [x: string]: any
-  article: {
-    title: string
-    featuredImage: {
-      url: string
-      name: string
-    }
-    content: string
-    excerpt: string
-    topics: {
-      title: string
-    }
-    slug: string
-    author: {
-      name: string
-      username: string
-      profilePicture: {
-        url: string
-      }
-    }
-    createdAt: string
-    updatedAt: string
-  }
-  articles: any
+  article: ArticleDataProps
+  articles: ArticlesDataProps
 }
 
 export default function SingleArticle(props: SingleArticleProps) {
@@ -116,7 +94,7 @@ export default function SingleArticle(props: SingleArticleProps) {
                 </Heading>
               </div>
               {articles.map(
-                (post: {
+                (article: {
                   id: number
                   featuredImage: {
                     url: string
@@ -129,11 +107,11 @@ export default function SingleArticle(props: SingleArticleProps) {
                 }) => {
                   return (
                     <PostCardSide
-                      key={post.id}
-                      src={post.featuredImage.url}
-                      alt={post.featuredImage.alt}
-                      slug={`/article/${post.slug}`}
-                      title={post.title}
+                      key={article.id}
+                      src={article.featuredImage.url}
+                      alt={article.featuredImage.alt}
+                      slug={`/article/${article.slug}`}
+                      title={article.title}
                     />
                   )
                 },
@@ -146,11 +124,15 @@ export default function SingleArticle(props: SingleArticleProps) {
   )
 }
 
-export const getServerSideProps = async ({ params }: any) => {
-  const { data } = await axios.get(`/article/slug/${params.slug}`)
+export const getServerSideProps = async ({
+  params,
+}: {
+  params: { slug: string }
+}) => {
+  const { article } = await getArticleBySlug(params.slug)
   const { articles } = await getArticles()
 
-  if (!data) {
+  if (!article) {
     return {
       notFound: true,
     }
@@ -158,7 +140,7 @@ export const getServerSideProps = async ({ params }: any) => {
 
   return {
     props: {
-      article: data,
+      article: article,
       articles: articles,
     },
   }

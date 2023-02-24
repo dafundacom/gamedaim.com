@@ -6,6 +6,7 @@ import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import env from "@/env"
 import { PostCard } from "@/components/Card"
 import { getTopicBySlug } from "@/lib/topics"
+import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
 
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
@@ -16,34 +17,7 @@ const HomeLayout = dynamic(() =>
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface TopicProps {
-  topic: {
-    title: string
-    description: string
-    slug: string
-    articles: {
-      [x: string]: any
-      title: string
-      featuredImage: {
-        url: string
-        name: string
-      }
-      content: string
-      excerpt: string
-      topics: {
-        title: string
-      }
-      slug: string
-      author: {
-        name: string
-        username: string
-        profilePicture: {
-          url: string
-        }
-      }
-      createdAt: string
-      updatedAt: string
-    }
-  }
+  topic: TopicDataProps
 }
 
 export default function Topic(props: TopicProps) {
@@ -153,25 +127,18 @@ export default function Topic(props: TopicProps) {
                     </span>
                   </Heading>
                 </div>
-                {topic.articles.map(
-                  (article: {
-                    id: string
-                    featuredImage: { url: string; alt: string }
-                    title: string
-                    slug: string
-                  }) => {
-                    return (
-                      <PostCardSide
-                        key={article.id}
-                        src={article.featuredImage?.url}
-                        alt={article.featuredImage?.alt}
-                        title={article.title}
-                        slug={article.slug}
-                        isWP={false}
-                      />
-                    )
-                  },
-                )}
+                {topic.articles.map((article: ArticleDataProps) => {
+                  return (
+                    <PostCardSide
+                      key={article.id}
+                      src={article.featuredImage?.url}
+                      alt={article.featuredImage?.alt}
+                      title={article.title}
+                      slug={article.slug}
+                      isWP={false}
+                    />
+                  )
+                })}
               </div>
             </aside>
           </div>
