@@ -91,7 +91,7 @@ export default function Articles(props: ArticlesDataProps) {
                     title={article.title}
                     excerpt={article.excerpt}
                     authorName={article.author.name}
-                    authorAvatarUrl={article.author.profilePicture.url}
+                    authorAvatarUrl={article.author.profilePicture?.url}
                     authorUri={article.author?.username}
                     date={article.createdAt}
                     isWP={false}
