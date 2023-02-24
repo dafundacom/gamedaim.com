@@ -91,17 +91,19 @@ export const ListDownloadCategory = (props: { listCategories: any }) => {
             <>
               <div
                 key={i}
-                className="inline-flex w-[200px] flex-row overflow-hidden rounded-lg bg-white shadow-lg"
+                className="inline-flex w-[200px] flex-row overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-700"
               >
-                <div className="relative">
-                  <NextImage
-                    src={list.featuredImage.url}
-                    alt={list.title}
-                    width={400}
-                    height={400}
-                    className="h-[135px] w-[70px] max-w-[unset] object-cover"
-                  />
-                </div>
+                {list.featuredImage > 0 && (
+                  <div className="relative">
+                    <NextImage
+                      src={list.featuredImage.url}
+                      alt={list.title}
+                      width={400}
+                      height={400}
+                      className="h-[135px] w-[70px] max-w-[unset] object-cover"
+                    />
+                  </div>
+                )}
                 <div className="flex w-[inherit] flex-col items-center justify-center">
                   <NextLink href={`/topic/${list.slug}`}>
                     <Heading className="mt-3 whitespace-normal px-3 !text-base">
