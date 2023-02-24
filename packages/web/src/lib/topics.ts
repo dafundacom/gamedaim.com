@@ -27,10 +27,10 @@ export const getTopics = async (page = 1) => {
 
   return { topics: topicsData }
 }
-export const getTopicBySlug = async (slug: string, page = 1) => {
+export const getTopicBySlug = async (slug: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/topic/slug/${slug}/${page}`)
+    const { data } = await axios.get(`/topic/slug/${slug}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
