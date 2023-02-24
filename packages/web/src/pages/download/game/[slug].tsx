@@ -43,7 +43,7 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
     download?.downloadFiles[0],
   )
   const [showAllVersion, setShowAllVersion] = React.useState(false)
-  console.log(download?.downloadFiles)
+
   React.useEffect(() => {
     return () => {
       if (countdownInterval) {
@@ -51,9 +51,21 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
       }
     }
   }, [countdownInterval])
+  const handleShowAllVersion = () => {
+    setShowAllVersion(true)
+    if (showAllVersion) {
+      router.push(
+        `/download/${download.type.toLowerCase()}/${
+          router.query.slug
+        }#all-version`,
+      )
+    }
+  }
   const handleChangeVersion = (element: any) => {
     setFileVersion(element)
-    router.push(`/download/game/${router.query.slug}#version`)
+    router.push(
+      `/download/${download.type.toLowerCase()}/${router.query.slug}#download`,
+    )
   }
   const handleDownloadClick = () => {
     setShowCountdown(true)
@@ -137,8 +149,11 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
               <div
                 className={"my-5 flex flex-col space-x-2 space-y-2 lg:flex-row"}
               >
-                <div className={"w-full space-y-4 lg:w-9/12"}>
-                  <div className="rounded-xl bg-white p-7 shadow-md dark:bg-gray-800">
+                <div className={"w-full space-y-4"}>
+                  <div
+                    id="download"
+                    className="rounded-xl bg-white p-7 shadow-md dark:bg-gray-800"
+                  >
                     <div className={"flex space-x-6"}>
                       <div className={"w-2/12 "}>
                         <NextImage
@@ -157,10 +172,10 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                         >
                           {download?.title}
                         </Heading>
-                        <div id="version" className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2">
                           <Text>{fileVersion.version}</Text>
                           <span
-                            onClick={() => setShowAllVersion(true)}
+                            onClick={handleShowAllVersion}
                             className="cursor-pointer text-green-500"
                           >
                             Show All Version
@@ -235,7 +250,7 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                     />
                   </div>
                   {showAllVersion && (
-                    <div className="space-y-2">
+                    <div id="all-version" className="space-y-2">
                       <Heading>All version</Heading>
                       <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
                         {download.downloadFiles.map((post: any) => {
