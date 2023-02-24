@@ -142,7 +142,6 @@ export async function findDownloadByType(
   perPage: number,
 ) {
   return await db.download.findMany({
-    //@ts-ignore
     where: { type: downloadType },
     orderBy: {
       createdAt: "desc",
@@ -176,6 +175,7 @@ export async function findDownloadByType(
       license: true,
       officialWeb: true,
       schemaType: true,
+      type: true,
       status: true,
       downloadFiles: {
         select: {
