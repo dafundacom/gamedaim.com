@@ -196,6 +196,7 @@ export default function EditDownloadDashboard() {
       const mergedValues = {
         ...values,
         topicIds: topics,
+        content: editorContent,
         featuredImageId: selectedFeaturedImageId,
       }
       const { data } = await axios.put(`/download/${download.id}`, mergedValues)

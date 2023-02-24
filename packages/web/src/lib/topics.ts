@@ -57,7 +57,7 @@ export const useGetTopicBySlug = (slug: string) => {
     },
   } as const
 }
-export const useGetTopics = (page: number) => {
+export const useGetTopics = (page = 1) => {
   const { data, isError, isFetching, isSuccess } = useQuery(
     ["topics", page],
     () => getTopics(page),
