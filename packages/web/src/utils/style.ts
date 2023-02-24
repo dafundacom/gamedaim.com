@@ -54,7 +54,9 @@ export default defineConfig({
         Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji,
         segoe ui symbol, noto color emoji !important;
     }
-
+    .parent-focus:focus-within {
+      @apply ring-200;
+    }
     .scrollbar {
       scroll-behavior: smooth;
     }

@@ -63,7 +63,7 @@ export const getDownloadByType = async (type: string, page = 1) => {
     throw e
   }
 
-  return { download: postData }
+  return { downloadByType: postData }
 }
 export const useGetDownloadBySlug = (slug: string) => {
   const { data, isError, isFetching, isSuccess } = useQuery(

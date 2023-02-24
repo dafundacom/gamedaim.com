@@ -1,10 +1,13 @@
 import * as React from "react"
+import { NextSeo } from "next-seo"
+import { useRouter } from "next/router"
+import env from "@/env"
+import { AdminRole } from "@/components/Role"
+import { DashboardLayout } from "@/layouts/Dashboard"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
-import { NextSeo } from "next-seo"
 import { useQuery } from "@tanstack/react-query"
-import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -17,11 +20,9 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
-import { AdminRole } from "@/components/Role"
-import { DashboardLayout } from "@/layouts/Dashboard"
+import { MdOutlineClose } from "react-icons/md"
 
 interface FormValues {
   title: string
@@ -34,32 +35,26 @@ interface FormValues {
   price: string
 }
 
-export default function EditDownloadFileDashboard() {
+export default function CreateDownloadfilesDashboard() {
+  const router = useRouter()
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [downloads, setDownloads] = React.useState([])
   const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
-  const [downloadFile, setDownloadFile] = React.useState<any>({
-    id: "",
-    title: "",
-    slug: "",
-    meta_title: "",
-    meta_description: "",
-    version: "",
-    downloadLink: "",
-    fileSize: "",
-    currency: "",
-    price: "",
-  })
-  const [downloads, setDownloads] = React.useState([])
   const [searchResults, setSearchResults] = React.useState([])
   const [selectedDownloads, setSelectedDownloads] = React.useState<any>([])
   const [inputValue, setInputValue] = React.useState("")
-  const router = useRouter()
-  console.log(downloads)
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormValues>()
+
   const loadMedias = useQuery({
     queryKey: ["loadedMedias"],
     queryFn: async () => {
@@ -74,47 +69,6 @@ export default function EditDownloadFileDashboard() {
       toast.error(error.message)
     },
   })
-
-  React.useEffect(() => {
-    loadDownloadFile()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query?.id])
-
-  React.useEffect(() => {
-    reset(downloadFile)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [downloadFile])
-
-  const loadDownloadFile = async () => {
-    try {
-      const { data } = await axios.get(`/download-file/${router.query.id}`)
-      setDownloadFile({
-        id: data.id,
-        title: data.title,
-        meta_title: data.meta_title,
-        slug: data.slug,
-        meta_description: data.meta_description,
-        version: data.version,
-        downloadLink: data.downloadLink,
-        fileSize: data.fileSize,
-        currency: data.currency,
-        price: data.price,
-      })
-      setSelectedDownloads(data.downloads)
-      setSelectedFeaturedImageId(data.featuredImage.id)
-      setSelectedFeaturedImageUrl(data.featuredImage.url)
-      setLoading(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const {
-    register,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm<FormValues>()
 
   const handleSearchChange = async (e: any) => {
     e.preventDefault()
@@ -167,10 +121,7 @@ export default function EditDownloadFileDashboard() {
         downloadIds: downloads,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.put(
-        `/download-file/${downloadFile.id}`,
-        mergedValues,
-      )
+      const { data } = await axios.post("/download-file", mergedValues)
 
       if (data?.error) {
         toast.error(data.error)
@@ -188,7 +139,7 @@ export default function EditDownloadFileDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Download-file | ${env.SITE_TITLE}`}
+        title={`Add New Download File | ${env.SITE_TITLE}`}
         description={`Add New Download File | ${env.SITE_TITLE}`}
         canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
@@ -222,20 +173,20 @@ export default function EditDownloadFileDashboard() {
                 </FormControl>
                 <div>
                   <FormLabel>Downloads:</FormLabel>
-                  <div className="max-w-xl border	border-gray-300 p-2">
-                    <div className="flex flex-row flex-wrap items-center justify-start gap-2">
+                  <div className="max-w-xl rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="parent-focus flex flex-row flex-wrap items-center justify-start gap-2 p-2">
                       {selectedDownloads.length > 0 &&
                         selectedDownloads.map((download: any) => {
                           return (
                             <>
-                              <div className="bg-gray-200 px-2 py-1 text-[14px] text-black">
+                              <div className="flex items-center gap-1 bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white">
                                 <span>{download.title}</span>
                                 <Button
                                   as="div"
                                   onClick={() => handleRemoveValue(download)}
-                                  className="!bg-transparent !p-0 !text-inherit"
+                                  className="!!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
                                 >
-                                  X
+                                  <MdOutlineClose />
                                 </Button>
                               </div>
                             </>
@@ -243,7 +194,7 @@ export default function EditDownloadFileDashboard() {
                         })}
                       <Input
                         type="text"
-                        className="!w-full !min-w-[50px] !max-w-full !shrink !grow !border-none focus:!border-none focus:!ring-0"
+                        className="!h-auto !w-full !min-w-[50px] !max-w-full !shrink !grow !basis-0 !border-none !bg-transparent !p-0 focus:!border-none focus:!ring-0"
                         id="searchDownload"
                         value={inputValue}
                         onChange={handleSearchChange}
@@ -259,7 +210,7 @@ export default function EditDownloadFileDashboard() {
                           return (
                             <li
                               key={searchDownload.id}
-                              className="hover:bg-blue-500"
+                              className="px-2 hover:bg-blue-500"
                               onClick={() =>
                                 handleSelectandAssign(dataDownloads)
                               }

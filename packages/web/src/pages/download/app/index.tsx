@@ -28,7 +28,6 @@ export default function Download() {
   const { getDownloadsData } = useGetDownloads()
   const { getTopicsData } = useGetTopics()
   const downloadsByApp = useGetDownloadByType("App")
-  const downloadsByGame = useGetDownloadByType("Game")
 
   return (
     <>
@@ -72,23 +71,6 @@ export default function Download() {
             )}
           </div>
 
-          <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
-              <Heading as="h2" size="2xl" bold>
-                Games
-              </Heading>
-              <NextLink href="/download/game/" className="text-[#00695C]">
-                See more
-              </NextLink>
-            </div>
-            {downloadsByGame?.getDownloadByTypeData?.data !== undefined && (
-              <ListDownload
-                listDownloads={
-                  downloadsByGame?.getDownloadByTypeData?.data?.download
-                }
-              />
-            )}
-          </div>
           <div className="w-full px-4">
             <div className={"my-2 flex flex-row justify-between"}>
               <Heading as="h2" size="2xl" bold>
@@ -136,9 +118,7 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery(["downloadType", "App"], () =>
     getDownloadByType("App"),
   )
-  await queryClient.prefetchQuery(["downloadType", "Game"], () =>
-    getDownloadByType("Game"),
-  )
+
   await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
   return {
     props: { dehydratedState: dehydrate(queryClient) },

@@ -60,7 +60,7 @@ export const DownloadCard = (props: any) => {
                     className="h-[185px] w-[200px] max-w-[unset] object-cover"
                   />
                 </NextLink>
-                <IconButton className="!text-primary-800 !absolute top-[5px] right-[5px] !w-[25px] !rounded-full bg-white !p-[1px]">
+                <IconButton className="!text-primary-800 !absolute top-[5px] right-[5px] !w-[25px] !rounded-full !bg-white bg-white !p-[1px]">
                   {icon}
                 </IconButton>
               </div>
