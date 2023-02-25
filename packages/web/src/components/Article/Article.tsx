@@ -182,6 +182,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           )}
           <div className="flex">
             <StickyShare
+              title={title}
               categorySlug={isWP ? primaryData.slug : "article"}
               postSlug={slug}
             />

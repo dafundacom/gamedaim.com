@@ -1,11 +1,12 @@
 import * as React from "react"
 import NextLink from "next/link"
-import { WpPostsProps } from "@/data/wp-types"
 import NextImage from "next/image"
 import { Button } from "ui"
 
+import { WpPostsDataProps } from "@/lib/wp-data-types"
+
 export interface PostCardFeaturedProps
-  extends WpPostsProps,
+  extends WpPostsDataProps,
     React.HTMLAttributes<HTMLDivElement> {
   index?: number
 }

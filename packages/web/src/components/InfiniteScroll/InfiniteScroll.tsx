@@ -39,7 +39,10 @@ export const InfiniteScroll = React.forwardRef<
           setList((list: any) => [...list, ...data.posts])
           setPage(data.pageInfo)
         } else if (pageType == "author") {
-          const data: any = await wpGetPostsByAuthorSlug(id, page.endCursor)
+          const data: any = await wpGetPostsByAuthorSlug(
+            id as string,
+            page.endCursor,
+          )
           setList((list: any) => [...list, ...data.posts])
           setPage(data.pageInfo)
         } else if (pageType == "tag") {

@@ -146,9 +146,10 @@ export default function DownloadsDashboard() {
                           </Td>
                           <Td align="right">
                             <ActionDashboard
-                              viewLink={`/download/${
-                                download.type.toLowerCase() as any
-                              }/${download.slug}`}
+                              // @ts-ignore FIX:later
+                              viewLink={`/download/${download.type.toLowerCase()}/${
+                                download.slug
+                              }`}
                               onDelete={() => mutationDelete.mutate(download)}
                               editLink={`/dashboard/downloads/${download.id}`}
                               content={download.title}

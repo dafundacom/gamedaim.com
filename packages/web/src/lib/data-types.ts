@@ -171,7 +171,7 @@ export interface DownloadDataProps {
   license: string
   officialWeb: string
   schemaType: DownloadSchemaTypeData
-  type: DownloadTypeData
+  type: DownloadTypeData | string
   status: PostStatusData
   createdAt: string
   updatedAt: string

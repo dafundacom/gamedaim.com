@@ -309,9 +309,10 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                       key={download.id}
                       src={download.featuredImage?.url}
                       title={download.title}
-                      slug={`/download/${
-                        download.type.toLowerCase() as string
-                      }/${download.slug}`}
+                      //@ts-ignore FIX: LATER
+                      slug={`/download/${download.type.toLowerCase()}/${
+                        download.slug
+                      }`}
                     />
                   )
                 })}
