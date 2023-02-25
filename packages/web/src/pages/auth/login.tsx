@@ -57,7 +57,7 @@ export default function Login() {
       } else {
         setAuth(data)
         localStorage.setItem("auth", JSON.stringify(data))
-        toast.success("Successfully signed in")
+        toast.success("Successfully Logged in")
         if (data?.user?.role === "Admin" || data?.user?.role === "Author") {
           router.push("/dashboard")
         } else {

@@ -1,9 +1,12 @@
 import * as React from "react"
 import NextLink from "next/link"
 import Head from "next/head"
+import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { GetStaticProps, GetStaticPaths } from "next"
-import dynamic from "next/dynamic"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+import { useRouter } from "next/router"
+
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
 import {
@@ -15,8 +18,11 @@ import {
   wpGetPostsByCategorySlug,
   useWpGetPostsByCategorySlug,
 } from "@/lib/wp-posts"
-import { useRouter } from "next/router"
-import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+import {
+  WpCategoriesDataProps,
+  WpPostsDataProps,
+  WpSinglePostDataProps,
+} from "@/lib/wp-data-types"
 
 const InfiniteScroll = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
@@ -24,21 +30,15 @@ const InfiniteScroll = dynamic(() =>
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
-
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+
 interface CategoryProps {
-  category: {
-    name: string
-    slug: string
-    children: {
-      nodes: any
-    }
-  }
-  posts: any
+  category: WpCategoriesDataProps
+  posts: WpPostsDataProps
   pageInfo: any
   seo: {
     head: string
@@ -48,16 +48,20 @@ interface CategoryProps {
 
 export default function Category(props: CategoryProps) {
   const { seo } = props
+
   const router = useRouter()
+
   const {
     query: { category },
   } = router
+
   const { getCategoryBySlug }: any = useWpGetCategoryBySlug(category as string)
   const { isSuccess } = getCategoryBySlug
   const { getPostsByCategorySlug }: any = useWpGetPostsByCategorySlug(
     category as string,
   )
   const categoryChild = getCategoryBySlug?.data?.category?.children?.nodes
+
   return (
     <>
       <Head>{seo?.success === true && parse(seo?.head)}</Head>
@@ -138,18 +142,7 @@ export default function Category(props: CategoryProps) {
                     </Heading>
                   </div>
                   {getPostsByCategorySlug?.data?.posts.map(
-                    (post: {
-                      id: number
-                      featuredImage: {
-                        sourceUrl: string
-                        altText: string
-                      }
-                      slug: string
-                      title: string
-                      excerpt: string
-                      categories: any
-                      uri: string
-                    }) => {
+                    (post: WpSinglePostDataProps) => {
                       return (
                         <PostCardSide
                           key={post.id}
@@ -182,12 +175,15 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
       },
     }),
   })
+
   const slug = params?.category
 
   const seo = await getSeoDatas(`https://${env.DOMAIN}/${slug}`)
+
   await queryClient.prefetchQuery(["categoryPosts", slug], () =>
     wpGetPostsByCategorySlug(slug),
   )
+
   try {
     await queryClient.prefetchQuery(["category", slug], () =>
       wpGetCategoryBySlug(slug),
@@ -196,6 +192,7 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     isError = true
     res.statusCode = error.response.status
   }
+
   if (isError) {
     return {
       notFound: true,
@@ -210,6 +207,7 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     revalidate: 100,
   }
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const { categories } = await wpGetAllCategories()
   const paths = categories.map(({ slug }: any) => {

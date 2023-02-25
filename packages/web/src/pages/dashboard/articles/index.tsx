@@ -16,6 +16,7 @@ import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { ArticleDataProps } from "@/lib/data-types"
 
 export default function ArticlesDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -116,58 +117,43 @@ export default function ArticlesDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      articles.map(
-                        (
-                          article: {
-                            id: string
-                            title: string
-                            slug: string
-                            author: {
-                              name: string
-                            }
-                            status: string
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {article.title}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {article.author.name}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(article.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(article.updatedAt).fromNow()}</Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  <Badge variant="outline">
-                                    {article.status}
-                                  </Badge>
-                                </span>
-                              </div>
-                            </Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                viewLink={`/article/${article.slug}`}
-                                onDelete={() => mutationDelete.mutate(article)}
-                                editLink={`/dashboard/articles/${article.id}`}
-                                content={article.title}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      articles.map((article: ArticleDataProps) => (
+                        <Tr key={article.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {article.title}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {article.author.name}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(article.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(article.updatedAt).fromNow()}</Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                <Badge variant="outline">
+                                  {article.status}
+                                </Badge>
+                              </span>
+                            </div>
+                          </Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              viewLink={`/article/${article.slug}`}
+                              onDelete={() => mutationDelete.mutate(article)}
+                              editLink={`/dashboard/articles/${article.id}`}
+                              content={article.title}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

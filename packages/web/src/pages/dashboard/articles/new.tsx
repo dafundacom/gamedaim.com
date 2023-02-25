@@ -28,6 +28,7 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
+import { MediaDataProps, TopicDataProps } from "@/lib/data-types"
 
 interface FormValues {
   title: string
@@ -200,7 +201,7 @@ export default function CreateArticlesDashboard() {
                   <div className="rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
                     <div className="parent-focus flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
                       {selectedTopics.length > 0 &&
-                        selectedTopics.map((topic: any) => {
+                        selectedTopics.map((topic: TopicDataProps) => {
                           return (
                             <>
                               <div className="flex items-center bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white">
@@ -227,7 +228,7 @@ export default function CreateArticlesDashboard() {
                     </div>
                     {searchResults.length > 0 && (
                       <ul className="border-t border-gray-300">
-                        {searchResults.map((searchTopic: any) => {
+                        {searchResults.map((searchTopic: TopicDataProps) => {
                           const dataTopics = {
                             id: searchTopic.id,
                             title: searchTopic.title,
@@ -360,30 +361,23 @@ export default function CreateArticlesDashboard() {
               <MediaUpload />
               <div className="my-3 grid grid-cols-5 gap-3">
                 {loadMedias.isFetching === false &&
-                  loadedMedias.map(
-                    (media: {
-                      id: string
-                      name: string
-                      url: string
-                      alt: string
-                    }) => (
-                      <>
-                        <NextImage
-                          key={media.id}
-                          src={media.url}
-                          alt={media.id}
-                          fill
-                          className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedFeaturedImageId(media.id)
-                            setSelectedFeaturedImageUrl(media.url)
-                            setOpenModal(false)
-                          }}
-                        />
-                      </>
-                    ),
-                  )}
+                  loadedMedias.map((media: MediaDataProps) => (
+                    <>
+                      <NextImage
+                        key={media.id}
+                        src={media.url}
+                        alt={media.id}
+                        fill
+                        className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedFeaturedImageId(media.id)
+                          setSelectedFeaturedImageUrl(media.url)
+                          setOpenModal(false)
+                        }}
+                      />
+                    </>
+                  ))}
               </div>
             </>
           }

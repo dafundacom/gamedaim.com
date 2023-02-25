@@ -7,17 +7,16 @@ import { MdAccessTime } from "react-icons/md"
 
 import { Heading } from "ui"
 import { wpAuthorPathBySlug } from "@/lib/wp-users"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
-interface MetadataPostProps extends React.HTMLAttributes<HTMLDivElement> {
-  authorName: string
-  authorAvatarUrl: string
-  authorSlug: string
-  date: string
-}
+interface MetadataPostProps
+  extends WpPostsDataProps,
+    React.HTMLAttributes<HTMLDivElement> {}
 
 export const MetadataPost = React.forwardRef<HTMLDivElement, MetadataPostProps>(
   (props, ref) => {
     const { authorName, authorAvatarUrl, authorSlug, date, ...rest } = props
+
     const [image, setImage] = React.useState(authorAvatarUrl) as any
 
     dayjs.extend(relativeTime)

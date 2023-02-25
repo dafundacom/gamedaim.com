@@ -15,6 +15,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { WpCommentDataProps } from "@/lib/data-types"
 
 export default function WpCommentsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -110,36 +111,26 @@ export default function WpCommentsDashboard() {
                     {wpComments && (
                       <>
                         {isFetching === false &&
-                          wpComments.map(
-                            (
-                              wpComment: {
-                                id: string
-                                content: string
-                                createdAt: string
-                                updatedAt: string
-                              },
-                              i: number,
-                            ) => (
-                              <Tr key={i}>
-                                <Td className="whitespace-nowrap">
-                                  <div className="flex">
-                                    <span className="font-medium">
-                                      {wpComment.content}
-                                    </span>
-                                  </div>
-                                </Td>
-                                <Td>{dayjs(wpComment.createdAt).fromNow()}</Td>
-                                <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
-                                <Td align="right">
-                                  <ActionDashboard
-                                    onDelete={() =>
-                                      mutationDelete.mutate(wpComment)
-                                    }
-                                  />
-                                </Td>
-                              </Tr>
-                            ),
-                          )}
+                          wpComments.map((wpComment: WpCommentDataProps) => (
+                            <Tr key={wpComment.id}>
+                              <Td className="whitespace-nowrap">
+                                <div className="flex">
+                                  <span className="font-medium">
+                                    {wpComment.content}
+                                  </span>
+                                </div>
+                              </Td>
+                              <Td>{dayjs(wpComment.createdAt).fromNow()}</Td>
+                              <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
+                              <Td align="right">
+                                <ActionDashboard
+                                  onDelete={() =>
+                                    mutationDelete.mutate(wpComment)
+                                  }
+                                />
+                              </Td>
+                            </Tr>
+                          ))}
                       </>
                     )}
                   </Tbody>

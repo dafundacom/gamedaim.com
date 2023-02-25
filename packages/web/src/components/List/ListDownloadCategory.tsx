@@ -2,24 +2,35 @@ import * as React from "react"
 import NextLink from "next/link"
 import NextImage from "next/image"
 import { Button, Heading, Text } from "ui"
+import { DownloadDataProps } from "@/lib/data-types"
 
-export const ListDownloadCategory = (props: { listCategories: any }) => {
-  const { listCategories } = props
+interface ListDownloadCategoryProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  listCategories: DownloadDataProps
+}
+
+export const ListDownloadCategory = React.forwardRef<
+  HTMLDivElement,
+  ListDownloadCategoryProps
+>((props, ref) => {
+  const { listCategories, ...rest } = props
+
   const [showArrow, setShowArrow] = React.useState(false)
-
   const [prevDisplay, setPrevDisplay] = React.useState("md:!hidden")
   const [nextDisplay, setNextDisplay] = React.useState("md:!flex")
+
   const arrowClass =
     "!hidden justify-center content-center bg-white p-2 cursor-pointer !absolute !rounded-full"
 
   const contentRef: any = React.useRef(null)
-
   const content: any = contentRef.current
+
   React.useEffect(() => {
     if (content && content.scrollWidth > content.offsetWidth) {
       setShowArrow(true)
     }
   }, [content])
+
   function handleNextClick() {
     if (content) {
       content.scrollBy(250, 0)
@@ -44,8 +55,9 @@ export const ListDownloadCategory = (props: { listCategories: any }) => {
       setNextDisplay("md:!flex")
     }
   }
+
   return (
-    <div className="relative">
+    <div className="relative" ref={ref} {...rest}>
       {showArrow && (
         <>
           <Button
@@ -122,4 +134,4 @@ export const ListDownloadCategory = (props: { listCategories: any }) => {
       </div>
     </div>
   )
-}
+})

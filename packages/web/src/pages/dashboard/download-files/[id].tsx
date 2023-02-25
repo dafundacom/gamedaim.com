@@ -22,6 +22,7 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { DownloadDataProps, MediaDataProps } from "@/lib/data-types"
 
 interface FormValues {
   title: string
@@ -225,7 +226,7 @@ export default function EditDownloadFileDashboard() {
                   <div className="max-w-xl rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
                     <div className="parent-focus flex flex-row flex-wrap items-center justify-start gap-2 p-2">
                       {selectedDownloads.length > 0 &&
-                        selectedDownloads.map((download: any) => {
+                        selectedDownloads.map((download: DownloadDataProps) => {
                           return (
                             <>
                               <div className="flex items-center gap-1 bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white">
@@ -251,23 +252,25 @@ export default function EditDownloadFileDashboard() {
                     </div>
                     {searchResults.length > 0 && (
                       <ul className="border-t border-gray-300">
-                        {searchResults.map((searchDownload: any) => {
-                          const dataDownloads = {
-                            id: searchDownload.id,
-                            title: searchDownload.title,
-                          }
-                          return (
-                            <li
-                              key={searchDownload.id}
-                              className="px-2 hover:bg-blue-500"
-                              onClick={() =>
-                                handleSelectandAssign(dataDownloads)
-                              }
-                            >
-                              {searchDownload.title}
-                            </li>
-                          )
-                        })}
+                        {searchResults.map(
+                          (searchDownload: DownloadDataProps) => {
+                            const dataDownloads = {
+                              id: searchDownload.id,
+                              title: searchDownload.title,
+                            }
+                            return (
+                              <li
+                                key={searchDownload.id}
+                                className="px-2 hover:bg-blue-500"
+                                onClick={() =>
+                                  handleSelectandAssign(dataDownloads)
+                                }
+                              >
+                                {searchDownload.title}
+                              </li>
+                            )
+                          },
+                        )}
                       </ul>
                     )}
                   </div>
@@ -410,30 +413,21 @@ export default function EditDownloadFileDashboard() {
                     <MediaUpload />
                     <div className="my-3 grid grid-cols-5 gap-3">
                       {loadMedias.isFetching === false &&
-                        loadedMedias.map(
-                          (media: {
-                            id: string
-                            name: string
-                            url: string
-                            alt: string
-                          }) => (
-                            <>
-                              <NextImage
-                                key={media.id}
-                                src={media.url}
-                                alt={media.alt}
-                                fill
-                                className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  setSelectedFeaturedImageId(media.id)
-                                  setSelectedFeaturedImageUrl(media.url)
-                                  setOpenModal(false)
-                                }}
-                              />
-                            </>
-                          ),
-                        )}
+                        loadedMedias.map((media: MediaDataProps) => (
+                          <NextImage
+                            key={media.id}
+                            src={media.url}
+                            alt={media.alt}
+                            fill
+                            className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedFeaturedImageId(media.id)
+                              setSelectedFeaturedImageUrl(media.url)
+                              setOpenModal(false)
+                            }}
+                          />
+                        ))}
                     </div>
                   </>
                 }

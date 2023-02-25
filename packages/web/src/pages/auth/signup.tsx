@@ -59,7 +59,7 @@ export default function Signup() {
       } else {
         setAuth(data)
         localStorage.setItem("auth", JSON.stringify(data))
-        toast.success("Successfully signed up")
+        toast.success("Successfully Signed up")
         setLoading(false)
         router.push("/")
       }

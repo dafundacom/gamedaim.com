@@ -14,7 +14,8 @@ export const DownloadCardSide = React.forwardRef<
   DownloadCardSlideProps
 >((props, ref) => {
   const { src, slug, title, ...rest } = props
-  const [image, setImage] = React.useState("/image/imgloader.gif") as any
+
+  const [image, setImage] = React.useState("/image/imgloader.gif")
 
   return (
     <NextLink href={slug}>

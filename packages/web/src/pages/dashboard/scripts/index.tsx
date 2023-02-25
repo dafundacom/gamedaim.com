@@ -6,8 +6,9 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { Button, IconButton, Text } from "ui"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
+import { Button, IconButton, Text } from "ui"
+
 import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
@@ -16,6 +17,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { getScriptsCount } from "@/lib/script"
+import { ScriptDataProps } from "@/lib/data-types"
 
 export default function ScriptsDashboard() {
   const [script, setScript] = React.useContext(ContentContext)
@@ -119,44 +121,33 @@ export default function ScriptsDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      scripts.map(
-                        (
-                          script: {
-                            id: string
-                            title: string
-                            active: boolean
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {script.title}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {script.active ? "Yes" : "No"}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(script.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(script.updatedAt).fromNow()}</Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                onDelete={() => mutationDelete.mutate(script)}
-                                editLink={`/dashboard/scripts/${script.id}`}
-                                content={script.title}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      scripts.map((script: ScriptDataProps) => (
+                        <Tr key={script.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {script.title}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {script.active ? "Yes" : "No"}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(script.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(script.updatedAt).fromNow()}</Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              onDelete={() => mutationDelete.mutate(script)}
+                              editLink={`/dashboard/scripts/${script.id}`}
+                              content={script.title}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

@@ -1,14 +1,15 @@
 import * as React from "react"
+import NextLink from "next/link"
 import dynamic from "next/dynamic"
+import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import env from "@/env"
-import NextLink from "next/link"
-import { ListDownload } from "@/components/List"
 import { Heading, Text } from "ui"
+
+import env from "@/env"
+import { ListDownload } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
-import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { wpGetMenusByName } from "@/lib/wp-menus"
 import {
   getDownloadByType,
@@ -18,6 +19,7 @@ import {
 } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
 import { getTopics, useGetTopics } from "@/lib/topics"
+
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )

@@ -8,6 +8,7 @@ import dynamic from "next/dynamic"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
 import { parseAndSplitHTMLString } from "@/utils/split-html"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
@@ -21,7 +22,7 @@ const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const ButtonGroup = dynamic(() => import("ui").then((mod) => mod.ButtonGroup))
 const PopupAd = dynamic(
-  () => import("../Ads/PopupAd").then((mod) => mod.PopupAd),
+  () => import("@/components/Ads/PopupAd").then((mod) => mod.PopupAd),
   { ssr: false },
 )
 
@@ -41,7 +42,7 @@ interface PostProps {
     featuredImageAlt: string
   }
 
-  posts: any
+  posts: WpPostsDataProps
   isMain?: boolean
   isWP?: boolean
 }
@@ -71,9 +72,11 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
 
     const articleRef = React.useRef(null)
     const article: any = articleRef.current
+
     const [ad, setAd]: any = React.useState()
     const [openModal, setOpenModal] = React.useState<boolean>(false)
     const [loadingAd, setLoadingAd] = React.useState(false)
+
     const adAbove: any = ad?.filter((ads: any) => ads.position == "ABOVE_POST")
     const adBelow: any = ad?.filter((ads: any) => ads.position == "BELOW_POST")
     const adInline: any = ad?.filter(
@@ -81,6 +84,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     )
     const adPopup: any = ad?.filter((ads: any) => ads.position == "POP_UP")
     const { firstHalf, secondHalf } = parseAndSplitHTMLString(content)
+
     const getAds = async () => {
       try {
         const { data } = await axios.get("/ad/page/1")
@@ -90,12 +94,14 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
         console.log(err)
       }
     }
+
     React.useEffect(() => {
       getAds()
       setOpenModal(true)
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     React.useEffect(() => {
       if (article) {
         const toc = article.querySelector(".ez-toc-title")
@@ -106,6 +112,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
         }
       }
     }, [article])
+
     return (
       <>
         <article id={postData.slug} ref={ref} className="article-divider px-4">
@@ -121,7 +128,6 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 onClose={() => setOpenModal(false)}
               />
             )}
-
           <div>
             {categories?.map((category: any, i: number) => {
               return (

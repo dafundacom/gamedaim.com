@@ -1,14 +1,17 @@
 import * as React from "react"
-import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
+import Head from "next/head"
 import dynamic from "next/dynamic"
-import { Article } from "@/components/Article"
-import { wpGetInfiniteScollArticles } from "@/lib/wp-posts"
+import parse from "html-react-parser"
 import { useRouter } from "next/router"
 import { Button } from "ui"
-import Head from "next/head"
+
 import env from "@/env"
+import { Article } from "@/components/Article"
+import { wpGetInfiniteScollArticles } from "@/lib/wp-posts"
+import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { getSeoDatas } from "@/lib/wp-seo"
-import parse from "html-react-parser"
+import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
+
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -16,28 +19,8 @@ const PostCardSide = dynamic(() =>
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface PostProps {
-  post: {
-    title: string
-    content: string
-    author: {
-      name: string
-      slug: string
-      avatar: {
-        url: string
-      }
-    }
-    slug: string
-    categories: any
-    featuredImage: {
-      altText: string
-      sourceUrl: string
-      caption: string
-    }
-    tags: any
-    date: string
-  }
-
-  posts: any
+  post: WpSinglePostDataProps
+  posts: WpPostsDataProps
   seoData: any
 }
 
@@ -45,7 +28,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
   (props, ref) => {
     const { post, posts, seoData } = props
     const { categories } = post
-    const { primary } = wpPrimaryCategorySlug(categories)
+    const { primary } = wpPrimaryCategorySlug(categories as any)
     const [articles, setArticles] = React.useState<any>([])
     const [hasNextPage, setHasNextPage] = React.useState(true)
     const [endCursor, setEndCursor] = React.useState("")
@@ -53,6 +36,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const articleRef = React.useRef(null)
     const router = useRouter()
     const [seo, setSeo] = React.useState(seoData)
+
     const postData = {
       content: post.content,
       title: post.title,
@@ -67,6 +51,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
       slug: post.slug,
       tags: post.tags,
     }
+
     const handleObserver = React.useCallback(
       async (entries: any) => {
         const [target] = entries
@@ -82,6 +67,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
       },
       [endCursor, hasNextPage, primary.id],
     )
+
     const handleObserverSeo = React.useCallback(
       async (entries: any) => {
         const [target] = entries
@@ -102,10 +88,12 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
         setArticles([])
         setSeo(seoData)
       }
+
       router.events.on("routeChangeComplete", handleRouteChange)
       if (LoaderRef.current) {
         observer.observe(LoaderRef.current)
       }
+
       if (articleRef.current) {
         observerSeo.observe(articleRef.current)
       }

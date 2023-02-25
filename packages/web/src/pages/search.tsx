@@ -6,6 +6,7 @@ import { NextSeo } from "next-seo"
 
 import env from "@/env"
 import { wpGetPostsBySearch, wpGetAllPosts } from "@/lib/wp-posts"
+import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
@@ -17,8 +18,9 @@ const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+
 interface SearchProps {
-  posts: any
+  posts: WpPostsDataProps
 }
 
 export default function Search(props: SearchProps) {
@@ -121,43 +123,22 @@ export default function Search(props: SearchProps) {
                 </form>
               </div>
               {!notFound &&
-                postsSearch.map(
-                  (post: {
-                    id: number
-                    featuredImage: {
-                      sourceUrl: string
-                      altText: string
-                    }
-                    slug: string
-                    title: string
-                    excerpt: string
-                    categories: any
-                    author: {
-                      name: string
-                      avatar: {
-                        url: string
-                      }
-                      uri: string
-                    }
-                    uri: string
-                    date: string
-                  }) => {
-                    return (
-                      <PostCard
-                        key={post.id}
-                        src={post.featuredImage.sourceUrl}
-                        alt={post.featuredImage.altText}
-                        slug={post.uri}
-                        title={post.title}
-                        excerpt={post.excerpt}
-                        authorName={post.author.name}
-                        authorAvatarUrl={post.author.avatar.url}
-                        authorUri={post.author.uri}
-                        date={post.date}
-                      />
-                    )
-                  },
-                )}
+                postsSearch.map((post: WpSinglePostDataProps) => {
+                  return (
+                    <PostCard
+                      key={post.id}
+                      src={post.featuredImage.sourceUrl}
+                      alt={post.featuredImage.altText}
+                      slug={post.uri}
+                      title={post.title}
+                      excerpt={post.excerpt}
+                      authorName={post.author.name}
+                      authorAvatarUrl={post.author.avatar.url}
+                      authorUri={post.author.uri}
+                      date={post.date}
+                    />
+                  )
+                })}
               {notFound == true && (
                 <div className="bg-[#fafafa] py-5 text-center">
                   No Content Available
@@ -173,30 +154,17 @@ export default function Search(props: SearchProps) {
                     </span>
                   </Heading>
                 </div>
-                {posts.map(
-                  (post: {
-                    id: number
-                    featuredImage: {
-                      sourceUrl: string
-                      altText: string
-                    }
-                    slug: string
-                    title: string
-                    excerpt: string
-                    categories: any
-                    uri: string
-                  }) => {
-                    return (
-                      <PostCardSide
-                        key={post.id}
-                        src={post.featuredImage.sourceUrl}
-                        alt={post.featuredImage.altText}
-                        title={post.title}
-                        slug={post.uri}
-                      />
-                    )
-                  },
-                )}
+                {posts.map((post: WpSinglePostDataProps) => {
+                  return (
+                    <PostCardSide
+                      key={post.id}
+                      src={post.featuredImage.sourceUrl}
+                      alt={post.featuredImage.altText}
+                      title={post.title}
+                      slug={post.uri}
+                    />
+                  )
+                })}
               </div>
             </aside>
           </div>

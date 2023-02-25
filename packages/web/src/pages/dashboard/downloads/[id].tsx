@@ -29,6 +29,11 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
+import {
+  DownloadSchemaTypeData,
+  MediaDataProps,
+  TopicDataProps,
+} from "@/lib/data-types"
 
 interface FormValues {
   title: string
@@ -41,30 +46,7 @@ interface FormValues {
   operationSystem: string
   license: string
   officialWeb: string
-  schemaType:
-    | "DownloadApp"
-    | "BusinessApp"
-    | "MultimediaApp"
-    | "MobileApp"
-    | "WebApp"
-    | "SocialNetworkingApp"
-    | "TravelApp"
-    | "ShoppingApp"
-    | "SportsApp"
-    | "LifeStyleApp"
-    | "DesignApp"
-    | "DeveloperApp"
-    | "DriverApp"
-    | "EducationalApp"
-    | "HealthApp"
-    | "FinanceApp"
-    | "SecurityApp"
-    | "BrowserApp"
-    | "CommunicationApp"
-    | "HomeApp"
-    | "UtilitiesApp"
-    | "RefereceApp"
-    | "GameApp"
+  schemaType: DownloadSchemaTypeData
   type: string
 }
 
@@ -176,7 +158,7 @@ export default function EditDownloadDashboard() {
       setSelectedFeaturedImageId(data.featuredImage.id)
       setSelectedFeaturedImageUrl(data.featuredImage.url)
       setEditorContent(data.content)
-      setTopics(data.topics.map((topic: any) => topic.id))
+      setTopics(data.topics.map((topic: TopicDataProps) => topic.id))
       editor?.commands.setContent(data.content)
     } catch (err) {
       console.log(err)
@@ -280,7 +262,7 @@ export default function EditDownloadDashboard() {
                     Topics
                   </Heading>
                   {loadTopics.isFetching === false &&
-                    loadedTopics.map((topic: { title: string; id: string }) => (
+                    loadedTopics.map((topic: TopicDataProps) => (
                       <>
                         {topics.find((t: string) => t == topic.id) ? (
                           <Checkbox
@@ -566,30 +548,21 @@ export default function EditDownloadDashboard() {
               <MediaUpload />
               <div className="my-3 grid grid-cols-5 gap-3">
                 {loadMedias.isFetching === false &&
-                  loadedMedias.map(
-                    (media: {
-                      id: string
-                      name: string
-                      url: string
-                      alt: string
-                    }) => (
-                      <>
-                        <NextImage
-                          key={media.id}
-                          src={media.url}
-                          alt={media.alt}
-                          fill
-                          className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSelectedFeaturedImageId(media.id)
-                            setSelectedFeaturedImageUrl(media.url)
-                            setOpenModal(false)
-                          }}
-                        />
-                      </>
-                    ),
-                  )}
+                  loadedMedias.map((media: MediaDataProps) => (
+                    <NextImage
+                      key={media.id}
+                      src={media.url}
+                      alt={media.alt}
+                      fill
+                      className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setSelectedFeaturedImageId(media.id)
+                        setSelectedFeaturedImageUrl(media.url)
+                        setOpenModal(false)
+                      }}
+                    />
+                  ))}
               </div>
             </>
           }

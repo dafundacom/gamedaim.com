@@ -16,6 +16,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { TopicDataProps } from "@/lib/data-types"
 
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -114,38 +115,25 @@ export default function TopicsDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      topics.map(
-                        (
-                          topic: {
-                            id: string
-                            title: string
-                            slug: string
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {topic.title}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(topic.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                viewLink={`/topic/${topic.slug}`}
-                                onDelete={() => mutationDelete.mutate(topic)}
-                                editLink={`/dashboard/topics/${topic.id}`}
-                                content={topic.title}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      topics.map((topic: TopicDataProps) => (
+                        <Tr key={topic.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{topic.title}</span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(topic.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              viewLink={`/topic/${topic.slug}`}
+                              onDelete={() => mutationDelete.mutate(topic)}
+                              editLink={`/dashboard/topics/${topic.id}`}
+                              content={topic.title}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

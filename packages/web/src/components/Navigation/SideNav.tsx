@@ -1,8 +1,6 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { useGetMenusByName } from "@/lib/wp-menus"
-import { Text } from "ui"
-import env from "@/env"
 import {
   BiCheckSquare,
   BiListOl,
@@ -11,39 +9,28 @@ import {
   BiTrophy,
 } from "react-icons/bi"
 import { FaCoffee } from "react-icons/fa"
+import { Text } from "ui"
+
+import env from "@/env"
+
 interface SideNavProps {
   primaryMenus?: any
 }
 
 export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
   (props, ref) => {
+    const { ...rest } = props
+
     const { getMenusByName } = useGetMenusByName(env.MENU_PRIMARY)
     const { data } = getMenusByName
+
     const stylesIcons = "inline-block text-base mr-2"
-    function getIcons(item: string, styles: string | undefined) {
-      switch (item) {
-        case "Berita":
-          return <BiNews className={styles} />
-        case "Esports":
-          return <BiTrophy className={styles} />
-        case "Tips":
-          return <FaCoffee className={styles} />
-        case "Review":
-          return <BiStar className={styles} />
-        case "G List":
-          return <BiListOl className={styles} />
-        case "Tutorial":
-          return <BiCheckSquare className={styles} />
-        default:
-          break
-      }
-    }
+
     return (
-      <nav className="relative flex w-full w-56 flex-col" ref={ref}>
+      <nav className="relative flex w-full w-56 flex-col" ref={ref} {...rest}>
         <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
           {data?.menu &&
             data?.menu.map((menu: { url: string; label: string }) => {
-              //   const domainUrl = `https://${env.DOMAIN}`
               const icon = getIcons(menu.label, stylesIcons)
               let domainUrl
               if (menu.url.startsWith("http")) {
@@ -76,3 +63,22 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
     )
   },
 )
+
+function getIcons(item: string, styles: string | undefined) {
+  switch (item) {
+    case "Berita":
+      return <BiNews className={styles} />
+    case "Esports":
+      return <BiTrophy className={styles} />
+    case "Tips":
+      return <FaCoffee className={styles} />
+    case "Review":
+      return <BiStar className={styles} />
+    case "G List":
+      return <BiListOl className={styles} />
+    case "Tutorial":
+      return <BiCheckSquare className={styles} />
+    default:
+      break
+  }
+}

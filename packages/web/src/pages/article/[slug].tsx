@@ -82,6 +82,8 @@ export default function SingleArticle(props: SingleArticleProps) {
       <HomeLayout>
         <div className="mx-auto flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px]">
           <section className="w-full lg:w-8/12">
+            {/*FIX: later*/}
+            {/*@ts-ignore*/}
             <Article isMain={true} posts={articles} postData={articleData} />
           </section>
           <aside className="hidden w-4/12 px-4 lg:!block">

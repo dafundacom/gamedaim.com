@@ -153,6 +153,7 @@ export interface WpCommentDataProps {
 }
 
 export interface DownloadDataProps {
+  [x: string]: any
   id: string
   title: string
   content: string
@@ -190,6 +191,7 @@ export interface DownloadFileDataProps {
   fileSize: string
   currency: string
   price: string
+  status: PostStatusData
   createdAt: string
   updatedAt: string
 }

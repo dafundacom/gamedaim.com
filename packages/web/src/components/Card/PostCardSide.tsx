@@ -2,12 +2,9 @@ import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import { Heading } from "ui"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
-interface PostCardSlideProps {
-  title: string
-  slug: string
-  src: string
-  alt: string
+interface PostCardSlideProps extends WpPostsDataProps {
   isWP?: boolean
 }
 
@@ -16,10 +13,11 @@ export const PostCardSide = React.forwardRef<
   PostCardSlideProps
 >((props, ref) => {
   const { src, alt, slug, isWP = true, title, ...rest } = props
-  const [image, setImage] = React.useState("/image/imgloader.gif") as any
+
+  const [image, setImage] = React.useState("/image/imgloader.gif")
 
   return (
-    <NextLink href={isWP ? slug : `/article/${slug}`}>
+    <NextLink href={isWP ? slug : (`/article/${slug}` as any)}>
       <article
         className="mb-4 flex w-full border-separate flex-col rounded-lg drop-shadow-md"
         ref={ref}

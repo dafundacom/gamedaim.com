@@ -1,8 +1,10 @@
 import * as React from "react"
 import Head from "next/head"
-import parse from "html-react-parser"
-import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
+import parse from "html-react-parser"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+import { useRouter } from "next/router"
+
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
 import {
@@ -11,11 +13,11 @@ import {
   wpGetAllPosts,
   useWpGetAllPosts,
 } from "@/lib/wp-posts"
-import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
+
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
-
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
@@ -23,8 +25,9 @@ const InfiniteScroll = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+
 interface AuthorProps {
-  posts: any
+  posts: WpPostsDataProps
   pageInfo: any
   seo: {
     head: string
@@ -34,10 +37,12 @@ interface AuthorProps {
 
 export default function Author(props: AuthorProps) {
   const { seo } = props
+
   const router: any = useRouter()
   const {
     query: { slug },
   } = router
+
   const { getPostsByAuthorSlug }: any = useWpGetPostsByAuthorSlug(slug)
   const { getAllPostsData }: any = useWpGetAllPosts()
 
@@ -67,18 +72,7 @@ export default function Author(props: AuthorProps) {
                 </Heading>
               </div>
               {getAllPostsData?.data?.posts?.map(
-                (post: {
-                  id: number
-                  featuredImage: {
-                    sourceUrl: string
-                    altText: string
-                  }
-                  title: string
-                  slug: string
-                  excerpt: string
-                  categories: any
-                  uri: string
-                }) => {
+                (post: WpSinglePostDataProps) => {
                   return (
                     <PostCardSide
                       key={post.id}
@@ -103,7 +97,9 @@ export const getServerSideProps = async ({ params, res }: any) => {
     "Cache-Control",
     "public, s-maxage=120, stale-while-revalidate=600",
   )
+
   let isError = false
+
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onSuccess: async (data: any) => {
@@ -113,9 +109,11 @@ export const getServerSideProps = async ({ params, res }: any) => {
       },
     }),
   })
+
   const seo = await getSeoDatas(`https://${env.DOMAIN}/author/${params.slug}`)
 
   const slug = params?.slug
+
   try {
     await queryClient.prefetchQuery(["authorPosts", slug], () =>
       wpGetPostsByAuthorSlug(slug),
@@ -125,11 +123,13 @@ export const getServerSideProps = async ({ params, res }: any) => {
     isError = true
     res.statusCode = error.response.status
   }
+
   if (isError) {
     return {
       notFound: true,
     }
   }
+
   return {
     props: {
       seo,

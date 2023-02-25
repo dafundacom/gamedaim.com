@@ -6,17 +6,9 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { MdAccessTime } from "react-icons/md"
 
 import { Heading } from "ui"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
-interface PostCardProps {
-  title: string
-  slug: string
-  excerpt: string
-  src: string
-  alt: string
-  authorName: string
-  authorUri: string
-  authorAvatarUrl: string
-  date: string
+interface PostCardProps extends WpPostsDataProps {
   isWP?: boolean
 }
 
@@ -35,9 +27,12 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
       isWP = true,
       ...rest
     } = props
-    const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl) as any
-    const [image, setImage] = React.useState("/image/imgloader.gif") as any
+
+    const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl)
+    const [image, setImage] = React.useState("/image/imgloader.gif")
+
     dayjs.extend(relativeTime)
+
     return (
       <article
         className="mb-[30px] flex grow border-separate flex-row rounded-lg drop-shadow-md lg:flex-col"
@@ -46,7 +41,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
       >
         <div className="relative flex w-full flex-row justify-between lg:!justify-start">
           <NextLink
-            href={isWP ? slug : `/article/${slug}`}
+            href={isWP ? slug : (`/article/${slug}` as any)}
             shallow={true}
             className="order-2 md:order-1 md:mr-[30px]"
           >
@@ -63,7 +58,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
             />
           </NextLink>
           <div className="order-1 mr-3 flex flex-col md:order-2 md:mr-[unset]">
-            <NextLink href={isWP ? slug : `/article/${slug}`}>
+            <NextLink href={isWP ? slug : (`/article/${slug}` as any)}>
               <Heading
                 as="h3"
                 className="hover:text-primary-400 !text-xl !font-bold"

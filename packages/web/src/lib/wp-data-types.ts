@@ -1,100 +1,107 @@
-export interface WpAvatarProps {
+export interface WpAvatarDataProps {
   url: string
   width: number
   height: number
 }
 
-export interface WpAuthorsProps {
+export interface WpAuthorsDataProps {
   find: (args: any) => any
-  name?: string
+  name: string
   description?: string
-  slug?: string
-  bio?: string
-  avatar?: WpAvatarProps
-  og?: WpOgProps
-  title?: string
+  slug: string
+  bio: string
+  avatar: WpAvatarDataProps
+  og: WpOgDataProps
+  title: string
+  uri: string
 }
 
-export interface WpFeaturedImageProps {
+export interface WpFeaturedImageDataProps {
   id: string
-  sourceUrl?: string
-  altText?: string
-  caption?: string
-  srcSet?: string
-  sizes?: string
+  sourceUrl: string
+  altText: string
+  caption: string
+  srcSet: string
+  sizes: string
 }
 
-export interface WpCategoriesProps {
+export interface WpCategoriesDataProps {
   id: string
   name: string
   slug: string
   description?: string
-  og?: WpOgProps
+  og: WpOgDataProps
 }
 
-export interface WpTagsProps {
+export interface WpTagsDataProps {
   id: string
   name: string
   slug: string
   description?: string
-  og?: WpOgProps
+  og: WpOgDataProps
 }
 
-export interface WpSinglePostProps {
-  id?: string
-  article?: string
-  title?: string
-  metaTitle?: string
-  description?: string
-  slug?: string
-  excerpt?: string
-  date?: string
-  published?: string
-  modified?: string
-  content?: string
-  featuredImage?: WpFeaturedImageProps
-  categories?: WpCategoriesProps[]
-  tags?: WpTagsProps[]
-  author?: WpAuthorsProps
-  og?: WpOgProps
+export interface WpSinglePostDataProps {
+  id: string
+  article: string
+  title: string
+  metaTitle: string
+  description: string
+  slug: string
+  excerpt: string
+  date: string
+  published: string
+  modified: string
+  content: string
+  featuredImage: WpFeaturedImageDataProps
+  categories: WpCategoriesDataProps
+  tags: WpTagsDataProps
+  author: WpAuthorsDataProps
+  authorUrl: string
+  authorImg: string
+  authorName: string
+  featuredImageCaption: string
+  featuredImageUrl: string
+  featuredImageAlt: string
+  uri: string
 }
 export interface WpPopularPosts {
   slug: string
   views: number
   date: string
-  post: WpSinglePostProps
+  post: WpSinglePostDataProps
 }
 
-export interface WpArticleProps {
-  publishedTime?: string
-  modifiedTime?: string
+export interface WpArticleDataProps {
+  publishedTime: string
+  modifiedTime: string
 }
 
-export interface WpPostsProps {
-  slug?: string
-  post: WpSinglePostProps
-  map?(arg0: any): import("react").ReactNode
+export interface WpPostsDataProps {
+  [x: string]: any
+  slug: string
+  post: WpSinglePostDataProps
 }
 
-export interface WpSiteProps {
+export interface WpSiteDataProps {
   description: string
   language: string
   title: string
 }
 
-export interface WpOgProps {
-  title?: string
+export interface WpOgDataProps {
+  title: string
   description: string
-  imageUrl?: string
-  imageSecureUrl?: string
-  imageWidth?: string
-  imageHeight?: string
-  url?: string
-  type?: string
+  imageUrl: string
+  imageSecureUrl: string
+  imageWidth: string
+  imageHeight: string
+  url: string
+  type: string
 }
 
-export interface WpTwitterProps {
+export interface WpTwitterDataProps {
   title: string
-  ImageUrl?: string
-  altText?: string
+  ImageUrl: string
+  altText: string
 }

@@ -13,7 +13,7 @@ export interface PostCardFeaturedProps
 export const PostCardFeatured = React.forwardRef<
   HTMLDivElement,
   PostCardFeaturedProps
->(function PostCardFeatured({ post, ...props }, ref) {
+>(({ post, ...props }, ref) => {
   const { title, featuredImage, uri } = post
   const [image, setImage] = React.useState("/image/imgloader.gif") as any
   return (

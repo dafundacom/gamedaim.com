@@ -25,12 +25,13 @@ import { Breadcrumb, Button, Heading, Text } from "ui"
 
 import env from "@/env"
 import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
+import { DownloadFileDataProps } from "@/lib/data-types"
 
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
-const CounterdownDownload = dynamic(() =>
-  import("@/components/Counter").then((mod) => mod.CounterdownDownload),
+const CounterDownload = dynamic(() =>
+  import("@/components/Counter").then((mod) => mod.CounterDownload),
 )
 const ListDownload = dynamic(() =>
   import("@/components/List").then((mod) => mod.ListDownload),
@@ -200,27 +201,23 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                             </NextLink>
                           </Button>
                           {download?.downloadFiles.length >= 1 && (
-                            <>
-                              <Button
-                                onClick={handleDownloadClick}
-                                colorScheme="primary"
-                                disabled={showCountdown}
-                              >
-                                Download
-                              </Button>
-                            </>
+                            <Button
+                              onClick={handleDownloadClick}
+                              colorScheme="primary"
+                              disabled={showCountdown}
+                            >
+                              Download
+                            </Button>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
                   {showCountdown && (
-                    <>
-                      <div className="bg-green-100 p-7 text-black">
-                        Link download akan terbuka pada
-                        {<CounterdownDownload />} detik
-                      </div>
-                    </>
+                    <div className="bg-green-100 p-7 text-black">
+                      Link download akan terbuka pada
+                      {<CounterDownload />} detik
+                    </div>
                   )}
                   <div className="p-7">{parse(download.content)}</div>
                   <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
@@ -258,20 +255,22 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                       <Heading>All version</Heading>
                       <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
                         {download.downloadFiles.length > 0 &&
-                          download.downloadFiles.map((post: any) => {
-                            return (
-                              <>
+                          download.downloadFiles.map(
+                            (downloadFile: DownloadFileDataProps) => {
+                              return (
                                 <div
-                                  onClick={() => handleChangeVersion(post)}
+                                  onClick={() =>
+                                    handleChangeVersion(downloadFile)
+                                  }
                                   className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
                                 >
-                                  <Text>{post.version}</Text>
-                                  <Text>{post.title}</Text>
-                                  <Text>{post.fileSize}</Text>
+                                  <Text>{downloadFile.version}</Text>
+                                  <Text>{downloadFile.title}</Text>
+                                  <Text>{downloadFile.fileSize}</Text>
                                 </div>
-                              </>
-                            )
-                          })}
+                              )
+                            },
+                          )}
                       </div>
                     </div>
                   )}

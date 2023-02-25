@@ -15,6 +15,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { CommentDataProps } from "@/lib/data-types"
 
 export default function CommentsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -110,36 +111,26 @@ export default function CommentsDashboard() {
                     {comments && (
                       <>
                         {isFetching === false &&
-                          comments.map(
-                            (
-                              comment: {
-                                id: string
-                                content: string
-                                createdAt: string
-                                updatedAt: string
-                              },
-                              i: number,
-                            ) => (
-                              <Tr key={i}>
-                                <Td className="whitespace-nowrap">
-                                  <div className="flex">
-                                    <span className="font-medium">
-                                      {comment.content}
-                                    </span>
-                                  </div>
-                                </Td>
-                                <Td>{dayjs(comment.createdAt).fromNow()}</Td>
-                                <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
-                                <Td align="center">
-                                  <ActionDashboard
-                                    onDelete={() =>
-                                      mutationDelete.mutate(comment)
-                                    }
-                                  />
-                                </Td>
-                              </Tr>
-                            ),
-                          )}
+                          comments.map((comment: CommentDataProps) => (
+                            <Tr key={comment.id}>
+                              <Td className="whitespace-nowrap">
+                                <div className="flex">
+                                  <span className="font-medium">
+                                    {comment.content}
+                                  </span>
+                                </div>
+                              </Td>
+                              <Td>{dayjs(comment.createdAt).fromNow()}</Td>
+                              <Td>{dayjs(comment.updatedAt).fromNow()}</Td>
+                              <Td align="center">
+                                <ActionDashboard
+                                  onDelete={() =>
+                                    mutationDelete.mutate(comment)
+                                  }
+                                />
+                              </Td>
+                            </Tr>
+                          ))}
                       </>
                     )}
                   </Tbody>

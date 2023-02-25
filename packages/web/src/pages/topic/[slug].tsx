@@ -86,37 +86,23 @@ export default function Topic(props: TopicProps) {
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4">
-              {topic.articles.map(
-                (article: {
-                  id: string
-                  featuredImage: { url: string; alt: string }
-                  slug: string
-                  title: string
-                  description: string
-                  author: {
-                    name: string
-                    profilPicture: string
-                    username: string
-                  }
-                  createdAt: string
-                }) => {
-                  return (
-                    <PostCard
-                      key={article.id}
-                      src={article.featuredImage?.url}
-                      alt={article.featuredImage?.alt}
-                      slug={article.slug}
-                      title={article.title}
-                      excerpt={article.description}
-                      authorName={article.author?.name}
-                      authorAvatarUrl={article.author?.profilPicture}
-                      authorUri={article.author?.username}
-                      date={article.createdAt}
-                      isWP={false}
-                    />
-                  )
-                },
-              )}
+              {topic.articles.map((article: ArticleDataProps) => {
+                return (
+                  <PostCard
+                    key={article.id}
+                    src={article.featuredImage?.url}
+                    alt={article.featuredImage?.alt}
+                    slug={article.slug}
+                    title={article.title}
+                    excerpt={article.description}
+                    authorName={article.author?.name}
+                    authorAvatarUrl={article.author.profilePicture.url}
+                    authorUri={article.author?.username}
+                    date={article.createdAt}
+                    isWP={false}
+                  />
+                )
+              })}
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">
