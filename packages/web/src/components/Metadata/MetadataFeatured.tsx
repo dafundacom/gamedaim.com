@@ -6,21 +6,23 @@ import { IoGameController } from "react-icons/io5"
 import { ImBook } from "react-icons/im"
 import { BiMovie, BiTv } from "react-icons/bi"
 
-import { WpCategoriesProps } from "@/data/wp-types"
+import { WpCategoriesDataProps } from "@/lib/wp-data-types"
 import {
   wpPrimaryCategorySlug,
   wpCategoryPathBySlug,
 } from "@/lib/wp-categories"
 
 interface MetadataFeaturedProps extends React.HTMLAttributes<HTMLDivElement> {
-  categories: WpCategoriesProps[]
+  categories: WpCategoriesDataProps[]
   date: string
 }
 
 export const MetadataFeatured = React.forwardRef<
   HTMLDivElement,
   MetadataFeaturedProps
->(({ categories, date, ...props }, ref) => {
+>((props, ref) => {
+  const { categories, date, ...rest } = props
+
   const { primary } = wpPrimaryCategorySlug(categories)
   let categoryIcon
 
@@ -37,7 +39,7 @@ export const MetadataFeatured = React.forwardRef<
   dayjs.extend(relativeTime)
 
   return (
-    <div className="flex flex-row" {...props} ref={ref}>
+    <div className="flex flex-row" {...rest} ref={ref}>
       <div className="my-1 flex flex-row items-center text-gray-200 dark:text-gray-100">
         {categories && (
           <>

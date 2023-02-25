@@ -1,8 +1,9 @@
 import * as React from "react"
 import NextLink from "next/link"
-import { SidebarDashboard } from "@/components/Navigation"
-import { Button } from "ui"
 import { MdArticle, MdDashboard, MdMenu } from "react-icons/md"
+import { Button } from "ui"
+
+import { SidebarDashboard } from "@/components/Navigation"
 
 interface DashboardLayoutProps extends React.HTMLAttributes<HTMLDivElement> {}
 

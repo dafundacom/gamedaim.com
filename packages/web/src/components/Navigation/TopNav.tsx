@@ -14,6 +14,7 @@ import {
   SunIcon,
   useDisclosure,
 } from "ui"
+
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { MdSearch } from "react-icons/md"
@@ -25,31 +26,34 @@ interface TopNavProps {
 export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
   (props, ref) => {
     const { toggleSideNav, ...rest } = props
+
     const [mounted, setMounted] = React.useState(false)
     const { resolvedTheme, setTheme } = useTheme()
     const [auth, setAuth] = React.useContext(AuthContext)
-    const router = useRouter()
     const { isOpen, onToggle } = useDisclosure()
     const [values, setValues] = React.useState("")
+
+    const router = useRouter()
+
     const handleChange = (event: {
       target: { value: React.SetStateAction<string> }
     }) => {
-      // 👇 Get input value from "event"
       setValues(event.target.value)
     }
+
     const handlerSubmit = (e: { preventDefault: () => void }) => {
       e.preventDefault()
       //@ts-ignore
       router.push(`/search?q=${values}`)
     }
 
-    React.useEffect(() => setMounted(true), [])
-
     const switchTheme = () => {
       if (mounted) {
         setTheme(resolvedTheme === "dark" ? "light" : "dark")
       }
     }
+
+    React.useEffect(() => setMounted(true), [])
 
     const logOut = () => {
       localStorage.removeItem("auth")

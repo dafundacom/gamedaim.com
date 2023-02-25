@@ -1,11 +1,12 @@
 import * as React from "react"
 import NextLink from "next/link"
-import { WpPostsProps } from "@/data/wp-types"
 import NextImage from "next/image"
 import { Button } from "ui"
 
+import { WpPostsDataProps } from "@/lib/wp-data-types"
+
 export interface PostCardFeaturedProps
-  extends WpPostsProps,
+  extends WpPostsDataProps,
     React.HTMLAttributes<HTMLDivElement> {
   index?: number
 }
@@ -13,7 +14,7 @@ export interface PostCardFeaturedProps
 export const PostCardFeatured = React.forwardRef<
   HTMLDivElement,
   PostCardFeaturedProps
->(function PostCardFeatured({ post, ...props }, ref) {
+>(({ post, ...props }, ref) => {
   const { title, featuredImage, uri } = post
   const [image, setImage] = React.useState("/image/imgloader.gif") as any
   return (

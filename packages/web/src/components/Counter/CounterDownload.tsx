@@ -1,5 +1,6 @@
 import * as React from "react"
-export function CounterdownDownload() {
+
+export const CounterDownload = () => {
   const [difference, setDifference] = React.useState(10)
 
   React.useEffect(() => {

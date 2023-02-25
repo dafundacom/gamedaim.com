@@ -7,6 +7,7 @@ import { BreadcrumbJsonLd, NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo"
 import env from "@/env"
 import { wpGetAllPosts, useWpGetAllPosts } from "@/lib/wp-posts"
 import { wpGetMenusByName } from "@/lib/wp-menus"
+import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
@@ -82,30 +83,17 @@ export default function Home() {
                     </span>
                   </Heading>
                 </div>
-                {data?.posts.map(
-                  (post: {
-                    id: number
-                    featuredImage: {
-                      sourceUrl: string
-                      altText: string
-                    }
-                    slug: string
-                    title: string
-                    excerpt: string
-                    categories: any
-                    uri: string
-                  }) => {
-                    return (
-                      <PostCardSide
-                        key={post.id}
-                        src={post.featuredImage?.sourceUrl ?? ""}
-                        alt={post.featuredImage?.altText ?? ""}
-                        title={post.title}
-                        slug={post.uri}
-                      />
-                    )
-                  },
-                )}
+                {data?.posts.map((post: WpSinglePostDataProps) => {
+                  return (
+                    <PostCardSide
+                      key={post.id}
+                      src={post.featuredImage?.sourceUrl ?? ""}
+                      alt={post.featuredImage?.altText ?? ""}
+                      title={post.title}
+                      slug={post.uri}
+                    />
+                  )
+                })}
               </div>
             </aside>
           </div>

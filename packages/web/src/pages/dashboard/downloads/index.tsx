@@ -16,6 +16,7 @@ import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { DownloadDataProps } from "@/lib/data-types"
 
 export default function DownloadsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -116,61 +117,46 @@ export default function DownloadsDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      downloads.map(
-                        (
-                          download: {
-                            id: string
-                            title: string
-                            slug: string
-                            author: {
-                              name: string
-                            }
-                            type: string
-                            status: string
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {download.title}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {download.author.name}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(download.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(download.updatedAt).fromNow()}</Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  <Badge variant="outline">
-                                    {download.status}
-                                  </Badge>
-                                </span>
-                              </div>
-                            </Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                viewLink={`/download/${download.type.toLowerCase()}/${
-                                  download.slug
-                                }`}
-                                onDelete={() => mutationDelete.mutate(download)}
-                                editLink={`/dashboard/downloads/${download.id}`}
-                                content={download.title}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      downloads.map((download: DownloadDataProps) => (
+                        <Tr key={download.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {download.title}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {download.author.name}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(download.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(download.updatedAt).fromNow()}</Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                <Badge variant="outline">
+                                  {download.status}
+                                </Badge>
+                              </span>
+                            </div>
+                          </Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              // @ts-ignore FIX:later
+                              viewLink={`/download/${download.type.toLowerCase()}/${
+                                download.slug
+                              }`}
+                              onDelete={() => mutationDelete.mutate(download)}
+                              editLink={`/dashboard/downloads/${download.id}`}
+                              content={download.title}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

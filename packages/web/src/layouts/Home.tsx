@@ -1,6 +1,6 @@
 import * as React from "react"
-
 import { useDisclosure } from "ui"
+
 import { TopNav, SideNav } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import { wpGetPrimaryMenus } from "@/lib/wp-menus"
@@ -13,6 +13,7 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
   (props, ref) => {
     const { isOpen, onToggle } = useDisclosure()
     const [primaryMenus, setPrimaryMenus] = React.useState<any>(null)
+
     React.useEffect(() => {
       async function menus() {
         const { menu } = await wpGetPrimaryMenus()

@@ -16,6 +16,7 @@ import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { DownloadFileDataProps } from "@/lib/data-types"
 
 export default function DownloadFilesDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -118,21 +119,8 @@ export default function DownloadFilesDashboard() {
                   <Tbody>
                     {isFetching === false &&
                       downloadFiles.map(
-                        (
-                          downloadFile: {
-                            id: string
-                            title: string
-                            slug: string
-                            author: {
-                              name: string
-                            }
-                            status: string
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
+                        (downloadFile: DownloadFileDataProps) => (
+                          <Tr key={downloadFile.id}>
                             <Td className="whitespace-nowrap">
                               <div className="flex">
                                 <span className="font-medium">

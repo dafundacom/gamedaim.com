@@ -23,6 +23,7 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdminRole } from "@/components/Role"
+import { MediaDataProps } from "@/lib/data-types"
 
 enum UserRoles {
   "ADMIN",
@@ -280,30 +281,21 @@ export default function DashboardEditUser() {
                     <MediaUpload />
                     <div className="my-3 grid grid-cols-5 gap-3">
                       {loadMedias.isFetching === false &&
-                        loadedMedias.map(
-                          (media: {
-                            id: string
-                            name: string
-                            url: string
-                            alt: string
-                          }) => (
-                            <>
-                              <NextImage
-                                key={media.id}
-                                src={media.url}
-                                alt={media.alt}
-                                fill
-                                className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  setSelectedProfilePictureId(media.id)
-                                  setSelectedProfilePictureUrl(media.url)
-                                  setOpenModal(false)
-                                }}
-                              />
-                            </>
-                          ),
-                        )}
+                        loadedMedias.map((media: MediaDataProps) => (
+                          <NextImage
+                            key={media.id}
+                            src={media.url}
+                            alt={media.alt}
+                            fill
+                            className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedProfilePictureId(media.id)
+                              setSelectedProfilePictureUrl(media.url)
+                              setOpenModal(false)
+                            }}
+                          />
+                        ))}
                     </div>
                   </>
                 }

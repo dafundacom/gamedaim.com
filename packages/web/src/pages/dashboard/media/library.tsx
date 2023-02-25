@@ -18,6 +18,7 @@ import { ContentContext } from "@/contexts/content.context"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { MediaDataProps } from "@/lib/data-types"
 
 export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -105,35 +106,26 @@ export default function MediaLibraryDashboard() {
             <>
               <div className="my-3 grid grid-cols-2 gap-3 md:grid-cols-5">
                 {isFetching === false &&
-                  medias.map(
-                    (media: {
-                      id: string
-                      name: string
-                      url: string
-                      alt: string
-                    }) => (
-                      <>
-                        <div className="relative overflow-hidden rounded-[18px]">
-                          <IconButton
-                            colorScheme="red"
-                            className="!absolute z-20 !rounded-full !p-0"
-                            onClick={() => mutationDelete.mutate(media)}
-                          >
-                            <MdDeleteOutline />
-                          </IconButton>
-                          <NextLink href={`/dashboard/media/${media.id}`}>
-                            <NextImage
-                              key={media.id}
-                              src={media.url}
-                              alt={media.alt}
-                              fill
-                              className="!relative max-h-[500px] max-w-[500px] rounded-sm border-2 border-gray-300 object-cover"
-                            />
-                          </NextLink>
-                        </div>
-                      </>
-                    ),
-                  )}
+                  medias.map((media: MediaDataProps) => (
+                    <div className="relative overflow-hidden rounded-[18px]">
+                      <IconButton
+                        colorScheme="red"
+                        className="!absolute z-20 !rounded-full !p-0"
+                        onClick={() => mutationDelete.mutate(media)}
+                      >
+                        <MdDeleteOutline />
+                      </IconButton>
+                      <NextLink href={`/dashboard/media/${media.id}`}>
+                        <NextImage
+                          key={media.id}
+                          src={media.url}
+                          alt={media.alt}
+                          fill
+                          className="!relative max-h-[500px] max-w-[500px] rounded-sm border-2 border-gray-300 object-cover"
+                        />
+                      </NextLink>
+                    </div>
+                  ))}
               </div>
               {page && (
                 <div className="align-center mt-2 flex items-center justify-center space-x-2">

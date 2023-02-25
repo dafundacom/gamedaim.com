@@ -15,6 +15,7 @@ import {
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
 export default function Post(props: { seo: any }) {
   const { seo } = props
@@ -32,8 +33,8 @@ export default function Post(props: { seo: any }) {
           getAllPostsData?.data !== undefined && (
             <SinglePostLayout
               seoData={seo}
-              post={getPostBySlug?.data?.post}
-              posts={getAllPostsData?.data?.posts}
+              post={getPostBySlug.data.post}
+              posts={getAllPostsData.data.posts as unknown as WpPostsDataProps}
             />
           )}
       </HomeLayout>
@@ -56,7 +57,9 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
   const seo = await getSeoDatas(
     `https://${env.DOMAIN}/${params.category}/${params.slug}`,
   )
+
   await queryClient.prefetchQuery(["posts"], () => wpGetAllPosts())
+
   try {
     await queryClient.prefetchQuery(["post", params?.slug], () =>
       wpGetPostBySlug(params?.slug),
@@ -65,9 +68,8 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     isError = true
     res.statusCode = error.response.status
   }
-  if (isError) {
-    // queryClient.resetQueries({ queryKey: ["post", params?.slug], exact: true })
 
+  if (isError) {
     return {
       notFound: true,
     }
@@ -81,6 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
     revalidate: 100,
   }
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const { posts }: any = await wpGetAllSlug()
 

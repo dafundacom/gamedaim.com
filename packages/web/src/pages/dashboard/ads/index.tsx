@@ -16,6 +16,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { AdDataProps } from "@/lib/data-types"
 
 export default function AdsDashboard() {
   const [ad, setAd] = React.useContext(ContentContext)
@@ -113,42 +114,29 @@ export default function AdsDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      ads.map(
-                        (
-                          ad: {
-                            id: string
-                            title: string
-                            position: string
-                            createdAt: string
-                            updatedAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">{ad.title}</span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {ad.position}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(ad.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                onDelete={() => mutationDelete.mutate(ad)}
-                                editLink={`/dashboard/ads/${ad.id}`}
-                                content={ad.title}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      ads.map((ad: AdDataProps) => (
+                        <Tr key={ad.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{ad.title}</span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{ad.position}</span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(ad.createdAt).fromNow()}</Td>
+                          <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              onDelete={() => mutationDelete.mutate(ad)}
+                              editLink={`/dashboard/ads/${ad.id}`}
+                              content={ad.title}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

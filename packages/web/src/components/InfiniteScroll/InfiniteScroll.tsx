@@ -1,21 +1,35 @@
 import * as React from "react"
 import { useRouter } from "next/router"
+import { Button } from "ui"
+
+import { PostCard } from "@/components/Card"
 import {
   wpGetAllPostsLoadMore,
   wpGetPostsByCategorySlug,
   wpGetPostsByAuthorSlug,
   wpGetPostsByTagSlug,
 } from "@/lib/wp-posts"
-import { PostCard } from "@/components/Card"
-import { Button } from "ui"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 
-export const InfiniteScroll = (props: any) => {
-  const { posts, pageInfo, pageType, id } = props
+interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
+  id?: string
+  posts: WpPostsDataProps
+  pageInfo: any
+  pageType: "home" | "category" | "author" | "tag"
+}
+
+export const InfiniteScroll = React.forwardRef<
+  HTMLDivElement,
+  InfiniteScrollProps
+>((props, ref) => {
+  const { id, posts, pageInfo, pageType, ...rest } = props
+
   const router = useRouter()
 
-  const loadMoreRef: any = React.useRef(null)
+  const loadMoreRef = React.useRef<any>(null)
   const [page, setPage] = React.useState(pageInfo)
-  const [list, setList] = React.useState(posts)
+  const [list, setList] = React.useState(posts) as any
+
   const handleObserver = React.useCallback(
     async (entries: any) => {
       const [target] = entries
@@ -25,7 +39,10 @@ export const InfiniteScroll = (props: any) => {
           setList((list: any) => [...list, ...data.posts])
           setPage(data.pageInfo)
         } else if (pageType == "author") {
-          const data: any = await wpGetPostsByAuthorSlug(id, page.endCursor)
+          const data: any = await wpGetPostsByAuthorSlug(
+            id as string,
+            page.endCursor,
+          )
           setList((list: any) => [...list, ...data.posts])
           setPage(data.pageInfo)
         } else if (pageType == "tag") {
@@ -48,6 +65,7 @@ export const InfiniteScroll = (props: any) => {
     const handleRouteChange = () => {
       setList(posts)
     }
+
     if (pageType != "home") {
       router.events.on("routeChangeComplete", handleRouteChange)
     }
@@ -62,45 +80,25 @@ export const InfiniteScroll = (props: any) => {
       }
     }
   }, [handleObserver, pageType, posts, router.events])
+
   return (
-    <>
-      {list.map(
-        (post: {
-          id: number
-          featuredImage: {
-            sourceUrl: string
-            altText: string
-          }
-          title: string
-          slug: string
-          excerpt: string
-          categories: any
-          author: {
-            name: string
-            avatar: {
-              url: string
-            }
-            uri: string
-          }
-          uri: string
-          date: string
-        }) => {
-          return (
-            <PostCard
-              key={post.id}
-              src={post.featuredImage.sourceUrl}
-              alt={post.featuredImage.altText}
-              slug={post.uri}
-              title={post.title}
-              excerpt={post.excerpt}
-              authorName={post.author.name}
-              authorAvatarUrl={post.author.avatar.url}
-              authorUri={post.author.uri}
-              date={post.date}
-            />
-          )
-        },
-      )}
+    <div ref={ref} {...rest}>
+      {list.map((post: WpPostsDataProps) => {
+        return (
+          <PostCard
+            key={post.id}
+            src={post.featuredImage.sourceUrl}
+            alt={post.featuredImage.altText}
+            slug={post.uri}
+            title={post.title}
+            excerpt={post.excerpt}
+            authorName={post.author.name}
+            authorAvatarUrl={post.author.avatar.url}
+            authorUri={post.author.uri}
+            date={post.date}
+          />
+        )
+      })}
       <div ref={loadMoreRef}>
         <Button
           ref={loadMoreRef}
@@ -112,6 +110,6 @@ export const InfiniteScroll = (props: any) => {
           No More Posts
         </Button>
       </div>
-    </>
+    </div>
   )
-}
+})

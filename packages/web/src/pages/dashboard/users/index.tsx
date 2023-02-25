@@ -16,6 +16,7 @@ import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { UserDataProps } from "@/lib/data-types"
 
 export default function UsersDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -116,57 +117,42 @@ export default function UsersDashboard() {
                   </Thead>
                   <Tbody>
                     {isFetching === false &&
-                      users.map(
-                        (
-                          user: {
-                            id: string
-                            slug: string
-                            username: string
-                            name: string
-                            email: string
-                            role: string
-                            createdAt: string
-                          },
-                          i: number,
-                        ) => (
-                          <Tr key={i}>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {user.username}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">{user.name}</span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  {user.email}
-                                </span>
-                              </div>
-                            </Td>
-                            <Td className="whitespace-nowrap">
-                              <div className="flex">
-                                <span className="font-medium">
-                                  <Badge variant="outline">{user.role}</Badge>
-                                </span>
-                              </div>
-                            </Td>
-                            <Td>{dayjs(user.createdAt).fromNow()}</Td>
-                            <Td align="right">
-                              <ActionDashboard
-                                viewLink={`/user/${user.id}`}
-                                onDelete={() => mutationDelete.mutate(user)}
-                                editLink={`/dashboard/users/${user.id}`}
-                              />
-                            </Td>
-                          </Tr>
-                        ),
-                      )}
+                      users.map((user: UserDataProps) => (
+                        <Tr key={user.id}>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                {user.username}
+                              </span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{user.name}</span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">{user.email}</span>
+                            </div>
+                          </Td>
+                          <Td className="whitespace-nowrap">
+                            <div className="flex">
+                              <span className="font-medium">
+                                <Badge variant="outline">{user.role}</Badge>
+                              </span>
+                            </div>
+                          </Td>
+                          <Td>{dayjs(user.createdAt).fromNow()}</Td>
+                          <Td align="right">
+                            <ActionDashboard
+                              viewLink={`/user/${user.id}`}
+                              onDelete={() => mutationDelete.mutate(user)}
+                              editLink={`/dashboard/users/${user.id}`}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 {page && (

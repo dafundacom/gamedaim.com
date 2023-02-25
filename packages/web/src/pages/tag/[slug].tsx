@@ -1,19 +1,25 @@
 import * as React from "react"
+import NextLink from "next/link"
 import Head from "next/head"
 import parse from "html-react-parser"
-import NextLink from "next/link"
-import { GetStaticProps, GetStaticPaths } from "next"
 import dynamic from "next/dynamic"
+import { GetStaticProps, GetStaticPaths } from "next"
+import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
+import { useRouter } from "next/router"
+
 import env from "@/env"
 import { wpGetTagBySlug, useWpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug, useWpGetPostsByTagSlug } from "@/lib/wp-posts"
 import { getSeoDatas } from "@/lib/wp-seo"
-import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
-import { useRouter } from "next/router"
+import {
+  WpPostsDataProps,
+  WpSinglePostDataProps,
+  WpTagsDataProps,
+} from "@/lib/wp-data-types"
+
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
-
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
 )
@@ -22,17 +28,14 @@ const InfiniteScroll = dynamic(() =>
 )
 const Button = dynamic(() => import("ui").then((mod) => mod.Button))
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+
 interface TagProps {
-  tag: {
-    name: string
-    slug: string
-    id: string
-  }
+  tag: WpTagsDataProps
   seo: {
     head: string
     success: boolean
   }
-  posts: any
+  posts: WpPostsDataProps
   pageInfo: any
 }
 
@@ -104,18 +107,7 @@ export default function Tag(props: TagProps) {
                   </Heading>
                 </div>
                 {getPostsByTagSlug?.data?.posts.map(
-                  (post: {
-                    id: number
-                    featuredImage: {
-                      sourceUrl: string
-                      altText: string
-                    }
-                    slug: string
-                    title: string
-                    excerpt: string
-                    categories: any
-                    uri: string
-                  }) => {
+                  (post: WpSinglePostDataProps) => {
                     return (
                       <PostCardSide
                         key={post.id}
