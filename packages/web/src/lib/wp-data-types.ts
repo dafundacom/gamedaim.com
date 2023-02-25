@@ -28,6 +28,7 @@ export interface WpFeaturedImageDataProps {
 export interface WpCategoriesDataProps {
   id: string
   name: string
+  children: any
   slug: string
   description?: string
   og: WpOgDataProps

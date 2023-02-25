@@ -5,9 +5,9 @@ import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 import env from "@/env"
-import { PostCard } from "@/components/Card"
 import { getArticles } from "@/lib/articles"
 import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
+import { InfiniteScroll } from "@/components/InfiniteScroll"
 
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
@@ -20,6 +20,7 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Articles(props: ArticlesDataProps) {
   const { articles } = props
+  // console.log(count)
 
   const router = useRouter()
 
@@ -81,23 +82,12 @@ export default function Articles(props: ArticlesDataProps) {
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4">
-              {articles.map((article: ArticleDataProps) => {
-                return (
-                  <PostCard
-                    key={article.id}
-                    src={article.featuredImage.url}
-                    alt={article.featuredImage.alt}
-                    slug={article.slug}
-                    title={article.title}
-                    excerpt={article.excerpt}
-                    authorName={article.author.name}
-                    authorAvatarUrl={article.author.profilePicture?.url}
-                    authorUri={article.author?.username}
-                    date={article.createdAt}
-                    isWP={false}
-                  />
-                )
-              })}
+              <InfiniteScroll
+                index={2}
+                posts={articles}
+                pageType="articles"
+                totalPage={2}
+              />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">

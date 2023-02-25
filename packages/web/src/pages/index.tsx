@@ -1,12 +1,10 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
-import { QueryClient, dehydrate } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo"
 
 import env from "@/env"
-import { wpGetAllPosts, useWpGetAllPosts } from "@/lib/wp-posts"
-import { wpGetMenusByName } from "@/lib/wp-menus"
+import { wpGetAllPosts } from "@/lib/wp-posts"
 import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 
 const HomeLayout = dynamic(() =>
@@ -18,19 +16,19 @@ const PostCardSide = dynamic(() =>
 const ListPostFeatured = dynamic(() =>
   import("@/components/Card").then((mod) => mod.ListPostFeatured),
 )
-const InfiniteScroll = dynamic(() =>
-  import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScroll),
+const InfiniteScrollWP = dynamic(() =>
+  import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-export default function Home() {
+export default function Home(props: { postsHome: any }) {
+  const { postsHome } = props
+
   const router = useRouter()
-  const { getAllPostsData } = useWpGetAllPosts()
-  const { data }: any = getAllPostsData
-  const featured = data?.posts?.slice(0, 9)
-  const listPost = data?.posts?.slice(
-    data?.posts?.length / 2,
-    data?.posts?.length,
+  const featured = postsHome?.posts?.slice(0, 9)
+  const listPost = postsHome?.posts?.slice(
+    postsHome?.posts?.length / 2,
+    postsHome?.posts?.length,
   )
 
   return (
@@ -68,10 +66,10 @@ export default function Home() {
           <ListPostFeatured featured={featured} />
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4">
-              <InfiniteScroll
+              <InfiniteScrollWP
                 pageType="home"
                 posts={listPost}
-                pageInfo={data?.pageInfo}
+                pageInfo={postsHome?.pageInfo}
               />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
@@ -83,7 +81,7 @@ export default function Home() {
                     </span>
                   </Heading>
                 </div>
-                {data?.posts.map((post: WpSinglePostDataProps) => {
+                {postsHome?.posts.map((post: WpSinglePostDataProps) => {
                   return (
                     <PostCardSide
                       key={post.id}
@@ -104,14 +102,9 @@ export default function Home() {
 }
 
 export async function getStaticProps() {
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(["menus"], () =>
-    wpGetMenusByName(env.MENU_PRIMARY),
-  )
-  await queryClient.prefetchQuery(["posts"], () => wpGetAllPosts())
-
+  const postsHome = await wpGetAllPosts()
   return {
-    props: { dehydratedState: dehydrate(queryClient) },
+    props: { postsHome: postsHome },
     revalidate: 60,
   }
 }

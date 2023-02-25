@@ -3,60 +3,45 @@ import { useRouter } from "next/router"
 import { Button } from "ui"
 
 import { PostCard } from "@/components/Card"
-import {
-  wpGetAllPostsLoadMore,
-  wpGetPostsByCategorySlug,
-  wpGetPostsByAuthorSlug,
-  wpGetPostsByTagSlug,
-} from "@/lib/wp-posts"
-import { WpPostsDataProps } from "@/lib/wp-data-types"
+import { getArticles } from "@/lib/articles"
+import { getArticlesByTopic } from "@/lib/topics"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string
-  posts: WpPostsDataProps
-  pageInfo: any
-  pageType: "home" | "category" | "author" | "tag"
+  posts: any
+  index?: number
+  pageType: any
+  totalPage?: any
 }
 
 export const InfiniteScroll = React.forwardRef<
   HTMLDivElement,
   InfiniteScrollProps
 >((props, ref) => {
-  const { id, posts, pageInfo, pageType, ...rest } = props
+  const { id, posts, pageType, totalPage, index, ...rest } = props
 
   const router = useRouter()
 
   const loadMoreRef = React.useRef<any>(null)
-  const [page, setPage] = React.useState(pageInfo)
+  const [page, setPage] = React.useState<any>(index)
   const [list, setList] = React.useState(posts) as any
 
   const handleObserver = React.useCallback(
     async (entries: any) => {
       const [target] = entries
-      if (target.isIntersecting && page.hasNextPage == true) {
-        if (pageType == "category") {
-          const data: any = await wpGetPostsByCategorySlug(id, page.endCursor)
-          setList((list: any) => [...list, ...data.posts])
-          setPage(data.pageInfo)
-        } else if (pageType == "author") {
-          const data: any = await wpGetPostsByAuthorSlug(
-            id as string,
-            page.endCursor,
-          )
-          setList((list: any) => [...list, ...data.posts])
-          setPage(data.pageInfo)
-        } else if (pageType == "tag") {
-          const data: any = await wpGetPostsByTagSlug(id, page.endCursor)
-          setList((list: any) => [...list, ...data.posts])
-          setPage(data.pageInfo)
-        } else {
-          const data: any = await wpGetAllPostsLoadMore(page.endCursor)
-          setList((list: any) => [...list, ...data.posts])
-          setPage(data.pageInfo)
+      if (target.isIntersecting && totalPage >= page) {
+        if (pageType == "articles") {
+          const { articles }: any = await getArticles(page)
+          setList((list: any) => [...list, ...articles])
+          setPage((prev: number) => prev + 1)
+        } else if (pageType == "topics") {
+          const { topic } = await getArticlesByTopic(id, page)
+          setList((list: any) => [...list, ...topic.articles])
+          setPage((prev: number) => prev + 1)
         }
       }
     },
-    [id, page.endCursor, page.hasNextPage, pageType],
+    [id, page, pageType, totalPage],
   )
 
   React.useEffect(() => {
@@ -66,9 +51,7 @@ export const InfiniteScroll = React.forwardRef<
       setList(posts)
     }
 
-    if (pageType != "home") {
-      router.events.on("routeChangeComplete", handleRouteChange)
-    }
+    router.events.on("routeChangeComplete", handleRouteChange)
 
     if (loadMoreRef.current) observer.observe(loadMoreRef.current)
     return () => {
@@ -83,26 +66,27 @@ export const InfiniteScroll = React.forwardRef<
 
   return (
     <div ref={ref} {...rest}>
-      {list.map((post: WpPostsDataProps) => {
+      {list.map((article: any) => {
         return (
           <PostCard
-            key={post.id}
-            src={post.featuredImage.sourceUrl}
-            alt={post.featuredImage.altText}
-            slug={post.uri}
-            title={post.title}
-            excerpt={post.excerpt}
-            authorName={post.author.name}
-            authorAvatarUrl={post.author.avatar.url}
-            authorUri={post.author.uri}
-            date={post.date}
+            key={article.id}
+            src={article.featuredImage.url}
+            alt={article.featuredImage.alt}
+            slug={article.slug}
+            title={article.title}
+            excerpt={article.excerpt}
+            authorName={article.author.name}
+            authorAvatarUrl={article.author.profilePicture?.url}
+            authorUri={article.author?.username}
+            date={article.createdAt}
+            isWP={false}
           />
         )
       })}
       <div ref={loadMoreRef}>
         <Button
           ref={loadMoreRef}
-          loading={page.hasNextPage == true}
+          loading={totalPage >= page}
           loadingText="Loading ..."
           colorScheme="blue"
           className="!w-full !cursor-default"

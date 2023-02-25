@@ -4,24 +4,27 @@ import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 import env from "@/env"
-import { PostCard } from "@/components/Card"
-import { getTopicBySlug } from "@/lib/topics"
+import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
+import { InfiniteScroll } from "@/components/InfiniteScroll"
+import { ListDownload } from "@/components/List"
 
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+
+import { HomeLayout } from "@/layouts/Home"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 
 interface TopicProps {
   topic: TopicDataProps
+  download: any
 }
 
 export default function Topic(props: TopicProps) {
-  const { topic } = props
+  const { topic, download } = props
+  console.log(download)
 
   return (
     <>
@@ -85,24 +88,27 @@ export default function Topic(props: TopicProps) {
             </div>
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
-            <div className="flex w-full flex-col px-4 lg:mr-4">
-              {topic.articles.map((article: ArticleDataProps) => {
-                return (
-                  <PostCard
-                    key={article.id}
-                    src={article.featuredImage?.url}
-                    alt={article.featuredImage?.alt}
-                    slug={article.slug}
-                    title={article.title}
-                    excerpt={article.description}
-                    authorName={article.author?.name}
-                    authorAvatarUrl={article.author.profilePicture.url}
-                    authorUri={article.author?.username}
-                    date={article.createdAt}
-                    isWP={false}
-                  />
-                )
-              })}
+            <div className="flex w-full flex-col px-4 lg:mr-4 lg:!w-2/3">
+              <div className="px-4">
+                <div className={"my-2 flex flex-row justify-between"}>
+                  <Heading as="h2" size="2xl" bold>
+                    Downloads
+                  </Heading>
+                  <NextLink href="/download/game/">
+                    <Text size="sm" colorScheme="blue">
+                      See more
+                    </Text>
+                  </NextLink>
+                </div>
+                <ListDownload listDownloads={download?.downloads} />
+              </div>
+              <InfiniteScroll
+                index={2}
+                id={topic.slug}
+                posts={topic.articles}
+                pageType="articles"
+                totalPage={2}
+              />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">
@@ -135,8 +141,8 @@ export default function Topic(props: TopicProps) {
 }
 
 export const getServerSideProps = async ({ params }: any) => {
-  const { topic } = await getTopicBySlug(params.slug)
-
+  const { topic } = await getArticlesByTopic(params.slug)
+  const { topic: download } = await getDownloadsByTopic(params?.slug)
   if (!topic) {
     return {
       notFound: true,
@@ -145,7 +151,8 @@ export const getServerSideProps = async ({ params }: any) => {
 
   return {
     props: {
-      topic: topic,
+      topic,
+      download,
     },
   }
 }
