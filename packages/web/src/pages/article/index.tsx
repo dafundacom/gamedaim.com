@@ -3,8 +3,9 @@ import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { MdChevronRight } from "react-icons/md"
+
 import env from "@/env"
-import { getArticles } from "@/lib/articles"
+import { getArticles, getArticlesCount } from "@/lib/articles"
 import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
 import { InfiniteScrollArticle } from "@/components/InfiniteScroll"
 import { Breadcrumb } from "ui"
@@ -18,9 +19,13 @@ const PostCardSide = dynamic(() =>
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-export default function Articles(props: ArticlesDataProps) {
-  const { articles } = props
-  // console.log(count)
+interface ArticlesProps {
+  articles: ArticlesDataProps
+  articlesCount: number
+}
+
+export default function Articles(props: ArticlesProps) {
+  const { articles, articlesCount } = props
 
   const router = useRouter()
 
@@ -76,7 +81,7 @@ export default function Articles(props: ArticlesDataProps) {
                 index={2}
                 posts={articles}
                 pageType="articles"
-                totalPage={2}
+                totalPage={articlesCount}
               />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
@@ -111,6 +116,7 @@ export default function Articles(props: ArticlesDataProps) {
 
 export const getServerSideProps = async () => {
   const { articles } = await getArticles()
+  const { articlesCount } = await getArticlesCount()
 
   if (!articles) {
     return {
@@ -121,6 +127,7 @@ export const getServerSideProps = async () => {
   return {
     props: {
       articles: articles,
+      articlescount: articlesCount,
     },
   }
 }
