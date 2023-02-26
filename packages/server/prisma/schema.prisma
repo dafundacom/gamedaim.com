@@ -52,10 +52,15 @@ enum DownloadSchema {
 }
 
 enum AdPosition {
-  ABOVE_POST
-  INLINE_POST
-  BELOW_POST
-  POP_UP
+  HOME_BELOW_HEADER
+  TOPIC_BELOW_HEADER
+  ARTICLE_BELOW_HEADER
+  DOWNLOAD_BELOW_HEADER
+  SINGLE_ARTICLE_ABOVE_POST
+  SINGLE_ARTICLE_INLINE_POST
+  SINGLE_ARTICLE_BELOW_POST
+  SINGLE_ARTICLE_POP_UP
+  DOWNLOADING_PAGE
 }
 
 model User {
@@ -212,7 +217,7 @@ model Ad {
   id        String     @id @unique @default(uuid())
   title     String     @unique
   content   String
-  position  AdPosition @default(ABOVE_POST)
+  position  AdPosition @default(HOME_BELOW_HEADER)
   active    Boolean    @default(false)
   author    User       @relation(name: "AdAuthors", fields: [authorId], references: [id])
   authorId  String
