@@ -141,6 +141,7 @@ export default function CreateDownloadsDashboard() {
       toast.error(err.response.data.message)
     }
     setLoading(false)
+    editor?.commands.clearContent()
   }
 
   return (

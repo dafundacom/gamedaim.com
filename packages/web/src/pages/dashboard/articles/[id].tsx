@@ -188,6 +188,7 @@ export default function EditArticleDashboard() {
       console.log(err)
       toast.error(err.response.data.message)
       setLoading(false)
+      editor?.commands.clearContent()
     }
   }
 
