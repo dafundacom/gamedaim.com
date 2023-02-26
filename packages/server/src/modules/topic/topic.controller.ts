@@ -230,16 +230,10 @@ export async function searchTopicsHandler(
 }
 
 export async function getTotalTopicsHandler(
-  request: FastifyRequest,
+  _request: FastifyRequest,
   reply: FastifyReply,
 ) {
   try {
-    const user = request.user
-
-    if (user.role !== "ADMIN") {
-      return reply.code(403).send({ message: "Unauthorized" })
-    }
-
     const topics = await getTotalTopics()
     return reply.code(201).send(topics)
   } catch (e) {

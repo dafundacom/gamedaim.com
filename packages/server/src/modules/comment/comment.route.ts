@@ -84,11 +84,7 @@ async function commentRoutes(server: FastifyInstance) {
     deleteCommentHandler,
   )
 
-  server.get(
-    "/count",
-    { preHandler: [server.authenticate] },
-    getTotalCommentsHandler,
-  )
+  server.get("/count", getTotalCommentsHandler)
 }
 
 export default commentRoutes

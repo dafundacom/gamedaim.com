@@ -110,11 +110,7 @@ async function articleRoutes(server: FastifyInstance) {
     deleteArticleHandler,
   )
 
-  server.get(
-    "/count",
-    { preHandler: [server.authenticate] },
-    getTotalArticlesHandler,
-  )
+  server.get("/count", getTotalArticlesHandler)
 }
 
 export default articleRoutes

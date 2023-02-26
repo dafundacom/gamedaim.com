@@ -69,11 +69,7 @@ async function wpCommentRoutes(server: FastifyInstance) {
     deleteWpCommentHandler,
   )
 
-  server.get(
-    "/count",
-    { preHandler: [server.authenticate] },
-    getTotalWpCommentsHandler,
-  )
+  server.get("/count", getTotalWpCommentsHandler)
 }
 
 export default wpCommentRoutes
