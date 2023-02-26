@@ -123,11 +123,7 @@ async function topicRoutes(server: FastifyInstance) {
     deleteTopicHandler,
   )
 
-  server.get(
-    "/count",
-    { preHandler: [server.authenticate] },
-    getTotalTopicsHandler,
-  )
+  server.get("/count", getTotalTopicsHandler)
 }
 
 export default topicRoutes

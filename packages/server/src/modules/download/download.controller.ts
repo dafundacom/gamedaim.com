@@ -276,16 +276,10 @@ export async function deleteDownloadHandler(
 }
 
 export async function getTotalDownloadsHandler(
-  request: FastifyRequest,
+  _request: FastifyRequest,
   reply: FastifyReply,
 ) {
   try {
-    const user = request.user
-
-    if (user.role !== "ADMIN") {
-      return reply.code(403).send({ message: "Unauthorized" })
-    }
-
     const downloads = await getTotalDownloads()
     return reply.code(201).send(downloads)
   } catch (e) {

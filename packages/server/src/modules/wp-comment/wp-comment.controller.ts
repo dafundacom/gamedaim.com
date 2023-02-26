@@ -104,16 +104,10 @@ export async function getWpCommentsHandler(
 }
 
 export async function getTotalWpCommentsHandler(
-  request: FastifyRequest,
+  _request: FastifyRequest,
   reply: FastifyReply,
 ) {
   try {
-    const user = request.user
-
-    if (user.role !== "ADMIN") {
-      return reply.code(403).send({ message: "Unauthorized" })
-    }
-
     const wpComments = await getTotalWpComments()
     return reply.code(201).send(wpComments)
   } catch (e) {

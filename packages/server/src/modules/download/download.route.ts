@@ -123,11 +123,7 @@ async function downloadRoutes(server: FastifyInstance) {
     deleteDownloadHandler,
   )
 
-  server.get(
-    "/count",
-    { preHandler: [server.authenticate] },
-    getTotalDownloadsHandler,
-  )
+  server.get("/count", getTotalDownloadsHandler)
 }
 
 export default downloadRoutes

@@ -124,16 +124,10 @@ export async function searchCommentsHandler(
 }
 
 export async function getTotalCommentsHandler(
-  request: FastifyRequest,
+  _request: FastifyRequest,
   reply: FastifyReply,
 ) {
   try {
-    const user = request.user
-
-    if (user.role !== "ADMIN") {
-      return reply.code(403).send({ message: "Unauthorized" })
-    }
-
     const comments = await getTotalComments()
     return reply.code(201).send(comments)
   } catch (e) {
