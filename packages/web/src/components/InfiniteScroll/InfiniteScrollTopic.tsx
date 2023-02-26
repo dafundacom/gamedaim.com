@@ -3,8 +3,8 @@ import { useRouter } from "next/router"
 import { Button } from "ui"
 
 import { PostCard } from "@/components/Card"
-import { getArticles } from "@/lib/articles"
 import { getArticlesByTopic } from "@/lib/topics"
+import { ArticleDataProps } from "@/lib/data-types"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string
@@ -14,7 +14,7 @@ interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   totalPage?: any
 }
 
-export const InfiniteScroll = React.forwardRef<
+export const InfiniteScrollTopic = React.forwardRef<
   HTMLDivElement,
   InfiniteScrollProps
 >((props, ref) => {
@@ -30,18 +30,12 @@ export const InfiniteScroll = React.forwardRef<
     async (entries: any) => {
       const [target] = entries
       if (target.isIntersecting && totalPage >= page) {
-        if (pageType == "articles") {
-          const { articles }: any = await getArticles(page)
-          setList((list: any) => [...list, ...articles])
-          setPage((prev: number) => prev + 1)
-        } else if (pageType == "topics") {
-          const { topic } = await getArticlesByTopic(id, page)
-          setList((list: any) => [...list, ...topic.articles])
-          setPage((prev: number) => prev + 1)
-        }
+        const { topic } = await getArticlesByTopic(id, page)
+        setList((list: any) => [...list, ...topic.articles])
+        setPage((prev: number) => prev + 1)
       }
     },
-    [id, page, pageType, totalPage],
+    [id, page, totalPage],
   )
 
   React.useEffect(() => {
@@ -66,7 +60,7 @@ export const InfiniteScroll = React.forwardRef<
 
   return (
     <div ref={ref} {...rest}>
-      {list.map((article: any) => {
+      {list.map((article: ArticleDataProps) => {
         return (
           <PostCard
             key={article.id}

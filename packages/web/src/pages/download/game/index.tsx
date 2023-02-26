@@ -1,8 +1,7 @@
 import * as React from "react"
-import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { Heading, Text } from "ui"
+import { Heading } from "ui"
 import env from "@/env"
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
@@ -11,11 +10,12 @@ import { getDownloadByType, getDownloads } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
 import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
+import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
 
 interface GameProps {
-  downloads: any
-  games: any
-  topics: any
+  downloads: DownloadDataProps
+  games: DownloadDataProps
+  topics: TopicDataProps[]
 }
 export default function Game(props: GameProps) {
   const { downloads, games, topics } = props
@@ -55,29 +55,19 @@ export default function Game(props: GameProps) {
           </div>
 
           <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
+            <div className={"my-2 flex flex-row justify-start"}>
               <Heading as="h2" size="2xl" bold>
                 Games
               </Heading>
-              <NextLink href="/download/game/">
-                <Text size="sm" colorScheme="blue">
-                  See more
-                </Text>
-              </NextLink>
             </div>
 
             <ListDownload listDownloads={games?.downloadByType} />
           </div>
           <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
+            <div className={"my-2 flex flex-row justify-start"}>
               <Heading as="h2" size="2xl" bold>
                 Newest
               </Heading>
-              <NextLink href="/download/game/">
-                <Text size="sm" colorScheme="blue">
-                  See more
-                </Text>
-              </NextLink>
             </div>
             <div className="flex flex-wrap gap-4">
               <DownloadCard list={downloads} />

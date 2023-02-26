@@ -6,14 +6,15 @@ import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import env from "@/env"
 import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
-import { InfiniteScroll } from "@/components/InfiniteScroll"
+import { InfiniteScrollTopic } from "@/components/InfiniteScroll"
 import { ListDownload } from "@/components/List"
-
+import { MdChevronRight } from "react-icons/md"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
 
 import { HomeLayout } from "@/layouts/Home"
+import { Breadcrumb } from "ui"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 
@@ -24,6 +25,7 @@ interface TopicProps {
 
 export default function Topic(props: TopicProps) {
   const { topic, download } = props
+  const totalPage = Math.ceil(topic._count.articles / 10)
 
   return (
     <>
@@ -59,26 +61,20 @@ export default function Topic(props: TopicProps) {
       <HomeLayout>
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
-            <div className="absolute top-1">
-              <nav className="ml-2 flex" aria-label="Breadcrumb">
-                <ol className="inline-flex items-center text-white">
-                  <li className="inline-flex items-center">
-                    <NextLink
-                      href="/"
-                      className="inline-flex items-center text-sm font-medium text-white after:ml-2 after:mr-2 after:inline-block after:align-top after:font-normal after:not-italic after:content-['>'] dark:text-gray-400 dark:hover:text-white"
-                    >
-                      Home
-                    </NextLink>
-                  </li>
-                  <li aria-current="page">
-                    <div className="flex items-center">
-                      <span className="text-sm font-medium text-white dark:text-gray-400">
-                        {"Topics"}
-                      </span>
-                    </div>
-                  </li>
-                </ol>
-              </nav>
+            <div className="absolute top-1 ml-4">
+              <Breadcrumb separator={<MdChevronRight />}>
+                <Breadcrumb.Item bold>
+                  <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                  <Breadcrumb.Link href="/download/game">Game</Breadcrumb.Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item currentPage>
+                  <Breadcrumb.Link href={`/${topic?.slug}`}>
+                    {topic?.title}
+                  </Breadcrumb.Link>
+                </Breadcrumb.Item>
+              </Breadcrumb>
             </div>
             <div className="self-center">
               <Heading size="4xl" className="text-white">
@@ -101,12 +97,12 @@ export default function Topic(props: TopicProps) {
                 </div>
                 <ListDownload listDownloads={download?.downloads} />
               </div>
-              <InfiniteScroll
+              <InfiniteScrollTopic
                 index={2}
                 id={topic.slug}
                 posts={topic.articles}
                 pageType="articles"
-                totalPage={2}
+                totalPage={totalPage}
               />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">

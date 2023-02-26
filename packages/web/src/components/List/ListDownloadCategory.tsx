@@ -2,11 +2,11 @@ import * as React from "react"
 import NextLink from "next/link"
 import NextImage from "next/image"
 import { Button, Heading, Text } from "ui"
-import { DownloadDataProps } from "@/lib/data-types"
+import { TopicDataProps } from "@/lib/data-types"
 
 interface ListDownloadCategoryProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  listCategories: DownloadDataProps
+  listCategories: TopicDataProps[]
 }
 
 export const ListDownloadCategory = React.forwardRef<

@@ -8,16 +8,15 @@ import { getDownloadByTopics } from "@/lib/download"
 import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
 import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
+import { TopicDataProps } from "@/lib/data-types"
 
-interface GameProps {
-  downloads: any
-  downloadByTopic: any
-  topics: any
+interface TopicProps {
+  downloadByTopic: TopicDataProps
 }
-export default function Game(props: GameProps) {
+export default function DownloadsByTopic(props: TopicProps) {
   const { downloadByTopic } = props
   const router = useRouter()
-
+  const totalPage = Math.ceil(downloadByTopic._count.downloads / 10)
   return (
     <>
       <NextSeo
@@ -42,7 +41,7 @@ export default function Game(props: GameProps) {
               id={downloadByTopic.slug}
               posts={downloadByTopic.downloads}
               index={2}
-              totalPage={2}
+              totalPage={totalPage}
             />
           </div>
         </div>

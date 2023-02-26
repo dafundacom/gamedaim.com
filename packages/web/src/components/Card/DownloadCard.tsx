@@ -60,10 +60,10 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
                 </NextLink>
                 <div className="mt-6 mb-3 flex justify-between px-3">
                   <Text className="!inline-block whitespace-normal">
-                    {/* {list?.downloadFiles[0]?.price} */}Test
+                    {list?.downloadFiles && list?.downloadFiles[0]?.price}
                   </Text>
                   <Text className="!text-[14px]">
-                    {/* {list?.downloadFiles[0]?.fileSize} */}Test
+                    {list?.downloadFiles && list?.downloadFiles[0]?.fileSize}
                   </Text>
                 </div>
               </div>

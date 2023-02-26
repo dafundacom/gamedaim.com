@@ -19,7 +19,6 @@ interface SingleArticleProps {
 
 export default function SingleArticle(props: SingleArticleProps) {
   const { article, articles } = props
-  console.log(articles)
 
   const articleData = {
     content: article.content,

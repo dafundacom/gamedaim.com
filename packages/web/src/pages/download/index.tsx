@@ -12,11 +12,12 @@ import { DownloadCard } from "@/components/Card"
 import { getTopics } from "@/lib/topics"
 
 import { HomeLayout } from "@/layouts/Home"
+import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
 interface DownloadProps {
-  downloads: any
-  apps: any
-  games: any
-  topics: any
+  downloads: DownloadDataProps
+  apps: DownloadDataProps
+  games: DownloadDataProps
+  topics: TopicDataProps[]
 }
 export default function Download(props: DownloadProps) {
   const { downloads, apps, games, topics } = props

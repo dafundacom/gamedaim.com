@@ -1,3 +1,4 @@
 export * from "./InfiniteScrollWP"
-export * from "./InfiniteScroll"
+export * from "./InfiniteScrollTopic"
 export * from "./InfiniteScrollDownload"
+export * from "./InfiniteScrollArticle"
