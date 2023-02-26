@@ -122,7 +122,6 @@ export default function DashboardEditUser() {
         selectedProfilePictureId ? mergedValues : values,
       )
 
-      console.log(data)
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)

@@ -3,7 +3,7 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import { useQuery } from "@tanstack/react-query"
+import useSWR from "swr"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -24,6 +24,7 @@ import { MediaUpload } from "@/components/Media"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
 import { MediaDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   username: string
@@ -53,14 +54,7 @@ export default function SettingUserProfile() {
   })
 
   const router = useRouter()
-
-  const loadMedias = useQuery({
-    queryKey: ["loadedMedias"],
-    queryFn: async () => {
-      const { data } = await axios.get(`/media/author/${auth.user.id}/1`)
-      return data
-    },
-    refetchInterval: 10000,
+  const { data: medias } = useSWR(`/media/author/${auth.user.id}/1`, fetcher, {
     onSuccess: (data: any) => {
       setLoadedMedias(data)
     },
@@ -249,7 +243,7 @@ export default function SettingUserProfile() {
                   <>
                     <MediaUpload />
                     <div className="my-3 grid grid-cols-5 gap-3">
-                      {loadMedias.isFetching === false &&
+                      {medias &&
                         loadedMedias.map((media: MediaDataProps) => (
                           <NextImage
                             key={media.id}
