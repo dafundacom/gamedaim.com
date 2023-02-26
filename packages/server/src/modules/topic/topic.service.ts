@@ -8,14 +8,14 @@ export async function createTopic(
     featuredImageId?: string
   },
 ) {
-  return db.topic.create({
+  return await db.topic.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getTopics(topicPage: number, perPage: number) {
-  return db.topic.findMany({
+export async function getTopics(topicPage: number, perPage: number) {
+  return await db.topic.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -300,7 +300,7 @@ export async function updateTopic(
 }
 
 export async function searchTopics(searchTopicQuery: string) {
-  return db.topic.findMany({
+  return await db.topic.findMany({
     where: {
       OR: [
         { title: { contains: searchTopicQuery } },
@@ -312,7 +312,7 @@ export async function searchTopics(searchTopicQuery: string) {
 }
 
 export async function deleteTopicById(topicId: string) {
-  return db.topic.delete({
+  return await db.topic.delete({
     where: {
       id: topicId,
     },
