@@ -4,7 +4,7 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
-import { useQuery } from "@tanstack/react-query"
+import useSWR from "swr"
 import { useForm } from "react-hook-form"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 import {
@@ -25,6 +25,7 @@ import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { MediaDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   username: string
@@ -58,21 +59,16 @@ export default function CreateUsersDashboard() {
     reset,
   } = useForm<FormValues>()
 
-  const loadMedias = useQuery({
-    queryKey: ["loadedMedias"],
-    queryFn: async () => {
-      const { data } = await axios.get("/media/page/1")
-      return data
-    },
-    refetchInterval: 10000,
+  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
     onSuccess: (data: any) => {
       setLoadedMedias(data)
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
+    revalidateIfStale: true,
+    refreshInterval: 1000,
   })
-
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
@@ -314,7 +310,7 @@ export default function CreateUsersDashboard() {
                   <>
                     <MediaUpload />
                     <div className="my-3 grid grid-cols-5 gap-3">
-                      {loadMedias.isFetching === false &&
+                      {medias &&
                         loadedMedias.map((media: MediaDataProps) => (
                           <NextImage
                             key={media.id}

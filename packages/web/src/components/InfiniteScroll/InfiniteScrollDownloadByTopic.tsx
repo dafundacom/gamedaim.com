@@ -3,19 +3,20 @@ import { useRouter } from "next/router"
 import { Button } from "ui"
 
 import { DownloadCard } from "@/components/Card"
-import { getDownloads } from "@/lib/download"
+import { getDownloadByTopics } from "@/lib/download"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
+  id: string
   posts: any
   index: number
   totalPage: any
 }
 
-export const InfiniteScrollDownload = React.forwardRef<
+export const InfiniteScrollDownloadByTopic = React.forwardRef<
   HTMLDivElement,
   InfiniteScrollProps
 >((props, ref) => {
-  const { posts, totalPage, index, ...rest } = props
+  const { id, posts, totalPage, index, ...rest } = props
 
   const router = useRouter()
 
@@ -27,12 +28,14 @@ export const InfiniteScrollDownload = React.forwardRef<
     async (entries: any) => {
       const [target] = entries
       if (target.isIntersecting && totalPage >= page) {
-        const { downloads }: any = await getDownloads(page)
+        const {
+          downloadByTopic: { downloads },
+        }: any = await getDownloadByTopics(id, page)
         setList((list: any) => [...list, ...downloads])
         setPage((prev: number) => prev + 1)
       }
     },
-    [page, totalPage],
+    [id, page, totalPage],
   )
 
   React.useEffect(() => {

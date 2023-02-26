@@ -3,6 +3,7 @@ import NextLink from "next/link"
 import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
+import useSWR from "swr"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -15,8 +16,8 @@ import { ActionDashboard } from "@/components/Action"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { UserDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function UsersDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -28,21 +29,16 @@ export default function UsersDashboard() {
   const router = useRouter()
   dayjs.extend(relativeTime)
 
-  const { isFetching }: any = useQuery({
-    queryKey: ["users", page],
-    queryFn: () => getUsers(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/user/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setPost((prev: any) => ({ ...prev, users: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
 
-  const usersCount: any = useQuery({
-    queryKey: ["usersCount"],
-    queryFn: () => getUsersCount(),
+  const { data: count } = useSWR(`/user/count`, fetcher, {
     onSuccess: (data) => {
       setTotalUsers(data)
     },
@@ -51,35 +47,22 @@ export default function UsersDashboard() {
     },
   })
 
-  const getUsersCount = async () => {
-    const { data } = await axios.get("/user/count")
-    return data
-  }
+  const handleDelete = async (item: { id: any }) => {
+    try {
+      const { data } = await axios.delete(`/user/${item.id}`)
 
-  const getUsers = async (page: number) => {
-    const { data } = await axios.get(`/user/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/user/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        users: users.filter(
-          (user: { id: string }) => user.id !== datas.data.id,
-        ),
+        users: users.filter((user: { id: string }) => user.id !== data.id),
       }))
       toast.success("User deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = usersCount.isSuccess && Math.ceil(totalUsers / 10)
+  const lastPage = count && Math.ceil(totalUsers / 10)
 
   return (
     <>
@@ -116,7 +99,7 @@ export default function UsersDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {isFetching === false &&
+                    {data &&
                       users.map((user: UserDataProps) => (
                         <Tr key={user.id}>
                           <Td className="whitespace-nowrap">
@@ -147,7 +130,7 @@ export default function UsersDashboard() {
                           <Td align="right">
                             <ActionDashboard
                               viewLink={`/user/${user.id}`}
-                              onDelete={() => mutationDelete.mutate(user)}
+                              onDelete={() => handleDelete(user)}
                               editLink={`/dashboard/users/${user.id}`}
                             />
                           </Td>
@@ -167,7 +150,7 @@ export default function UsersDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {usersCount.isFetching === false && page !== lastPage && (
+                      {count === false && page !== lastPage && (
                         <IconButton
                           onClick={() => {
                             setPage((old) => old + 1)

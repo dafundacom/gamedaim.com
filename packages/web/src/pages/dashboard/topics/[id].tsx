@@ -3,7 +3,7 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import { useQuery } from "@tanstack/react-query"
+import useSWR from "swr"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -23,6 +23,7 @@ import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { MediaDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   title: string
@@ -50,20 +51,15 @@ export default function EditTopicDashboard() {
   })
 
   const router = useRouter()
-
-  const loadMedias = useQuery({
-    queryKey: ["loadedMedias"],
-    queryFn: async () => {
-      const { data } = await axios.get("/media/page/1")
-      return data
-    },
-    refetchInterval: 10000,
+  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
     onSuccess: (data: any) => {
       setLoadedMedias(data)
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
+    revalidateIfStale: true,
+    refreshInterval: 1000,
   })
 
   React.useEffect(() => {
@@ -252,7 +248,7 @@ export default function EditTopicDashboard() {
                   <>
                     <MediaUpload />
                     <div className="my-3 grid grid-cols-5 gap-3">
-                      {loadMedias.isFetching === false &&
+                      {medias &&
                         loadedMedias.map((media: MediaDataProps) => (
                           <NextImage
                             key={media.id}

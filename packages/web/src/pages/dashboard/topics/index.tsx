@@ -2,6 +2,7 @@ import * as React from "react"
 import NextLink from "next/link"
 import axios from "axios"
 import dayjs from "dayjs"
+import useSWR from "swr"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
@@ -15,8 +16,8 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { TopicDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function TopicsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -28,21 +29,16 @@ export default function TopicsDashboard() {
   const router = useRouter()
   dayjs.extend(relativeTime)
 
-  const { isFetching }: any = useQuery({
-    queryKey: ["topics", page],
-    queryFn: () => getTopics(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/topic/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setPost((prev: any) => ({ ...prev, topics: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
 
-  const topicsCount: any = useQuery({
-    queryKey: ["topicsCount"],
-    queryFn: () => getTopicsCount(),
+  const { data: count } = useSWR(`/topic/count`, fetcher, {
     onSuccess: (data) => {
       setTotalTopics(data)
     },
@@ -51,35 +47,22 @@ export default function TopicsDashboard() {
     },
   })
 
-  const getTopicsCount = async () => {
-    const { data } = await axios.get("/topic/count")
-    return data
-  }
+  const handleDelete = async (item: { id: any }) => {
+    try {
+      const { data } = await axios.delete(`/topic/${item.id}`)
 
-  const getTopics = async (page: number) => {
-    const { data } = await axios.get(`/topic/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/topic/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        topics: topics.filter(
-          (topic: { id: string }) => topic.id !== datas.data.id,
-        ),
+        topics: topics.filter((topic: { id: string }) => topic.id !== data.id),
       }))
       toast.success("Topic deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = topicsCount.isSuccess && Math.ceil(totalTopics / 10)
+  const lastPage = count && Math.ceil(totalTopics / 10)
 
   return (
     <>
@@ -114,7 +97,7 @@ export default function TopicsDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {isFetching === false &&
+                    {data &&
                       topics.map((topic: TopicDataProps) => (
                         <Tr key={topic.id}>
                           <Td className="whitespace-nowrap">
@@ -127,7 +110,7 @@ export default function TopicsDashboard() {
                           <Td align="right">
                             <ActionDashboard
                               viewLink={`/topic/${topic.slug}`}
-                              onDelete={() => mutationDelete.mutate(topic)}
+                              onDelete={() => handleDelete(topic)}
                               editLink={`/dashboard/topics/${topic.id}`}
                               content={topic.title}
                             />
@@ -148,17 +131,16 @@ export default function TopicsDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {topicsCount.isFetching === false &&
-                        page !== lastPage && (
-                          <IconButton
-                            onClick={() => {
-                              setPage((old) => old + 1)
-                            }}
-                            className="!rounded-full !px-0"
-                          >
-                            <MdChevronRight />
-                          </IconButton>
-                        )}
+                      {count === false && page !== lastPage && (
+                        <IconButton
+                          onClick={() => {
+                            setPage((old) => old + 1)
+                          }}
+                          className="!rounded-full !px-0"
+                        >
+                          <MdChevronRight />
+                        </IconButton>
+                      )}
                     </>
                   </div>
                 )}

@@ -3,9 +3,9 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
+import useSWR from "swr"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { IconButton, Text } from "ui"
 import { MdChevronLeft, MdChevronRight } from "react-icons/md"
 
@@ -16,6 +16,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { WpCommentDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function WpCommentsDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -27,21 +28,16 @@ export default function WpCommentsDashboard() {
   const router = useRouter()
   dayjs.extend(relativeTime)
 
-  const { isFetching }: any = useQuery({
-    queryKey: ["wpComments", page],
-    queryFn: () => getWpComments(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/wp-comment/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setPost((prev: any) => ({ ...prev, wpComments: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
 
-  const wpCommentsCount: any = useQuery({
-    queryKey: ["wpCommentsCount"],
-    queryFn: () => getWpCommentsCount(),
+  const { data: count } = useSWR(`/wp-comment/count`, fetcher, {
     onSuccess: (data) => {
       setTotalWpComments(data)
     },
@@ -50,35 +46,24 @@ export default function WpCommentsDashboard() {
     },
   })
 
-  const getWpCommentsCount = async () => {
-    const { data } = await axios.get("/wp-comment/count")
-    return data
-  }
+  const handleDelete = async (item: { id: any }) => {
+    try {
+      const { data } = await axios.delete(`/wp-comment/${item.id}`)
 
-  const getWpComments = async (page: number) => {
-    const { data } = await axios.get(`/wp-comment/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/wp-comment/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
         wpComments: wpComments.filter(
-          (wpComment: { id: string }) => wpComment.id !== datas.data.id,
+          (wpComments: { id: string }) => wpComments.id !== data.id,
         ),
       }))
-      toast.success("WpComment deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+      toast.success("User deleted successfully")
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = wpCommentsCount.isSuccess && Math.ceil(totalWpComments / 10)
+  const lastPage = count && Math.ceil(totalWpComments / 10)
 
   return (
     <>
@@ -110,7 +95,7 @@ export default function WpCommentsDashboard() {
                   <Tbody>
                     {wpComments && (
                       <>
-                        {isFetching === false &&
+                        {data &&
                           wpComments.map((wpComment: WpCommentDataProps) => (
                             <Tr key={wpComment.id}>
                               <Td className="whitespace-nowrap">
@@ -124,9 +109,7 @@ export default function WpCommentsDashboard() {
                               <Td>{dayjs(wpComment.updatedAt).fromNow()}</Td>
                               <Td align="right">
                                 <ActionDashboard
-                                  onDelete={() =>
-                                    mutationDelete.mutate(wpComment)
-                                  }
+                                  onDelete={() => handleDelete(wpComment)}
                                 />
                               </Td>
                             </Tr>
@@ -148,17 +131,16 @@ export default function WpCommentsDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {wpCommentsCount.isFetching === false &&
-                        page !== lastPage && (
-                          <IconButton
-                            onClick={() => {
-                              setPage((old) => old + 1)
-                            }}
-                            className="!rounded-full !px-0"
-                          >
-                            <MdChevronRight />
-                          </IconButton>
-                        )}
+                      {count && page !== lastPage && (
+                        <IconButton
+                          onClick={() => {
+                            setPage((old) => old + 1)
+                          }}
+                          className="!rounded-full !px-0"
+                        >
+                          <MdChevronRight />
+                        </IconButton>
+                      )}
                     </>
                   </div>
                 )}

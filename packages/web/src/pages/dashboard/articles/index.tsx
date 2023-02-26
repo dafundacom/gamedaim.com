@@ -6,6 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
+import useSWR from "swr"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 import { Badge, Button, IconButton, Text } from "ui"
 
@@ -15,8 +16,8 @@ import { ActionDashboard } from "@/components/Action"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { ArticleDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function ArticlesDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -27,22 +28,15 @@ export default function ArticlesDashboard() {
 
   const router = useRouter()
   dayjs.extend(relativeTime)
-
-  const { isFetching }: any = useQuery({
-    queryKey: ["articles", page],
-    queryFn: () => getArticles(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/article/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setPost((prev: any) => ({ ...prev, articles: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
-
-  const articlesCount: any = useQuery({
-    queryKey: ["articlesCount"],
-    queryFn: () => getArticlesCount(),
+  const { data: count } = useSWR(`/article/count`, fetcher, {
     onSuccess: (data) => {
       setTotalArticles(data)
     },
@@ -50,36 +44,23 @@ export default function ArticlesDashboard() {
       toast.error(error.message)
     },
   })
+  const handleDelete = async (item: { id: string }) => {
+    try {
+      const { data } = await axios.delete(`/article/${item.id}`)
+      console.log(data)
 
-  const getArticlesCount = async () => {
-    const { data } = await axios.get("/article/count")
-    return data
-  }
-
-  const getArticles = async (page: number) => {
-    const { data } = await axios.get(`/article/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/article/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
-        articles: articles.filter(
-          (article: { id: string }) => article.id !== datas.data.id,
-        ),
+        articles: articles.filter((ad: { id: string }) => ad.id !== data.id),
       }))
-      toast.success("Article deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+      toast.success("Articles deleted successfully")
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = articlesCount.isSuccess && Math.ceil(totalArticles / 10)
+  const lastPage = count && Math.ceil(totalArticles / 10)
 
   return (
     <>
@@ -116,7 +97,7 @@ export default function ArticlesDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {isFetching === false &&
+                    {data &&
                       articles.map((article: ArticleDataProps) => (
                         <Tr key={article.id}>
                           <Td className="whitespace-nowrap">
@@ -147,7 +128,7 @@ export default function ArticlesDashboard() {
                           <Td align="right">
                             <ActionDashboard
                               viewLink={`/article/${article.slug}`}
-                              onDelete={() => mutationDelete.mutate(article)}
+                              onDelete={() => handleDelete(article)}
                               editLink={`/dashboard/articles/${article.id}`}
                               content={article.title}
                             />
@@ -168,17 +149,16 @@ export default function ArticlesDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {articlesCount.isFetching === false &&
-                        page !== lastPage && (
-                          <IconButton
-                            onClick={() => {
-                              setPage((old) => old + 1)
-                            }}
-                            className="!rounded-full !px-0"
-                          >
-                            <MdChevronRight />
-                          </IconButton>
-                        )}
+                      {count && page !== lastPage && (
+                        <IconButton
+                          onClick={() => {
+                            setPage((old) => old + 1)
+                          }}
+                          className="!rounded-full !px-0"
+                        >
+                          <MdChevronRight />
+                        </IconButton>
+                      )}
                     </>
                   </div>
                 )}

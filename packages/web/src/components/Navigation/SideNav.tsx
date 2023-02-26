@@ -1,5 +1,7 @@
 import * as React from "react"
 import NextLink from "next/link"
+import env from "@/env"
+
 import { useGetMenusByName } from "@/lib/wp-menus"
 import {
   BiCheckSquare,
@@ -10,8 +12,7 @@ import {
 } from "react-icons/bi"
 import { FaCoffee } from "react-icons/fa"
 import { Text } from "ui"
-
-import env from "@/env"
+import { MdArticle, MdDownload } from "react-icons/md"
 
 interface SideNavProps {
   primaryMenus?: any
@@ -64,6 +65,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
               className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
             >
               <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
+                <MdDownload className={stylesIcons} />
                 Downloads
               </Text>
             </NextLink>
@@ -74,7 +76,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
               className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
             >
               <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
-                Article
+                <MdArticle className={stylesIcons} /> Article
               </Text>
             </NextLink>
           </li>
