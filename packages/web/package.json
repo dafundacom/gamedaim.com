@@ -37,6 +37,7 @@
     "react-icons": "^4.7.1",
     "react-image-file-resizer": "^0.4.8",
     "sharp": "^0.31.3",
+    "swr": "^2.0.4",
     "ui": "workspace:*"
   },
   "devDependencies": {

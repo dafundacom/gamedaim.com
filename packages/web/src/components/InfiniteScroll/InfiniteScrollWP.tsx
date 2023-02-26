@@ -11,16 +11,16 @@ import {
 } from "@/lib/wp-posts"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
 
-interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
+interface InfiniteScrollWPProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string
   posts: WpPostsDataProps
   pageInfo: any
   pageType: "home" | "category" | "author" | "tag"
 }
 
-export const InfiniteScroll = React.forwardRef<
+export const InfiniteScrollWP = React.forwardRef<
   HTMLDivElement,
-  InfiniteScrollProps
+  InfiniteScrollWPProps
 >((props, ref) => {
   const { id, posts, pageInfo, pageType, ...rest } = props
 

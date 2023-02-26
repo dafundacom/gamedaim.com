@@ -1,13 +1,13 @@
 import * as React from "react"
-import NextLink from "next/link"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
-
+import { MdChevronRight } from "react-icons/md"
 import env from "@/env"
-import { PostCard } from "@/components/Card"
 import { getArticles } from "@/lib/articles"
 import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
+import { InfiniteScrollArticle } from "@/components/InfiniteScroll"
+import { Breadcrumb } from "ui"
 
 const HomeLayout = dynamic(() =>
   import("@/layouts/Home").then((mod) => mod.HomeLayout),
@@ -20,6 +20,7 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Articles(props: ArticlesDataProps) {
   const { articles } = props
+  // console.log(count)
 
   const router = useRouter()
 
@@ -52,26 +53,16 @@ export default function Articles(props: ArticlesDataProps) {
       <HomeLayout>
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
-            <div className="absolute top-1">
-              <nav className="ml-2 flex" aria-label="Breadcrumb">
-                <ol className="inline-flex items-center text-white">
-                  <li className="inline-flex items-center">
-                    <NextLink
-                      href="/"
-                      className="inline-flex items-center text-sm font-medium text-white after:ml-2 after:mr-2 after:inline-block after:align-top after:font-normal after:not-italic after:content-['>'] dark:text-gray-400 dark:hover:text-white"
-                    >
-                      Home
-                    </NextLink>
-                  </li>
-                  <li aria-current="page">
-                    <div className="flex items-center">
-                      <span className="text-sm font-medium text-white dark:text-gray-400">
-                        {"Articles"}
-                      </span>
-                    </div>
-                  </li>
-                </ol>
-              </nav>
+            <div className="absolute top-1 ml-4">
+              <Breadcrumb separator={<MdChevronRight />}>
+                <Breadcrumb.Item bold>
+                  <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+                </Breadcrumb.Item>
+
+                <Breadcrumb.Item currentPage>
+                  <Breadcrumb.Link href="article">Article</Breadcrumb.Link>
+                </Breadcrumb.Item>
+              </Breadcrumb>
             </div>
             <div className="self-center">
               <Heading size="4xl" className="text-white">
@@ -81,23 +72,12 @@ export default function Articles(props: ArticlesDataProps) {
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4">
-              {articles.map((article: ArticleDataProps) => {
-                return (
-                  <PostCard
-                    key={article.id}
-                    src={article.featuredImage.url}
-                    alt={article.featuredImage.alt}
-                    slug={article.slug}
-                    title={article.title}
-                    excerpt={article.excerpt}
-                    authorName={article.author.name}
-                    authorAvatarUrl={article.author.profilePicture?.url}
-                    authorUri={article.author?.username}
-                    date={article.createdAt}
-                    isWP={false}
-                  />
-                )
-              })}
+              <InfiniteScrollArticle
+                index={2}
+                posts={articles}
+                pageType="articles"
+                totalPage={2}
+              />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">

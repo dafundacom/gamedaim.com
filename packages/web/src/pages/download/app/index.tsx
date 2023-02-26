@@ -1,35 +1,25 @@
 import * as React from "react"
-import NextLink from "next/link"
-import dynamic from "next/dynamic"
-import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { Heading, Text } from "ui"
-
+import { Heading } from "ui"
 import env from "@/env"
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
-import { wpGetMenusByName } from "@/lib/wp-menus"
-import {
-  getDownloadByType,
-  useGetDownloads,
-  getDownloads,
-  useGetDownloadByType,
-} from "@/lib/download"
+import { getDownloadByType, getDownloads } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
-import { getTopics, useGetTopics } from "@/lib/topics"
+import { getTopics } from "@/lib/topics"
+import { HomeLayout } from "@/layouts/Home"
+import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
 
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
-
-export default function Download() {
+interface AppProps {
+  downloads: DownloadDataProps
+  apps: DownloadDataProps
+  topics: TopicDataProps[]
+}
+export default function App(props: AppProps) {
+  const { downloads, apps, topics } = props
   const router = useRouter()
-
-  const { getDownloadsData } = useGetDownloads()
-  const { getTopicsData } = useGetTopics()
-  const downloadsByApp = useGetDownloadByType("App")
 
   return (
     <>
@@ -48,65 +38,39 @@ export default function Download() {
           <div className="flex flex-col space-y-8 rounded-md bg-gray-100 p-5 dark:bg-gray-800">
             <div className="flex justify-between">
               <div className="flex space-x-2">
-                <DropdownLink
-                  list={getTopicsData?.data?.topics}
-                  title={"Category"}
-                />
-                <DropdownLink
-                  list={getTopicsData?.data?.topics}
-                  title={"Platform"}
-                />
+                <DropdownLink list={topics} title={"Category"} />
+                <DropdownLink list={topics} title={"Platform"} />
               </div>
               <div>
                 <SearchInput />
               </div>
             </div>
-            {getTopicsData?.isSuccess && (
-              <div>
-                <div className="mb-2">
-                  <Heading>Pilih Kategori</Heading>
-                </div>
-                <ListDownloadCategory
-                  listCategories={getTopicsData?.data?.topics}
-                />
+
+            <div>
+              <div className="mb-2">
+                <Heading>Pilih Kategori</Heading>
               </div>
-            )}
+              <ListDownloadCategory listCategories={topics} />
+            </div>
           </div>
 
           <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
+            <div className={"my-2 flex flex-row justify-start"}>
               <Heading as="h2" size="2xl" bold>
                 Apps
               </Heading>
-              <NextLink href="/download/app/">
-                <Text size="sm" colorScheme="blue">
-                  See more
-                </Text>
-              </NextLink>
             </div>
-            {downloadsByApp?.getDownloadByTypeData?.data !== undefined && (
-              <ListDownload
-                listDownloads={
-                  downloadsByApp?.getDownloadByTypeData?.data?.downloadByType
-                }
-              />
-            )}
+
+            <ListDownload listDownloads={apps?.downloadByType} />
           </div>
           <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
+            <div className={"my-2 flex flex-row justify-start"}>
               <Heading as="h2" size="2xl" bold>
                 Newest
               </Heading>
-              <NextLink href="/download/app/">
-                <Text size="sm" colorScheme="blue">
-                  See more
-                </Text>
-              </NextLink>
             </div>
             <div className="flex flex-wrap gap-4">
-              {getDownloadsData?.data !== undefined && (
-                <DownloadCard list={getDownloadsData?.data?.downloads} />
-              )}
+              <DownloadCard list={downloads} />
             </div>
           </div>
         </div>
@@ -116,17 +80,12 @@ export default function Download() {
 }
 
 export async function getStaticProps() {
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(["menus"], () =>
-    wpGetMenusByName(env.MENU_PRIMARY),
-  )
-  await queryClient.prefetchQuery(["downloads", 1], () => getDownloads())
-  await queryClient.prefetchQuery(["downloadType", "App"], () =>
-    getDownloadByType("App"),
-  )
+  const { downloads } = await getDownloads()
 
-  await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
+  const apps = await getDownloadByType("App")
+  const { topics } = await getTopics(1)
+
   return {
-    props: { dehydratedState: dehydrate(queryClient) },
+    props: { downloads, apps, topics },
   }
 }

@@ -186,9 +186,7 @@ export async function wpGetPostBySlug(slug: string) {
       error: "Something went wrong.",
     }
   }
-  return {
-    post,
-  }
+  return { post: post }
 }
 export const useWpGetPostBySlug = (slug: string) => {
   const { data, isError, isFetching, isSuccess } = useQuery(
@@ -291,7 +289,6 @@ export async function wpGetPostsByCategorySlug(categoryId: any, after = "") {
   return {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
     pageInfo: postData?.data.posts.pageInfo,
-    data: postData?.data,
   }
 }
 export const useWpGetPostsByCategorySlug = (slug: string, after = "") => {

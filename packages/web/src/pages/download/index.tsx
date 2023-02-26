@@ -1,37 +1,27 @@
 import * as React from "react"
 import NextLink from "next/link"
-import dynamic from "next/dynamic"
-import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { Heading, Text } from "ui"
-
 import env from "@/env"
 import { ListDownload } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
-import { wpGetMenusByName } from "@/lib/wp-menus"
-import {
-  getDownloadByType,
-  useGetDownloads,
-  getDownloads,
-  useGetDownloadByType,
-} from "@/lib/download"
+import { getDownloadByType, getDownloads } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
-import { getTopics, useGetTopics } from "@/lib/topics"
+import { getTopics } from "@/lib/topics"
 
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
-
-export default function Download() {
+import { HomeLayout } from "@/layouts/Home"
+import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
+interface DownloadProps {
+  downloads: DownloadDataProps
+  apps: DownloadDataProps
+  games: DownloadDataProps
+  topics: TopicDataProps[]
+}
+export default function Download(props: DownloadProps) {
+  const { downloads, apps, games, topics } = props
   const router = useRouter()
-
-  const { getTopicsData } = useGetTopics()
-
-  const { getDownloadsData } = useGetDownloads()
-  const downloadsByApp = useGetDownloadByType("App")
-  const downloadsByGame = useGetDownloadByType("Game")
 
   return (
     <>
@@ -50,14 +40,8 @@ export default function Download() {
           <div className="flex flex-col rounded-md bg-gray-100 p-5 dark:bg-gray-800">
             <div className="flex justify-between">
               <div className="flex space-x-2">
-                <DropdownLink
-                  list={getTopicsData?.data?.topics}
-                  title={"Category"}
-                />
-                <DropdownLink
-                  list={getTopicsData?.data?.topics}
-                  title={"Platform"}
-                />
+                <DropdownLink list={topics} title={"Category"} />
+                <DropdownLink list={topics} title={"Platform"} />
               </div>
               <div>
                 <SearchInput />
@@ -76,13 +60,7 @@ export default function Download() {
                 </Text>
               </NextLink>
             </div>
-            {downloadsByGame?.getDownloadByTypeData?.data !== undefined && (
-              <ListDownload
-                listDownloads={
-                  downloadsByGame?.getDownloadByTypeData?.data?.downloadByType
-                }
-              />
-            )}
+            <ListDownload listDownloads={games?.downloadByType} />
           </div>
           <div className="w-full px-4">
             <div className={"my-2 flex flex-row justify-between"}>
@@ -95,13 +73,7 @@ export default function Download() {
                 </Text>
               </NextLink>
             </div>
-            {downloadsByApp?.getDownloadByTypeData?.data !== undefined && (
-              <ListDownload
-                listDownloads={
-                  downloadsByApp?.getDownloadByTypeData?.data?.downloadByType
-                }
-              />
-            )}
+            <ListDownload listDownloads={apps?.downloadByType} />
           </div>
           <div className="w-full px-4">
             <div className={"my-2 flex flex-row justify-between"}>
@@ -115,9 +87,7 @@ export default function Download() {
               </NextLink>
             </div>
             <div className="flex flex-wrap gap-4">
-              {getDownloadsData?.data !== undefined && (
-                <DownloadCard list={getDownloadsData?.data?.downloads} />
-              )}
+              <DownloadCard list={downloads} />
             </div>
           </div>
         </div>
@@ -127,19 +97,13 @@ export default function Download() {
 }
 
 export async function getStaticProps() {
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(["menus"], () =>
-    wpGetMenusByName(env.MENU_PRIMARY),
-  )
-  await queryClient.prefetchQuery(["downloads", 1], () => getDownloads())
-  await queryClient.prefetchQuery(["downloadType", "App"], () =>
-    getDownloadByType("App"),
-  )
-  await queryClient.prefetchQuery(["topics", 1], () => getTopics(1))
-  await queryClient.prefetchQuery(["downloadType", "Game"], () =>
-    getDownloadByType("Game"),
-  )
+  const { downloads } = await getDownloads()
+
+  const apps = await getDownloadByType("App")
+  const { topics } = await getTopics(1)
+  const games = await getDownloadByType("Game")
+
   return {
-    props: { dehydratedState: dehydrate(queryClient) },
+    props: { downloads, apps, games, topics },
   }
 }

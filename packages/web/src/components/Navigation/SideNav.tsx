@@ -58,6 +58,26 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
                 </li>
               )
             })}
+          <li>
+            <NextLink
+              href="/download"
+              className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
+            >
+              <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
+                Downloads
+              </Text>
+            </NextLink>
+          </li>
+          <li>
+            <NextLink
+              href="/article"
+              className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
+            >
+              <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
+                Article
+              </Text>
+            </NextLink>
+          </li>
         </ul>
       </nav>
     )

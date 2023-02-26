@@ -1,75 +1,45 @@
 import * as React from "react"
-import { QueryClient, dehydrate, QueryCache } from "@tanstack/react-query"
-import { useRouter } from "next/router"
+
 import { GetStaticProps, GetStaticPaths } from "next"
 
 import env from "@/env"
 import { getSeoDatas } from "@/lib/wp-seo"
-import {
-  wpGetPostBySlug,
-  wpGetAllPosts,
-  useWpGetAllPosts,
-  useWpGetPostBySlug,
-  wpGetAllSlug,
-} from "@/lib/wp-posts"
+import { wpGetPostBySlug, wpGetAllPosts, wpGetAllSlug } from "@/lib/wp-posts"
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
-import { WpPostsDataProps } from "@/lib/wp-data-types"
+import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 
-export default function Post(props: { seo: any }) {
-  const { seo } = props
-  const router = useRouter()
-  const {
-    query: { slug },
-  } = router
-  const { getAllPostsData } = useWpGetAllPosts()
+interface PostProps {
+  seo: any
+  posts: WpPostsDataProps
+  post: WpSinglePostDataProps
+}
+export default function Post(props: PostProps) {
+  const { seo, posts, post } = props
 
-  const { getPostBySlug } = useWpGetPostBySlug(slug as string)
   return (
     <>
       <HomeLayout>
-        {getPostBySlug?.data !== undefined &&
-          getAllPostsData?.data !== undefined && (
-            <SinglePostLayout
-              seoData={seo}
-              post={getPostBySlug.data.post}
-              posts={getAllPostsData.data.posts as unknown as WpPostsDataProps}
-            />
-          )}
+        <SinglePostLayout
+          seoData={seo}
+          post={post}
+          posts={posts as unknown as WpPostsDataProps}
+        />
       </HomeLayout>
     </>
   )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
-  let isError = false
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onSuccess: async (data: any) => {
-        if (data.error) {
-          isError = true
-        }
-      },
-    }),
-  })
-
+export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const seo = await getSeoDatas(
     `https://${env.DOMAIN}/${params.category}/${params.slug}`,
   )
+  const slug = params.slug
+  const { posts } = await wpGetAllPosts()
+  const { post } = await wpGetPostBySlug(slug)
 
-  await queryClient.prefetchQuery(["posts"], () => wpGetAllPosts())
-
-  try {
-    await queryClient.prefetchQuery(["post", params?.slug], () =>
-      wpGetPostBySlug(params?.slug),
-    )
-  } catch (error: any) {
-    isError = true
-    res.statusCode = error.response.status
-  }
-
-  if (isError) {
+  if (!post) {
     return {
       notFound: true,
     }
@@ -78,9 +48,9 @@ export const getStaticProps: GetStaticProps = async ({ params, res }: any) => {
   return {
     props: {
       seo,
-      dehydratedState: dehydrate(queryClient),
+      posts,
+      post,
     },
-    revalidate: 100,
   }
 }
 

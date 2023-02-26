@@ -1,11 +1,11 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { Button, ChevronDownIcon } from "ui"
-import { DownloadDataProps } from "@/lib/data-types"
+import { TopicDataProps } from "@/lib/data-types"
 
 interface DropdownLinkProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
-  list: DownloadDataProps
+  list: TopicDataProps[]
 }
 
 export const DropdownLink = React.forwardRef<HTMLDivElement, DropdownLinkProps>(
@@ -32,7 +32,7 @@ export const DropdownLink = React.forwardRef<HTMLDivElement, DropdownLinkProps>(
             <div className="absolute z-[15] mt-1 rounded bg-white shadow-lg">
               {list.map(
                 (
-                  game: {
+                  list: {
                     title: string
                     slug: string
                   },
@@ -40,10 +40,10 @@ export const DropdownLink = React.forwardRef<HTMLDivElement, DropdownLinkProps>(
                 ) => (
                   <NextLink
                     key={index}
-                    href={game.slug}
+                    href={`/download/topic/${list.slug}`}
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
                   >
-                    {game.title}
+                    {list.title}
                   </NextLink>
                 ),
               )}

@@ -87,6 +87,10 @@ export interface TopicDataProps {
   articles: ArticleDataProps
   downloads?: DownloadDataProps
   createdAt: string
+  _count: {
+    articles: number
+    downloads: number
+  }
   updatedAt: string
 }
 

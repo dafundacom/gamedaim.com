@@ -4,24 +4,28 @@ import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 import env from "@/env"
-import { PostCard } from "@/components/Card"
-import { getTopicBySlug } from "@/lib/topics"
+import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
-
+import { InfiniteScrollTopic } from "@/components/InfiniteScroll"
+import { ListDownload } from "@/components/List"
+import { MdChevronRight } from "react-icons/md"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+
+import { HomeLayout } from "@/layouts/Home"
+import { Breadcrumb } from "ui"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
+const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 
 interface TopicProps {
   topic: TopicDataProps
+  download: any
 }
 
 export default function Topic(props: TopicProps) {
-  const { topic } = props
+  const { topic, download } = props
+  const totalPage = Math.ceil(topic._count.articles / 10)
 
   return (
     <>
@@ -57,26 +61,20 @@ export default function Topic(props: TopicProps) {
       <HomeLayout>
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
-            <div className="absolute top-1">
-              <nav className="ml-2 flex" aria-label="Breadcrumb">
-                <ol className="inline-flex items-center text-white">
-                  <li className="inline-flex items-center">
-                    <NextLink
-                      href="/"
-                      className="inline-flex items-center text-sm font-medium text-white after:ml-2 after:mr-2 after:inline-block after:align-top after:font-normal after:not-italic after:content-['>'] dark:text-gray-400 dark:hover:text-white"
-                    >
-                      Home
-                    </NextLink>
-                  </li>
-                  <li aria-current="page">
-                    <div className="flex items-center">
-                      <span className="text-sm font-medium text-white dark:text-gray-400">
-                        {"Topics"}
-                      </span>
-                    </div>
-                  </li>
-                </ol>
-              </nav>
+            <div className="absolute top-1 ml-4">
+              <Breadcrumb separator={<MdChevronRight />}>
+                <Breadcrumb.Item bold>
+                  <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                  <Breadcrumb.Link href="/download/game">Game</Breadcrumb.Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item currentPage>
+                  <Breadcrumb.Link href={`/${topic?.slug}`}>
+                    {topic?.title}
+                  </Breadcrumb.Link>
+                </Breadcrumb.Item>
+              </Breadcrumb>
             </div>
             <div className="self-center">
               <Heading size="4xl" className="text-white">
@@ -85,24 +83,27 @@ export default function Topic(props: TopicProps) {
             </div>
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
-            <div className="flex w-full flex-col px-4 lg:mr-4">
-              {topic.articles.map((article: ArticleDataProps) => {
-                return (
-                  <PostCard
-                    key={article.id}
-                    src={article.featuredImage?.url}
-                    alt={article.featuredImage?.alt}
-                    slug={article.slug}
-                    title={article.title}
-                    excerpt={article.description}
-                    authorName={article.author?.name}
-                    authorAvatarUrl={article.author.profilePicture.url}
-                    authorUri={article.author?.username}
-                    date={article.createdAt}
-                    isWP={false}
-                  />
-                )
-              })}
+            <div className="flex w-full flex-col px-4 lg:mr-4 lg:!w-2/3">
+              <div className="px-4">
+                <div className={"my-2 flex flex-row justify-between"}>
+                  <Heading as="h2" size="2xl" bold>
+                    Downloads
+                  </Heading>
+                  <NextLink href={`/download/topic/${topic.slug}`}>
+                    <Text size="sm" colorScheme="blue">
+                      See more
+                    </Text>
+                  </NextLink>
+                </div>
+                <ListDownload listDownloads={download?.downloads} />
+              </div>
+              <InfiniteScrollTopic
+                index={2}
+                id={topic.slug}
+                posts={topic.articles}
+                pageType="articles"
+                totalPage={totalPage}
+              />
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">
@@ -135,8 +136,8 @@ export default function Topic(props: TopicProps) {
 }
 
 export const getServerSideProps = async ({ params }: any) => {
-  const { topic } = await getTopicBySlug(params.slug)
-
+  const { topic } = await getArticlesByTopic(params.slug)
+  const { topic: download } = await getDownloadsByTopic(params?.slug)
   if (!topic) {
     return {
       notFound: true,
@@ -145,7 +146,8 @@ export const getServerSideProps = async ({ params }: any) => {
 
   return {
     props: {
-      topic: topic,
+      topic,
+      download,
     },
   }
 }
