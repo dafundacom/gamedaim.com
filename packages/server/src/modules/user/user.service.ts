@@ -13,7 +13,7 @@ export async function createUser(input: CreateUserInput) {
 }
 
 export async function findUserByEmail(email: string) {
-  return db.user.findUnique({
+  return await db.user.findUnique({
     where: {
       email,
     },
@@ -21,7 +21,7 @@ export async function findUserByEmail(email: string) {
 }
 
 export async function findUserByUsername(username: string) {
-  return db.user.findUnique({
+  return await db.user.findUnique({
     where: {
       username,
     },
@@ -29,7 +29,7 @@ export async function findUserByUsername(username: string) {
 }
 
 export async function findUserById(userId: string) {
-  return db.user.findUnique({
+  return await db.user.findUnique({
     where: {
       id: userId,
     },
@@ -54,7 +54,7 @@ export async function findUserById(userId: string) {
 }
 
 export async function findUsers(userPage: number, perPage: number) {
-  return db.user.findMany({
+  return await db.user.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -86,7 +86,7 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
 }
 
 export async function searchUsers(searchUserQuery: string) {
-  return db.user.findMany({
+  return await db.user.findMany({
     where: {
       OR: [
         { email: { contains: searchUserQuery } },
@@ -98,7 +98,7 @@ export async function searchUsers(searchUserQuery: string) {
 }
 
 export async function deleteUserById(userId: string) {
-  return db.user.delete({
+  return await db.user.delete({
     where: {
       id: userId,
     },

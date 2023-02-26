@@ -4,14 +4,14 @@ import { UploadMediaInput } from "./media.schema"
 export async function uploadMedia(
   data: UploadMediaInput & { authorId: string },
 ) {
-  return db.media.create({
+  return await db.media.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getMedias(mediaPage: number, perPage: number) {
-  return db.media.findMany({
+export async function getMedias(mediaPage: number, perPage: number) {
+  return await db.media.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -94,7 +94,7 @@ export async function updateMedia(mediaId: string, data: UploadMediaInput) {
 }
 
 export async function searchMedias(searchMediaQuery: string) {
-  return db.media.findMany({
+  return await db.media.findMany({
     where: {
       OR: [
         { name: { contains: searchMediaQuery } },
@@ -106,7 +106,7 @@ export async function searchMedias(searchMediaQuery: string) {
 }
 
 export async function deleteMediaById(mediaId: string) {
-  return db.media.delete({
+  return await db.media.delete({
     where: {
       id: mediaId,
     },
@@ -114,7 +114,7 @@ export async function deleteMediaById(mediaId: string) {
 }
 
 export async function deleteMediaByName(mediaName: string) {
-  return db.media.delete({
+  return await db.media.delete({
     where: {
       name: mediaName,
     },

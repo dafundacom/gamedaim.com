@@ -3,11 +3,11 @@ import { CreateSettingInput } from "./setting.schema"
 
 export async function createSetting(data: CreateSettingInput) {
   //@ts-ignore
-  return db.setting.create({ data })
+  return await db.setting.create({ data })
 }
 
-export function getSettings() {
-  return db.setting.findMany({
+export async function getSettings() {
+  return await db.setting.findMany({
     orderBy: {
       createdAt: "asc",
     },

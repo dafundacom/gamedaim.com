@@ -6,14 +6,14 @@ export async function createAd(
     authorId: string
   },
 ) {
-  return db.ad.create({
+  return await db.ad.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getAds(adPage: number, perPage: number) {
-  return db.ad.findMany({
+export async function getAds(adPage: number, perPage: number) {
+  return await db.ad.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -66,7 +66,7 @@ export async function updateAd(adId: string, data: CreateAdInput) {
 }
 
 export async function deleteAdById(adId: string) {
-  return db.ad.delete({
+  return await db.ad.delete({
     where: {
       id: adId,
     },

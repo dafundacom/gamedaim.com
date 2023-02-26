@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import slugify from "slugify"
 
-import { uniqueSlug } from "../../utils/slug"
+import { uniqueSlug, slugify } from "../../utils/slug"
 import { CreateDownloadInput, UpdateDownloadInput } from "./download.schema"
 import {
   createDownload,
@@ -45,9 +44,7 @@ export async function createDownloadHandler(
       type,
     } = request.body
     const user = request.user
-    const downloadSlug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
-      remove: /[*+~.()'"!:@]/g,
-    })
+    const downloadSlug = slugify(title.toLowerCase() + "_" + uniqueSlug())
 
     if (user.role !== "ADMIN") {
       return reply.code(403).send({ message: "Unauthorized" })
