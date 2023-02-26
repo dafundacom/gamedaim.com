@@ -27,6 +27,7 @@ export const getTopics = async (page = 1) => {
 
   return { topics: topicsData }
 }
+
 export const getArticlesByTopic = async (slug: any, page = 1) => {
   let postData
   try {
@@ -39,6 +40,7 @@ export const getArticlesByTopic = async (slug: any, page = 1) => {
 
   return { topic: postData }
 }
+
 export const getDownloadsByTopic = async (slug: any, page = 1) => {
   let postData
   try {
