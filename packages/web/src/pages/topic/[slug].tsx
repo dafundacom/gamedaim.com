@@ -24,7 +24,6 @@ interface TopicProps {
 
 export default function Topic(props: TopicProps) {
   const { topic, download } = props
-  console.log(download)
 
   return (
     <>
@@ -94,7 +93,7 @@ export default function Topic(props: TopicProps) {
                   <Heading as="h2" size="2xl" bold>
                     Downloads
                   </Heading>
-                  <NextLink href="/download/game/">
+                  <NextLink href={`/download/topic/${topic.slug}`}>
                     <Text size="sm" colorScheme="blue">
                       See more
                     </Text>

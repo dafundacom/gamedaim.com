@@ -65,6 +65,18 @@ export const getDownloadByType = async (type: string, page = 1) => {
 
   return { downloadByType: postData }
 }
+export const getDownloadByTopics = async (slug: string, page = 1) => {
+  let postData
+  try {
+    const { data } = await axios.get(`/topic/slug/${slug}/downloads/${page}`)
+    postData = data
+  } catch (e) {
+    console.log(`Failed to query post data: ${e}`)
+    throw e
+  }
+
+  return { downloadByTopic: postData }
+}
 export const useGetDownloadBySlug = (slug: string) => {
   const { data, isError, isFetching, isSuccess } = useQuery(
     ["downloadSlug", slug],
