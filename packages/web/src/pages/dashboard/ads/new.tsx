@@ -6,6 +6,7 @@ import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -22,6 +23,7 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 interface FormValues {
   title: string
   content?: string
+  active: boolean
   position?:
     | "HOME_BELOW_HEADER"
     | "TOPIC_BELOW_HEADER"
@@ -110,6 +112,10 @@ export default function CreateAdsDashBoard() {
                       {errors.content.message}
                     </FormErrorMessage>
                   )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.active)}>
+                  <FormLabel>Active</FormLabel>
+                  <Checkbox {...register("active")}>Yes</Checkbox>
                 </FormControl>
                 <FormControl invalid={Boolean(errors.position)}>
                   <FormLabel>
