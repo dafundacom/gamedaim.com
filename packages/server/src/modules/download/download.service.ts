@@ -367,13 +367,3 @@ export async function deleteDownloadById(downloadId: string) {
 export async function getTotalDownloads() {
   return await db.download.count()
 }
-
-export async function getTotalDownloadOnTopics(topicSlug: string) {
-  return await db.download.count({
-    where: {
-      topics: {
-        slug: topicSlug,
-      },
-    },
-  })
-}
