@@ -22,7 +22,16 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 interface FormValues {
   title: string
   content?: string
-  position?: "ABOVE_POST" | "INLINE_POST" | "BELOW_POST" | "POP_UP"
+  position?:
+    | "HOME_BELOW_HEADER"
+    | "TOPIC_BELOW_HEADER"
+    | "ARTICLE_BELOW_HEADER"
+    | "DOWNLOAD_BELOW_HEADER"
+    | "SINGLE_ARTICLE_ABOVE"
+    | "SINGLE_ARTICLE_INLINE"
+    | "SINGLE_ARTICLE_BELOW"
+    | "SINGLE_ARTICLE_POP_UP"
+    | "DOWNLOADING_PAGE"
 }
 
 export default function CreateAdsDashBoard() {
@@ -112,12 +121,33 @@ export default function CreateAdsDashBoard() {
                     className="max-w-sm"
                     {...register("position")}
                   >
-                    <Select.Option value="ABOVE_POST">Above Post</Select.Option>
-                    <Select.Option value="BELOW_POST">Below Post</Select.Option>
-                    <Select.Option value="INLINE_POST">
-                      Inline Post
+                    <Select.Option value="HOME_BELOW_HEADER">
+                      Home (Below Header)
                     </Select.Option>
-                    <Select.Option value="POP_UP">Pop Up</Select.Option>
+                    <Select.Option value="TOPIC_BELOW_HEADER">
+                      Topic (Below Header)
+                    </Select.Option>
+                    <Select.Option value="ARTICLE_BELOW_HEADER">
+                      Article (Below Header)
+                    </Select.Option>
+                    <Select.Option value="DOWNLOAD_BELOW_HEADER">
+                      Download (Below Header)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_ARTICLE_ABOVE">
+                      Single Article (Above)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_ARTICLE_INLINE">
+                      Single Article (Inline)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_ARTICLE_BELOW">
+                      Single Article (Below)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_ARTICLE_POP_UP">
+                      Single Article (Pop Up)
+                    </Select.Option>
+                    <Select.Option value="DOWNLOADING_PAGE">
+                      Download (Downloading Page)
+                    </Select.Option>
                   </Select>
                   {errors?.position && (
                     <FormErrorMessage>
