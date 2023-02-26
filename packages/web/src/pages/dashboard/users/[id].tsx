@@ -122,8 +122,10 @@ export default function DashboardEditUser() {
       }
       const { data } = await axios.put(
         `/user/update-by-admin/${user.id}`,
-        mergedValues,
+        selectedProfilePictureId ? mergedValues : values,
       )
+
+      console.log(data)
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)
@@ -254,7 +256,7 @@ export default function DashboardEditUser() {
                     Role
                     <RequiredIndicator />
                   </FormLabel>
-                  <Select id="role" className="max-w-sm" {...register("role")}>
+                  <Select className="max-w-sm" {...register("role")}>
                     <Select.Option value="USER">USER</Select.Option>
                     <Select.Option value="AUTHOR">AUTHOR</Select.Option>
                     <Select.Option value="ADMIN">ADMIN</Select.Option>

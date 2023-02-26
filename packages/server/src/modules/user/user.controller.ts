@@ -123,6 +123,7 @@ export async function updateUserHandler(
       phoneNumber,
       profilePictureId,
       about,
+      role,
     } = request.body
 
     const user = request.user
@@ -159,6 +160,7 @@ export async function updateUserHandler(
       phoneNumber,
       profilePictureId,
       about,
+      role,
     })
 
     return reply.code(201).send(updatedUser)
