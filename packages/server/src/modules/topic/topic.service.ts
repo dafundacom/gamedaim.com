@@ -213,6 +213,11 @@ export async function findTopicBySlugAndGetArticles(
           id: true,
         },
       },
+      _count: {
+        select: {
+          articles: true,
+        },
+      },
     },
   })
 }
@@ -270,6 +275,11 @@ export async function findTopicBySlugAndGetDownloads(
         select: {
           name: true,
           id: true,
+        },
+      },
+      _count: {
+        select: {
+          downloads: true,
         },
       },
     },
