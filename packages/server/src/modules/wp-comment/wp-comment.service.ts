@@ -6,14 +6,14 @@ export async function createWpComment(
     authorId: string
   },
 ) {
-  return db.wpComment.create({
+  return await db.wpComment.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getWpComments(wpCommentPage: number, perPage: number) {
-  return db.wpComment.findMany({
+export async function getWpComments(wpCommentPage: number, perPage: number) {
+  return await db.wpComment.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -84,7 +84,7 @@ export async function updateWpComment(
 }
 
 export async function deleteWpCommentById(wpCommentId: string) {
-  return db.wpComment.delete({
+  return await db.wpComment.delete({
     where: {
       id: wpCommentId,
     },

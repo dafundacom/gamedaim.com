@@ -10,14 +10,14 @@ export async function createArticle(
     topics: { connect: { id: string }[] }
   },
 ) {
-  return db.article.create({
-    // @ts-ignore FIX: validation error
+  return await db.article.create({
+    //@ts-ignore
     data,
   })
 }
 
-export function getArticles(articlePage: number, perPage: number) {
-  return db.article.findMany({
+export async function getArticles(articlePage: number, perPage: number) {
+  return await db.article.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -197,7 +197,7 @@ export async function updateArticle(
 }
 
 export async function searchArticles(searchArticleQuery: string) {
-  return db.article.findMany({
+  return await db.article.findMany({
     where: {
       OR: [
         { title: { contains: searchArticleQuery } },
@@ -209,7 +209,7 @@ export async function searchArticles(searchArticleQuery: string) {
 }
 
 export async function deleteArticleById(articleId: string) {
-  return db.article.delete({
+  return await db.article.delete({
     where: {
       id: articleId,
     },

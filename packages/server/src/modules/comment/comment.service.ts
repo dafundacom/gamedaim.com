@@ -7,14 +7,14 @@ export async function createComment(
     articleId: string
   },
 ) {
-  return db.comment.create({
+  return await db.comment.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getComments(commentPage: number, perPage: number) {
-  return db.comment.findMany({
+export async function getComments(commentPage: number, perPage: number) {
+  return await db.comment.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -64,7 +64,7 @@ export async function updateComment(
 }
 
 export async function searchComments(searchCommentQuery: string) {
-  return db.comment.findMany({
+  return await db.comment.findMany({
     where: {
       content: { contains: searchCommentQuery },
     },
@@ -72,7 +72,7 @@ export async function searchComments(searchCommentQuery: string) {
 }
 
 export async function deleteCommentById(commentId: string) {
-  return db.comment.delete({
+  return await db.comment.delete({
     where: {
       id: commentId,
     },

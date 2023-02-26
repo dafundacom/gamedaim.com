@@ -6,14 +6,14 @@ export async function createScript(
     authorId: string
   },
 ) {
-  return db.script.create({
+  return await db.script.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getScripts(scriptPage: number, perPage: number) {
-  return db.script.findMany({
+export async function getScripts(scriptPage: number, perPage: number) {
+  return await db.script.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -64,7 +64,7 @@ export async function updateScript(scriptId: string, data: CreateScriptInput) {
 }
 
 export async function deleteScriptById(scriptId: string) {
-  return db.script.delete({
+  return await db.script.delete({
     where: {
       id: scriptId,
     },

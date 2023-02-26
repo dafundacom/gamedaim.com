@@ -10,14 +10,14 @@ export async function createDownload(
     topics: { connect: { id: string }[] }
   },
 ) {
-  return db.download.create({
+  return await db.download.create({
     // @ts-ignore FIX: validation error
     data,
   })
 }
 
-export function getDownloads(downloadPage: number, perPage: number) {
-  return db.download.findMany({
+export async function getDownloads(downloadPage: number, perPage: number) {
+  return await db.download.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -345,7 +345,7 @@ export async function updateDownload(
   })
 }
 export async function searchDownloads(searchDownloadQuery: string) {
-  return db.download.findMany({
+  return await db.download.findMany({
     where: {
       OR: [
         { title: { contains: searchDownloadQuery } },
@@ -357,7 +357,7 @@ export async function searchDownloads(searchDownloadQuery: string) {
 }
 
 export async function deleteDownloadById(downloadId: string) {
-  return db.download.delete({
+  return await db.download.delete({
     where: {
       id: downloadId,
     },
