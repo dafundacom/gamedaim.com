@@ -149,6 +149,7 @@ export default function CreateArticlesDashboard() {
       console.log("err => ", err)
       toast.error(err.response.data.message)
     }
+    editor?.commands.clearContent()
     setLoading(false)
   }
 
