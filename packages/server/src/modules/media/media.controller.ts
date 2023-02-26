@@ -1,10 +1,9 @@
-import slugify from "slugify"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 
 import env from "../../env"
-import { uniqueSlug } from "../../utils/slug"
+import { uniqueSlug, slugify } from "../../utils/slug"
 import { s3Client } from "../../utils/s3-client"
 import {
   findMediaById,
@@ -28,9 +27,7 @@ export async function uploadMediaHandler(
     const data = await request.file()
     const user = request.user
 
-    const uniqueName = slugify(uniqueSlug() + "-" + data.filename, {
-      remove: /[*+~()'"!:@]/g,
-    })
+    const uniqueName = slugify(uniqueSlug() + "-" + data.filename)
 
     const fileProperties = {
       Bucket: env.R2_BUCKET,
