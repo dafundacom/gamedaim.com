@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import slugify from "slugify"
 
-import { uniqueSlug } from "../../utils/slug"
+import { uniqueSlug, slugify } from "../../utils/slug"
 import { CreateArticleInput, UpdateArticleInput } from "./article.schema"
 import {
   createArticle,
@@ -38,9 +37,7 @@ export async function createArticleHandler(
       topicIds,
     } = request.body
     const user = request.user
-    const articleSlug = slugify(title.toLowerCase() + "_" + uniqueSlug(), {
-      remove: /[*+~.()'"!:@]/g,
-    })
+    const articleSlug = slugify(title.toLowerCase() + "_" + uniqueSlug())
 
     if (user.role !== "ADMIN") {
       return reply.code(403).send({ message: "Unauthorized" })
