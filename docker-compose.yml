@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./packages/server/Dockerfile
     depends_on:
-      - postgres_container
+      - postgres
     env_file:
       - ./packages/server/.env
     ports:
