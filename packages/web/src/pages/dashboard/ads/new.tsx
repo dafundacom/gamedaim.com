@@ -33,6 +33,10 @@ interface FormValues {
     | "SINGLE_ARTICLE_INLINE"
     | "SINGLE_ARTICLE_BELOW"
     | "SINGLE_ARTICLE_POP_UP"
+    | "SINGLE_DOWNLOAD_ABOVE"
+    | "SINGLE_DOWNLOAD_INLINE"
+    | "SINGLE_DOWNLOAD_BELOW"
+    | "SINGLE_DOWNLOAD_POP_UP"
     | "DOWNLOADING_PAGE"
 }
 
@@ -150,6 +154,18 @@ export default function CreateAdsDashBoard() {
                     </Select.Option>
                     <Select.Option value="SINGLE_ARTICLE_POP_UP">
                       Single Article (Pop Up)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_DOWNLOAD_ABOVE">
+                      Single Download (Above)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_DOWNLOAD_INLINE">
+                      Single Download (Inline)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_DOWNLOAD_BELOW">
+                      Single Download (Below)
+                    </Select.Option>
+                    <Select.Option value="SINGLE_DOWNLOAD_POP_UP">
+                      Single Download (Pop Up)
                     </Select.Option>
                     <Select.Option value="DOWNLOADING_PAGE">
                       Download (Downloading Page)
