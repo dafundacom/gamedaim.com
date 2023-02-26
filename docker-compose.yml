@@ -18,30 +18,34 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
-  web:
-    container_name: web
+  server:
+    container_name: server_container
     build:
       context: .
-      dockerfile: ./packages/web/Dockerfile
+      dockerfile: ./packages/server/Dockerfile
+    depends_on:
+      - postgres_container
     env_file:
-      - ./packages/web/.env
+      - ./packages/server/.env
     ports:
-      - "3000:3000"
+      - "8000:8000"
     networks:
       - app_network
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
 
-  server:
-    container_name: server
+  web:
+    container_name: web_container
     build:
       context: .
-      dockerfile: ./packages/server/Dockerfile
+      dockerfile: ./packages/web/Dockerfile
+    depends_on:
+      - server
     env_file:
-      - ./packages/server/.env
+      - ./packages/web/.env
     ports:
-      - "8000:8000"
+      - "3000:3000"
     networks:
       - app_network
     extra_hosts:

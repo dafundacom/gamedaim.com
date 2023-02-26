@@ -1,6 +1,8 @@
 import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
+const USER_ROLE = ["USER", "AUTHOR", "ADMIN"]
+
 const userCore = {
   email: z
     .string({
@@ -17,7 +19,10 @@ const userCore = {
       message:
         "Username should be 3-20 characters without spaces, symbol or any special characters",
     }),
-  name: z.string(),
+  name: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
   phoneNumber: z
     .string({ invalid_type_error: "Phone Number must be a string" })
     .optional(),
@@ -40,10 +45,11 @@ const userCore = {
 const createUserSchema = z.object({
   ...userCore,
   role: z
-    .string({
-      invalid_type_error: "Role must be a string",
-    })
-    .optional(),
+    .any()
+    .refine(
+      (role) => USER_ROLE.includes(role),
+      "only USER, AUTHOR, and ADMIN are accepted",
+    ),
   password: z
     .string({
       required_error: "Password is required",
@@ -64,10 +70,11 @@ const createUserSchema = z.object({
 const updateUserSchema = z.object({
   ...userCore,
   role: z
-    .string({
-      invalid_type_error: "Role must be a string",
-    })
-    .optional(),
+    .any()
+    .refine(
+      (role) => USER_ROLE.includes(role),
+      "only USER, AUTHOR, and ADMIN are accepted",
+    ),
   password: z
     .string({
       required_error: "Password is required",

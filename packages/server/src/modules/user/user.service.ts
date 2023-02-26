@@ -81,7 +81,6 @@ export async function findUsers(userPage: number, perPage: number) {
 export async function updateUser(userId: string, data: UpdateUserInput) {
   return await db.user.update({
     where: { id: userId },
-    //@ts-ignore
     data,
   })
 }

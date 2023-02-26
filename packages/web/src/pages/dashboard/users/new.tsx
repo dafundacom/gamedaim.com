@@ -44,9 +44,9 @@ export default function CreateUsersDashboard() {
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [loadedMedias, setLoadedMedias] = React.useState([])
-  const [selectedprofilePictureId, setSelectedprofilePictureId] =
+  const [selectedProfilePictureId, setSelectedprofilePictureId] =
     React.useState<string>("")
-  const [selectedprofilePictureUrl, setSelectedprofilePictureUrl] =
+  const [selectedProfilePictureUrl, setSelectedprofilePictureUrl] =
     React.useState<string>("")
 
   const router = useRouter()
@@ -78,9 +78,12 @@ export default function CreateUsersDashboard() {
     try {
       const mergedValues = {
         ...values,
-        profilePictureId: selectedprofilePictureId,
+        profilePictureId: selectedProfilePictureId,
       }
-      const { data } = await axios.post("/user/signup", mergedValues)
+      const { data } = await axios.post(
+        "/user/signup",
+        selectedProfilePictureId ? mergedValues : values,
+      )
       if (data?.error) {
         toast.error(data.error)
       } else {
@@ -252,11 +255,11 @@ export default function CreateUsersDashboard() {
                   )}
                 </FormControl>
 
-                {selectedprofilePictureId ? (
+                {selectedProfilePictureId ? (
                   <>
                     <FormLabel>Featured Image</FormLabel>
                     <NextImage
-                      src={selectedprofilePictureUrl}
+                      src={selectedProfilePictureUrl}
                       fill
                       alt="Featured Image"
                       className="!relative mt-2 max-h-[200px] max-w-[200px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
@@ -281,7 +284,7 @@ export default function CreateUsersDashboard() {
                     Role
                     <RequiredIndicator />
                   </FormLabel>
-                  <Select id="role" className="max-w-sm" {...register("role")}>
+                  <Select className="max-w-sm" {...register("role")}>
                     <Select.Option value="USER">USER</Select.Option>
                     <Select.Option value="AUTHOR">AUTHOR</Select.Option>
                     <Select.Option value="ADMIN">ADMIN</Select.Option>
