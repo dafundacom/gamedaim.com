@@ -11,6 +11,7 @@ import { parseAndSplitHTMLString } from "@/utils/split-html"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
 import { Breadcrumb } from "ui"
 import { MdChevronRight } from "react-icons/md"
+
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
 )
@@ -78,12 +79,19 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
     const [openModal, setOpenModal] = React.useState<boolean>(false)
     const [loadingAd, setLoadingAd] = React.useState(false)
 
-    const adAbove: any = ad?.filter((ads: any) => ads.position == "ABOVE_POST")
-    const adBelow: any = ad?.filter((ads: any) => ads.position == "BELOW_POST")
-    const adInline: any = ad?.filter(
-      (ads: any) => ads.position == "INLINE_POST",
+    const adAbove: any = ad?.filter(
+      (ads: any) => ads.position == "SINGLE_ARTICLE_ABOVE",
     )
-    const adPopup: any = ad?.filter((ads: any) => ads.position == "POP_UP")
+    const adBelow: any = ad?.filter(
+      (ads: any) => ads.position == "SINGLE_ARTICLEBELOW",
+    )
+    const adInline: any = ad?.filter(
+      (ads: any) => ads.position == "SINGLE_ARTILCE_INLINE",
+    )
+    const adPopup: any = ad?.filter(
+      (ads: any) => ads.position == "SINGLE_ARTICLE_POP_UP",
+    )
+
     const { firstHalf, secondHalf } = parseAndSplitHTMLString(content)
 
     const getAds = async () => {

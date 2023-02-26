@@ -1,7 +1,17 @@
 import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
-const AD_POSITION = ["ABOVE_POST", "BELOW_POST", "INLINE_POST", "POP_UP"]
+const AD_POSITION = [
+  "HOME_BELOW_HEADER",
+  "TOPIC_BELOW_HEADER",
+  "ARTICLE_BELOW_HEADER",
+  "DOWNLOAD_BELOW_HEADER",
+  "SINGLE_ARTICLE_ABOVE",
+  "SINGLE_ARTICLE_INLINE",
+  "SINGLE_ARTICLE_BELOW",
+  "SINGLE_ARTICLE_POP_UP",
+  "DOWNLOADING_PAGE",
+]
 
 const adInput = {
   title: z.string({
