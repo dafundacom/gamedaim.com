@@ -1,11 +1,9 @@
 import * as React from "react"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { GetServerSideProps } from "next"
 import { Heading } from "ui"
 import env from "@/env"
 import { getDownloadByTopics } from "@/lib/download"
-import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
 import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
 import { TopicDataProps } from "@/lib/data-types"
@@ -50,17 +48,16 @@ export default function DownloadsByTopic(props: TopicProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export async function getServerSideProps({ params }: any) {
   const slug: any = params?.slug
 
   const { downloadByTopic } = await getDownloadByTopics(slug)
-  const { topics } = await getTopics(1)
   if (!downloadByTopic) {
     return {
       notFound: true,
     }
   }
   return {
-    props: { downloadByTopic, topics },
+    props: { downloadByTopic },
   }
 }

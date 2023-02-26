@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -21,6 +22,7 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 interface FormValues {
   title: string
   content?: string
+  active: boolean
   position?:
     | "HOME_BELOW_HEADER"
     | "TOPIC_BELOW_HEADER"
@@ -61,6 +63,7 @@ export default function EditAdDashboard() {
         id: data.id,
         title: data.title,
         content: data.content,
+        active: data.active,
         position: data.position,
       })
       setLoading(false)
@@ -137,6 +140,10 @@ export default function EditAdDashboard() {
                       {errors.content.message}
                     </FormErrorMessage>
                   )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.active)}>
+                  <FormLabel>Active</FormLabel>
+                  <Checkbox {...register("active")}>Yes</Checkbox>
                 </FormControl>
                 <FormControl invalid={Boolean(errors.position)}>
                   <FormLabel>
