@@ -3,6 +3,7 @@ import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
+import useSWR from "swr"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import {
@@ -17,8 +18,8 @@ import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { MediaDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function MediaLibraryDashboard() {
   const [post, setPost] = React.useContext(ContentContext)
@@ -29,21 +30,15 @@ export default function MediaLibraryDashboard() {
 
   const router = useRouter()
 
-  const { isFetching }: any = useQuery({
-    queryKey: ["medias", page],
-    queryFn: () => getMedias(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/media/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setPost((prev: any) => ({ ...prev, medias: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
-
-  const mediasCount: any = useQuery({
-    queryKey: ["mediasCount"],
-    queryFn: () => getMediasCount(),
+  const { data: count } = useSWR(`/media/count`, fetcher, {
     onSuccess: (data) => {
       setTotalMedias(data)
     },
@@ -51,36 +46,24 @@ export default function MediaLibraryDashboard() {
       toast.error(error.message)
     },
   })
+  const handleDelete = async (item: { name: any }) => {
+    try {
+      const { data } = await axios.delete(`/media/name/${item.name}`)
 
-  const getMediasCount = async () => {
-    const { data } = await axios.get("/media/count")
-    return data
-  }
-
-  const getMedias = async (page: number) => {
-    const { data } = await axios.get(`/media/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/media/name/${item.name}`)
-    },
-    onSuccess: (datas) => {
       setPost((prev: any) => ({
         ...prev,
         medias: medias.filter(
-          (media: { name: string }) => media.name !== datas.data.name,
+          (media: { name: string }) => media.name !== data.name,
         ),
       }))
       toast.success("Media deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = mediasCount.isSuccess && Math.ceil(totalMedias / 10)
+  const lastPage = count && Math.ceil(totalMedias / 10)
 
   return (
     <>
@@ -105,13 +88,13 @@ export default function MediaLibraryDashboard() {
           {medias.length > 0 ? (
             <>
               <div className="my-3 grid grid-cols-2 gap-3 md:grid-cols-5">
-                {isFetching === false &&
+                {data &&
                   medias.map((media: MediaDataProps) => (
                     <div className="relative overflow-hidden rounded-[18px]">
                       <IconButton
                         colorScheme="red"
                         className="!absolute z-20 !rounded-full !p-0"
-                        onClick={() => mutationDelete.mutate(media)}
+                        onClick={() => handleDelete(media)}
                       >
                         <MdDeleteOutline />
                       </IconButton>
@@ -138,7 +121,7 @@ export default function MediaLibraryDashboard() {
                       <MdChevronLeft />
                     </IconButton>
                   )}
-                  {mediasCount.isFetching === false && page !== lastPage && (
+                  {count && page !== lastPage && (
                     <IconButton
                       onClick={() => {
                         setPage((old) => old + 1)

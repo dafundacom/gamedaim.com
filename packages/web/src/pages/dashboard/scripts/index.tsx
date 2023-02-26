@@ -4,6 +4,7 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
+import useSWR from "swr"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
@@ -15,9 +16,8 @@ import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { getScriptsCount } from "@/lib/script"
 import { ScriptDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function ScriptsDashboard() {
   const [script, setScript] = React.useContext(ContentContext)
@@ -28,36 +28,15 @@ export default function ScriptsDashboard() {
 
   const router = useRouter()
   dayjs.extend(relativeTime)
-  const getScripts = async (page: number) => {
-    let scriptsData
-    try {
-      const { data } = await axios.get(`/script/page/${page}`)
-      scriptsData = data
-    } catch (e) {
-      console.log(`Failed to query post data: ${e}`)
-      throw e
-    }
-
-    return { scripts: scriptsData }
-  }
-
-  const { isFetching }: any = useQuery({
-    queryKey: ["scripts", page],
-    queryFn: () => getScripts(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/script/page/${page}`, fetcher, {
     onSuccess: (data) => {
-      if (data?.scripts) {
-        setScript((prev: any) => ({ ...prev, scripts: data?.scripts }))
-      }
+      setScript((prev: any) => ({ ...prev, scripts: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
-
-  const scriptsCount: any = useQuery({
-    queryKey: ["scriptsCount"],
-    queryFn: () => getScriptsCount(),
+  const { data: count } = useSWR(`/script/count`, fetcher, {
     onSuccess: (data) => {
       setTotalScripts(data)
     },
@@ -65,26 +44,24 @@ export default function ScriptsDashboard() {
       toast.error(error.message)
     },
   })
+  const handleDelete = async (item: { id: any }) => {
+    try {
+      const { data } = await axios.delete(`/script/${item.id}`)
 
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/script/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setScript((prev: any) => ({
         ...prev,
         scripts: scripts.filter(
-          (script: { id: string }) => script.id !== datas.data.id,
+          (script: { id: string }) => script.id !== data.id,
         ),
       }))
-      toast.success("Scripts deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+      toast.success("Script deleted successfully")
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = scriptsCount.isSuccess && Math.ceil(totalScripts / 10)
+  const lastPage = count && Math.ceil(totalScripts / 10)
 
   return (
     <>
@@ -120,7 +97,7 @@ export default function ScriptsDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {isFetching === false &&
+                    {data &&
                       scripts.map((script: ScriptDataProps) => (
                         <Tr key={script.id}>
                           <Td className="whitespace-nowrap">
@@ -141,7 +118,7 @@ export default function ScriptsDashboard() {
                           <Td>{dayjs(script.updatedAt).fromNow()}</Td>
                           <Td align="right">
                             <ActionDashboard
-                              onDelete={() => mutationDelete.mutate(script)}
+                              onDelete={() => handleDelete(script)}
                               editLink={`/dashboard/scripts/${script.id}`}
                               content={script.title}
                             />
@@ -162,17 +139,16 @@ export default function ScriptsDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {scriptsCount.isFetching === false &&
-                        page !== lastPage && (
-                          <IconButton
-                            onClick={() => {
-                              setPage((old) => old + 1)
-                            }}
-                            className="!rounded-full !px-0"
-                          >
-                            <MdChevronRight />
-                          </IconButton>
-                        )}
+                      {count && page !== lastPage && (
+                        <IconButton
+                          onClick={() => {
+                            setPage((old) => old + 1)
+                          }}
+                          className="!rounded-full !px-0"
+                        >
+                          <MdChevronRight />
+                        </IconButton>
+                      )}
                     </>
                   </div>
                 )}

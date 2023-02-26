@@ -129,7 +129,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
   const seo = await getSeoDatas(`https://${env.DOMAIN}/${slug}`)
   const { category } = await wpGetCategoryBySlug(slug)
-  const { posts, pageInfo } = await wpGetPostsByCategorySlug(category.slug)
+  const { posts, pageInfo } = await wpGetPostsByCategorySlug(category?.slug)
 
   if (!category) {
     return {

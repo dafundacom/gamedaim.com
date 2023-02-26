@@ -5,7 +5,7 @@ import { Heading } from "ui"
 import env from "@/env"
 import { getDownloadByTopics } from "@/lib/download"
 import { HomeLayout } from "@/layouts/Home"
-import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
+import { InfiniteScrollDownloadByTopic } from "@/components/InfiniteScroll"
 import { TopicDataProps } from "@/lib/data-types"
 
 interface TopicProps {
@@ -35,7 +35,7 @@ export default function DownloadsByTopic(props: TopicProps) {
                 Newest
               </Heading>
             </div>
-            <InfiniteScrollDownload
+            <InfiniteScrollDownloadByTopic
               id={downloadByTopic.slug}
               posts={downloadByTopic.downloads}
               index={2}

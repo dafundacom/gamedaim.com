@@ -4,12 +4,12 @@ import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
+import useSWR from "swr"
 import {
   Button,
   FormControl,
@@ -28,6 +28,7 @@ import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { MediaDataProps, TopicDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   title: string
@@ -67,19 +68,15 @@ export default function EditArticleDashboard() {
 
   const { isOpen, onToggle } = useDisclosure()
 
-  const loadMedias = useQuery({
-    queryKey: ["loadedMedias"],
-    queryFn: async () => {
-      const { data } = await axios.get("/media/page/1")
-      return data
-    },
-    refetchInterval: 10000,
+  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
     onSuccess: (data: any) => {
       setLoadedMedias(data)
     },
     onError: (error: any) => {
       toast.error(error.message)
     },
+    revalidateIfStale: true,
+    refreshInterval: 1000,
   })
 
   const router = useRouter()
@@ -423,7 +420,7 @@ export default function EditArticleDashboard() {
             <>
               <MediaUpload />
               <div className="my-3 grid grid-cols-5 gap-3">
-                {loadMedias.isFetching === false &&
+                {medias &&
                   loadedMedias.map((media: MediaDataProps) => (
                     <>
                       <NextImage

@@ -8,41 +8,33 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { Button, IconButton, Text } from "ui"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
-
+import useSWR from "swr"
 import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { AdDataProps } from "@/lib/data-types"
+import { fetcher } from "@/lib/fetcher"
 
 export default function AdsDashboard() {
   const [ad, setAd] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalAds, setTotalAds]: any = React.useState()
-
   const { ads } = ad
 
   const router = useRouter()
   dayjs.extend(relativeTime)
-
-  const { isFetching }: any = useQuery({
-    queryKey: ["ads", page],
-    queryFn: () => getAds(page),
-    keepPreviousData: true,
+  const { data } = useSWR(`/ad/page/${page}`, fetcher, {
     onSuccess: (data) => {
       setAd((prev: any) => ({ ...prev, ads: data }))
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message)
     },
   })
-
-  const adsCount: any = useQuery({
-    queryKey: ["adsCount"],
-    queryFn: () => getAdsCount(),
+  const { data: count } = useSWR(`/ad/count`, fetcher, {
     onSuccess: (data) => {
       setTotalAds(data)
     },
@@ -50,34 +42,22 @@ export default function AdsDashboard() {
       toast.error(error.message)
     },
   })
+  const handleDelete = async (item: { id: string }) => {
+    try {
+      const { data } = await axios.delete(`/ad/${item.id}`)
 
-  const getAdsCount = async () => {
-    const { data } = await axios.get("/ad/count")
-    return data
-  }
-
-  const getAds = async (page: number) => {
-    const { data } = await axios.get(`/ad/page/${page}`)
-    return data
-  }
-
-  const mutationDelete: any = useMutation({
-    mutationFn: (item: any) => {
-      return axios.delete(`/ad/${item.id}`)
-    },
-    onSuccess: (datas) => {
       setAd((prev: any) => ({
         ...prev,
-        ads: ads.filter((ad: { id: string }) => ad.id !== datas.data.id),
+        ads: ads.filter((ad: { id: string }) => ad.id !== data.id),
       }))
       toast.success("Ads deleted successfully")
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err.response.data.message)
+    }
+  }
 
-  const lastPage = adsCount.isSuccess && Math.ceil(totalAds / 10)
+  const lastPage = count && Math.ceil(totalAds / 10)
 
   return (
     <>
@@ -100,7 +80,7 @@ export default function AdsDashboard() {
             </NextLink>
           </div>
           <div className="my-6 rounded">
-            {ads.length > 0 ? (
+            {data && ads.length > 0 ? (
               <>
                 <Table>
                   <Thead>
@@ -113,7 +93,7 @@ export default function AdsDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {isFetching === false &&
+                    {data &&
                       ads.map((ad: AdDataProps) => (
                         <Tr key={ad.id}>
                           <Td className="whitespace-nowrap">
@@ -130,7 +110,7 @@ export default function AdsDashboard() {
                           <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
                           <Td align="right">
                             <ActionDashboard
-                              onDelete={() => mutationDelete.mutate(ad)}
+                              onDelete={() => handleDelete(ad)}
                               editLink={`/dashboard/ads/${ad.id}`}
                               content={ad.title}
                             />
@@ -151,7 +131,7 @@ export default function AdsDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {adsCount.isFetching === false && page !== lastPage && (
+                      {count && page !== lastPage && (
                         <IconButton
                           onClick={() => {
                             setPage((old) => old + 1)

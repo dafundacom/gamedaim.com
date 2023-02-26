@@ -6,20 +6,26 @@ import env from "@/env"
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
-import { getDownloadByType, getDownloads } from "@/lib/download"
-import { DownloadCard } from "@/components/Card"
+import {
+  getDownloadByType,
+  getDownloads,
+  getDownloadsCount,
+} from "@/lib/download"
 import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
 import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
+import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
 
 interface AppProps {
   downloads: DownloadDataProps
   apps: DownloadDataProps
   topics: TopicDataProps[]
+  downloadsCount: any
 }
 export default function App(props: AppProps) {
-  const { downloads, apps, topics } = props
+  const { downloads, apps, topics, downloadsCount } = props
   const router = useRouter()
+  const totalPage = Math.ceil(downloadsCount / 10)
 
   return (
     <>
@@ -69,9 +75,11 @@ export default function App(props: AppProps) {
                 Newest
               </Heading>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <DownloadCard list={downloads} />
-            </div>
+            <InfiniteScrollDownload
+              posts={downloads}
+              index={2}
+              totalPage={totalPage}
+            />
           </div>
         </div>
       </HomeLayout>
@@ -81,11 +89,12 @@ export default function App(props: AppProps) {
 
 export async function getStaticProps() {
   const { downloads } = await getDownloads()
+  const { downloadsCount } = await getDownloadsCount()
 
   const apps = await getDownloadByType("App")
   const { topics } = await getTopics(1)
 
   return {
-    props: { downloads, apps, topics },
+    props: { downloads, apps, topics, downloadsCount },
   }
 }

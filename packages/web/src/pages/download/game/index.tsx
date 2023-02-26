@@ -1,25 +1,32 @@
 import * as React from "react"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { Heading } from "ui"
 import env from "@/env"
+import { Heading } from "ui"
+
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
-import { getDownloadByType, getDownloads } from "@/lib/download"
-import { DownloadCard } from "@/components/Card"
+import {
+  getDownloadByType,
+  getDownloads,
+  getDownloadsCount,
+} from "@/lib/download"
 import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
 import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
+import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
 
 interface GameProps {
   downloads: DownloadDataProps
   games: DownloadDataProps
   topics: TopicDataProps[]
+  downloadsCount: any
 }
 export default function Game(props: GameProps) {
-  const { downloads, games, topics } = props
+  const { downloads, games, topics, downloadsCount } = props
   const router = useRouter()
+  const totalPage = Math.ceil(downloadsCount / 10)
 
   return (
     <>
@@ -69,9 +76,11 @@ export default function Game(props: GameProps) {
                 Newest
               </Heading>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <DownloadCard list={downloads} />
-            </div>
+            <InfiniteScrollDownload
+              posts={downloads}
+              index={2}
+              totalPage={totalPage}
+            />
           </div>
         </div>
       </HomeLayout>
@@ -81,11 +90,10 @@ export default function Game(props: GameProps) {
 
 export async function getStaticProps() {
   const { downloads } = await getDownloads()
-
   const games = await getDownloadByType("Game")
   const { topics } = await getTopics(1)
-
+  const { downloadsCount } = await getDownloadsCount()
   return {
-    props: { downloads, games, topics },
+    props: { downloads, games, topics, downloadsCount },
   }
 }
