@@ -47,7 +47,6 @@ export default function ArticlesDashboard() {
   const handleDelete = async (item: { id: string }) => {
     try {
       const { data } = await axios.delete(`/article/${item.id}`)
-      console.log(data)
 
       setPost((prev: any) => ({
         ...prev,
