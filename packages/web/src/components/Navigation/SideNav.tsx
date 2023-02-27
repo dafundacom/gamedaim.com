@@ -1,8 +1,7 @@
 import * as React from "react"
 import NextLink from "next/link"
 import env from "@/env"
-
-import { useGetMenusByName } from "@/lib/wp-menus"
+import useSWR from "swr"
 import {
   BiCheckSquare,
   BiListOl,
@@ -13,6 +12,8 @@ import {
 import { FaCoffee } from "react-icons/fa"
 import { Text } from "ui"
 import { MdArticle, MdDownload } from "react-icons/md"
+import { fetcherGraphQL } from "@/lib/fetcher"
+import { WP_GetMenusByName } from "@/data/wp-menus"
 
 interface SideNavProps {
   primaryMenus?: any
@@ -22,16 +23,23 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
   (props, ref) => {
     const { ...rest } = props
 
-    const { getMenusByName } = useGetMenusByName(env.MENU_PRIMARY)
-    const { data } = getMenusByName
+    const MENU_PRIMARY = env.MENU_PRIMARY
+    const query = {
+      query: WP_GetMenusByName,
+      variables: { id: MENU_PRIMARY },
+    }
+    const { data: primarymenu } = useSWR(query, fetcherGraphQL)
+    const menu = primarymenu?.menu?.menuItems?.edges.map(
+      ({ node = {} }) => node,
+    )
 
     const stylesIcons = "inline-block text-base mr-2"
 
     return (
       <nav className="relative flex w-full w-56 flex-col" ref={ref} {...rest}>
         <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
-          {data?.menu &&
-            data?.menu.map((menu: { url: string; label: string }) => {
+          {menu &&
+            menu.map((menu: { url: string; label: string }) => {
               const icon = getIcons(menu.label, stylesIcons)
               let domainUrl
               if (menu.url.startsWith("http")) {
@@ -59,6 +67,8 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
                 </li>
               )
             })}
+        </ul>
+        <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
           <li>
             <NextLink
               href="/download"

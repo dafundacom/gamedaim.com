@@ -3,8 +3,6 @@ import {
   QUERY_WP_CATEGORY_BY_SLUG,
   QUERY_WP_ALL_CATEGORIES_SITEMAP,
 } from "@/data/wp-categories"
-import { useQuery } from "@tanstack/react-query"
-import env from "@/env"
 import { wpFetchAPI } from "./wp-posts"
 
 export function wpCategoryPathBySlug(slug: string) {
@@ -67,25 +65,7 @@ export async function wpGetCategoryBySlug(slug: string) {
     category,
   }
 }
-export const useWpGetCategoryBySlug = (slug: string) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["category", slug],
-    () => wpGetCategoryBySlug(slug),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
 
-  return {
-    getCategoryBySlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
 export async function wpGetCategories({ count }: { count: number }) {
   const { categories } = await wpGetAllCategories()
   return {
