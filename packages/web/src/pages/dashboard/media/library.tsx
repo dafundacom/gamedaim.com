@@ -22,17 +22,17 @@ import { MediaDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
 
 export default function MediaLibraryDashboard() {
-  const [post, setPost] = React.useContext(ContentContext)
+  const [content, setContent] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
-  const [totalMedias, setTotalMedias]: any = React.useState()
+  const [totalMedias, setTotalMedias] = React.useState<number>(0)
 
-  const { medias } = post
+  const { medias } = content
 
   const router = useRouter()
 
   const { data } = useSWR(`/media/page/${page}`, fetcher, {
     onSuccess: (data) => {
-      setPost((prev: any) => ({ ...prev, medias: data }))
+      setContent((prev: any) => ({ ...prev, medias: data }))
     },
     onError: (error) => {
       toast.error(error.message)
@@ -50,7 +50,7 @@ export default function MediaLibraryDashboard() {
     try {
       const { data } = await axios.delete(`/media/name/${item.name}`)
 
-      setPost((prev: any) => ({
+      setContent((prev: any) => ({
         ...prev,
         medias: medias.filter(
           (media: { name: string }) => media.name !== data.name,
