@@ -21,9 +21,9 @@ import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 interface FormValues {
   title: string
-  content?: string
+  content: string
   active: boolean
-  position?:
+  position:
     | "HOME_BELOW_HEADER"
     | "TOPIC_BELOW_HEADER"
     | "ARTICLE_BELOW_HEADER"
@@ -145,10 +145,6 @@ export default function EditAdDashboard() {
                     </FormErrorMessage>
                   )}
                 </FormControl>
-                <FormControl invalid={Boolean(errors.active)}>
-                  <FormLabel>Active</FormLabel>
-                  <Checkbox {...register("active")}>Yes</Checkbox>
-                </FormControl>
                 <FormControl invalid={Boolean(errors.position)}>
                   <FormLabel>
                     Position
@@ -204,6 +200,10 @@ export default function EditAdDashboard() {
                       {errors.position.message}
                     </FormErrorMessage>
                   )}
+                </FormControl>
+                <FormControl invalid={Boolean(errors.active)}>
+                  <FormLabel>Active</FormLabel>
+                  <Checkbox {...register("active")} />
                 </FormControl>
                 <Button type="submit" variant="solid" loading={loading}>
                   Submit
