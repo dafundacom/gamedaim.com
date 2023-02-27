@@ -6,7 +6,6 @@ import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import env from "@/env"
 import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
-import { InfiniteScrollTopic } from "@/components/InfiniteScroll"
 import { ListDownload } from "@/components/List"
 import { MdChevronRight } from "react-icons/md"
 const PostCardSide = dynamic(() =>
@@ -15,6 +14,7 @@ const PostCardSide = dynamic(() =>
 
 import { HomeLayout } from "@/layouts/Home"
 import { Breadcrumb } from "ui"
+import { ListArticleFeatured } from "@/components/Card"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 
@@ -25,7 +25,6 @@ interface TopicProps {
 
 export default function Topic(props: TopicProps) {
   const { topic, download } = props
-  const totalPage = Math.ceil(topic._count.articles / 10)
 
   return (
     <>
@@ -62,12 +61,12 @@ export default function Topic(props: TopicProps) {
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
             <div className="absolute top-1 ml-4">
-              <Breadcrumb separator={<MdChevronRight />}>
+              <Breadcrumb
+                className="!text-white"
+                separator={<MdChevronRight className="!text-white" />}
+              >
                 <Breadcrumb.Item bold>
                   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>
-                  <Breadcrumb.Link href="/download/game">Game</Breadcrumb.Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item currentPage>
                   <Breadcrumb.Link href={`/${topic?.slug}`}>
@@ -97,13 +96,19 @@ export default function Topic(props: TopicProps) {
                 </div>
                 <ListDownload listDownloads={download?.downloads} />
               </div>
-              <InfiniteScrollTopic
-                index={2}
-                id={topic.slug}
-                posts={topic.articles}
-                pageType="articles"
-                totalPage={totalPage}
-              />
+              <div>
+                <div className={"my-2 flex flex-row justify-between"}>
+                  <Heading as="h2" size="2xl" bold>
+                    Article
+                  </Heading>
+                  <NextLink href={`/article/topic/${topic.slug}`}>
+                    <Text size="sm" colorScheme="blue">
+                      See more
+                    </Text>
+                  </NextLink>
+                </div>
+                <ListArticleFeatured featured={topic.articles} />
+              </div>
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">
               <div className="sticky top-8 rounded-xl border border-gray-100 p-4 dark:border-gray-700">

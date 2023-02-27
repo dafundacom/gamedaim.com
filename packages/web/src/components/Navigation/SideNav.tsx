@@ -37,7 +37,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
 
     return (
       <nav className="relative flex w-full w-56 flex-col" ref={ref} {...rest}>
-        <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
+        <ul className="flex flex-col space-y-2 border-b border-gray-100 p-4 dark:border-gray-700">
           {menu &&
             menu.map((menu: { url: string; label: string }) => {
               const icon = getIcons(menu.label, stylesIcons)
@@ -58,7 +58,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
                 <li key={menu.label}>
                   <NextLink
                     href={`/${fullUrl ? slicedUrl : menu.url}`}
-                    className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
+                    className="flex transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
                   >
                     <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
                       {icon} {menu.label}
@@ -68,11 +68,11 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
               )
             })}
         </ul>
-        <ul className="flex flex-col border-b border-gray-100 p-4 dark:border-gray-700">
+        <ul className="flex flex-col space-y-2 border-b border-gray-100 p-4 dark:border-gray-700">
           <li>
             <NextLink
               href="/download"
-              className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
+              className="flex transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
             >
               <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
                 <MdDownload className={stylesIcons} />
@@ -83,7 +83,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
           <li>
             <NextLink
               href="/article"
-              className="flex h-12 transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
+              className="flex transform flex-row items-center text-gray-500 transition-transform duration-200 ease-in hover:translate-x-2 hover:text-gray-800"
             >
               <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
                 <MdArticle className={stylesIcons} /> Article
