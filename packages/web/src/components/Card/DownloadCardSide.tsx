@@ -15,8 +15,6 @@ export const DownloadCardSide = React.forwardRef<
 >((props, ref) => {
   const { src, slug, title, ...rest } = props
 
-  const [image, setImage] = React.useState("/image/imgloader.gif")
-
   return (
     <NextLink href={slug}>
       <article
@@ -30,10 +28,10 @@ export const DownloadCardSide = React.forwardRef<
               priority={true}
               height={75}
               width={75}
-              className="aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
-              src={image}
-              onLoadingComplete={() => {
-                setImage(src)
+              className="loading-comple aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
+              src={src}
+              onLoadingComplete={(e) => {
+                e.classList.remove("loading-image")
               }}
               alt={title}
             />

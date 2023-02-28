@@ -86,7 +86,7 @@ export default function Download(props: DownloadProps) {
                 </Text>
               </NextLink>
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               <DownloadCard list={downloads} />
             </div>
           </div>

@@ -1,7 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-
-import env from "@/env"
 
 export const getArticlesCount = async () => {
   let articlesCountData
@@ -40,59 +37,4 @@ export const getArticleBySlug = async (slug: string) => {
   }
 
   return { article: postData }
-}
-
-export const useGetArticleBySlug = (slug: string) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["article", slug],
-    () => getArticleBySlug(slug),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-    },
-  )
-  return {
-    getArticleBySlugData: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
-
-export const useGetArticles = (page = 1) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["articles", page],
-    () => getArticles(page),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-  return {
-    getArticlesData: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
-
-export const useGetArticlesCount = () => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["articlesCount"],
-    () => getArticlesCount(),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-    },
-  )
-  return {
-    getArticlesCountData: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
 }

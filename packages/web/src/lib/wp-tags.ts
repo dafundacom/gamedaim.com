@@ -4,8 +4,6 @@ import {
   QUERY_WP_ALL_TAGS_SITEMAP,
 } from "@/data/wp-tags"
 import { wpFetchAPI } from "./wp-posts"
-import { useQuery } from "@tanstack/react-query"
-import env from "@/env"
 export function wpTagPathBySlug(slug: string) {
   return `/tag/${slug}`
 }
@@ -52,25 +50,6 @@ export async function wpGetTagBySlug(slug: string) {
   return {
     tag,
   }
-}
-export const useWpGetTagBySlug = (slug: string) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["tag", slug],
-    () => wpGetTagBySlug(slug),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-
-  return {
-    getTagBySlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
 }
 
 export async function wpGetTags({ count } = {} as any) {

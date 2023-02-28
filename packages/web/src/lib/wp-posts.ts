@@ -1,5 +1,4 @@
 import axios from "axios"
-import { useQuery } from "@tanstack/react-query"
 
 import env from "@/env"
 import { wpUpdateUserAvatar } from "./wp-users"
@@ -40,25 +39,6 @@ export async function wpGetAllPosts() {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
     pageInfo: data?.data.posts.pageInfo,
   }
-}
-
-export const useWpGetAllPosts = (key: any = ["posts"]) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    key,
-    () => wpGetAllPosts(),
-    {
-      staleTime: 1,
-    },
-  )
-
-  return {
-    getAllPostsData: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
 }
 
 export async function wpGetAllPostsLoadMore(after = "") {
@@ -188,25 +168,6 @@ export async function wpGetPostBySlug(slug: string) {
   }
   return { post: post }
 }
-export const useWpGetPostBySlug = (slug: string) => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["post", slug],
-    () => wpGetPostBySlug(slug),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-
-  return {
-    getPostBySlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
 
 export async function wpGetPostsByAuthorSlug(
   slug: string | string[],
@@ -241,25 +202,6 @@ export async function wpGetPostsByAuthorSlug(
     authorId: authorId,
   }
 }
-export const useWpGetPostsByAuthorSlug = (slug: string, after = "") => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["authorPosts", slug],
-    () => wpGetPostsByAuthorSlug(slug, after),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-
-  return {
-    getPostsByAuthorSlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
 
 export async function wpGetPostsByCategorySlug(categoryId: any, after = "") {
   let postData
@@ -291,25 +233,6 @@ export async function wpGetPostsByCategorySlug(categoryId: any, after = "") {
     pageInfo: postData?.data.posts.pageInfo,
   }
 }
-export const useWpGetPostsByCategorySlug = (slug: string, after = "") => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["categoryPosts", slug],
-    () => wpGetPostsByCategorySlug(slug, after),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-
-  return {
-    getPostsByCategorySlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
-}
 
 export async function wpGetPostsByTagSlug(id: any, after = "") {
   let postData
@@ -328,25 +251,6 @@ export async function wpGetPostsByTagSlug(id: any, after = "") {
     posts: Array.isArray(posts) && posts.map(wpMapPostData),
     pageInfo: postData?.data.tag.posts.pageInfo,
   }
-}
-export const useWpGetPostsByTagSlug = (slug: string, after = "") => {
-  const { data, isError, isFetching, isSuccess } = useQuery(
-    ["tagPosts", slug],
-    () => wpGetPostsByTagSlug(slug, after),
-    {
-      staleTime: env.STALE_FIVE_MINUTES,
-      keepPreviousData: true,
-    },
-  )
-
-  return {
-    getPostsByTagSlug: {
-      data: data,
-      isError,
-      isFetching,
-      isSuccess,
-    },
-  } as const
 }
 
 // export async function wpGetRecentPosts({ count }: { count: number }) {

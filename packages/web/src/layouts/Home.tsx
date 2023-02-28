@@ -3,7 +3,6 @@ import { useDisclosure } from "ui"
 
 import { TopNav, SideNav } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
-import { wpGetPrimaryMenus } from "@/lib/wp-menus"
 
 interface HomeLayoutProps {
   children: React.ReactNode
@@ -12,15 +11,6 @@ interface HomeLayoutProps {
 export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
   (props, ref) => {
     const { isOpen, onToggle } = useDisclosure()
-    const [primaryMenus, setPrimaryMenus] = React.useState<any>(null)
-
-    React.useEffect(() => {
-      async function menus() {
-        const { menu } = await wpGetPrimaryMenus()
-        setPrimaryMenus(menu)
-      }
-      menus()
-    }, [])
 
     const { children, ...rest } = props
 
@@ -34,7 +24,7 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
               "!translate-x-0 !opacity-100 md:!-translate-x-full md:!opacity-0"
             } scrollbar fixed top-0 !z-20 flex h-full w-[250px] -translate-x-full flex-row overflow-x-auto border-r border-gray-100 bg-white pt-20 opacity-0 transition-[transform] delay-150 ease-in-out dark:border-gray-700 dark:bg-gray-900 md:translate-x-0 md:opacity-100`}
           >
-            <SideNav primaryMenus={primaryMenus} />
+            <SideNav />
           </div>
           <div
             onClick={onToggle}

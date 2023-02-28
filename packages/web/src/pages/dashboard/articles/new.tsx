@@ -53,7 +53,6 @@ export default function CreateArticlesDashboard() {
   const [selectedTopics, setSelectedTopics] = React.useState<any>([])
   const [inputValue, setInputValue] = React.useState("")
   const router = useRouter()
-
   const { isOpen, onToggle } = useDisclosure()
   const { data: medias } = useSWR(`/media/page/1`, fetcher, {
     onSuccess: (data: any) => {
@@ -63,7 +62,6 @@ export default function CreateArticlesDashboard() {
       toast.error(error.message)
     },
     revalidateIfStale: true,
-    refreshInterval: 1000,
   })
 
   const editor = useEditor({
@@ -355,17 +353,20 @@ export default function CreateArticlesDashboard() {
           title="Select Featured Image"
           content={
             <>
-              <MediaUpload />
+              <MediaUpload addLoadMedias={setLoadedMedias} />
               <div className="my-3 grid grid-cols-5 gap-3">
                 {medias &&
-                  loadedMedias.map((media: MediaDataProps) => (
-                    <>
+                  loadedMedias.map((media: MediaDataProps) => {
+                    return (
                       <NextImage
                         key={media.id}
                         src={media.url}
-                        alt={media.id}
+                        alt={media.alt}
                         fill
-                        className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                        className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                        onLoadingComplete={(e) => {
+                          e.classList.remove("loading-image")
+                        }}
                         onClick={(e) => {
                           e.preventDefault()
                           setSelectedFeaturedImageId(media.id)
@@ -373,8 +374,8 @@ export default function CreateArticlesDashboard() {
                           setOpenModal(false)
                         }}
                       />
-                    </>
-                  ))}
+                    )
+                  })}
               </div>
             </>
           }

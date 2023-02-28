@@ -35,6 +35,7 @@ import {
   TopicDataProps,
 } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+// import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
   title: string
@@ -61,7 +62,11 @@ export default function CreateDownloadsDashboard() {
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
-
+  // const [selectedDownloadFile, setSelectedDownloadFile] = React.useState<any>(
+  //   [],
+  // )
+  // const [selectedDownloadFileId, setSelectedDownloadFileId] =
+  //   React.useState<any>([])
   const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
@@ -103,14 +108,10 @@ export default function CreateDownloadsDashboard() {
     }
     setTopics(checkedTopics)
   }
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm<FormValues>({ mode: "onBlur" })
-
+  // const handleUpdateFile = (value: any) => {
+  //   setSelectedDownloadFile((prev: any) => [...prev, value])
+  //   setSelectedDownloadFileId((prev: any) => [...prev, value.id])
+  // }
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
@@ -134,6 +135,13 @@ export default function CreateDownloadsDashboard() {
     setLoading(false)
     editor?.commands.clearContent()
   }
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormValues>({ mode: "onBlur" })
 
   return (
     <>
@@ -452,7 +460,7 @@ export default function CreateDownloadsDashboard() {
           title="Select Featured Image"
           content={
             <>
-              <MediaUpload />
+              <MediaUpload addLoadMedias={setLoadedMedias} />
               <div className="my-3 grid grid-cols-5 gap-3">
                 {medias &&
                   loadedMedias.map((media: MediaDataProps) => (
@@ -461,7 +469,10 @@ export default function CreateDownloadsDashboard() {
                       src={media.url}
                       alt={media.id}
                       fill
-                      className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                      className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                      onLoadingComplete={(e) => {
+                        e.classList.remove("loading-image")
+                      }}
                       onClick={(e) => {
                         e.preventDefault()
                         setSelectedFeaturedImageId(media.id)

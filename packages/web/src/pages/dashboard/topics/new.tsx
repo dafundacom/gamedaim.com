@@ -193,7 +193,7 @@ export default function CreateTopicsDashboard() {
                 title="Select Featured Image"
                 content={
                   <>
-                    <MediaUpload />
+                    <MediaUpload addLoadMedias={setLoadedMedias} />
                     <div className="my-3 grid grid-cols-5 gap-3">
                       {medias &&
                         loadedMedias.map((media: MediaDataProps) => (
@@ -202,7 +202,10 @@ export default function CreateTopicsDashboard() {
                             src={media.url}
                             alt={media.alt}
                             fill
-                            className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                            className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                            onLoadingComplete={(e) => {
+                              e.classList.remove("loading-image")
+                            }}
                             onClick={(e) => {
                               e.preventDefault()
                               setSelectedFeaturedImageId(media.id)

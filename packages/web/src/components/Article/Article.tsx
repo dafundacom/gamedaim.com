@@ -9,8 +9,6 @@ import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
 import { parseAndSplitHTMLString } from "@/utils/split-html"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
-import { Breadcrumb } from "ui"
-import { MdChevronRight } from "react-icons/md"
 
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
@@ -137,27 +135,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 onClose={() => setOpenModal(false)}
               />
             )}
-          <div className="ml-4 mt-2">
-            <Breadcrumb separator={<MdChevronRight />}>
-              <Breadcrumb.Item bold>
-                <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <Breadcrumb.Link
-                  href={
-                    isWP
-                      ? `/${primaryData.slug}`
-                      : `/topic/${categories[0].slug}`
-                  }
-                >
-                  {isWP ? primaryData.name : categories[0].title}
-                </Breadcrumb.Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item currentPage>
-                <Breadcrumb.Link href={`/${slug}`}>{title}</Breadcrumb.Link>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          </div>
+
           <div>
             {categories?.map((category: any, i: number) => {
               return (
@@ -200,7 +178,10 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImageAlt}
-                className={`img-skeleton rounded-lg object-cover`}
+                className={`loading-image rounded-lg object-cover`}
+                onLoadingComplete={(e) => {
+                  e.classList.remove("loading-image")
+                }}
                 src={featuredImageUrl}
               />
               {featuredImageCaption && (

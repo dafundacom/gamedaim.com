@@ -44,7 +44,10 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
                       alt={list.title}
                       width={400}
                       height={400}
-                      className="h-[185px] w-[200px] max-w-[unset] object-cover"
+                      className="loading-image h-[185px] w-[200px] max-w-[unset] object-cover"
+                      onLoadingComplete={(e) => {
+                        e.classList.remove("loading-image")
+                      }}
                     />
                   </NextLink>
                   <IconButton className="!text-primary-800 !absolute top-[5px] right-[5px] !w-[25px] !rounded-full !bg-white bg-white !p-[1px]">

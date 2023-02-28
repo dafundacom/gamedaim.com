@@ -1,44 +1,39 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
-import { MdChevronRight } from "react-icons/md"
 
 import env from "@/env"
-import { getArticles, getArticlesCount } from "@/lib/articles"
-import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
-import { InfiniteScrollArticle } from "@/components/InfiniteScroll"
-import { Breadcrumb } from "ui"
-
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
+import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
+import { InfiniteScrollTopic } from "@/components/InfiniteScroll"
+import { MdChevronRight } from "react-icons/md"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
 
+import { HomeLayout } from "@/layouts/Home"
+import { Breadcrumb } from "ui"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-interface ArticlesProps {
-  articles: ArticlesDataProps
-  articlesCount: number
+interface TopicProps {
+  topic: TopicDataProps
+  download: any
 }
 
-export default function Articles(props: ArticlesProps) {
-  const { articles, articlesCount } = props
-  const totalPage = Math.ceil(articlesCount / 10)
-  const router = useRouter()
+export default function TopicArticle(props: TopicProps) {
+  const { topic } = props
+  const totalPage = Math.ceil(topic._count.articles / 10)
 
   return (
     <>
       <NextSeo
-        title={`Article | ${env.SITE_TITLE}`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`${topic.title} | ${env.SITE_TITLE}`}
+        description={topic.description}
+        canonical={`https://${env.DOMAIN}/${topic.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Article | ${env.SITE_TITLE}`,
-          description: env.DESCRIPTION,
+          url: `https://${env.DOMAIN}/${topic.slug}`,
+          title: `${topic.title} | ${env.SITE_TITLE}`,
+          description: topic.description,
         }}
       />
       <BreadcrumbJsonLd
@@ -50,8 +45,13 @@ export default function Articles(props: ArticlesProps) {
           },
           {
             position: 2,
-            name: "Article",
-            item: `https://${env.DOMAIN}${router.pathname}`,
+            name: "Topic",
+            item: `https://${env.DOMAIN}/topic`,
+          },
+          {
+            position: 3,
+            name: topic.title,
+            item: `https://${env.DOMAIN}/topic/${topic.slug}`,
           },
         ]}
       />
@@ -61,28 +61,33 @@ export default function Articles(props: ArticlesProps) {
             <div className="absolute top-1 ml-4">
               <Breadcrumb
                 className="!text-white"
-                separator={<MdChevronRight className="text-white" />}
+                separator={<MdChevronRight className="!text-white" />}
               >
                 <Breadcrumb.Item bold>
                   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
                 </Breadcrumb.Item>
-
+                <Breadcrumb.Item>
+                  <Breadcrumb.Link href="/article">Article</Breadcrumb.Link>
+                </Breadcrumb.Item>
                 <Breadcrumb.Item currentPage>
-                  <Breadcrumb.Link href="article">Article</Breadcrumb.Link>
+                  <Breadcrumb.Link href={`/${topic?.slug}`}>
+                    {topic?.title}
+                  </Breadcrumb.Link>
                 </Breadcrumb.Item>
               </Breadcrumb>
             </div>
             <div className="self-center">
               <Heading size="4xl" className="text-white">
-                Gamedaim
+                {topic.title}
               </Heading>
             </div>
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
-            <div className="flex w-full flex-col px-4 lg:mr-4">
-              <InfiniteScrollArticle
+            <div className="flex w-full flex-col px-4 lg:mr-4 lg:!w-2/3">
+              <InfiniteScrollTopic
                 index={2}
-                posts={articles}
+                id={topic.slug}
+                posts={topic.articles}
                 pageType="articles"
                 totalPage={totalPage}
               />
@@ -96,12 +101,12 @@ export default function Articles(props: ArticlesProps) {
                     </span>
                   </Heading>
                 </div>
-                {articles.map((article: ArticleDataProps) => {
+                {topic.articles.map((article: ArticleDataProps) => {
                   return (
                     <PostCardSide
                       key={article.id}
-                      src={article.featuredImage.url}
-                      alt={article.featuredImage.alt}
+                      src={article.featuredImage?.url}
+                      alt={article.featuredImage?.alt}
                       title={article.title}
                       slug={article.slug}
                       isWP={false}
@@ -117,11 +122,10 @@ export default function Articles(props: ArticlesProps) {
   )
 }
 
-export const getServerSideProps = async () => {
-  const { articles } = await getArticles()
-  const { articlesCount } = await getArticlesCount()
-
-  if (!articles) {
+export const getServerSideProps = async ({ params }: any) => {
+  const { topic } = await getArticlesByTopic(params.slug)
+  const { topic: download } = await getDownloadsByTopic(params?.slug)
+  if (!topic) {
     return {
       notFound: true,
     }
@@ -129,8 +133,8 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      articles: articles,
-      articlesCount: articlesCount,
+      topic,
+      download,
     },
   }
 }

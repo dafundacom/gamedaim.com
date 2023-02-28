@@ -14,8 +14,6 @@ export const PostCardSide = React.forwardRef<
 >((props, ref) => {
   const { src, alt, slug, isWP = true, title, ...rest } = props
 
-  const [image, setImage] = React.useState("/image/imgloader.gif")
-
   return (
     <NextLink href={isWP ? slug : (`/article/${slug}` as any)}>
       <article
@@ -29,10 +27,10 @@ export const PostCardSide = React.forwardRef<
               priority={true}
               height={75}
               width={75}
-              className="aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
-              src={image}
-              onLoadingComplete={() => {
-                setImage(src)
+              className="loading-image aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
+              src={src}
+              onLoadingComplete={(e) => {
+                e.classList.remove("loading-image")
               }}
               alt={alt}
             />

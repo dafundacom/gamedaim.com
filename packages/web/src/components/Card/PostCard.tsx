@@ -29,7 +29,6 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
     } = props
 
     const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl)
-    const [image, setImage] = React.useState("/image/imgloader.gif")
 
     dayjs.extend(relativeTime)
 
@@ -49,10 +48,10 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               priority={true}
               height={250}
               width={350}
-              className="post-card-thumbnail h-[90px] min-h-[90px] w-[125px] min-w-[125px] rounded-lg object-cover md:!h-[193px] md:!min-h-full md:!w-[270px] md:!min-w-[270px]"
-              src={image}
-              onLoadingComplete={() => {
-                setImage(src)
+              className="post-card-thumbnail loading-image h-[90px] min-h-[90px] w-[125px] min-w-[125px] rounded-lg object-cover md:!h-[193px] md:!min-h-full md:!w-[270px] md:!min-w-[270px]"
+              src={src}
+              onLoadingComplete={(e) => {
+                e.classList.remove("loading-image")
               }}
               alt={alt}
             />
