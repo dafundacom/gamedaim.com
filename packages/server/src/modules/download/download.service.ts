@@ -78,9 +78,9 @@ export async function getDownloads(downloadPage: number, perPage: number) {
   })
 }
 
-export async function findDownloadById(artilceId: string) {
+export async function findDownloadById(downloadId: string) {
   return await db.download.findUnique({
-    where: { id: artilceId },
+    where: { id: downloadId },
     select: {
       id: true,
       title: true,
@@ -271,9 +271,13 @@ export async function findDownloadByAuthorId(
   })
 }
 
-export async function findDownloadBySlug(artilceSlug: string) {
+export async function findDownloadBySlug(
+  downloadSlug: string,
+  downloadPage: number,
+  perPage: number,
+) {
   return await db.download.findUnique({
-    where: { slug: artilceSlug },
+    where: { slug: downloadSlug },
     select: {
       id: true,
       title: true,
@@ -304,6 +308,8 @@ export async function findDownloadBySlug(artilceSlug: string) {
       type: true,
       status: true,
       downloadFiles: {
+        skip: (downloadPage - 1) * perPage,
+        take: perPage,
         select: {
           id: true,
           title: true,
