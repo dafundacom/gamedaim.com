@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import dynamic from "next/dynamic"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { useRouter } from "next/router"
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
@@ -33,7 +32,6 @@ export default function DownloadGameVersion(props: {
   downloads: any
 }) {
   const { downloadFile, download, downloads } = props
-  const router: any = useRouter()
   dayjs.extend(relativeTime)
 
   const [showCountdown, setShowCountdown] = React.useState(false)
@@ -53,7 +51,7 @@ export default function DownloadGameVersion(props: {
       setInterval(() => {
         setShowCountdown(false)
         setCountdownInterval(null)
-        router.push(downloadFile.downloadLink)
+        window.open(downloadFile.downloadLink, "_blank")
       }, 10000),
     )
   }

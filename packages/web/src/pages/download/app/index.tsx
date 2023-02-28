@@ -45,7 +45,6 @@ export default function App(props: AppProps) {
             <div className="flex justify-between">
               <div className="flex space-x-2">
                 <DropdownLink list={topics} title={"Category"} />
-                <DropdownLink list={topics} title={"Platform"} />
               </div>
               <div>
                 <SearchInput />
