@@ -74,8 +74,6 @@ export default function EditArticleDashboard() {
     onError: (error: any) => {
       toast.error(error.message)
     },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
   })
 
   const router = useRouter()

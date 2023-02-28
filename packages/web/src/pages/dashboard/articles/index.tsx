@@ -20,22 +20,24 @@ import { ArticleDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
 
 export default function ArticlesDashboard() {
-  const [post, setPost] = React.useContext(ContentContext)
+  const [content, setContent] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
-  const [totalArticles, setTotalArticles]: any = React.useState()
+  const [totalArticles, setTotalArticles] = React.useState<number>(0)
 
-  const { articles } = post
+  const { articles } = content
 
   const router = useRouter()
   dayjs.extend(relativeTime)
+
   const { data } = useSWR(`/article/page/${page}`, fetcher, {
     onSuccess: (data) => {
-      setPost((prev: any) => ({ ...prev, articles: data }))
+      setContent((prev: any) => ({ ...prev, articles: data }))
     },
     onError: (error) => {
       toast.error(error.message)
     },
   })
+
   const { data: count } = useSWR(`/article/count`, fetcher, {
     onSuccess: (data) => {
       setTotalArticles(data)
@@ -48,7 +50,7 @@ export default function ArticlesDashboard() {
     try {
       const { data } = await axios.delete(`/article/${item.id}`)
 
-      setPost((prev: any) => ({
+      setContent((prev: any) => ({
         ...prev,
         articles: articles.filter((ad: { id: string }) => ad.id !== data.id),
       }))

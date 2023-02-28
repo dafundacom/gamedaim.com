@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -129,14 +130,8 @@ export default function EditScriptDashboard() {
                   )}
                 </FormControl>
                 <FormControl invalid={Boolean(errors.active)}>
-                  <FormLabel>
-                    Activate Script
-                    <RequiredIndicator />
-                  </FormLabel>
-                  <input type="checkbox" {...register("active")} />
-                  {errors?.active && (
-                    <FormErrorMessage>{errors.active.message}</FormErrorMessage>
-                  )}
+                  <FormLabel>Active</FormLabel>
+                  <Checkbox {...register("active")} />
                 </FormControl>
                 <Button type="submit" variant="solid" loading={loading}>
                   Submit
