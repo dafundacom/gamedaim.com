@@ -36,6 +36,7 @@ import {
 import { fetcher } from "@/lib/fetcher"
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
+import { ActionDashboard } from "@/components/Action"
 // import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
@@ -95,6 +96,18 @@ export default function CreateDownloadsDashboard() {
     setSelectedDownloadFile((prev: any) => [...prev, value])
     setSelectedDownloadFileId((prev: any) => [...prev, value.id])
     setShowAddFiles(false)
+  }
+
+  const handleDeleteFile = (value: DownloadFileDataProps) => {
+    const filteredResult = selectedDownloadFile.filter(
+      (item: any) => item.id !== value.id,
+    )
+
+    const filteredData = selectedDownloadFileId.filter(
+      (item: any) => item !== value.id,
+    )
+    setSelectedDownloadFile(filteredResult)
+    setSelectedDownloadFileId(filteredData)
   }
 
   const onSubmit = async (values: any) => {
@@ -479,6 +492,13 @@ export default function CreateDownloadsDashboard() {
                         </Td>
                         <Td>{downloadFile.fileSize}</Td>
                         <Td>{downloadFile.price}</Td>
+                        <Td align="right">
+                          <ActionDashboard
+                            onDelete={() => handleDeleteFile(downloadFile)}
+                            editLink={`/dashboard/download-files/${downloadFile.id}`}
+                            content={downloadFile.title}
+                          />
+                        </Td>
                       </Tr>
                     ),
                   )}

@@ -56,6 +56,8 @@ export default function SettingUserProfile() {
   const router = useRouter()
   const { data: medias } = useSWR(`/media/author/${auth.user.id}/1`, fetcher, {
     onSuccess: (data: any) => {
+      console.log(data)
+
       setLoadedMedias(data)
     },
     onError: (error: any) => {
@@ -131,7 +133,7 @@ export default function SettingUserProfile() {
       />
       <UserRole>
         <DefaultLayout>
-          <div className="mt-4 flex items-end justify-end">
+          <div className="mx-auto mt-[75px] flex max-w-[768px] items-end justify-end">
             <div className="flex-1 space-y-4">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormControl invalid={Boolean(errors.username)}>
