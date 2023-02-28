@@ -83,19 +83,6 @@ export default function Topic(props: TopicProps) {
           </div>
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:mx-auto lg:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col px-4 lg:mr-4 lg:!w-2/3">
-              <div className="px-4">
-                <div className={"my-2 flex flex-row justify-between"}>
-                  <Heading as="h2" size="2xl" bold>
-                    Downloads
-                  </Heading>
-                  <NextLink href={`/download/topic/${topic.slug}`}>
-                    <Text size="sm" colorScheme="blue">
-                      See more
-                    </Text>
-                  </NextLink>
-                </div>
-                <ListDownload listDownloads={download?.downloads} />
-              </div>
               <div>
                 <div className={"my-2 flex flex-row justify-between"}>
                   <Heading as="h2" size="2xl" bold>
@@ -108,6 +95,19 @@ export default function Topic(props: TopicProps) {
                   </NextLink>
                 </div>
                 <ListArticleFeatured featured={topic.articles} />
+              </div>
+              <div>
+                <div className={"my-2 flex flex-row justify-between"}>
+                  <Heading as="h2" size="2xl" bold>
+                    Downloads
+                  </Heading>
+                  <NextLink href={`/download/topic/${topic.slug}`}>
+                    <Text size="sm" colorScheme="blue">
+                      See more
+                    </Text>
+                  </NextLink>
+                </div>
+                <ListDownload listDownloads={download?.downloads} />
               </div>
             </div>
             <aside className="hidden w-4/12 px-4 lg:block">

@@ -69,7 +69,7 @@ export default defineConfig({
       @apply ring-200;
     }
     .loading-image {
-     animation: loading 2s cubic-bezier(.4,0,.6,1) infinite;
+     animation: loading 1s cubic-bezier(.4,0,.6,1) infinite;
     }
     .scrollbar {
       scroll-behavior: smooth;

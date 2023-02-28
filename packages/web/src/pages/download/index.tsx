@@ -41,7 +41,6 @@ export default function Download(props: DownloadProps) {
             <div className="flex justify-between">
               <div className="flex space-x-2">
                 <DropdownLink list={topics} title={"Category"} />
-                <DropdownLink list={topics} title={"Platform"} />
               </div>
               <div>
                 <SearchInput />
@@ -76,15 +75,10 @@ export default function Download(props: DownloadProps) {
             <ListDownload listDownloads={apps?.downloadByType} />
           </div>
           <div className="w-full px-4">
-            <div className={"my-2 flex flex-row justify-between"}>
+            <div className={"my-2 flex flex-row justify-start"}>
               <Heading as="h2" size="2xl" bold>
                 Newest
               </Heading>
-              <NextLink href="/download/app/">
-                <Text size="sm" colorScheme="blue">
-                  See more
-                </Text>
-              </NextLink>
             </div>
             <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               <DownloadCard list={downloads} />

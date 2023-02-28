@@ -91,7 +91,9 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
           {
             position: 2,
             name: download.topics[0]?.title,
-            item: `https://${env.DOMAIN}/topic/${download.topics[0]?.slug}`,
+            item:
+              download.topics &&
+              `https://${env.DOMAIN}/topic/${download.topics[0]?.slug}`,
           },
         ]}
       />
@@ -185,7 +187,7 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                     <SpecBox
                       icon={MdCategory}
                       title="Category"
-                      value={download.topics[0].title}
+                      value={download.topics && download.topics[0]?.title}
                     />
                     <SpecBox
                       icon={MdUpdate}

@@ -133,22 +133,27 @@ export const AddTopics = (props: AddTopicsProps) => {
           <div className="rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
             <div className="parent-focus flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
               {selectedTopics.length > 0 &&
-                selectedTopics.map((topic: TopicDataProps) => {
-                  return (
-                    <>
-                      <div className="flex items-center bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white">
-                        <span>{topic.title}</span>
-                        <Button
-                          as="div"
-                          onClick={() => handleRemoveValue(topic)}
-                          className="!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
+                selectedTopics.map(
+                  (topic: TopicDataProps, i: React.Key | null | undefined) => {
+                    return (
+                      <>
+                        <div
+                          key={i}
+                          className="flex items-center bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white"
                         >
-                          <MdOutlineClose />
-                        </Button>
-                      </div>
-                    </>
-                  )
-                })}
+                          <span>{topic.title}</span>
+                          <Button
+                            as="div"
+                            onClick={() => handleRemoveValue(topic)}
+                            className="!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
+                          >
+                            <MdOutlineClose />
+                          </Button>
+                        </div>
+                      </>
+                    )
+                  },
+                )}
               <Input
                 type="text"
                 {...register("title", {

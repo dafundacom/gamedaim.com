@@ -42,7 +42,8 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
   const { download, downloads } = props
   dayjs.extend(relativeTime)
 
-  const fileVersion = download?.downloadFiles[0]
+  const fileVersion =
+    download.downloadFiles[0] === true && download?.downloadFiles[0]
 
   return (
     <>

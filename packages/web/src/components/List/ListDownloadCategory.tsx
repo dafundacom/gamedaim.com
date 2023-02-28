@@ -3,6 +3,7 @@ import NextLink from "next/link"
 import NextImage from "next/image"
 import { Button, Heading, Text } from "ui"
 import { TopicDataProps } from "@/lib/data-types"
+import { MdArrowBack, MdArrowForward } from "react-icons/md"
 
 interface ListDownloadCategoryProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,7 +21,7 @@ export const ListDownloadCategory = React.forwardRef<
   const [nextDisplay, setNextDisplay] = React.useState("md:!flex")
 
   const arrowClass =
-    "!hidden justify-center content-center bg-white p-2 cursor-pointer !absolute !rounded-full"
+    "!hidden justify-center content-center !bg-white  hover:!bg-slate-800 hover:!text-white !p-2 cursor-pointer !ring-0 !absolute !rounded-full"
 
   const contentRef: any = React.useRef(null)
   const content: any = contentRef.current
@@ -66,15 +67,7 @@ export const ListDownloadCategory = React.forwardRef<
             variant="outline"
             className={`${arrowClass} ${prevDisplay} left-0 top-[50%] !z-[8] hidden translate-x-2/4	-translate-y-2/4`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z" />
-              <path d="M15.61 7.41L14.2 6l-6 6 6 6 1.41-1.41L11.03 12l4.58-4.59z" />
-            </svg>
+            <MdArrowBack />
           </Button>
           <Button
             onClick={handleNextClick}
@@ -82,15 +75,7 @@ export const ListDownloadCategory = React.forwardRef<
             variant="outline"
             className={`${arrowClass} md:flex ${nextDisplay} right-[40px] top-[50%] !z-[8]	-translate-y-2/4 translate-x-2/4`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z" />
-              <path d="M10.02 6L8.61 7.41 13.19 12l-4.58 4.59L10.02 18l6-6-6-6z" />
-            </svg>
+            <MdArrowForward />
           </Button>
         </>
       )}

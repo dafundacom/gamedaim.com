@@ -76,7 +76,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
             >
               <Text className="hover:text-primary-400 !inline-flex items-center font-bold">
                 <MdDownload className={stylesIcons} />
-                Downloads
+                Download
               </Text>
             </NextLink>
           </li>
