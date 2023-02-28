@@ -12,7 +12,6 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
 import {
   Button,
-  Checkbox,
   FormControl,
   FormErrorMessage,
   Heading,
@@ -35,6 +34,7 @@ import {
   TopicDataProps,
 } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { AddTopics } from "@/components/Form"
 
 interface FormValues {
   title: string
@@ -56,7 +56,7 @@ export default function EditDownloadDashboard() {
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
   const [topics, setTopics] = React.useState<any>([])
-  const [loadedTopics, setLoadedTopics] = React.useState([])
+  const [selectedTopics, setSelectedTopics] = React.useState([])
   const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
@@ -95,14 +95,6 @@ export default function EditDownloadDashboard() {
     revalidateIfStale: true,
     refreshInterval: 1000,
   })
-  const { data: listTopics } = useSWR(`/topic/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedTopics(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
 
   const router = useRouter()
 
@@ -115,17 +107,6 @@ export default function EditDownloadDashboard() {
     reset(download)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [download])
-
-  const assignTopic = (id: string | never) => {
-    const checkedTopics = [...topics]
-    const index = checkedTopics.indexOf(id as never)
-    if (index === -1) {
-      checkedTopics.push(id as never)
-    } else {
-      checkedTopics.splice(index, 1)
-    }
-    setTopics(checkedTopics)
-  }
 
   const loadDownload = async () => {
     try {
@@ -248,34 +229,12 @@ export default function EditDownloadDashboard() {
                     )}
                   </FormControl>
                 </div>
-                <div className="my-2 flex flex-col px-4">
-                  <Heading as="h3" size="md">
-                    Topics
-                  </Heading>
-                  {listTopics &&
-                    loadedTopics.map((topic: TopicDataProps) => (
-                      <>
-                        {topics.find((t: string) => t == topic.id) ? (
-                          <Checkbox
-                            key={topic.title}
-                            value={topic.id}
-                            onChange={() => assignTopic(topic.id as string)}
-                            checked={true}
-                          >
-                            {topic.title}
-                          </Checkbox>
-                        ) : (
-                          <Checkbox
-                            key={topic.title}
-                            value={topic.id}
-                            onChange={() => assignTopic(topic.id as string)}
-                          >
-                            {topic.title}
-                          </Checkbox>
-                        )}
-                      </>
-                    ))}
-                </div>
+                <AddTopics
+                  topics={topics}
+                  addTopics={setTopics}
+                  selectedTopics={selectedTopics}
+                  addSelectedTopics={setSelectedTopics}
+                />
                 {selectedFeaturedImageId ? (
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">

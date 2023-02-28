@@ -131,7 +131,7 @@ export default function TopicsDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {count === false && page !== lastPage && (
+                      {count && page !== lastPage && (
                         <IconButton
                           onClick={() => {
                             setPage((old) => old + 1)
