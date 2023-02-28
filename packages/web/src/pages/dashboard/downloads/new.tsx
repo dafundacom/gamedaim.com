@@ -28,9 +28,14 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
-import { DownloadSchemaTypeData, MediaDataProps } from "@/lib/data-types"
+import {
+  DownloadFileDataProps,
+  DownloadSchemaTypeData,
+  MediaDataProps,
+} from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
-import { AddTopics } from "@/components/Form"
+import { AddDownloadFile, AddTopics } from "@/components/Form"
+import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 // import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
@@ -59,11 +64,12 @@ export default function CreateDownloadsDashboard() {
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
-  // const [selectedDownloadFile, setSelectedDownloadFile] = React.useState<any>(
-  //   [],
-  // )
-  // const [selectedDownloadFileId, setSelectedDownloadFileId] =
-  //   React.useState<any>([])
+  const [selectedDownloadFile, setSelectedDownloadFile] = React.useState<any>(
+    [],
+  )
+  const [selectedDownloadFileId, setSelectedDownloadFileId] =
+    React.useState<any>([])
+  const [showAddFiles, setShowAddFiles] = React.useState(false)
   const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
@@ -85,30 +91,43 @@ export default function CreateDownloadsDashboard() {
     },
   })
 
-  // const handleUpdateFile = (value: any) => {
-  //   setSelectedDownloadFile((prev: any) => [...prev, value])
-  //   setSelectedDownloadFileId((prev: any) => [...prev, value.id])
-  // }
+  const handleUpdateFile = (value: any) => {
+    setSelectedDownloadFile((prev: any) => [...prev, value])
+    setSelectedDownloadFileId((prev: any) => [...prev, value.id])
+    setShowAddFiles(false)
+  }
+
   const onSubmit = async (values: any) => {
     setLoading(true)
-    try {
-      const mergedValues = {
-        ...values,
-        content: editorContent,
-        topicIds: topics,
-        featuredImageId: selectedFeaturedImageId,
+    if (selectedDownloadFile.length > 0) {
+      try {
+        const mergedValues = {
+          ...values,
+          content: editorContent,
+          topicIds: topics,
+          downloadFileIds: selectedDownloadFileId,
+          featuredImageId: selectedFeaturedImageId,
+        }
+        const { data } = await axios.post("/download", mergedValues)
+        if (data?.error) {
+          toast.error(data.error)
+        } else {
+          setSelectedDownloadFile([])
+          setSelectedDownloadFileId([])
+          setSelectedFeaturedImageId("")
+          setSelectedFeaturedImageUrl("")
+          setSelectedTopics([])
+          reset()
+          toast.success("Download Successfully created")
+        }
+      } catch (err: any) {
+        console.log("err => ", err)
+        toast.error(err.response.data.message)
       }
-      const { data } = await axios.post("/download", mergedValues)
-      if (data?.error) {
-        toast.error(data.error)
-      } else {
-        reset()
-        toast.success("Download Successfully created")
-      }
-    } catch (err: any) {
-      console.log("err => ", err)
-      toast.error(err.response.data.message)
+    } else {
+      toast.error("File is empty")
     }
+
     setLoading(false)
     editor?.commands.clearContent()
   }
@@ -423,7 +442,56 @@ export default function CreateDownloadsDashboard() {
             </div>
           </ArticleDashboardLayout>
         </form>
-
+        <div className="border-t p-4">
+          <div className="flex justify-between pb-2">
+            <Heading>Files</Heading>
+            <Button onClick={() => setShowAddFiles(true)}>Add File</Button>
+          </div>
+          <div>
+            {selectedDownloadFile.length > 0 && (
+              <Table>
+                <Thead>
+                  <Tr isTitle>
+                    <Th>Title</Th>
+                    <Th>Version</Th>
+                    <Th>Size</Th>
+                    <Th>Price</Th>
+                    <Th>Action</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {selectedDownloadFile.map(
+                    (downloadFile: DownloadFileDataProps) => (
+                      <Tr key={downloadFile.id}>
+                        <Td className="whitespace-nowrap">
+                          <div className="flex">
+                            <span className="font-medium">
+                              {downloadFile.title}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td className="whitespace-nowrap">
+                          <div className="flex">
+                            <span className="font-medium">
+                              {downloadFile.version}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td>{downloadFile.fileSize}</Td>
+                        <Td>{downloadFile.price}</Td>
+                      </Tr>
+                    ),
+                  )}
+                </Tbody>
+              </Table>
+            )}
+          </div>
+          {showAddFiles && (
+            <div>
+              <AddDownloadFile updateDownloadFiles={handleUpdateFile} />
+            </div>
+          )}
+        </div>
         <Modal
           title="Select Featured Image"
           content={

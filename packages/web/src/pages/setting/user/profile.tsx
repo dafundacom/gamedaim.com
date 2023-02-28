@@ -241,7 +241,7 @@ export default function SettingUserProfile() {
                 title="Select Profile Picture"
                 content={
                   <>
-                    <MediaUpload />
+                    <MediaUpload addLoadMedias={setLoadedMedias} />
                     <div className="my-3 grid grid-cols-5 gap-3">
                       {medias &&
                         loadedMedias.map((media: MediaDataProps) => (
