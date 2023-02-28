@@ -35,6 +35,7 @@ import {
   TopicDataProps,
 } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+// import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
   title: string
@@ -61,7 +62,11 @@ export default function CreateDownloadsDashboard() {
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
-
+  // const [selectedDownloadFile, setSelectedDownloadFile] = React.useState<any>(
+  //   [],
+  // )
+  // const [selectedDownloadFileId, setSelectedDownloadFileId] =
+  //   React.useState<any>([])
   const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
@@ -103,14 +108,10 @@ export default function CreateDownloadsDashboard() {
     }
     setTopics(checkedTopics)
   }
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm<FormValues>({ mode: "onBlur" })
-
+  // const handleUpdateFile = (value: any) => {
+  //   setSelectedDownloadFile((prev: any) => [...prev, value])
+  //   setSelectedDownloadFileId((prev: any) => [...prev, value.id])
+  // }
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
@@ -134,6 +135,13 @@ export default function CreateDownloadsDashboard() {
     setLoading(false)
     editor?.commands.clearContent()
   }
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormValues>({ mode: "onBlur" })
 
   return (
     <>

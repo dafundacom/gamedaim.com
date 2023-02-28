@@ -5,7 +5,6 @@ import dynamic from "next/dynamic"
 import dayjs from "dayjs"
 import parse from "html-react-parser"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { useRouter } from "next/router"
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
@@ -25,73 +24,25 @@ import { Breadcrumb, Button, Heading, Text } from "ui"
 
 import env from "@/env"
 import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
-import { DownloadDataProps, DownloadFileDataProps } from "@/lib/data-types"
+import { DownloadFileDataProps } from "@/lib/data-types"
+import { HomeLayout } from "@/layouts/Home"
 
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
-const CounterDownload = dynamic(() =>
-  import("@/components/Counter").then((mod) => mod.CounterDownload),
-)
+
 const ListDownload = dynamic(() =>
   import("@/components/List").then((mod) => mod.ListDownload),
 )
 const SpecBox = dynamic(() =>
   import("@/components/Box").then((mod) => mod.SpecBox),
 )
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
 
-export default function DownloadApp(props: { download: any; downloads: any }) {
+export default function DownloadGame(props: { download: any; downloads: any }) {
   const { download, downloads } = props
-
-  const router: any = useRouter()
   dayjs.extend(relativeTime)
 
-  const [showCountdown, setShowCountdown] = React.useState(false)
-  const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
-  const [fileVersion, setFileVersion] = React.useState(
-    download?.downloadFiles[0],
-  )
-  const [showAllVersion, setShowAllVersion] = React.useState(false)
-
-  React.useEffect(() => {
-    return () => {
-      if (countdownInterval) {
-        clearInterval(countdownInterval)
-      }
-    }
-  }, [countdownInterval])
-
-  const handleShowAllVersion = () => {
-    setShowAllVersion(true)
-    if (showAllVersion) {
-      router.push(
-        `/download/${download.type.toLowerCase()}/${
-          router.query.slug
-        }#all-version`,
-      )
-    }
-  }
-
-  const handleChangeVersion = (element: any) => {
-    setFileVersion(element)
-    router.push(
-      `/download/${download.type.toLowerCase()}/${router.query.slug}#download`,
-    )
-  }
-
-  const handleDownloadClick = () => {
-    setShowCountdown(true)
-    setCountdownInterval(
-      setInterval(() => {
-        setShowCountdown(false)
-        setCountdownInterval(null)
-        router.push(fileVersion?.downloadLink)
-      }, 10000),
-    )
-  }
+  const fileVersion = download?.downloadFiles[0]
 
   return (
     <>
@@ -148,12 +99,15 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
         <section className="flex w-full flex-col">
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col overflow-x-hidden px-4 lg:mr-4">
-              <Breadcrumb separator={<MdChevronRight />}>
+              <Breadcrumb
+                className="dark:text-gray-200"
+                separator={<MdChevronRight />}
+              >
                 <Breadcrumb.Item bold>
                   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                  <Breadcrumb.Link href="/download/game">App</Breadcrumb.Link>
+                  <Breadcrumb.Link href="/download/game">Game</Breadcrumb.Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item currentPage>
                   <Breadcrumb.Link href={`/${download?.slug}`}>
@@ -164,7 +118,7 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
               <div
                 className={"my-5 flex flex-col space-x-2 space-y-2 lg:flex-row"}
               >
-                <div className="w-full space-y-4">
+                <div className={"w-full space-y-4"}>
                   <div
                     id="download"
                     className="rounded-xl bg-white p-7 shadow-md dark:bg-gray-800"
@@ -187,48 +141,36 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                         >
                           {download?.title}
                         </Heading>
-                        {download.downloadFiles.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            <Text>{fileVersion.version}</Text>
-                            <span
-                              onClick={handleShowAllVersion}
-                              className="cursor-pointer text-green-500"
-                            >
-                              Show All Version
-                            </span>
-                          </div>
-                        )}
-                        {/* <span className={"inline-flex align-middle"}>
-                          <AiFillStar className={"h-5 w-5 text-green-200"} />
-                          <Text>4/5 (33 Reviewer)</Text>
-                        </span> */}
+
+                        <div className="flex flex-wrap gap-2">
+                          <Text>{fileVersion.version}</Text>
+                          <NextLink
+                            href={`/download/game/${download.slug}#all-version`}
+                            className="text-green-400"
+                          >
+                            Show All Version
+                          </NextLink>
+                        </div>
+
                         <Text>{download?.developer}</Text>
                         <div className={"inline-flex space-x-2 pt-12"}>
                           <Button colorScheme="gray">
-                            <NextLink href={download?.officialWeb}>
+                            <a href={download?.officialWeb} target="_blank">
                               Official Web
-                            </NextLink>
+                            </a>
                           </Button>
-                          {download?.downloadFiles.length >= 1 && (
-                            <Button
-                              onClick={handleDownloadClick}
-                              colorScheme="primary"
-                              disabled={showCountdown}
-                            >
-                              Download
-                            </Button>
-                          )}
+                          <NextLink
+                            href={`/download/game/${download.slug}/${fileVersion.slug}`}
+                          >
+                            <Button colorScheme="primary">Download</Button>
+                          </NextLink>
                         </div>
                       </div>
                     </div>
                   </div>
-                  {showCountdown && (
-                    <div className="bg-green-100 p-7 text-black">
-                      Link download akan terbuka pada {<CounterDownload />}{" "}
-                      detik
-                    </div>
-                  )}
-                  <div className="p-7">{parse(download?.content)}</div>
+                  <div className="p-7 dark:text-gray-200">
+                    {parse(download.content)}
+                  </div>
                   <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
                     <SpecBox
                       icon={HiChip}
@@ -240,7 +182,11 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                       title="Developer"
                       value={download?.developer}
                     />
-                    <SpecBox icon={MdCategory} title="Category" value={"ss"} />
+                    <SpecBox
+                      icon={MdCategory}
+                      title="Category"
+                      value={download.topics[0].title}
+                    />
                     <SpecBox
                       icon={MdUpdate}
                       title="Last Update"
@@ -250,7 +196,7 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                       <SpecBox
                         icon={MdFolder}
                         title="File Size"
-                        value={fileVersion?.fileSize}
+                        value={fileVersion.fileSize}
                       />
                     )}
                     <SpecBox
@@ -259,30 +205,32 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                       value={download?.license}
                     />
                   </div>
-                  {showAllVersion && (
-                    <div id="all-version" className="space-y-2">
-                      <Heading>All version</Heading>
-                      <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
-                        {download.downloadFiles.length > 0 &&
-                          download.downloadFiles.map(
-                            (downloadFile: DownloadFileDataProps) => {
-                              return (
-                                <div
-                                  onClick={() =>
-                                    handleChangeVersion(downloadFile)
-                                  }
-                                  className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
+
+                  <div id="all-version" className="space-y-2">
+                    <Heading>All version</Heading>
+                    <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
+                      {download.downloadFiles.length > 0 &&
+                        download.downloadFiles.map(
+                          (downloadFile: DownloadFileDataProps) => {
+                            return (
+                              <div className="cursor-pointer rounded bg-gray-200 p-2 shadow-md dark:bg-gray-800">
+                                <NextLink
+                                  href={`/download/game/${download.slug}/${downloadFile.slug}`}
                                 >
                                   <Text>{downloadFile.version}</Text>
                                   <Text>{downloadFile.title}</Text>
                                   <Text>{downloadFile.fileSize}</Text>
-                                </div>
-                              )
-                            },
-                          )}
-                      </div>
+                                  <Text>
+                                    {dayjs(downloadFile.createdAt).fromNow()}
+                                  </Text>
+                                </NextLink>
+                              </div>
+                            )
+                          },
+                        )}
                     </div>
-                  )}
+                  </div>
+
                   <div className="w-full px-4">
                     <div className={"my-2 flex flex-row justify-start"}>
                       <Heading as="h2" size="2xl" bold>
@@ -303,19 +251,28 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                     </span>
                   </Heading>
                 </div>
-                {downloads.map((download: DownloadDataProps) => {
-                  return (
-                    <DownloadCardSide
-                      key={download.id}
-                      src={download.featuredImage?.url}
-                      title={download.title}
-                      //@ts-ignore FIX: LATER
-                      slug={`/download/${download.type.toLowerCase()}/${
-                        download.slug
-                      }`}
-                    />
-                  )
-                })}
+                {downloads.map(
+                  (download: {
+                    id: number
+                    featuredImage: {
+                      url: string
+                    }
+                    slug: string
+                    title: string
+                    type: string
+                  }) => {
+                    return (
+                      <DownloadCardSide
+                        key={download.id}
+                        src={download.featuredImage?.url}
+                        title={download.title}
+                        slug={`/download/${download.type.toLowerCase()}/${
+                          download.slug
+                        }`}
+                      />
+                    )
+                  },
+                )}
               </div>
             </aside>
           </div>
@@ -328,9 +285,9 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
 export async function getServerSideProps({ params }: any) {
   const slug = params.slug
 
-  const { downloadByType } = await getDownloadByType("App")
+  const { downloadByType } = await getDownloadByType("Game")
   const { download } = await getDownloadBySlug(slug)
-  if (!download || download.type !== "App") {
+  if (!download || download.type !== "Game") {
     return {
       notFound: true,
     }

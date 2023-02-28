@@ -1,9 +1,7 @@
 import * as React from "react"
 import NextImage from "next/image"
-import NextLink from "next/link"
 import dynamic from "next/dynamic"
 import dayjs from "dayjs"
-import parse from "html-react-parser"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { useRouter } from "next/router"
 import {
@@ -12,21 +10,13 @@ import {
   NextSeo,
   SoftwareAppJsonLd,
 } from "next-seo"
-import { HiChip } from "react-icons/hi"
-import {
-  MdCode,
-  MdChevronRight,
-  MdUpdate,
-  MdCategory,
-  MdFolder,
-  MdVpnKey,
-} from "react-icons/md"
+import { MdChevronRight } from "react-icons/md"
 import { Breadcrumb, Button, Heading, Text } from "ui"
 
 import env from "@/env"
-import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
-import { DownloadFileDataProps } from "@/lib/data-types"
-
+import { getDownloadBySlug, getDownloads } from "@/lib/download"
+import { getDownloadFileBySlug } from "@/lib/download-file"
+import { HomeLayout } from "@/layouts/Home"
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
@@ -36,23 +26,18 @@ const CounterDownload = dynamic(() =>
 const ListDownload = dynamic(() =>
   import("@/components/List").then((mod) => mod.ListDownload),
 )
-const SpecBox = dynamic(() =>
-  import("@/components/Box").then((mod) => mod.SpecBox),
-)
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
-export default function DownloadGame(props: { download: any; downloads: any }) {
-  const { download, downloads } = props
+
+export default function DownloadGameVersion(props: {
+  download: any
+  downloadFile: any
+  downloads: any
+}) {
+  const { downloadFile, download, downloads } = props
   const router: any = useRouter()
   dayjs.extend(relativeTime)
 
   const [showCountdown, setShowCountdown] = React.useState(false)
   const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
-  const [fileVersion, setFileVersion] = React.useState(
-    download?.downloadFiles[0],
-  )
-  const [showAllVersion, setShowAllVersion] = React.useState(false)
 
   React.useEffect(() => {
     return () => {
@@ -61,29 +46,14 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
       }
     }
   }, [countdownInterval])
-  const handleShowAllVersion = () => {
-    setShowAllVersion(true)
-    if (showAllVersion) {
-      router.push(
-        `/download/${download.type.toLowerCase()}/${
-          router.query.slug
-        }#all-version`,
-      )
-    }
-  }
-  const handleChangeVersion = (element: any) => {
-    setFileVersion(element)
-    router.push(
-      `/download/${download.type.toLowerCase()}/${router.query.slug}#download`,
-    )
-  }
+
   const handleDownloadClick = () => {
     setShowCountdown(true)
     setCountdownInterval(
       setInterval(() => {
         setShowCountdown(false)
         setCountdownInterval(null)
-        router.push(fileVersion.downloadLink)
+        router.push(downloadFile.downloadLink)
       }, 10000),
     )
   }
@@ -119,8 +89,8 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
       />
       <SoftwareAppJsonLd
         name={download.title}
-        price={download.downloadFiles[0]?.price}
-        priceCurrency={download.downloadFiles[0]?.currency}
+        price={downloadFile?.price}
+        priceCurrency={downloadFile?.currency}
         aggregateRating={{ ratingValue: "5.0", reviewCount: "1" }}
         operatingSystem={download.operationSystem}
         applicationCategory={download.schemaType}
@@ -143,7 +113,10 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
         <section className="flex w-full flex-col">
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col overflow-x-hidden px-4 lg:mr-4">
-              <Breadcrumb separator={<MdChevronRight />}>
+              <Breadcrumb
+                className="dark:text-white"
+                separator={<MdChevronRight />}
+              >
                 <Breadcrumb.Item bold>
                   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
                 </Breadcrumb.Item>
@@ -182,33 +155,20 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                         >
                           {download?.title}
                         </Heading>
-                        {download.downloadFiles.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            <Text>{fileVersion.version}</Text>
-                            <span
-                              onClick={handleShowAllVersion}
-                              className="cursor-pointer text-green-500"
-                            >
-                              Show All Version
-                            </span>
-                          </div>
-                        )}
+
+                        <div className="flex flex-wrap gap-2">
+                          <Text>{downloadFile.version}</Text>
+                        </div>
+
                         <Text>{download?.developer}</Text>
                         <div className={"inline-flex space-x-2 pt-12"}>
-                          <Button colorScheme="gray">
-                            <NextLink href={download?.officialWeb}>
-                              Official Web
-                            </NextLink>
+                          <Button
+                            onClick={handleDownloadClick}
+                            colorScheme="primary"
+                            disabled={showCountdown}
+                          >
+                            Download ({downloadFile.fileSize})
                           </Button>
-                          {download?.downloadFiles.length >= 1 && (
-                            <Button
-                              onClick={handleDownloadClick}
-                              colorScheme="primary"
-                              disabled={showCountdown}
-                            >
-                              Download
-                            </Button>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -219,61 +179,7 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                       {<CounterDownload />} detik
                     </div>
                   )}
-                  <div className="p-7">{parse(download.content)}</div>
-                  <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
-                    <SpecBox
-                      icon={HiChip}
-                      title="Sistem Operasi"
-                      value={download?.operationSystem}
-                    />
-                    <SpecBox
-                      icon={MdCode}
-                      title="Developer"
-                      value={download?.developer}
-                    />
-                    <SpecBox icon={MdCategory} title="Category" value={"ss"} />
-                    <SpecBox
-                      icon={MdUpdate}
-                      title="Last Update"
-                      value={dayjs(download?.updatedAt).fromNow()}
-                    />
-                    {download.downloadFiles.length > 0 && (
-                      <SpecBox
-                        icon={MdFolder}
-                        title="File Size"
-                        value={fileVersion.fileSize}
-                      />
-                    )}
-                    <SpecBox
-                      icon={MdVpnKey}
-                      title="License"
-                      value={download?.license}
-                    />
-                  </div>
-                  {showAllVersion && (
-                    <div id="all-version" className="space-y-2">
-                      <Heading>All version</Heading>
-                      <div className="grid grid-cols-3 grid-rows-2 gap-4 rounded-lg bg-white dark:bg-gray-800">
-                        {download.downloadFiles.length > 0 &&
-                          download.downloadFiles.map(
-                            (downloadFile: DownloadFileDataProps) => {
-                              return (
-                                <div
-                                  onClick={() =>
-                                    handleChangeVersion(downloadFile)
-                                  }
-                                  className="cursor-pointer rounded bg-gray-200 p-2 dark:bg-gray-800"
-                                >
-                                  <Text>{downloadFile.version}</Text>
-                                  <Text>{downloadFile.title}</Text>
-                                  <Text>{downloadFile.fileSize}</Text>
-                                </div>
-                              )
-                            },
-                          )}
-                      </div>
-                    </div>
-                  )}
+
                   <div className="w-full px-4">
                     <div className={"my-2 flex flex-row justify-start"}>
                       <Heading as="h2" size="2xl" bold>
@@ -326,16 +232,15 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
 }
 
 export async function getServerSideProps({ params }: any) {
-  const slug = params.slug
-
-  const { downloadByType } = await getDownloadByType("Game")
-  const { download } = await getDownloadBySlug(slug)
-  if (!download || download.type !== "Game") {
+  const { downloadFile } = await getDownloadFileBySlug(params.version)
+  const { download } = await getDownloadBySlug(params.slug)
+  const { downloads } = await getDownloads()
+  if (!download || !downloadFile) {
     return {
       notFound: true,
     }
   }
   return {
-    props: { downloads: downloadByType, download: download },
+    props: { downloadFile, download, downloads },
   }
 }
