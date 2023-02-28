@@ -188,14 +188,18 @@ export default defineConfig({
       position: relative;
     }
 
-    .article-body ul::before, .download-body ul::before {
-    }
+    .article-body ul li {
+        @apply text-gray-900 dark:text-gray-200;
+      }
 
-    .article-body ul::before, .download-body ul::before {
-      @apply left-[3px] dark:bg-[#ffffff1c] md:left-[20px] absolute top-0 bottom-0 w-[5px] h-full rounded-[10px];
-      content: " ";
-      background: #0000001c;
-    }
+    /* .article-body ul::before, .download-body ul::before { */
+    /* } */
+    /**/
+    /* .article-body ul::before, .download-body ul::before { */
+    /*   @apply left-[3px] dark:bg-[#ffffff1c] md:left-[20px] absolute top-0 bottom-0 w-[5px] h-full rounded-[10px]; */
+    /*   content: " "; */
+    /*   background: #0000001c; */
+    /* } */
 
     .article-body ul,
     .article-body figure, .download-body ul, .download-body figure {
@@ -360,7 +364,7 @@ export default defineConfig({
     .ProseMirror a {
       @apply text-primary-500 hover:text-primary-600 dark:text-primary-300 dark:hover:text-primary-400 duration-200 hover:underline;
     }
-    .ProseMirror ul li {
+    .ProseMirror ul li, .article-body ul li {
       @apply ml-12 list-disc;
     }
     .ProseMirror ol li {
@@ -487,10 +491,6 @@ export default defineConfig({
         }
       }
 
-      // .range:hover {
-      //   box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3);
-      // }
-
       .range::-webkit-slider-thumb {
         -webkit-appearance: none;
         opacity: 0;
@@ -514,13 +514,6 @@ export default defineConfig({
         transition: var(--transition);
       }
 
-      // .range::-webkit-slider-thumb:hover {
-      //   transform: scale(var(--hover-scale));
-      // }
-
-      // .range::-moz-range-thumb:hover {
-      //   transform: scale(var(--hover-scale));
-      // }
     }
     /* Dafunda Blocks */
     /* Dafunda Blocks - Review */
