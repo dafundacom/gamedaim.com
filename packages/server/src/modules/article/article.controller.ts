@@ -21,7 +21,6 @@ export async function createArticleHandler(
       slug: string
       authorId: string
       featuredImageId: string
-      topicIds: string[]
     }
   }>,
   reply: FastifyReply,

@@ -24,7 +24,7 @@ const downloadInput = {
       invalid_type_error: "Meta Description must be a string",
     })
     .optional(),
-  topicIds: z.array(z.string()).optional(),
+  downloadFileIds: z.array(z.string()).optional(),
   featuredImageId: z.string({
     required_error: "Featured Image is required",
     invalid_type_error: "Featured Image must be a string",
@@ -53,6 +53,7 @@ const downloadInput = {
     required_error: "Download Type is required",
     invalid_type_error: "Download Type Type must be a string",
   }),
+  downloadFileIds: z.array(z.string()).optional(),
 }
 
 const updateDownloadInput = {
@@ -66,7 +67,7 @@ const updateDownloadInput = {
       message: "Slug should be character a-z, A-Z, number, - and _",
     }),
   featuredImageId: z.string(),
-  topicIds: z.array(z.string()).optional(),
+  downloadFileIds: z.array(z.string()).optional(),
 }
 
 const downloadGenerated = {

@@ -22,7 +22,6 @@ export async function createDownloadHandler(
       slug: string
       authorId: string
       featuredImageId: string
-      topicIds: string[]
     }
   }>,
   reply: FastifyReply,
@@ -35,13 +34,13 @@ export async function createDownloadHandler(
       meta_title,
       meta_description,
       featuredImageId,
-      topicIds,
       developer,
       operationSystem,
       license,
       officialWeb,
       schemaType,
       type,
+      downloadFileIds,
     } = request.body
     const user = request.user
     const downloadSlug = slugify(title.toLowerCase() + "_" + uniqueSlug())
@@ -63,8 +62,8 @@ export async function createDownloadHandler(
       meta_title: generatedMetaTitle,
       meta_description: generatedMetaDescription,
       slug: downloadSlug,
-      topics: {
-        connect: topicIds.map((id) => ({ id })),
+      downloadFiles: {
+        connect: downloadFileIds.map((id) => ({ id })),
       },
       featuredImageId,
       developer,
@@ -104,7 +103,6 @@ export async function updateDownloadHandler(
       slug: string
       authorId: string
       featuredImageId: string
-      topicIds: string[]
     }
   }>,
   reply: FastifyReply,
@@ -118,7 +116,7 @@ export async function updateDownloadHandler(
       meta_title,
       meta_description,
       featuredImageId,
-      topicIds,
+      downloadFileIds,
       developer,
       operationSystem,
       license,
@@ -144,8 +142,8 @@ export async function updateDownloadHandler(
       meta_title,
       meta_description,
       slug,
-      topics: {
-        connect: topicIds.map((id) => ({ id })),
+      downloadFiles: {
+        connect: downloadFileIds.map((id) => ({ id })),
       },
       featuredImageId,
       developer,
@@ -188,9 +186,13 @@ export async function getDownloadBySlugHandler(
     const { downloadSlug } = request.params
 
     const perPage = 10
-    const topicPage = Number(request.params.downloadPage || 1)
+    const downloadPage = Number(request.params.downloadPage || 1)
 
-    const download = await findDownloadBySlug(downloadSlug, topicPage, perPage)
+    const download = await findDownloadBySlug(
+      downloadSlug,
+      downloadPage,
+      perPage,
+    )
     return reply.code(201).send(download)
   } catch (e) {
     console.log(e)
