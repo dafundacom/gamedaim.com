@@ -6,8 +6,8 @@ export async function createDownload(
     slug: string
     authorId: string
     featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
+    downloadFileIds?: string[]
+    downloadFiles: { connect: { id: string }[] }
   },
 ) {
   return await db.download.create({
