@@ -16,7 +16,6 @@ export const PostCardFeatured = React.forwardRef<
   PostCardFeaturedProps
 >(({ post, ...props }, ref) => {
   const { title, featuredImage, uri } = post
-  const [image, setImage] = React.useState("/image/imgloader.gif") as any
   return (
     <>
       <article
@@ -34,10 +33,10 @@ export const PostCardFeatured = React.forwardRef<
                 priority={true}
                 height={500}
                 width={600}
-                className="aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
-                src={image}
-                onLoadingComplete={() => {
-                  setImage(featuredImage?.sourceUrl)
+                className="loading-image aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
+                src={featuredImage?.sourceUrl}
+                onLoadingComplete={(e) => {
+                  e.classList.remove("loading-image")
                 }}
                 alt={featuredImage?.altText ?? ""}
               />

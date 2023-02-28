@@ -14,7 +14,6 @@ export const ArticleCardFeatured = React.forwardRef<
   ArticleCardFeaturedProps
 >(({ post, ...props }, ref) => {
   const { title, featuredImage, slug } = post
-  const [image, setImage] = React.useState("/image/imgloader.gif") as any
   return (
     <>
       <article
@@ -32,10 +31,10 @@ export const ArticleCardFeatured = React.forwardRef<
                 priority={true}
                 height={500}
                 width={600}
-                className="aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
-                src={image}
-                onLoadingComplete={() => {
-                  setImage(featuredImage?.url)
+                className="loading-image aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
+                src={featuredImage?.url}
+                onLoadingComplete={(e) => {
+                  e.classList.remove("loading-image")
                 }}
                 alt={title}
               />

@@ -54,11 +54,22 @@ export default defineConfig({
         Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji,
         segoe ui symbol, noto color emoji !important;
     }
+    @keyframes loading {
+      0% {
+        background-color: #f5f5f5;
+      }
+      50% {
+        background-color: #eee;
+      }
+      100% {
+        background-color: #f5f5f5;
+      }
+    }
     .parent-focus:focus-within {
       @apply ring-200;
     }
     .loading-image {
-      @apply bg-slate-300 animate-pulse
+     animation: loading 2s cubic-bezier(.4,0,.6,1) infinite;
     }
     .scrollbar {
       scroll-behavior: smooth;

@@ -178,7 +178,10 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                 width="1280"
                 height="720"
                 alt={featuredImageAlt}
-                className={`img-skeleton rounded-lg object-cover`}
+                className={`loading-image rounded-lg object-cover`}
+                onLoadingComplete={(e) => {
+                  e.classList.remove("loading-image")
+                }}
                 src={featuredImageUrl}
               />
               {featuredImageCaption && (
