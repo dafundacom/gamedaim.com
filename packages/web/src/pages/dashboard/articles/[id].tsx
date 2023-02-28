@@ -21,7 +21,6 @@ import {
   Textarea,
   useDisclosure,
 } from "ui"
-import { MdOutlineClose } from "react-icons/md"
 import env from "@/env"
 import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
@@ -29,6 +28,7 @@ import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { MediaDataProps, TopicDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { AddTopics } from "@/components/Form"
 
 interface FormValues {
   title: string
@@ -55,9 +55,7 @@ export default function EditArticleDashboard() {
     excertp: "",
     slug: "",
   })
-  const [searchResults, setSearchResults] = React.useState([])
   const [selectedTopics, setSelectedTopics] = React.useState<any>([])
-  const [inputValue, setInputValue] = React.useState("")
 
   const editor = useEditor({
     extensions: [EditorKitExtension],
@@ -91,50 +89,6 @@ export default function EditArticleDashboard() {
     reset(article)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article])
-  const handleSearchChange = async (e: any) => {
-    e.preventDefault()
-    setInputValue(e.target.value)
-    if (e.target.value.length > 1) {
-      const { data } = await axios.get(`/topic/search/${e.target.value}`)
-
-      setSearchResults(data)
-    } else if (e.target.value.length < 1) {
-      setSearchResults([])
-    }
-  }
-
-  const handleSelectandAssign = (value: { id: string; title: string }) => {
-    if (!selectedTopics.includes(value.title)) {
-      setInputValue("")
-      setSearchResults([])
-      assignTopic(value.id)
-      setSelectedTopics((prev: any) => [...prev, value])
-    } else {
-      toast.error(value.title + " telah dikirimkan")
-      setInputValue("")
-      setSearchResults([])
-    }
-  }
-
-  const handleRemoveValue = (value: any) => {
-    const filteredResult = selectedTopics.filter(
-      (item: any) => item.id !== value.id,
-    )
-
-    const filteredData = topics.filter((item: any) => item !== value.id)
-    setSelectedTopics(filteredResult)
-    setTopics(filteredData)
-  }
-  const assignTopic = (id: string | never) => {
-    const checkedTopics = [...topics]
-    const index = checkedTopics.indexOf(id as never)
-    if (index === -1) {
-      checkedTopics.push(id as never)
-    } else {
-      checkedTopics.splice(index, 1)
-    }
-    setTopics(checkedTopics)
-  }
 
   const loadArticle = async () => {
     try {
@@ -232,7 +186,7 @@ export default function EditArticleDashboard() {
             isOpen={isOpen}
             sidebar={
               <div className="px-3">
-                <div className="flex min-w-[300px] flex-col space-y-4">
+                <div className="flex min-w-[300px] max-w-[300px] flex-col space-y-4">
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Slug
@@ -254,59 +208,12 @@ export default function EditArticleDashboard() {
                     </FormControl>
                   </div>
                 </div>
-                <div className="px-4">
-                  <Heading as="h3" size="md">
-                    Topics
-                  </Heading>
-                  <div className="rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
-                    <div className="parent-focus flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
-                      {selectedTopics.length > 0 &&
-                        selectedTopics.map((topic: TopicDataProps) => {
-                          return (
-                            <>
-                              <div className="flex items-center gap-1 bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white">
-                                <span>{topic.title}</span>
-                                <Button
-                                  as="div"
-                                  onClick={() => handleRemoveValue(topic)}
-                                  className="!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
-                                >
-                                  <MdOutlineClose />
-                                </Button>
-                              </div>
-                            </>
-                          )
-                        })}
-                      <Input
-                        type="text"
-                        className="!h-auto !w-full !min-w-[50px] !max-w-full !shrink !grow !basis-0 !border-none !bg-transparent !p-0 focus:!border-none focus:!ring-0"
-                        id="searchTopic"
-                        value={inputValue}
-                        placeholder="Enter topics"
-                        onChange={handleSearchChange}
-                      />
-                    </div>
-                    {searchResults.length > 0 && (
-                      <ul className="border-t border-gray-300">
-                        {searchResults.map((searchTopic: TopicDataProps) => {
-                          const dataTopics = {
-                            id: searchTopic.id,
-                            title: searchTopic.title,
-                          }
-                          return (
-                            <li
-                              key={searchTopic.id}
-                              className="px-2 hover:bg-blue-500"
-                              onClick={() => handleSelectandAssign(dataTopics)}
-                            >
-                              {searchTopic.title}
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                <AddTopics
+                  topics={topics}
+                  addTopics={setTopics}
+                  selectedTopics={selectedTopics}
+                  addSelectedTopics={setSelectedTopics}
+                />
                 {selectedFeaturedImageId ? (
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">

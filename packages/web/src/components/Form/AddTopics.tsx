@@ -23,32 +23,56 @@ interface FormValues {
 }
 export const AddTopics = (props: AddTopicsProps) => {
   const { topics, addTopics, selectedTopics, addSelectedTopics } = props
-  console.log(selectedTopics)
 
   const [searchResults, setSearchResults] = React.useState([])
   const [inputValue, setInputValue] = React.useState("")
 
   const {
     register,
+    setValue,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormValues>({ mode: "onBlur" })
+  } = useForm<FormValues>({ mode: "all", reValidateMode: "onChange" })
 
-  const onSubmit = async (values: any) => {
-    try {
-      const { data } = await axios.post("/topic", values)
-      addSelectedTopics((prev: any) => [...prev, data])
-      addTopics((prev: any) => [...prev, data.id])
-      if (data?.error) {
-        toast.error(data.error)
-      } else {
-        reset()
-        toast.success("Topic Successfully created")
+  const onSubmit = React.useCallback(
+    async (value: any) => {
+      try {
+        const { data } = await axios.post("/topic", value)
+        addSelectedTopics((prev: any) => [...prev, data])
+        addTopics((prev: any) => [...prev, data.id])
+        if (data?.error) {
+          toast.error(data.error)
+        } else {
+          reset()
+          toast.success("Topic Successfully created")
+        }
+      } catch (err: any) {
+        console.log("err => ", err)
+        toast.error(err.response.data.message)
       }
-    } catch (err: any) {
-      console.log("err => ", err)
-      toast.error(err.response.data.message)
+    },
+    [addSelectedTopics, addTopics, reset],
+  )
+
+  const handleFormSubmit = React.useCallback(
+    (event: { preventDefault: () => void }) => {
+      event.preventDefault()
+      setValue("title", inputValue)
+      handleSubmit(onSubmit)()
+    },
+    [handleSubmit, inputValue, onSubmit, setValue],
+  )
+
+  const handleKeyDown = (event: {
+    key: string
+    preventDefault: () => void
+  }) => {
+    if (event.key === "Enter") {
+      setValue("title", inputValue)
+      event.preventDefault()
+      handleSubmit(onSubmit)()
+      setInputValue("")
     }
   }
 
@@ -101,7 +125,7 @@ export const AddTopics = (props: AddTopicsProps) => {
   }
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleFormSubmit}>
         <div className="px-4">
           <Heading as="h3" size="md">
             Topics
@@ -131,11 +155,14 @@ export const AddTopics = (props: AddTopicsProps) => {
                   required: "Title is Required",
                 })}
                 className="!h-auto !w-full !min-w-[50px] !max-w-full !shrink !grow !basis-0 !border-none !bg-transparent !p-0 focus:!border-none focus:!ring-0"
+                name="title"
+                onKeyDown={handleKeyDown}
                 id="searchTopic"
                 value={inputValue}
                 placeholder="Enter topics"
                 onChange={handleSearchChange}
               />
+
               {errors?.title && (
                 <FormErrorMessage>{errors.title.message}</FormErrorMessage>
               )}

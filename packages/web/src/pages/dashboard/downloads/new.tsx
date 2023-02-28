@@ -12,7 +12,6 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
 import {
   Button,
-  Checkbox,
   FormControl,
   FormErrorMessage,
   Heading,
@@ -29,12 +28,9 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
-import {
-  DownloadSchemaTypeData,
-  MediaDataProps,
-  TopicDataProps,
-} from "@/lib/data-types"
+import { DownloadSchemaTypeData, MediaDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { AddTopics } from "@/components/Form"
 // import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
@@ -56,7 +52,8 @@ export default function CreateDownloadsDashboard() {
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
   const [topics, setTopics] = React.useState([])
-  const [loadedTopics, setLoadedTopics] = React.useState([])
+  const [selectedTopics, setSelectedTopics] = React.useState<any>([])
+
   const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
@@ -78,16 +75,6 @@ export default function CreateDownloadsDashboard() {
     onError: (error: any) => {
       toast.error(error.message)
     },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
-  })
-  const { data: listTopics } = useSWR(`/topic/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedTopics(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
   })
 
   const editor = useEditor({
@@ -98,16 +85,6 @@ export default function CreateDownloadsDashboard() {
     },
   })
 
-  const assignTopic = (id: string | never) => {
-    const checkedTopics = [...topics]
-    const index = checkedTopics.indexOf(id as never)
-    if (index === -1) {
-      checkedTopics.push(id as never)
-    } else {
-      checkedTopics.splice(index, 1)
-    }
-    setTopics(checkedTopics)
-  }
   // const handleUpdateFile = (value: any) => {
   //   setSelectedDownloadFile((prev: any) => [...prev, value])
   //   setSelectedDownloadFileId((prev: any) => [...prev, value.id])
@@ -184,22 +161,13 @@ export default function CreateDownloadsDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="flex min-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
-                <div className="my-2 flex flex-col px-4">
-                  <Heading as="h3" size="md">
-                    Topics
-                  </Heading>
-                  {listTopics &&
-                    loadedTopics.map((topic: TopicDataProps) => (
-                      <Checkbox
-                        key={topic.title}
-                        value={topic.id}
-                        onClick={() => assignTopic(topic.id as string)}
-                      >
-                        {topic.title}
-                      </Checkbox>
-                    ))}
-                </div>
+              <div className="flex min-w-[300px] max-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
+                <AddTopics
+                  topics={topics}
+                  addTopics={setTopics}
+                  selectedTopics={selectedTopics}
+                  addSelectedTopics={setSelectedTopics}
+                />
                 {selectedFeaturedImageId ? (
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
