@@ -31,13 +31,13 @@ import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import {
   DownloadFileDataProps,
   DownloadSchemaTypeData,
-  MediaDataProps,
   TopicDataProps,
 } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Thead, Tr, Th, Tbody, Td } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
+import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 interface FormValues {
   title: string
@@ -147,6 +147,10 @@ export default function EditDownloadDashboard() {
     }
   }
 
+  const { data: mediasCount } = useSWR("/media/count", fetcher)
+
+  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
+
   const handleUpdateFile = (value: any) => {
     setSelectedDownloadFile((prev: any) => [...prev, value])
     setSelectedDownloadFileId((prev: any) => [...prev, value.id])
@@ -185,6 +189,7 @@ export default function EditDownloadDashboard() {
           `/download/${download.id}`,
           mergedValues,
         )
+
         if (data?.error) {
           toast.error(data?.error)
           setLoading(false)
@@ -202,6 +207,15 @@ export default function EditDownloadDashboard() {
     } else {
       toast.error("File is empty")
     }
+  }
+
+  const handleUpdateMedia = (data: {
+    id: React.SetStateAction<string>
+    url: React.SetStateAction<string>
+  }) => {
+    setSelectedFeaturedImageId(data.id)
+    setSelectedFeaturedImageUrl(data.url)
+    setOpenModal(false)
   }
 
   return (
@@ -588,26 +602,15 @@ export default function EditDownloadDashboard() {
           content={
             <>
               <MediaUpload addLoadMedias={setLoadedMedias} />
-              <div className="my-3 grid grid-cols-5 gap-3">
-                {medias &&
-                  loadedMedias.map((media: MediaDataProps) => (
-                    <NextImage
-                      key={media.id}
-                      src={media.url}
-                      alt={media.alt}
-                      fill
-                      className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                      onLoadingComplete={(e) => {
-                        e.classList.remove("loading-image")
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setSelectedFeaturedImageId(media.id)
-                        setSelectedFeaturedImageUrl(media.url)
-                        setOpenModal(false)
-                      }}
-                    />
-                  ))}
+              <div className="my-3">
+                {medias && (
+                  <InfiniteScrollMedia
+                    medias={loadedMedias}
+                    index={2}
+                    updateMedia={handleUpdateMedia}
+                    totalPage={totalPageMedias}
+                  />
+                )}
               </div>
             </>
           }
