@@ -237,7 +237,6 @@ export default function SettingUserProfile() {
                     </Text>
                   </>
                 )}
-
                 <Button type="submit" variant="solid" loading={loading}>
                   Save
                 </Button>
