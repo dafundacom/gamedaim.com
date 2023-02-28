@@ -10,11 +10,13 @@ interface FormValues {
   file: Blob
 }
 
-interface MediaUploadProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface MediaUploadProps extends React.HTMLAttributes<HTMLDivElement> {
+  addLoadMedias: any
+}
 
 export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
   (props) => {
-    const { ...rest } = props
+    const { addLoadMedias, ...rest } = props
     const [showUploadForm, setShowUploadForm] = React.useState<boolean>(false)
     const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -34,6 +36,7 @@ export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
           { image },
           { headers: { "Content-Type": "multipart/form-data" } },
         )
+        addLoadMedias((prev: any) => [data, ...prev])
         if (data?.error) {
           toast.error(data.error)
         } else {

@@ -57,6 +57,9 @@ export default defineConfig({
     .parent-focus:focus-within {
       @apply ring-200;
     }
+    .loading-image {
+      @apply bg-slate-300 animate-pulse
+    }
     .scrollbar {
       scroll-behavior: smooth;
     }
