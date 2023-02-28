@@ -12,7 +12,7 @@ export const ArticleDashboardLayout: React.FunctionComponent<
   const { isOpen, sidebar, children, ...rest } = props
 
   return (
-    <div className="flex h-screen flex-row flex-wrap" {...rest}>
+    <div className="flex min-h-screen flex-row flex-wrap" {...rest}>
       <div className="order-1 w-full md:px-64 lg:w-10/12">{children}</div>
       <div
         className={`${

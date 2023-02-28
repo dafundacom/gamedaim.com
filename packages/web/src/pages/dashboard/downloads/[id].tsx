@@ -29,12 +29,15 @@ import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import {
+  DownloadFileDataProps,
   DownloadSchemaTypeData,
   MediaDataProps,
   TopicDataProps,
 } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
-import { AddTopics } from "@/components/Form"
+import { AddDownloadFile, AddTopics } from "@/components/Form"
+import { Table, Thead, Tr, Th, Tbody, Td } from "@/components/Table"
+import { ActionDashboard } from "@/components/Action"
 
 interface FormValues {
   title: string
@@ -62,6 +65,12 @@ export default function EditDownloadDashboard() {
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
     React.useState<string>("")
+  const [selectedDownloadFile, setSelectedDownloadFile] = React.useState<any>(
+    [],
+  )
+  const [selectedDownloadFileId, setSelectedDownloadFileId] =
+    React.useState<any>([])
+  const [showAddFiles, setShowAddFiles] = React.useState(false)
   const [download, setDownload] = React.useState<any>({
     title: "",
     content: "",
@@ -92,8 +101,6 @@ export default function EditDownloadDashboard() {
     onError: (error: any) => {
       toast.error(error.message)
     },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
   })
 
   const router = useRouter()
@@ -126,6 +133,10 @@ export default function EditDownloadDashboard() {
         schemaType: data.schemaType,
         type: data.type,
       })
+      setSelectedDownloadFile(data.downloadFiles)
+      setSelectedDownloadFileId(
+        data.downloadFiles.map((file: { id: any }) => file.id),
+      )
       setSelectedFeaturedImageId(data.featuredImage.id)
       setSelectedFeaturedImageUrl(data.featuredImage.url)
       setEditorContent(data.content)
@@ -136,6 +147,22 @@ export default function EditDownloadDashboard() {
     }
   }
 
+  const handleUpdateFile = (value: any) => {
+    setSelectedDownloadFile((prev: any) => [...prev, value])
+    setSelectedDownloadFileId((prev: any) => [...prev, value.id])
+    setShowAddFiles(false)
+  }
+  const handleDeleteFile = (value: DownloadFileDataProps) => {
+    const filteredResult = selectedDownloadFile.filter(
+      (item: any) => item.id !== value.id,
+    )
+
+    const filteredData = selectedDownloadFileId.filter(
+      (item: any) => item !== value.id,
+    )
+    setSelectedDownloadFile(filteredResult)
+    setSelectedDownloadFileId(filteredData)
+  }
   const {
     register,
     formState: { errors },
@@ -144,28 +171,36 @@ export default function EditDownloadDashboard() {
   } = useForm<FormValues>({ mode: "onBlur" })
 
   const onSubmit = async (values: any) => {
-    try {
-      setLoading(true)
-      const mergedValues = {
-        ...values,
-        topicIds: topics,
-        content: editorContent,
-        featuredImageId: selectedFeaturedImageId,
-      }
-      const { data } = await axios.put(`/download/${download.id}`, mergedValues)
-      if (data?.error) {
-        toast.error(data?.error)
+    if (selectedDownloadFile.length > 0) {
+      try {
+        setLoading(true)
+        const mergedValues = {
+          ...values,
+          topicIds: topics,
+          content: editorContent,
+          featuredImageId: selectedFeaturedImageId,
+          downloadFileIds: selectedDownloadFileId,
+        }
+        const { data } = await axios.put(
+          `/download/${download.id}`,
+          mergedValues,
+        )
+        if (data?.error) {
+          toast.error(data?.error)
+          setLoading(false)
+        } else {
+          toast.success("Download updated successfully")
+          setLoading(false)
+          router.push(`/dashboard/downloads`)
+        }
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.response.data.message)
         setLoading(false)
-      } else {
-        toast.success("Download updated successfully")
-        setLoading(false)
-        router.push(`/dashboard/downloads`)
+        editor?.commands.clearContent()
       }
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-      setLoading(false)
-      editor?.commands.clearContent()
+    } else {
+      toast.error("File is empty")
     }
   }
 
@@ -490,6 +525,63 @@ export default function EditDownloadDashboard() {
             </div>
           </ArticleDashboardLayout>
         </form>
+        <div className="border-t p-4">
+          <div className="flex justify-between pb-2">
+            <Heading>Files</Heading>
+            <Button onClick={() => setShowAddFiles(true)}>Add File</Button>
+          </div>
+          <div>
+            {selectedDownloadFile.length > 0 && (
+              <Table>
+                <Thead>
+                  <Tr isTitle>
+                    <Th>Title</Th>
+                    <Th>Version</Th>
+                    <Th>Size</Th>
+                    <Th>Price</Th>
+                    <Th>Actions</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {selectedDownloadFile.map(
+                    (downloadFile: DownloadFileDataProps) => (
+                      <Tr key={downloadFile.id}>
+                        <Td className="whitespace-nowrap">
+                          <div className="flex">
+                            <span className="font-medium">
+                              {downloadFile.title}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td className="whitespace-nowrap">
+                          <div className="flex">
+                            <span className="font-medium">
+                              {downloadFile.version}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td>{downloadFile.fileSize}</Td>
+                        <Td>{downloadFile.price}</Td>
+                        <Td align="right">
+                          <ActionDashboard
+                            onDelete={() => handleDeleteFile(downloadFile)}
+                            editLink={`/dashboard/download-files/${downloadFile.id}`}
+                            content={downloadFile.title}
+                          />
+                        </Td>
+                      </Tr>
+                    ),
+                  )}
+                </Tbody>
+              </Table>
+            )}
+          </div>
+          {showAddFiles && (
+            <div>
+              <AddDownloadFile updateDownloadFiles={handleUpdateFile} />
+            </div>
+          )}
+        </div>
         <Modal
           title="Select Featured Image"
           className="!max-w-full"

@@ -33,7 +33,7 @@ export const AddTopics = (props: AddTopicsProps) => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormValues>({ mode: "all", reValidateMode: "onChange" })
+  } = useForm<FormValues>({ mode: "onChange", reValidateMode: "onSubmit" })
 
   const onSubmit = React.useCallback(
     async (value: any) => {
@@ -133,31 +133,29 @@ export const AddTopics = (props: AddTopicsProps) => {
           <div className="rounded-md border border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-700">
             <div className="parent-focus flex max-w-[300px] flex-row flex-wrap items-center justify-start gap-2 p-2">
               {selectedTopics.length > 0 &&
-                selectedTopics.map(
-                  (topic: TopicDataProps, i: React.Key | null | undefined) => {
-                    return (
-                      <>
-                        <div
-                          key={i}
-                          className="flex items-center bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white"
+                selectedTopics.map((topic: TopicDataProps, i: number) => {
+                  return (
+                    <>
+                      <div
+                        key={i + 5}
+                        className="flex items-center bg-gray-200 px-2 py-1 text-[14px] text-black dark:bg-gray-800 dark:text-white"
+                      >
+                        <span>{topic.title}</span>
+                        <Button
+                          as="div"
+                          onClick={() => handleRemoveValue(topic)}
+                          className="!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
                         >
-                          <span>{topic.title}</span>
-                          <Button
-                            as="div"
-                            onClick={() => handleRemoveValue(topic)}
-                            className="!h-auto !min-w-0 !bg-transparent !p-0 !text-inherit"
-                          >
-                            <MdOutlineClose />
-                          </Button>
-                        </div>
-                      </>
-                    )
-                  },
-                )}
+                          <MdOutlineClose />
+                        </Button>
+                      </div>
+                    </>
+                  )
+                })}
               <Input
                 type="text"
                 {...register("title", {
-                  required: "Title is Required",
+                  required: selectedTopics === 0 && "Title is Required",
                 })}
                 className="!h-auto !w-full !min-w-[50px] !max-w-full !shrink !grow !basis-0 !border-none !bg-transparent !p-0 focus:!border-none focus:!ring-0"
                 name="title"
