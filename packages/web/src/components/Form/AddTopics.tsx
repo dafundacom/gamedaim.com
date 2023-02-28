@@ -110,10 +110,7 @@ export const AddTopics = (props: AddTopicsProps) => {
       setSearchResults([])
     }
   }
-  //   const formHandler = (e) => {
-  //     e.preventDefault()
-  //     handleSubmit(onSubmit)
-  //   }
+
   const handleRemoveValue = (value: any) => {
     const filteredResult = selectedTopics.filter(
       (item: any) => item.id !== value.id,

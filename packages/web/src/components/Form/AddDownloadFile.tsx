@@ -18,8 +18,9 @@ import {
 
 import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
-import { MediaDataProps } from "@/lib/data-types"
+
 import { fetcher } from "@/lib/fetcher"
+import { InfiniteScrollMedia } from "../InfiniteScroll"
 
 interface FormValues {
   title: string
@@ -56,9 +57,11 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
     onError: (error: any) => {
       toast.error(error.message)
     },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
   })
+
+  const { data: mediasCount } = useSWR("/media/count", fetcher)
+
+  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const onSubmit = async (values: any) => {
     setLoading(true)
@@ -70,7 +73,8 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
       }
       const { data } = await axios.post("/download-file", mergedValues)
       updateDownloadFiles(data)
-
+      setSelectedFeaturedImageUrl("")
+      setSelectedFeaturedImageId("")
       if (data?.error) {
         toast.error(data.error)
       } else {
@@ -82,6 +86,15 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
       toast.error(err.response.data.message)
     }
     setLoading(false)
+  }
+
+  const handleUpdateMedia = (data: {
+    id: React.SetStateAction<string>
+    url: React.SetStateAction<string>
+  }) => {
+    setSelectedFeaturedImageId(data.id)
+    setSelectedFeaturedImageUrl(data.url)
+    setOpenModal(false)
   }
   return (
     <div className="flex-1 space-y-4">
@@ -121,7 +134,6 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
             )}
           </FormControl>
           <div>
-            {" "}
             {selectedFeaturedImageId ? (
               <>
                 <FormLabel>Featured Image</FormLabel>
@@ -237,23 +249,15 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
         content={
           <>
             <MediaUpload addLoadMedias={setLoadedMedias} />
-            <div className="my-3 grid grid-cols-5 gap-3">
-              {medias &&
-                loadedMedias.map((media: MediaDataProps) => (
-                  <NextImage
-                    key={media.id}
-                    src={media.url}
-                    alt={media.alt}
-                    fill
-                    className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setSelectedFeaturedImageId(media.id)
-                      setSelectedFeaturedImageUrl(media.url)
-                      setOpenModal(false)
-                    }}
-                  />
-                ))}
+            <div className="my-3">
+              {medias && (
+                <InfiniteScrollMedia
+                  medias={loadedMedias}
+                  index={2}
+                  updateMedia={handleUpdateMedia}
+                  totalPage={totalPageMedias}
+                />
+              )}
             </div>
           </>
         }

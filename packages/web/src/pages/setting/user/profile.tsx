@@ -23,8 +23,8 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
-import { MediaDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 interface FormValues {
   username: string
@@ -116,6 +116,19 @@ export default function SettingUserProfile() {
       toast.error(err.response.data.message)
       setLoading(false)
     }
+  }
+
+  const { data: mediasCount } = useSWR("/media/count", fetcher)
+
+  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
+
+  const handleUpdateMedia = (data: {
+    id: React.SetStateAction<string>
+    url: React.SetStateAction<string>
+  }) => {
+    setSelectedProfilePictureId(data.id)
+    setSelectedProfilePictureUrl(data.url)
+    setOpenModal(false)
   }
 
   return (
@@ -244,23 +257,15 @@ export default function SettingUserProfile() {
                 content={
                   <>
                     <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3 grid grid-cols-5 gap-3">
-                      {medias &&
-                        loadedMedias.map((media: MediaDataProps) => (
-                          <NextImage
-                            key={media.id}
-                            src={media.url}
-                            alt={media.alt}
-                            fill
-                            className="!relative max-h-[500px] max-w-[500px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setSelectedProfilePictureId(media.id)
-                              setSelectedProfilePictureUrl(media.url)
-                              setOpenModal(false)
-                            }}
-                          />
-                        ))}
+                    <div className="my-3">
+                      {medias && (
+                        <InfiniteScrollMedia
+                          medias={loadedMedias}
+                          index={2}
+                          updateMedia={handleUpdateMedia}
+                          totalPage={totalPageMedias}
+                        />
+                      )}
                     </div>
                   </>
                 }

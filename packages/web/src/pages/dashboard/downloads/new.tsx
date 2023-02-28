@@ -28,15 +28,12 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
-import {
-  DownloadFileDataProps,
-  DownloadSchemaTypeData,
-  MediaDataProps,
-} from "@/lib/data-types"
+import { DownloadFileDataProps, DownloadSchemaTypeData } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
+import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 // import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
@@ -151,6 +148,19 @@ export default function CreateDownloadsDashboard() {
     handleSubmit,
     reset,
   } = useForm<FormValues>({ mode: "onBlur" })
+
+  const { data: mediasCount } = useSWR("/media/count", fetcher)
+
+  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
+
+  const handleUpdateMedia = (data: {
+    id: React.SetStateAction<string>
+    url: React.SetStateAction<string>
+  }) => {
+    setSelectedFeaturedImageId(data.id)
+    setSelectedFeaturedImageUrl(data.url)
+    setOpenModal(false)
+  }
 
   return (
     <>
@@ -517,26 +527,15 @@ export default function CreateDownloadsDashboard() {
           content={
             <>
               <MediaUpload addLoadMedias={setLoadedMedias} />
-              <div className="my-3 grid grid-cols-5 gap-3">
-                {medias &&
-                  loadedMedias.map((media: MediaDataProps) => (
-                    <NextImage
-                      key={media.id}
-                      src={media.url}
-                      alt={media.id}
-                      fill
-                      className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                      onLoadingComplete={(e) => {
-                        e.classList.remove("loading-image")
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setSelectedFeaturedImageId(media.id)
-                        setSelectedFeaturedImageUrl(media.url)
-                        setOpenModal(false)
-                      }}
-                    />
-                  ))}
+              <div className="my-3">
+                {medias && (
+                  <InfiniteScrollMedia
+                    medias={loadedMedias}
+                    index={2}
+                    updateMedia={handleUpdateMedia}
+                    totalPage={totalPageMedias}
+                  />
+                )}
               </div>
             </>
           }

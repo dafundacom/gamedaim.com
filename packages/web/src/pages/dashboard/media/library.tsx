@@ -1,69 +1,32 @@
 import * as React from "react"
-import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import useSWR from "swr"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import {
-  MdAdd,
-  MdDeleteOutline,
-  MdChevronLeft,
-  MdChevronRight,
-} from "react-icons/md"
-import { Button, IconButton, Text } from "ui"
+import { MdAdd } from "react-icons/md"
+import { Button, Text } from "ui"
 
 import env from "@/env"
-import { ContentContext } from "@/contexts/content.context"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { MediaDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 export default function MediaLibraryDashboard() {
-  const [content, setContent] = React.useContext(ContentContext)
-  const [page, setPage] = React.useState(1)
-  const [totalMedias, setTotalMedias] = React.useState<number>(0)
-
-  const { medias } = content
-
+  const [medias, setMedias] = React.useState([])
   const router = useRouter()
+  const { data: mediasCount } = useSWR("/media/count", fetcher)
 
-  const { data } = useSWR(`/media/page/${page}`, fetcher, {
+  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
+  const { data } = useSWR(`/media/page/1`, fetcher, {
     onSuccess: (data) => {
-      setContent((prev: any) => ({ ...prev, medias: data }))
+      setMedias(data)
     },
     onError: (error) => {
       toast.error(error.message)
     },
   })
-  const { data: count } = useSWR(`/media/count`, fetcher, {
-    onSuccess: (data) => {
-      setTotalMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
-  const handleDelete = async (item: { name: any }) => {
-    try {
-      const { data } = await axios.delete(`/media/name/${item.name}`)
-
-      setContent((prev: any) => ({
-        ...prev,
-        medias: medias.filter(
-          (media: { name: string }) => media.name !== data.name,
-        ),
-      }))
-      toast.success("Media deleted successfully")
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.response.data.message)
-    }
-  }
-
-  const lastPage = count && Math.ceil(totalMedias / 10)
 
   return (
     <>
@@ -87,52 +50,16 @@ export default function MediaLibraryDashboard() {
           </div>
           {medias.length > 0 ? (
             <>
-              <div className="my-3 grid grid-cols-2 gap-3 md:grid-cols-5">
-                {data &&
-                  medias.map((media: MediaDataProps) => (
-                    <div className="relative overflow-hidden rounded-[18px]">
-                      <IconButton
-                        colorScheme="red"
-                        className="!absolute z-20 !rounded-full !p-0"
-                        onClick={() => handleDelete(media)}
-                      >
-                        <MdDeleteOutline />
-                      </IconButton>
-                      <NextLink href={`/dashboard/media/${media.id}`}>
-                        <NextImage
-                          key={media.id}
-                          src={media.url}
-                          alt={media.alt}
-                          fill
-                          className="!relative max-h-[500px] max-w-[500px] rounded-sm border-2 border-gray-300 object-cover"
-                        />
-                      </NextLink>
-                    </div>
-                  ))}
+              <div className="my-3">
+                {data && (
+                  <InfiniteScrollMedia
+                    medias={medias}
+                    index={2}
+                    isLibrary={true}
+                    totalPage={totalPageMedias}
+                  />
+                )}
               </div>
-              {page && (
-                <div className="align-center mt-2 flex items-center justify-center space-x-2">
-                  {page !== 1 && (
-                    <IconButton
-                      onClick={() => setPage((old) => Math.max(old - 1, 0))}
-                      disabled={page === 1}
-                      className="!rounded-full !px-0"
-                    >
-                      <MdChevronLeft />
-                    </IconButton>
-                  )}
-                  {count && page !== lastPage && (
-                    <IconButton
-                      onClick={() => {
-                        setPage((old) => old + 1)
-                      }}
-                      className="!rounded-full !px-0"
-                    >
-                      <MdChevronRight />
-                    </IconButton>
-                  )}
-                </div>
-              )}
             </>
           ) : (
             <div className="my-48 flex items-center justify-center">
