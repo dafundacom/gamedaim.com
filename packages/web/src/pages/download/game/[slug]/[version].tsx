@@ -12,10 +12,12 @@ import {
 import { MdChevronRight } from "react-icons/md"
 import { Breadcrumb, Button, Heading, Text } from "ui"
 
+import parse from "html-react-parser"
 import env from "@/env"
 import { getDownloadBySlug, getDownloads } from "@/lib/download"
 import { getDownloadFileBySlug } from "@/lib/download-file"
 import { HomeLayout } from "@/layouts/Home"
+import axios from "axios"
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
@@ -37,6 +39,28 @@ export default function DownloadGameVersion(props: {
   const [showCountdown, setShowCountdown] = React.useState(false)
   const [countdownInterval, setCountdownInterval] = React.useState<any>(null)
 
+  const [ad, setAd]: any = React.useState()
+  const [loadingAd, setLoadingAd] = React.useState(false)
+
+  const adAbove: any = ad?.filter(
+    (ads: any) => ads.position == "DOWNLOADING_PAGE",
+  )
+
+  const getAds = async () => {
+    try {
+      const { data } = await axios.get("/ad/page/1")
+      setAd(data)
+      setLoadingAd(true)
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
+  React.useEffect(() => {
+    getAds()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   React.useEffect(() => {
     return () => {
       if (countdownInterval) {
@@ -171,6 +195,16 @@ export default function DownloadGameVersion(props: {
                       </div>
                     </div>
                   </div>
+                  {loadingAd === true &&
+                    ad.length > 0 &&
+                    adAbove.length > 0 &&
+                    adAbove.map((ad: { content: string }) => {
+                      return (
+                        <div className="my-2 rounded p-2">
+                          {parse(ad?.content)}
+                        </div>
+                      )
+                    })}
                   {showCountdown && (
                     <div className="bg-green-100 p-7 text-black">
                       Link download akan terbuka pada

@@ -14,7 +14,6 @@ import {
   Input,
   RequiredIndicator,
   Text,
-  Textarea,
 } from "ui"
 
 import env from "@/env"
@@ -23,8 +22,8 @@ import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
-import { fetcher } from "@/lib/fetcher"
 import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
+import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   username: string
@@ -44,6 +43,7 @@ export default function SettingUserProfile() {
     React.useState<string>("")
   const [auth] = React.useContext(AuthContext)
   const [user, setUser] = React.useState<any>({
+    id: "",
     username: "",
     name: "",
     email: "",
@@ -54,18 +54,17 @@ export default function SettingUserProfile() {
   })
 
   const router = useRouter()
-  const { data: medias } = useSWR(`/media/author/${auth.user.id}/1`, fetcher, {
-    onSuccess: (data: any) => {
-      console.log(data)
 
+  const loadMedias = async () => {
+    try {
+      const { data } = await axios.get(`/media/author/${auth.user.id}/1`)
       setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
-
+    } catch (err) {
+      console.log(err)
+    }
+  }
   React.useEffect(() => {
+    loadMedias()
     loadUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.id])
@@ -117,11 +116,9 @@ export default function SettingUserProfile() {
       setLoading(false)
     }
   }
-
   const { data: mediasCount } = useSWR("/media/count", fetcher)
 
   const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
-
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
     url: React.SetStateAction<string>
@@ -130,7 +127,6 @@ export default function SettingUserProfile() {
     setSelectedProfilePictureUrl(data.url)
     setOpenModal(false)
   }
-
   return (
     <>
       <NextSeo
@@ -241,13 +237,7 @@ export default function SettingUserProfile() {
                     </Text>
                   </>
                 )}
-                <FormControl invalid={Boolean(errors.about)}>
-                  <FormLabel>About</FormLabel>
-                  <Textarea {...register("about")} className="max-w-xl" />
-                  {errors?.about && (
-                    <FormErrorMessage>{errors.about.message}</FormErrorMessage>
-                  )}
-                </FormControl>
+
                 <Button type="submit" variant="solid" loading={loading}>
                   Save
                 </Button>
@@ -258,7 +248,7 @@ export default function SettingUserProfile() {
                   <>
                     <MediaUpload addLoadMedias={setLoadedMedias} />
                     <div className="my-3">
-                      {medias && (
+                      {loadedMedias && (
                         <InfiniteScrollMedia
                           medias={loadedMedias}
                           index={2}

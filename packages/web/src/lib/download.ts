@@ -29,7 +29,7 @@ export const getDownloads = async (page = 1) => {
 export const getDownloadBySlug = async (slug: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/download/slug/${slug}`)
+    const { data } = await axios.get(`/download/slug/${slug}/1`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

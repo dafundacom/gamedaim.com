@@ -53,7 +53,6 @@ const downloadInput = {
     required_error: "Download Type is required",
     invalid_type_error: "Download Type Type must be a string",
   }),
-  downloadFileIds: z.array(z.string()).optional(),
 }
 
 const updateDownloadInput = {
