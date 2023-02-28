@@ -71,9 +71,9 @@ export async function getDownloadFiles(
   })
 }
 
-export async function findDownloadFileById(artilceId: string) {
+export async function findDownloadFileById(downloadFileId: string) {
   return await db.downloadFile.findUnique({
-    where: { id: artilceId },
+    where: { id: downloadFileId },
     select: {
       title: true,
       meta_title: true,
@@ -176,9 +176,9 @@ export async function findDownloadFileByAuthorId(
   })
 }
 
-export async function findDownloadFileBySlug(artilceSlug: string) {
+export async function findDownloadFileBySlug(downloadFileSlug: string) {
   return await db.downloadFile.findUnique({
-    where: { slug: artilceSlug },
+    where: { slug: downloadFileSlug },
     select: {
       title: true,
       meta_title: true,

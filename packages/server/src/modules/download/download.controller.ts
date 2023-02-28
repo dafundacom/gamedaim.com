@@ -180,13 +180,17 @@ export async function getDownloadByIdHandler(
 
 export async function getDownloadBySlugHandler(
   request: FastifyRequest<{
-    Params: { downloadSlug: string }
+    Params: { downloadSlug: string; downloadPage: number }
   }>,
   reply: FastifyReply,
 ) {
   try {
     const { downloadSlug } = request.params
-    const download = await findDownloadBySlug(downloadSlug)
+
+    const perPage = 10
+    const topicPage = Number(request.params.downloadPage || 1)
+
+    const download = await findDownloadBySlug(downloadSlug, topicPage, perPage)
     return reply.code(201).send(download)
   } catch (e) {
     console.log(e)
