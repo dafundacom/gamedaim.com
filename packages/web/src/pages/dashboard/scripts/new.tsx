@@ -6,6 +6,7 @@ import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -20,8 +21,8 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 
 interface FormValues {
   title: string
-  content?: string
-  active?: boolean
+  content: string
+  active: boolean
 }
 
 export default function CreateScriptsDashBoard() {
@@ -104,14 +105,8 @@ export default function CreateScriptsDashBoard() {
                   )}
                 </FormControl>
                 <FormControl invalid={Boolean(errors.active)}>
-                  <FormLabel>
-                    Activate Script
-                    <RequiredIndicator />
-                  </FormLabel>
-                  <input type="checkbox" {...register("active")} />
-                  {errors?.active && (
-                    <FormErrorMessage>{errors.active.message}</FormErrorMessage>
-                  )}
+                  <FormLabel>Active</FormLabel>
+                  <Checkbox {...register("active")} />
                 </FormControl>
                 <Button type="submit" variant="solid" loading={loading}>
                   Submit

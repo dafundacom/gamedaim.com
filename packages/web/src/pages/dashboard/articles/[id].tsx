@@ -90,6 +90,7 @@ export default function EditArticleDashboard() {
     reset(article)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [article])
+
   const handleSearchChange = async (e: any) => {
     e.preventDefault()
     setInputValue(e.target.value)

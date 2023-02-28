@@ -30,7 +30,7 @@ export default function CommentsDashboard() {
 
   const { data } = useSWR(`/comment/page/${page}`, fetcher, {
     onSuccess: (data) => {
-      setPost((prev: any) => ({ ...prev, wpComments: data }))
+      setPost((prev: any) => ({ ...prev, comments: data }))
     },
     onError: (error) => {
       toast.error(error.message)

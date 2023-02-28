@@ -19,21 +19,23 @@ import { AdDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
 
 export default function AdsDashboard() {
-  const [ad, setAd] = React.useContext(ContentContext)
+  const [content, setContent] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalAds, setTotalAds]: any = React.useState()
-  const { ads } = ad
+  const { ads } = content
 
   const router = useRouter()
   dayjs.extend(relativeTime)
+
   const { data } = useSWR(`/ad/page/${page}`, fetcher, {
     onSuccess: (data) => {
-      setAd((prev: any) => ({ ...prev, ads: data }))
+      setContent((prev: any) => ({ ...prev, ads: data }))
     },
     onError: (error) => {
       toast.error(error.message)
     },
   })
+
   const { data: count } = useSWR(`/ad/count`, fetcher, {
     onSuccess: (data) => {
       setTotalAds(data)
@@ -42,11 +44,12 @@ export default function AdsDashboard() {
       toast.error(error.message)
     },
   })
+
   const handleDelete = async (item: { id: string }) => {
     try {
       const { data } = await axios.delete(`/ad/${item.id}`)
 
-      setAd((prev: any) => ({
+      setContent((prev: any) => ({
         ...prev,
         ads: ads.filter((ad: { id: string }) => ad.id !== data.id),
       }))
