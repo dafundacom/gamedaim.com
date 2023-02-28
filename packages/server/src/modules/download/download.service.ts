@@ -340,8 +340,8 @@ export async function updateDownload(
   data: CreateDownloadInput & {
     slug: string
     featuredImageId: string
-    topicIds?: string[]
-    topics: { connect: { id: string }[] }
+    downloadFileIds?: string[]
+    downloadFiles: { connect: { id: string }[] }
   },
 ) {
   return await db.download.update({
