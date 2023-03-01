@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { withSentryConfig } = require("@sentry/nextjs")
 // const withPWA = require("next-pwa")
 // const runtimeCaching = require("next-pwa/cache")
 
@@ -28,10 +27,7 @@ const nextConfig = {
   //   register: true,
   //   skipWaiting: true,
   // },
-  sentry: {
-    silent: true,
-    hideSourceMaps: true,
-  },
 }
 
-module.exports = withSentryConfig(nextConfig)
+// module.exports = withPWA(nextConfig)
+module.exports = nextConfig
