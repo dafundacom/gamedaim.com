@@ -141,6 +141,9 @@ export default function EditDownloadDashboard() {
       setSelectedFeaturedImageUrl(data.featuredImage.url)
       setEditorContent(data.content)
       setTopics(data.topics.map((topic: TopicDataProps) => topic.id))
+      setSelectedTopics(data.topics)
+      console.log(data)
+
       editor?.commands.setContent(data.content)
     } catch (err) {
       console.log(err)
