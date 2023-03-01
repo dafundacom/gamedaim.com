@@ -105,7 +105,7 @@ export default function EditTopicDashboard() {
         featuredImageId: selectedFeaturedImageId,
       }
       const { data } = await axios.put(
-        "/topic",
+        `/topic/${topic.id}`,
         selectedFeaturedImageId ? mergedValues : values,
       )
 
