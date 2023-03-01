@@ -29,13 +29,21 @@ export default function Topic(props: TopicProps) {
   return (
     <>
       <NextSeo
-        title={`${topic.title} | ${env.SITE_TITLE}`}
-        description={topic.description}
-        canonical={`https://${env.DOMAIN}/${topic.slug}`}
+        title={`${topic.meta_title || topic.title} — ${env.SITE_TITLE}`}
+        description={
+          topic.meta_description ||
+          topic.description ||
+          `${topic.title} | ${env.SITE_TITLE}`
+        }
+        canonical={`https://${env.DOMAIN}/topic/${topic.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}/${topic.slug}`,
-          title: `${topic.title} | ${env.SITE_TITLE}`,
-          description: topic.description,
+          title: `${topic.meta_title || topic.title} | ${env.SITE_TITLE}`,
+          description:
+            topic.meta_description ||
+            topic.description ||
+            `${topic.title} | ${env.SITE_TITLE}`,
+
+          url: `https://${env.DOMAIN}/topic/${topic.slug}`,
         }}
       />
       <BreadcrumbJsonLd
@@ -47,12 +55,7 @@ export default function Topic(props: TopicProps) {
           },
           {
             position: 2,
-            name: "Topic",
-            item: `https://${env.DOMAIN}/topic`,
-          },
-          {
-            position: 3,
-            name: topic.title,
+            name: topic.meta_title || topic.title,
             item: `https://${env.DOMAIN}/topic/${topic.slug}`,
           },
         ]}

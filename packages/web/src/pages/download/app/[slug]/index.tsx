@@ -82,21 +82,22 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
   }, [])
   const fileVersion =
     download.downloadFiles.length > 0 && download?.downloadFiles[0]
+
   return (
     <>
       <NextSeo
-        title={`${download.title} | ${env.SITE_TITLE}`}
-        description={download.excerpt}
-        canonical={`https://${env.DOMAIN}/${download.slug}`}
+        title={`${download.meta_title || download.title} | ${env.SITE_TITLE}`}
+        description={download.meta_description || download.excerpt}
+        canonical={`https://${env.DOMAIN}/download/app/${download.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}/${download.slug}`,
-          title: `${download.title} | ${env.SITE_TITLE}`,
-          description: download.excerpt,
+          url: `https://${env.DOMAIN}/download/app/${download.slug}`,
+          title: `${download.meta_title || download.title} | ${env.SITE_TITLE}`,
+          description: download.meta_description || download.excerpt,
         }}
       />
       <ArticleJsonLd
-        url={`https://${env.DOMAIN}/${download.slug}`}
-        title={`${download.title} | ${env.SITE_TITLE}`}
+        url={`https://${env.DOMAIN}/download/app/${download.slug}`}
+        title={`${download.meta_title || download.title} | ${env.SITE_TITLE}`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
@@ -108,11 +109,11 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
         ]}
         publisherName={env.SITE_TITLE}
         publisherLogo={env.LOGO_URL}
-        description={download.excerpt}
+        description={download.meta_description || download.excerpt}
         isAccessibleForFree={true}
       />
       <SoftwareAppJsonLd
-        name={download.title}
+        name={download.meta_title || download.title}
         price={download.downloadFiles[0]?.price}
         priceCurrency={download.downloadFiles[0]?.currency}
         aggregateRating={{ ratingValue: "5.0", reviewCount: "1" }}
@@ -128,10 +129,20 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
           },
           {
             position: 2,
+            name: "Download",
+            item: `https://${env.DOMAIN}/download/`,
+          },
+          {
+            position: 3,
+            name: download.type,
+            item: `https://${env.DOMAIN}/download/${download.type.toString()}`,
+          },
+          {
+            position: 4,
             name: download.topics && download.topics[0]?.title,
             item:
               download.topics &&
-              `https://${env.DOMAIN}/topic/${download.topics[0]?.slug}`,
+              `https://${env.DOMAIN}/download/topic/${download.topics[0]?.slug}`,
           },
         ]}
       />

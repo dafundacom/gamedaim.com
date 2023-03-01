@@ -83,18 +83,24 @@ export default function DownloadAppVersion(props: {
   return (
     <>
       <NextSeo
-        title={`${download.title} | ${env.SITE_TITLE}`}
-        description={download.excerpt}
-        canonical={`https://${env.DOMAIN}/${download.slug}`}
+        title={`${downloadFile.meta_title || downloadFile.title} | ${
+          env.SITE_TITLE
+        }`}
+        description={download.meta_description || download.excerpt}
+        canonical={`https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}/${download.slug}`,
-          title: `${download.title} | ${env.SITE_TITLE}`,
-          description: download.excerpt,
+          url: `https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`,
+          title: `${downloadFile.meta_title || downloadFile.title} | ${
+            env.SITE_TITLE
+          }`,
+          description: download.meta_description || download.excerpt,
         }}
       />
       <ArticleJsonLd
-        url={`https://${env.DOMAIN}/${download.slug}`}
-        title={`${download.title} | ${env.SITE_TITLE}`}
+        url={`https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`}
+        title={`${downloadFile.meta_title || downloadFile.title} | ${
+          env.SITE_TITLE
+        }`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
@@ -110,7 +116,7 @@ export default function DownloadAppVersion(props: {
         isAccessibleForFree={true}
       />
       <SoftwareAppJsonLd
-        name={download.title}
+        name={downloadFile.title}
         price={downloadFile?.price}
         priceCurrency={downloadFile?.currency}
         aggregateRating={{ ratingValue: "5.0", reviewCount: "1" }}
@@ -126,8 +132,25 @@ export default function DownloadAppVersion(props: {
           },
           {
             position: 2,
-            name: download.topics[0]?.title,
-            item: `https://${env.DOMAIN}/topic/${download.topics[0]?.slug}`,
+            name: "Download",
+            item: `https://${env.DOMAIN}/download/`,
+          },
+          {
+            position: 3,
+            name: download.type,
+            item: `https://${env.DOMAIN}/download/${download.type.toString()}`,
+          },
+          {
+            position: 4,
+            name: download.topics && download.topics[0]?.title,
+            item:
+              download.topics &&
+              `https://${env.DOMAIN}/download/topic/${download.topics[0]?.slug}`,
+          },
+          {
+            position: 5,
+            name: download.meta_title || download.title,
+            item: `https://${env.DOMAIN}/download/app/${download.slug}`,
           },
         ]}
       />
