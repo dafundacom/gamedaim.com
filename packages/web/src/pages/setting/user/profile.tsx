@@ -101,9 +101,16 @@ export default function SettingUserProfile() {
   } = useForm<FormValues>()
 
   const onSubmit = async (values: any) => {
+    setLoading(true)
     try {
-      setLoading(true)
-      const { data } = await axios.put(`/user/${auth.user.id}`, values)
+      const mergedValues = {
+        ...values,
+        profilePictureId: selectedProfilePictureId,
+      }
+      const { data } = await axios.put(
+        `/user/${auth.user.id}`,
+        selectedProfilePictureId ? mergedValues : values,
+      )
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)
@@ -113,9 +120,10 @@ export default function SettingUserProfile() {
     } catch (err: any) {
       console.log(err)
       toast.error(err.response.data.message)
-      setLoading(false)
     }
+    setLoading(false)
   }
+
   const { data: mediasCount } = useSWR("/media/count", fetcher)
 
   const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)

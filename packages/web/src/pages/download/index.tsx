@@ -1,7 +1,7 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { NextSeo } from "next-seo"
+import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { Heading, Text } from "ui"
 import env from "@/env"
 import { ListDownload } from "@/components/List"
@@ -26,14 +26,28 @@ export default function Download(props: DownloadProps) {
   return (
     <>
       <NextSeo
-        title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
+        title={`Download | ${env.SITE_TITLE}`}
         description={env.DESCRIPTION}
         canonical={`https://${env.DOMAIN}${router.pathname}`}
         openGraph={{
           url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
+          title: `Download | ${env.SITE_TITLE}`,
           description: env.DESCRIPTION,
         }}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+          {
+            position: 2,
+            name: "Download",
+            item: `https://${env.DOMAIN}${router.pathname}`,
+          },
+        ]}
       />
       <HomeLayout>
         <div className="mx-auto flex w-full flex-col min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 md:max-[991px]:max-w-[750px] min-[1200px]:max-w-[1170px]">

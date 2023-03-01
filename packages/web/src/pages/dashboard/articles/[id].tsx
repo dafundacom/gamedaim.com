@@ -53,8 +53,10 @@ export default function EditArticleDashboard() {
   const [article, setArticle] = React.useState<any>({
     id: "",
     title: "",
-    excertp: "",
+    excerpt: "",
     slug: "",
+    meta_title: "",
+    meta_description: "",
   })
   const [selectedTopics, setSelectedTopics] = React.useState<any>([])
 
@@ -102,6 +104,8 @@ export default function EditArticleDashboard() {
         slug: data.slug,
         content: data.content,
         excerpt: data.excerpt,
+        meta_title: data.meta_title,
+        meta_description: data.meta_description,
       })
       setSelectedTopics(data.topics)
       setSelectedFeaturedImageId(data.featuredImage.id)

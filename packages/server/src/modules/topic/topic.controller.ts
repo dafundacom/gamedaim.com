@@ -36,16 +36,11 @@ export async function createTopicHandler(
       return reply.code(403).send({ message: "Unauthorized" })
     }
 
-    const generatedMetaTitle = !meta_title ? title : meta_title
-    const generatedMetaDescription = !meta_description
-      ? description
-      : meta_description
-
     const topic = await createTopic({
       title,
       description,
-      meta_title: generatedMetaTitle,
-      meta_description: generatedMetaDescription,
+      meta_title,
+      meta_description,
       slug,
       featuredImageId,
       authorId: user.id,

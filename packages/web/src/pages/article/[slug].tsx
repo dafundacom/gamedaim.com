@@ -39,18 +39,18 @@ export default function SingleArticle(props: SingleArticleProps) {
   return (
     <>
       <NextSeo
-        title={`${article.title} | ${env.SITE_TITLE}`}
-        description={article.excerpt}
+        title={`${article.meta_title || article.title} | ${env.SITE_TITLE}`}
+        description={article.meta_description || article.excerpt}
         canonical={`https://${env.DOMAIN}/${article.slug}`}
         openGraph={{
           url: `https://${env.DOMAIN}/${article.slug}`,
-          title: `${article.title} | ${env.SITE_TITLE}`,
-          description: article.excerpt,
+          title: `${article.meta_title || article.title} | ${env.SITE_TITLE}`,
+          description: article.meta_description || article.excerpt,
         }}
       />
       <ArticleJsonLd
         url={`https://${env.DOMAIN}/${article.slug}`}
-        title={`${article.title} | ${env.SITE_TITLE}`}
+        title={`${article.meta_title || article.title} | ${env.SITE_TITLE}`}
         images={[article.featuredImage.url]}
         datePublished={article.createdAt}
         dateModified={article.createdAt}
@@ -62,20 +62,25 @@ export default function SingleArticle(props: SingleArticleProps) {
         ]}
         publisherName={env.SITE_TITLE}
         publisherLogo={env.LOGO_URL}
-        description={article.excerpt}
+        description={article.meta_description || article.excerpt}
         isAccessibleForFree={true}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: "Article",
-            item: `https://${env.domain}/article`,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
           },
           {
             position: 2,
+            name: "Article",
+            item: `https://${env.DOMAIN}/article`,
+          },
+          {
+            position: 3,
             name: article.topics[0].title,
-            item: `https://${env.domain}/topic/${article.topics[0].slug}`,
+            item: `https://${env.DOMAIN}/topic/${article.topics[0].slug}`,
           },
         ]}
       />
