@@ -80,8 +80,8 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const fileVersion = download?.downloadFiles[0]
-
+  const fileVersion =
+    download.downloadFiles.length > 0 && download?.downloadFiles[0]
   return (
     <>
       <NextSeo
@@ -194,13 +194,17 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                         </Heading>
 
                         <div className="flex flex-wrap gap-2">
-                          <Text>{fileVersion.version}</Text>
-                          <NextLink
-                            href={`/download/game/${download.slug}#all-version`}
-                            className="text-green-400"
-                          >
-                            Show All Version
-                          </NextLink>
+                          {download.downloadFiles.length > 0 && (
+                            <>
+                              <Text>{fileVersion.version}</Text>
+                              <NextLink
+                                href={`/download/game/${download.slug}#all-version`}
+                                className="text-green-400"
+                              >
+                                Show All Version
+                              </NextLink>
+                            </>
+                          )}
                         </div>
 
                         <Text>{download?.developer}</Text>
@@ -210,11 +214,13 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
                               Official Web
                             </a>
                           </Button>
-                          <NextLink
-                            href={`/download/game/${download.slug}/${fileVersion.slug}`}
-                          >
-                            <Button colorScheme="primary">Download</Button>
-                          </NextLink>
+                          {download.downloadFiles.length > 0 && (
+                            <NextLink
+                              href={`/download/game/${download.slug}/${fileVersion.slug}`}
+                            >
+                              <Button colorScheme="primary">Download</Button>
+                            </NextLink>
+                          )}
                         </div>
                       </div>
                     </div>
