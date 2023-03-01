@@ -26,6 +26,9 @@ import env from "@/env"
 import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
 import { DownloadFileDataProps } from "@/lib/data-types"
 import { HomeLayout } from "@/layouts/Home"
+import axios from "axios"
+import { parseAndSplitHTMLString } from "@/utils/split-html"
+import { PopupAd } from "@/components/Ads/PopupAd"
 
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
@@ -42,9 +45,43 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
   const { download, downloads } = props
   dayjs.extend(relativeTime)
 
-  const fileVersion =
-    download.downloadFiles[0] === true && download?.downloadFiles[0]
+  const [ad, setAd]: any = React.useState()
+  const [openModal, setOpenModal] = React.useState<boolean>(false)
+  const [loadingAd, setLoadingAd] = React.useState(false)
 
+  const adAbove: any = ad?.filter(
+    (ads: any) => ads.position == "SINGLE_DOWNLOAD_ABOVE",
+  )
+  const adBelow: any = ad?.filter(
+    (ads: any) => ads.position == "SINGLE_DOWNLOAD_BELOW",
+  )
+  const adInline: any = ad?.filter(
+    (ads: any) => ads.position == "SINGLE_DOWNLOAD_INLINE",
+  )
+  const adPopup: any = ad?.filter(
+    (ads: any) => ads.position == "SINGLE_DOWNLOAD_POP_UP",
+  )
+
+  const { firstHalf, secondHalf } = parseAndSplitHTMLString(download.content)
+
+  const getAds = async () => {
+    try {
+      const { data } = await axios.get("/ad/page/1")
+      setAd(data)
+      setLoadingAd(true)
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
+  React.useEffect(() => {
+    getAds()
+    setOpenModal(true)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const fileVersion =
+    download.downloadFiles.length > 0 && download?.downloadFiles[0]
   return (
     <>
       <NextSeo
@@ -99,6 +136,17 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
         ]}
       />
       <HomeLayout>
+        {loadingAd === true &&
+          ad.length > 0 &&
+          adPopup.length > 0 &&
+          openModal === true && (
+            <PopupAd
+              content={<>{parse(adPopup[0]?.content)}</>}
+              isOpen={openModal}
+              className="max-w-[366px]"
+              onClose={() => setOpenModal(false)}
+            />
+          )}
         <section className="flex w-full flex-col">
           <div className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] max-[991px]:px-4 min-[1200px]:max-w-[1170px]">
             <div className="flex w-full flex-col overflow-x-hidden px-4 lg:mr-4">
@@ -146,13 +194,17 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                         </Heading>
 
                         <div className="flex flex-wrap gap-2">
-                          <Text>{fileVersion.version}</Text>
-                          <NextLink
-                            href={`/download/app/${download.slug}#all-version`}
-                            className="text-green-400"
-                          >
-                            Show All Version
-                          </NextLink>
+                          {download.downloadFiles.length > 0 && (
+                            <>
+                              <Text>{fileVersion.version}</Text>
+                              <NextLink
+                                href={`/download/app/${download.slug}#all-version`}
+                                className="text-green-400"
+                              >
+                                Show All Version
+                              </NextLink>
+                            </>
+                          )}
                         </div>
 
                         <Text>{download?.developer}</Text>
@@ -162,17 +214,50 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
                               Official Web
                             </a>
                           </Button>
-                          <NextLink
-                            href={`/download/app/${download.slug}/${fileVersion.slug}`}
-                          >
-                            <Button colorScheme="primary">Download</Button>
-                          </NextLink>
+                          {download.downloadFiles.length > 0 && (
+                            <NextLink
+                              href={`/download/app/${download.slug}/${fileVersion.slug}`}
+                            >
+                              <Button colorScheme="primary">Download</Button>
+                            </NextLink>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="p-7 dark:text-gray-200">
-                    {parse(download.content)}
+                    {loadingAd === true &&
+                      ad.length > 0 &&
+                      adAbove.length > 0 &&
+                      adAbove.map((ad: { content: string }) => {
+                        return (
+                          <div className="my-2 rounded p-2">
+                            {parse(ad?.content)}
+                          </div>
+                        )
+                      })}
+                    {parse(firstHalf)}
+                    {loadingAd === true &&
+                      ad.length > 0 &&
+                      adInline.length > 0 &&
+                      adInline.map((ad: { content: string }) => {
+                        return (
+                          <div className="my-2 rounded p-2">
+                            {parse(ad?.content)}
+                          </div>
+                        )
+                      })}
+                    {parse(secondHalf)}
+                    {loadingAd === true &&
+                      ad.length > 0 &&
+                      adBelow.length > 0 &&
+                      adBelow.map((ad: { content: string }) => {
+                        return (
+                          <div className="my-2 rounded p-2">
+                            {parse(ad?.content)}
+                          </div>
+                        )
+                      })}
                   </div>
                   <div className="grid grid-cols-3 grid-rows-2 rounded-lg bg-white shadow dark:bg-gray-800">
                     <SpecBox
