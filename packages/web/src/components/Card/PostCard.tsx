@@ -77,8 +77,8 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
                     <div className="hidden flex-row items-center md:flex">
                       {authorAvatarUrl && (
                         <NextImage
-                          width="20"
-                          height="20"
+                          width={20}
+                          height={20}
                           src={imageAvatar}
                           onError={() => {
                             setImageAvatar("/icons/author.jpg")
