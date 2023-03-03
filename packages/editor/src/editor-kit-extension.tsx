@@ -105,6 +105,7 @@ export const EditorKitExtension = Extension.create<EditorKitExtensionOptions>({
     if (this.options.codeBlockLowlight !== false) {
       //@ts-ignore
       extensions.push(
+        //@ts-ignore
         CodeBlockLowlight.configure({
           lowlight,
         }),
@@ -179,6 +180,7 @@ export const EditorKitExtension = Extension.create<EditorKitExtensionOptions>({
     if (this.options.placeholder !== false) {
       //@ts-ignore
       extensions.push(
+        //@ts-ignore
         Placeholder.configure({ placeholder: "Write Something ..." }),
       )
     }

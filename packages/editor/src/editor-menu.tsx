@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import {
+  MdAdd,
+  MdClose,
   MdCode,
   MdFormatBold,
   MdFormatItalic,
@@ -13,8 +15,6 @@ import {
   MdHorizontalRule,
   MdImage,
   MdLink,
-  MdClose,
-  MdAdd,
 } from "react-icons/md"
 import { SiYoutube } from "react-icons/si"
 import { Button, IconButton } from "ui"
