@@ -6,9 +6,9 @@ import {
   deleteCommentById,
   findCommentById,
   getComments,
-  updateComment,
   getTotalComments,
   searchComments,
+  updateComment,
 } from "./comment.service"
 
 export async function createCommentHandler(

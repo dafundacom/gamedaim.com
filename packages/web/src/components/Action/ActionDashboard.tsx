@@ -1,9 +1,9 @@
 import * as React from "react"
-import NextLink from "next/link"
 import { tx } from "@twind/core"
-
+import NextLink from "next/link"
 import { HiOutlineEye, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { UrlObject } from "url"
+
 import { ModalDelete } from "@/components/Modal"
 
 export interface ActionDashboardProps

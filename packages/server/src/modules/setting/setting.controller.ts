@@ -3,9 +3,9 @@ import { CreateSettingInput, UpdateSettingInput } from "./setting.schema"
 
 import {
   createSetting,
-  updateSetting,
   findSettingByKey,
   getSettings,
+  updateSetting,
 } from "./setting.service"
 
 export async function createSettingHandler(

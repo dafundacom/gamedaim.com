@@ -2,10 +2,10 @@ import { FastifyInstance } from "fastify"
 import {
   createScriptHandler,
   deleteScriptHandler,
-  updateScriptHandler,
-  getScriptsHandler,
   getScriptByIdHandler,
+  getScriptsHandler,
   getTotalScriptsHandler,
+  updateScriptHandler,
 } from "./script.controller"
 import { $ref } from "./script.schema"
 

@@ -1,19 +1,19 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { uniqueSlug, slugify } from "../../utils/slug"
+import { slugify, uniqueSlug } from "../../utils/slug"
+import { trimText } from "../../utils/trim"
 import { CreateArticleInput, UpdateArticleInput } from "./article.schema"
 import {
   createArticle,
-  getArticles,
   deleteArticleById,
-  updateArticle,
-  findArticleById,
   findArticleByAuthorId,
+  findArticleById,
   findArticleBySlug,
+  getArticles,
   getTotalArticles,
   searchArticles,
+  updateArticle,
 } from "./article.service"
-import { trimText } from "../../utils/trim"
 
 export async function createArticleHandler(
   request: FastifyRequest<{

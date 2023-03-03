@@ -6,8 +6,8 @@ import {
   deleteAdById,
   findAdById,
   getAds,
-  updateAd,
   getTotalAds,
+  updateAd,
 } from "./ad.service"
 
 export async function createAdHandler(

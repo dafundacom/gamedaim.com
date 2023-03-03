@@ -1,10 +1,9 @@
 import * as React from "react"
-
-import NextImage from "next/image"
 import axios from "axios"
+import NextImage from "next/image"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import useSWR from "swr"
-import { useForm } from "react-hook-form"
 import {
   Button,
   FormControl,
@@ -16,8 +15,8 @@ import {
   Textarea,
 } from "ui"
 
-import { Modal } from "@/components/Modal"
 import { MediaUpload } from "@/components/Media"
+import { Modal } from "@/components/Modal"
 
 import { fetcher } from "@/lib/fetcher"
 import { InfiniteScrollMedia } from "../InfiniteScroll"

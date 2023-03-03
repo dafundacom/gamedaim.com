@@ -1,6 +1,6 @@
 import * as React from "react"
-import { Button } from "ui"
 import { MdArrowBack, MdArrowForward } from "react-icons/md"
+import { Button } from "ui"
 
 import { DownloadCard } from "@/components/Card"
 import { DownloadDataProps } from "@/lib/data-types"

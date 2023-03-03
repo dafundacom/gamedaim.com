@@ -1,18 +1,18 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { uniqueSlug, slugify } from "../../utils/slug"
+import { slugify, uniqueSlug } from "../../utils/slug"
 import { CreateTopicInput, UpdateTopicInput } from "./topic.schema"
 import {
   createTopic,
   deleteTopicById,
   findTopicById,
   findTopicBySlug,
-  getTopics,
-  searchTopics,
-  updateTopic,
-  getTotalTopics,
   findTopicBySlugAndGetArticles,
   findTopicBySlugAndGetDownloads,
+  getTopics,
+  getTotalTopics,
+  searchTopics,
+  updateTopic,
 } from "./topic.service"
 
 export async function createTopicHandler(

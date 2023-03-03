@@ -5,9 +5,9 @@ import {
   createWpComment,
   deleteWpCommentById,
   findWpCommentById,
+  getTotalWpComments,
   getWpComments,
   updateWpComment,
-  getTotalWpComments,
 } from "./wp-comment.service"
 
 export async function createWpCommentHandler(

@@ -2,14 +2,14 @@ import { FastifyInstance } from "fastify"
 import {
   createTopicHandler,
   deleteTopicHandler,
-  updateTopicHandler,
-  getTopicsHandler,
   getTopicByIdHandler,
-  getTopicBySlugHandler,
   getTopicBySlugAndGetArticlesHandler,
   getTopicBySlugAndGetDownloadsHandler,
+  getTopicBySlugHandler,
+  getTopicsHandler,
   getTotalTopicsHandler,
   searchTopicsHandler,
+  updateTopicHandler,
 } from "./topic.controller"
 
 import { $ref } from "./topic.schema"

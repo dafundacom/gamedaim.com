@@ -1,16 +1,16 @@
 import * as React from "react"
-import NextLink from "next/link"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { IoGameController } from "react-icons/io5"
-import { ImBook } from "react-icons/im"
+import NextLink from "next/link"
 import { BiMovie, BiTv } from "react-icons/bi"
+import { ImBook } from "react-icons/im"
+import { IoGameController } from "react-icons/io5"
 
-import { WpCategoriesDataProps } from "@/lib/wp-data-types"
 import {
-  wpPrimaryCategorySlug,
   wpCategoryPathBySlug,
+  wpPrimaryCategorySlug,
 } from "@/lib/wp-categories"
+import { WpCategoriesDataProps } from "@/lib/wp-data-types"
 
 interface MetadataFeaturedProps extends React.HTMLAttributes<HTMLDivElement> {
   categories: WpCategoriesDataProps[]

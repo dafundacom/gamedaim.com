@@ -2,14 +2,14 @@ import { FastifyInstance } from "fastify"
 
 import {
   createArticleHandler,
-  getArticlesHandler,
   deleteArticleHandler,
-  updateArticleHandler,
+  getArticleByAuthorIdHandler,
   getArticleByIdHandler,
   getArticleBySlugHandler,
-  getArticleByAuthorIdHandler,
+  getArticlesHandler,
   getTotalArticlesHandler,
   searchArticlesHandler,
+  updateArticleHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
 

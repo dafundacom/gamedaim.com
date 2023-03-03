@@ -9,9 +9,9 @@ import {
   findUserById,
   findUserByUsername,
   findUsers,
-  updateUser,
   getTotalUsers,
   searchUsers,
+  updateUser,
 } from "./user.service"
 
 export async function registerUserHandler(

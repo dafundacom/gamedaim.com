@@ -1,14 +1,14 @@
 import * as React from "react"
-import NextLink from "next/link"
-import NextImage from "next/image"
 import axios from "axios"
 import parse from "html-react-parser"
 import dynamic from "next/dynamic"
+import NextImage from "next/image"
+import NextLink from "next/link"
 
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
 import { parseAndSplitHTMLString } from "@/utils/split-html"
-import { WpPostsDataProps } from "@/lib/wp-data-types"
 
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),

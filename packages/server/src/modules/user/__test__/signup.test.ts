@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker"
 import { test } from "tap"
 import { ImportMock } from "ts-mock-imports"
+
 import buildServer from "../../../server"
 import db from "../../../utils/db"
 import * as userService from "../user.service"

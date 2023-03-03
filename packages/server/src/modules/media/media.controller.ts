@@ -1,22 +1,22 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
+import { FastifyReply, FastifyRequest } from "fastify"
 
 import env from "../../env"
-import { uniqueSlug, slugifyFile } from "../../utils/slug"
 import { s3Client } from "../../utils/s3-client"
+import { slugifyFile, uniqueSlug } from "../../utils/slug"
+import { UpdateMediaInput } from "./media.schema"
 import {
-  findMediaById,
-  findMediaByAuthorId,
-  uploadMedia,
-  updateMedia,
   deleteMediaById,
+  deleteMediaByName,
+  findMediaByAuthorId,
+  findMediaById,
   getMedias,
   getTotalMedias,
   searchMedias,
-  deleteMediaByName,
+  updateMedia,
+  uploadMedia,
 } from "./media.service"
-import { UpdateMediaInput } from "./media.schema"
 
 // NOTE: cannot use PutObjectCommand because fastify/multipart doesnt provide contentLengt for S3
 export async function uploadMediaHandler(

@@ -2,10 +2,10 @@ import { FastifyInstance } from "fastify"
 import {
   createAdHandler,
   deleteAdHandler,
-  updateAdHandler,
-  getAdsHandler,
   getAdByIdHandler,
+  getAdsHandler,
   getTotalAdsHandler,
+  updateAdHandler,
 } from "./ad.controller"
 import { $ref } from "./ad.schema"
 

@@ -1,15 +1,15 @@
 import { FastifyInstance } from "fastify"
 import {
-  loginHandler,
-  registerUserHandler,
-  getUsersHandler,
-  updateUserHandler,
   deleteUserHandler,
-  updateUserByAdminHandler,
+  getTotalUsersHandler,
   getUserByIdHandler,
   getUserByUsernameHandler,
-  getTotalUsersHandler,
+  getUsersHandler,
+  loginHandler,
+  registerUserHandler,
   searchUsersHandler,
+  updateUserByAdminHandler,
+  updateUserHandler,
 } from "./user.controller"
 import { $ref } from "./user.schema"
 

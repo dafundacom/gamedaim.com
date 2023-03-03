@@ -1,15 +1,15 @@
 import { FastifyInstance } from "fastify"
 
 import {
-  getMediasHandler,
-  getMediaByIdHandler,
-  getMediaByAuthorIdHandler,
-  uploadMediaHandler,
-  updateMediaHandler,
   deleteMediaByIdHandler,
   deleteMediaByNameHandler,
+  getMediaByAuthorIdHandler,
+  getMediaByIdHandler,
+  getMediasHandler,
   getTotalMediasHandler,
   searchMediasHandler,
+  updateMediaHandler,
+  uploadMediaHandler,
 } from "./media.controller"
 import { $ref } from "./media.schema"
 

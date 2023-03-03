@@ -1,5 +1,5 @@
-import { hashPassword } from "../../utils/password"
 import db from "../../utils/db"
+import { hashPassword } from "../../utils/password"
 import { CreateUserInput, UpdateUserInput } from "./user.schema"
 
 export async function createUser(input: CreateUserInput) {

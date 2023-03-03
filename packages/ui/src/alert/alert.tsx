@@ -1,7 +1,7 @@
 import * as React from "react"
 import { tx } from "@twind/core"
 
-import { Icon, CrossIcon } from "../icons"
+import { CrossIcon, Icon } from "../icons"
 
 interface AlertContextProps {
   colorScheme?: string

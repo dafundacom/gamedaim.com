@@ -1,9 +1,9 @@
 import * as React from "react"
-import NextLink from "next/link"
-import NextImage from "next/image"
-import { Button, Heading, Text } from "ui"
 import { TopicDataProps } from "@/lib/data-types"
+import NextImage from "next/image"
+import NextLink from "next/link"
 import { MdArrowBack, MdArrowForward } from "react-icons/md"
+import { Button, Heading, Text } from "ui"
 
 interface ListDownloadCategoryProps
   extends React.HTMLAttributes<HTMLDivElement> {

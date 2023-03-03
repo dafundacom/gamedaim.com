@@ -1,8 +1,8 @@
 import * as React from "react"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import { Heading } from "ui"
-import { WpPostsDataProps } from "@/lib/wp-data-types"
 
 interface PostCardSlideProps extends WpPostsDataProps {
   isWP?: boolean

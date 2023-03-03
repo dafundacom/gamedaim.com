@@ -6,8 +6,8 @@ import {
   deleteScriptById,
   findScriptById,
   getScripts,
-  updateScript,
   getTotalScripts,
+  updateScript,
 } from "./script.service"
 
 export async function createScriptHandler(
