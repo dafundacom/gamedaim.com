@@ -1,9 +1,10 @@
 import * as React from "react"
-import NextLink from "next/link"
-import NextImage from "next/image"
-import { useRouter } from "next/router"
 import { useTheme } from "next-themes"
-import { FaTwitter, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa"
+import NextImage from "next/image"
+import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa"
+import { MdSearch } from "react-icons/md"
 import {
   DashboardIcon,
   Heading,
@@ -17,7 +18,6 @@ import {
 
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
-import { MdSearch } from "react-icons/md"
 
 interface TopNavProps {
   toggleSideNav?: any

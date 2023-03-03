@@ -1,10 +1,12 @@
+import axios from "axios"
 import * as React from "react"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { MdOutlineClose } from "react-icons/md"
 import { Button, FormErrorMessage, Heading, Input } from "ui"
-import { useForm } from "react-hook-form"
+
 import { TopicDataProps } from "@/lib/data-types"
-import axios from "axios"
+
 interface FormValues {
   title: string
   content: string
@@ -12,15 +14,18 @@ interface FormValues {
   meta_title?: string
   meta_description?: string
 }
+
 interface AddTopicsProps {
   topics: any
   addTopics: any
   selectedTopics: any
   addSelectedTopics: any
 }
+
 interface FormValues {
   title: string
 }
+
 export const AddTopics = (props: AddTopicsProps) => {
   const { topics, addTopics, selectedTopics, addSelectedTopics } = props
 

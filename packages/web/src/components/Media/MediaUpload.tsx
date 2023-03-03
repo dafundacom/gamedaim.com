@@ -1,8 +1,8 @@
 import * as React from "react"
 import axios from "axios"
-import toast from "react-hot-toast"
 import { useForm } from "react-hook-form"
-import { FormControl, DropZone, FormErrorMessage, Button } from "ui"
+import toast from "react-hot-toast"
+import { Button, DropZone, FormControl, FormErrorMessage } from "ui"
 
 import { resizeImage } from "@/utils/resize-image"
 

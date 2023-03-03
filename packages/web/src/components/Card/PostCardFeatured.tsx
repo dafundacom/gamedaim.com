@@ -1,8 +1,8 @@
 import * as React from "react"
-import NextLink from "next/link"
 import NextImage from "next/image"
-import { Button } from "ui"
+import NextLink from "next/link"
 import { MdArrowBack, MdArrowForward } from "react-icons/md"
+import { Button } from "ui"
 
 import { WpPostsDataProps } from "@/lib/wp-data-types"
 

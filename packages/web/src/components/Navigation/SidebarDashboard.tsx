@@ -1,8 +1,8 @@
 import * as React from "react"
+import { useTheme } from "next-themes"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useTheme } from "next-themes"
 import {
   MdCode,
   MdDownload,

@@ -1,13 +1,15 @@
 import * as React from "react"
-import { useRouter } from "next/router"
-import { Button, IconButton } from "ui"
-import NextLink from "next/link"
+import axios from "axios"
 import NextImage from "next/image"
+import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { toast } from "react-hot-toast"
+import { MdDeleteOutline } from "react-icons/md"
+import { Button, IconButton } from "ui"
+
 import { MediaDataProps } from "@/lib/data-types"
 import { getMedias } from "@/lib/medias"
-import { MdDeleteOutline } from "react-icons/md"
-import axios from "axios"
-import { toast } from "react-hot-toast"
+
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   medias: any
   index: number

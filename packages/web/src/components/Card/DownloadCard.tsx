@@ -1,18 +1,18 @@
 import * as React from "react"
+import { DownloadDataProps } from "@/lib/data-types"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import {
-  FaWindows,
-  FaApple,
-  FaLinux,
   FaAndroid,
+  FaApple,
   FaAppleAlt,
-  FaXbox,
+  FaLinux,
   FaPlaystation,
+  FaWindows,
+  FaXbox,
 } from "react-icons/fa"
 import { SiNintendoswitch } from "react-icons/si"
 import { Heading, IconButton, Text } from "ui"
-import { DownloadDataProps } from "@/lib/data-types"
 
 interface DownloadCardProps extends React.HTMLAttributes<HTMLDivElement> {
   list: DownloadDataProps

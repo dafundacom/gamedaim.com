@@ -3,13 +3,13 @@ import { useRouter } from "next/router"
 import { Button } from "ui"
 
 import { PostCard } from "@/components/Card"
+import { WpPostsDataProps } from "@/lib/wp-data-types"
 import {
   wpGetAllPostsLoadMore,
-  wpGetPostsByCategorySlug,
   wpGetPostsByAuthorSlug,
+  wpGetPostsByCategorySlug,
   wpGetPostsByTagSlug,
 } from "@/lib/wp-posts"
-import { WpPostsDataProps } from "@/lib/wp-data-types"
 
 interface InfiniteScrollWPProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string

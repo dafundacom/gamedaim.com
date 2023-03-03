@@ -3,8 +3,8 @@ import { useRouter } from "next/router"
 import { Button } from "ui"
 
 import { PostCard } from "@/components/Card"
-import { getArticlesByTopic } from "@/lib/topics"
 import { ArticleDataProps } from "@/lib/data-types"
+import { getArticlesByTopic } from "@/lib/topics"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string

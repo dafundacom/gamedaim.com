@@ -1,13 +1,13 @@
 import * as React from "react"
-import NextLink from "next/link"
-import NextImage from "next/image"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
+import NextImage from "next/image"
+import NextLink from "next/link"
 import { MdAccessTime } from "react-icons/md"
 
-import { Heading } from "ui"
-import { wpAuthorPathBySlug } from "@/lib/wp-users"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
+import { wpAuthorPathBySlug } from "@/lib/wp-users"
+import { Heading } from "ui"
 
 interface MetadataPostProps
   extends WpPostsDataProps,

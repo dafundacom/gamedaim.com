@@ -1,7 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import env from "@/env"
-import useSWR from "swr"
 import {
   BiCheckSquare,
   BiListOl,
@@ -10,10 +8,13 @@ import {
   BiTrophy,
 } from "react-icons/bi"
 import { FaCoffee } from "react-icons/fa"
-import { Text } from "ui"
 import { MdArticle, MdDownload } from "react-icons/md"
-import { fetcherGraphQL } from "@/lib/fetcher"
+import useSWR from "swr"
+import { Text } from "ui"
+
+import env from "@/env"
 import { WP_GetMenusByName } from "@/data/wp-menus"
+import { fetcherGraphQL } from "@/lib/fetcher"
 
 interface SideNavProps {
   primaryMenus?: any

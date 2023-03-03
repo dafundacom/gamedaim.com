@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Heading, Icon, Text, CrossIcon } from "ui"
+import { CrossIcon, Heading, Icon, Text } from "ui"
 
 interface SpecBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: React.ElementType
