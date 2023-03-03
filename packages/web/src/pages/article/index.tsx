@@ -10,9 +10,7 @@ import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
 import { InfiniteScrollArticle } from "@/components/InfiniteScroll"
 import { Breadcrumb } from "ui"
 
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+import { HomeLayout } from "@/layouts/Home"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )

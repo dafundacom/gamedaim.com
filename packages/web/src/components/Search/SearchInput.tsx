@@ -24,7 +24,7 @@ export const SearchInput = React.forwardRef<HTMLDivElement, SearchInputProps>(
       if (onSearch) {
         onSearch(query)
       } else {
-        router.push(`/search?q=${encodeURIComponent(query)}`)
+        router.push(`/download/search?q=${encodeURIComponent(query)}`)
       }
     }
 

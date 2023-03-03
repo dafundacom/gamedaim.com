@@ -71,6 +71,9 @@ export default defineConfig({
     .loading-image {
      animation: loading 1s cubic-bezier(.4,0,.6,1) infinite;
     }
+    .sidebar-dashboard {
+      height: calc(100vh - 80px)
+    }
     .scrollbar {
       scroll-behavior: smooth;
     }

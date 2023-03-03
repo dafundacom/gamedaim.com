@@ -241,7 +241,7 @@ export default function EditDownloadDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="my-5 mx-3 flex items-center justify-between">
+          <div className="sticky top-[1.25rem] my-5 mx-3 flex items-center justify-between">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/downloads">Downloads</NextLink>
             </Button>
@@ -262,7 +262,7 @@ export default function EditDownloadDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="flex min-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
+              <div className="scollbarhide scrollbar fixed right-0 top-[65px] bottom-[95px] flex min-w-[300px] flex-col space-y-4 overflow-x-auto bg-white px-4 pb-[40px] dark:bg-inherit">
                 <div className="my-2 flex flex-col px-4">
                   <Heading as="h3" size="md">
                     Slug

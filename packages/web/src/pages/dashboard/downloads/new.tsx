@@ -184,7 +184,7 @@ export default function CreateDownloadsDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="my-5 mx-3 flex items-center justify-between">
+          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/downloads">Downloads</NextLink>
             </Button>
@@ -205,7 +205,7 @@ export default function CreateDownloadsDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="flex min-w-[300px] max-w-[300px] flex-col space-y-4 overflow-x-auto pb-[40px]">
+              <div className="scollbarhide scrollbar fixed right-0 top-[65px] bottom-[95px] flex min-w-[300px] max-w-[300px] flex-col space-y-4 overflow-x-auto border bg-white px-4 py-4 dark:bg-inherit">
                 <AddTopics
                   topics={topics}
                   addTopics={setTopics}

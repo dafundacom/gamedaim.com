@@ -7,9 +7,7 @@ import env from "@/env"
 import { wpGetAllPosts } from "@/lib/wp-posts"
 import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 
-const HomeLayout = dynamic(() =>
-  import("@/layouts/Home").then((mod) => mod.HomeLayout),
-)
+import { HomeLayout } from "@/layouts/Home"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
