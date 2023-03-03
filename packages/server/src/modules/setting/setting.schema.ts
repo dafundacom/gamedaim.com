@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
+import { z } from "zod"
 
 const settingInput = {
   key: z.string({

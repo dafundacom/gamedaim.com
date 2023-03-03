@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker"
-import db from "../../../utils/db"
+import { UserType } from "@fastify/jwt"
 import { test } from "tap"
 import buildServer from "../../../server"
-import { UserType } from "@fastify/jwt"
+import db from "../../../utils/db"
 
 test("POST `/api/user/login`", async () => {
   test("given the email and password are correct", async (t) => {

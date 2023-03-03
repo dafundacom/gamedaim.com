@@ -2,10 +2,10 @@ import { FastifyInstance } from "fastify"
 import {
   createWpCommentHandler,
   deleteWpCommentHandler,
-  updateWpCommentHandler,
-  getWpCommentsHandler,
-  getWpCommentByIdHandler,
   getTotalWpCommentsHandler,
+  getWpCommentByIdHandler,
+  getWpCommentsHandler,
+  updateWpCommentHandler,
 } from "./wp-comment.controller"
 import { $ref } from "./wp-comment.schema"
 

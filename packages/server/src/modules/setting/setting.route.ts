@@ -2,9 +2,9 @@ import { FastifyInstance } from "fastify"
 
 import {
   createSettingHandler,
-  updateSettingHandler,
   getSettingByKeyHandler,
   getSettingsHandler,
+  updateSettingHandler,
 } from "./setting.controller"
 
 import { $ref } from "./setting.schema"

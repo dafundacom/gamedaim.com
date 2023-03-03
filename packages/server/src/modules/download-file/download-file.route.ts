@@ -2,14 +2,14 @@ import { FastifyInstance } from "fastify"
 
 import {
   createDownloadFileHandler,
-  getDownloadFilesHandler,
   deleteDownloadFileHandler,
-  updateDownloadFileHandler,
+  getDownloadFileByAuthorIdHandler,
   getDownloadFileByIdHandler,
   getDownloadFileBySlugHandler,
-  getDownloadFileByAuthorIdHandler,
+  getDownloadFilesHandler,
   getTotalDownloadFilesHandler,
   searchDownloadFilesHandler,
+  updateDownloadFileHandler,
 } from "./download-file.controller"
 import { $ref } from "./download-file.schema"
 

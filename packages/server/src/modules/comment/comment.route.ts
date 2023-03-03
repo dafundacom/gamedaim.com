@@ -2,11 +2,11 @@ import { FastifyInstance } from "fastify"
 import {
   createCommentHandler,
   deleteCommentHandler,
-  updateCommentHandler,
-  getCommentsHandler,
   getCommentByIdHandler,
+  getCommentsHandler,
   getTotalCommentsHandler,
   searchCommentsHandler,
+  updateCommentHandler,
 } from "./comment.controller"
 
 import { $ref } from "./comment.schema"

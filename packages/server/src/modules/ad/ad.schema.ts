@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
+import { z } from "zod"
 
 const AD_POSITION = [
   "HOME_BELOW_HEADER",

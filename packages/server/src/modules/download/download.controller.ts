@@ -1,20 +1,20 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { uniqueSlug, slugify } from "../../utils/slug"
+import { slugify, uniqueSlug } from "../../utils/slug"
+import { trimText } from "../../utils/trim"
 import { CreateDownloadInput, UpdateDownloadInput } from "./download.schema"
 import {
   createDownload,
-  getDownloads,
   deleteDownloadById,
-  updateDownload,
-  findDownloadById,
-  findDownloadByType,
   findDownloadByAuthorId,
+  findDownloadById,
   findDownloadBySlug,
+  findDownloadByType,
+  getDownloads,
   getTotalDownloads,
   searchDownloads,
+  updateDownload,
 } from "./download.service"
-import { trimText } from "../../utils/trim"
 
 export async function createDownloadHandler(
   request: FastifyRequest<{
