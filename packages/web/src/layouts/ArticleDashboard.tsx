@@ -18,7 +18,7 @@ export const ArticleDashboardLayout: React.FunctionComponent<
         className={`${
           isOpen == false
             ? "hidden"
-            : "pt-15 fixed top-0 right-0 z-20 mt-16 flex h-screen flex-row overflow-x-auto border-l border-gray-100 bg-white pb-10 opacity-100 dark:border-gray-700 dark:bg-gray-900"
+            : "pt-15 relative z-20 mt-16 flex flex-row overflow-x-auto bg-white py-4 opacity-100 dark:border-gray-700 dark:bg-gray-900"
         } `}
       >
         {sidebar}

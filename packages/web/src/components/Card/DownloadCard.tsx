@@ -30,7 +30,7 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
           return (
             <>
               <div
-                key={list.id}
+                key={list.slug}
                 className="inline-block min-h-[350px] w-[200px] flex-col overflow-hidden rounded-lg shadow-lg"
                 ref={ref}
                 {...rest}
@@ -40,7 +40,7 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
                     href={`/download/${list.type.toLowerCase()}/${list.slug}`}
                   >
                     <NextImage
-                      src={list.featuredImage.url}
+                      src={list.featuredImage?.url}
                       alt={list.title}
                       width={400}
                       height={400}
