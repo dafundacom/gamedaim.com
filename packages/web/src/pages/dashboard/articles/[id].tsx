@@ -180,7 +180,7 @@ export default function EditArticleDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="my-5 mx-3 flex items-center justify-between">
+          <div className="sticky top-[1.25rem] my-5 mx-3 flex items-center justify-between">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/articles">Articles</NextLink>
             </Button>
@@ -202,7 +202,7 @@ export default function EditArticleDashboard() {
             isOpen={isOpen}
             sidebar={
               <div className="px-3">
-                <div className="flex min-w-[300px] max-w-[300px] flex-col space-y-4">
+                <div className="scollbarhide scrollbar fixed right-0 top-[65px] bottom-0 flex min-w-[300px] max-w-[300px] flex-col space-y-4 bg-white px-4 dark:bg-[inherit]">
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Slug
