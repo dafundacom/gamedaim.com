@@ -10,6 +10,7 @@ import {
   wpGetPostsByCategorySlug,
   wpGetPostsByTagSlug,
 } from "@/lib/wp-posts"
+import { splitUriWP } from "@/utils/split-html"
 
 interface InfiniteScrollWPProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string
@@ -84,12 +85,14 @@ export const InfiniteScrollWP = React.forwardRef<
   return (
     <div ref={ref} {...rest}>
       {list.map((post: WpPostsDataProps) => {
+        const newUri = splitUriWP(post.uri)
+
         return (
           <PostCard
             key={post.id}
             src={post.featuredImage.sourceUrl}
             alt={post.featuredImage.altText}
-            slug={post.uri}
+            slug={newUri}
             title={post.title}
             excerpt={post.excerpt}
             authorName={post.author.name}

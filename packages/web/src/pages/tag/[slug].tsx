@@ -21,6 +21,7 @@ const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
 import { HomeLayout } from "@/layouts/Home"
+import { splitUriWP } from "@/utils/split-html"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -97,13 +98,14 @@ export default function Tag(props: TagProps) {
                   </Heading>
                 </div>
                 {posts.map((post: WpSinglePostDataProps) => {
+                  const newUri = splitUriWP(post.uri)
                   return (
                     <PostCardSide
                       key={post.id}
                       src={post.featuredImage.sourceUrl}
                       alt={post.featuredImage.altText}
                       title={post.title}
-                      slug={post.uri}
+                      slug={newUri}
                     />
                   )
                 })}
