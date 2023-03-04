@@ -8,7 +8,11 @@ import { HomeLayout } from "@/layouts/Home"
 import { PostCardSide } from "@/components/Card"
 import { Article } from "@/components/Article"
 import { getArticleBySlug, getArticles } from "@/lib/articles"
-import { ArticleDataProps, ArticlesDataProps } from "@/lib/data-types"
+import {
+  ArticleDataProps,
+  ArticlesDataProps,
+  TopicDataProps,
+} from "@/lib/data-types"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
@@ -46,6 +50,26 @@ export default function SingleArticle(props: SingleArticleProps) {
           url: `https://${env.DOMAIN}/${article.slug}`,
           title: `${article.meta_title || article.title} | ${env.SITE_TITLE}`,
           description: article.meta_description || article.excerpt,
+          images: [
+            {
+              url: article.featuredImage.url,
+              alt: article.title,
+              width: 1280,
+              height: 720,
+              type: "image/webp",
+            },
+          ],
+          article: {
+            publishedTime: article.createdAt,
+            modifiedTime: article.updatedAt,
+            section: article.topics[0].title,
+            authors: [`https://${env.DOMAIN}/user/${article.author.username}`],
+            tags: [
+              article.topics.map((topic: TopicDataProps) => {
+                return topic.title
+              }),
+            ],
+          },
         }}
       />
       <ArticleJsonLd
