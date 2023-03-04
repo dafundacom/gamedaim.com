@@ -94,6 +94,15 @@ export default function DownloadAppVersion(props: {
             env.SITE_TITLE
           }`,
           description: download.meta_description || download.excerpt,
+          images: [
+            {
+              url: downloadFile.featuredImage.url,
+              alt: downloadFile.title,
+              width: 1280,
+              height: 720,
+              type: "image/webp",
+            },
+          ],
         }}
       />
       <ArticleJsonLd

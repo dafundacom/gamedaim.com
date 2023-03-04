@@ -184,6 +184,15 @@ function App({ Component, pageProps }: AppProps) {
               openGraph={{
                 locale: env.SITE_LANGUAGE,
                 siteName: env.SITE_TITLE,
+                images: [
+                  {
+                    url: env.LOGO_OG_URL,
+                    alt: env.SITE_TITLE,
+                    width: env.LOGO_OG_WIDTH,
+                    height: env.LOGO_OG_HEIGHT,
+                    type: "image/png",
+                  },
+                ],
               }}
               facebook={{
                 appId: env.FACEBOOK_ID,

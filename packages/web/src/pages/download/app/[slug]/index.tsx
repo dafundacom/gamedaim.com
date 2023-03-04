@@ -93,6 +93,15 @@ export default function DownloadApp(props: { download: any; downloads: any }) {
           url: `https://${env.DOMAIN}/download/app/${download.slug}`,
           title: `${download.meta_title || download.title} | ${env.SITE_TITLE}`,
           description: download.meta_description || download.excerpt,
+          images: [
+            {
+              url: download.featuredImage.url,
+              alt: download.title,
+              width: 1280,
+              height: 720,
+              type: "image/webp",
+            },
+          ],
         }}
       />
       <ArticleJsonLd
