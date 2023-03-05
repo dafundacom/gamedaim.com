@@ -42,7 +42,7 @@ async function downloadFileRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/search/:searchDownloaFileQuery",
+    "/search/:searchDownloadFileQuery",
     {
       schema: {
         response: {
