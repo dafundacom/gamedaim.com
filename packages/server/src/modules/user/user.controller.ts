@@ -8,10 +8,11 @@ import {
   findUserByEmail,
   findUserById,
   findUserByUsername,
+  findUserByUsernameAndGetArticles,
   findUsers,
+  updateUser,
   getTotalUsers,
   searchUsers,
-  updateUser,
 } from "./user.service"
 
 export async function registerUserHandler(
@@ -123,7 +124,6 @@ export async function updateUserHandler(
       phoneNumber,
       profilePictureId,
       about,
-      role,
     } = request.body
 
     const user = request.user
@@ -160,7 +160,6 @@ export async function updateUserHandler(
       phoneNumber,
       profilePictureId,
       about,
-      role,
     })
 
     return reply.code(201).send(updatedUser)
@@ -308,6 +307,30 @@ export async function getUserByUsernameHandler(
     const { username } = request.params
 
     const user = await findUserByUsername(username)
+    return reply.code(201).send(user)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getUserByUsernameAndGetArticlesHandler(
+  request: FastifyRequest<{
+    Params: { username: string; userPage: number }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { username } = request.params
+
+    const perPage = 10
+    const userPage = Number(request.params.userPage || 1)
+
+    const user = await findUserByUsernameAndGetArticles(
+      username,
+      userPage,
+      perPage,
+    )
     return reply.code(201).send(user)
   } catch (e) {
     console.log(e)
