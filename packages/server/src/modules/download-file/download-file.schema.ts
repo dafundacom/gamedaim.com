@@ -2,10 +2,12 @@ import { buildJsonSchemas } from "fastify-zod"
 import { z } from "zod"
 
 const downloadFileInput = {
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string",
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+      invalid_type_error: "Title must be a string",
+    })
+    .min(2),
   meta_title: z
     .string({
       invalid_type_error: "Meta Title must be a string",
@@ -20,26 +22,36 @@ const downloadFileInput = {
     required_error: "Featured Image is required",
     invalid_type_error: "Featured Image must be a string",
   }),
-  version: z.string({
-    required_error: "Version is required",
-    invalid_type_error: "Version must be a string",
-  }),
-  downloadLink: z.string({
-    required_error: "Download Link is required",
-    invalid_type_error: "Download Link must be a string",
-  }),
-  fileSize: z.string({
-    required_error: "File Size is required",
-    invalid_type_error: "File Size must be a string",
-  }),
-  currency: z.string({
-    required_error: "Currency is required",
-    invalid_type_error: "Currency must be a string",
-  }),
-  price: z.string({
-    required_error: "Price is required",
-    invalid_type_error: "Price must be a string",
-  }),
+  version: z
+    .string({
+      required_error: "Version is required",
+      invalid_type_error: "Version must be a string",
+    })
+    .min(1),
+  downloadLink: z
+    .string({
+      required_error: "Download Link is required",
+      invalid_type_error: "Download Link must be a string",
+    })
+    .min(1),
+  fileSize: z
+    .string({
+      required_error: "File Size is required",
+      invalid_type_error: "File Size must be a string",
+    })
+    .min(1),
+  currency: z
+    .string({
+      required_error: "Currency is required",
+      invalid_type_error: "Currency must be a string",
+    })
+    .min(1),
+  price: z
+    .string({
+      required_error: "Price is required",
+      invalid_type_error: "Price must be a string",
+    })
+    .min(1),
   downloadIds: z.array(z.string()).optional(),
 }
 
