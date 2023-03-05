@@ -245,6 +245,7 @@ export async function searchDownloadFiles(searchDownloadFileQuery: string) {
       OR: [
         { title: { contains: searchDownloadFileQuery } },
         { version: { contains: searchDownloadFileQuery } },
+        { downloadLink: { contains: searchDownloadFileQuery } },
       ],
     },
   })
