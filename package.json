@@ -36,8 +36,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
-    "prettier-plugin-tailwindcss": "^0.2.3",
-    "rimraf": "^4.1.2",
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "rimraf": "^4.3.0",
     "turbo": "^1.8.3"
   },
   "engines": {
