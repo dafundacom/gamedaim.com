@@ -42,19 +42,21 @@ export const AddTopics = (props: AddTopicsProps) => {
 
   const onSubmit = React.useCallback(
     async (value: any) => {
-      try {
-        const { data } = await axios.post("/topic", value)
-        addSelectedTopics((prev: any) => [...prev, data])
-        addTopics((prev: any) => [...prev, data.id])
-        if (data?.error) {
-          toast.error(data.error)
-        } else {
-          reset()
-          toast.success("Topic Successfully created")
+      if (value.title.length > 0) {
+        try {
+          const { data } = await axios.post("/topic", value)
+          addSelectedTopics((prev: any) => [...prev, data])
+          addTopics((prev: any) => [...prev, data.id])
+          if (data?.error) {
+            toast.error(data.error)
+          } else {
+            reset()
+            toast.success("Topic Successfully created")
+          }
+        } catch (err: any) {
+          console.log("err => ", err)
+          toast.error(err.response.data.message)
         }
-      } catch (err: any) {
-        console.log("err => ", err)
-        toast.error(err.response.data.message)
       }
     },
     [addSelectedTopics, addTopics, reset],

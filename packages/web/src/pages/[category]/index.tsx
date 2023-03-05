@@ -24,6 +24,7 @@ const PostCardSide = dynamic(() =>
 
 import { HomeLayout } from "@/layouts/Home"
 import { Breadcrumb, Button, Heading } from "ui"
+import { splitUriWP } from "@/utils/split-html"
 
 interface CategoryProps {
   category: WpCategoriesDataProps
@@ -105,13 +106,14 @@ export default function Category(props: CategoryProps) {
                   </Heading>
                 </div>
                 {posts.map((post: WpSinglePostDataProps) => {
+                  const newUri = splitUriWP(post.uri)
                   return (
                     <PostCardSide
                       key={post.id}
                       src={post.featuredImage.sourceUrl}
                       alt={post.featuredImage.altText}
                       title={post.title}
-                      slug={post.uri}
+                      slug={newUri}
                     />
                   )
                 })}
