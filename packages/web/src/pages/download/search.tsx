@@ -1,5 +1,4 @@
 import * as React from "react"
-import NextLink from "next/link"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
@@ -13,12 +12,6 @@ import { getDownloads } from "@/lib/download"
 import { DownloadDataProps } from "@/lib/data-types"
 import { Breadcrumb } from "ui"
 import { MdChevronRight } from "react-icons/md"
-const PostCardSide = dynamic(() =>
-  import("@/components/Card").then((mod) => mod.PostCardSide),
-)
-const PostCard = dynamic(() =>
-  import("@/components/Card/PostCard").then((mod) => mod.PostCard),
-)
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
