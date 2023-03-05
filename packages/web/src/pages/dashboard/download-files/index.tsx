@@ -7,8 +7,13 @@ import toast from "react-hot-toast"
 import useSWR from "swr"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
-import { Badge, Button, IconButton, Text } from "ui"
+import {
+  MdAdd,
+  MdChevronLeft,
+  MdChevronRight,
+  MdOutlineSearch,
+} from "react-icons/md"
+import { Badge, Button, IconButton, Input, Text } from "ui"
 
 import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
@@ -56,6 +61,9 @@ export default function DownloadFilesDashboard() {
         ),
       }))
       toast.success("Files deleted successfully")
+      if (router.query.search) {
+        mutate()
+      }
     } catch (err: any) {
       console.log(err)
       toast.error(err.response.data.message)
@@ -63,6 +71,20 @@ export default function DownloadFilesDashboard() {
   }
 
   const lastPage = count && Math.ceil(totalDownloadFiles / 10)
+
+  const handleSearch = (e: {
+    preventDefault: () => void
+    target: { value: any }
+  }) => {
+    e.preventDefault()
+    if (e.target["0"].value.length > 1) {
+      router.push(`/dashboard/download-files?search=${e.target["0"].value}`)
+    }
+  }
+  const { data: searchResult, mutate } = useSWR(
+    router.query.search ? `/download-file/search/${router.query.search}` : null,
+    fetcher,
+  )
 
   return (
     <>
@@ -79,10 +101,26 @@ export default function DownloadFilesDashboard() {
       />
       <AdminOrAuthorRole>
         <DashboardLayout>
-          <div className="mt-4 flex items-end justify-end">
-            <NextLink href="/dashboard/download-files/new">
-              <Button leftIcon={<MdAdd />}>Add New</Button>
-            </NextLink>
+          <div className="mt-4 flex items-end justify-between">
+            <div>
+              <NextLink href="/dashboard/download-files/new">
+                <Button leftIcon={<MdAdd />}>Add New</Button>
+              </NextLink>
+            </div>
+
+            <form onSubmit={(e: any) => handleSearch(e)}>
+              <Input.Group>
+                <Input type="text" name="search" />
+                <Input.RightElement className="w-2">
+                  <button
+                    type="submit"
+                    className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none"
+                  >
+                    <MdOutlineSearch />
+                  </button>
+                </Input.RightElement>
+              </Input.Group>
+            </form>
           </div>
           <div className="my-6 rounded">
             {downloadFiles.length > 0 ? (
@@ -99,7 +137,55 @@ export default function DownloadFilesDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
+                    {router.query.search &&
+                    searchResult &&
+                    searchResult.length > 0
+                      ? searchResult.map(
+                          (downloadFile: DownloadFileDataProps) => (
+                            <Tr key={downloadFile.id}>
+                              <Td className="whitespace-nowrap">
+                                <div className="flex">
+                                  <span className="font-medium">
+                                    {downloadFile.title}
+                                  </span>
+                                </div>
+                              </Td>
+                              <Td className="whitespace-nowrap">
+                                <div className="flex">
+                                  {/* <span className="font-medium">
+                                  {downloadFile.author.name}
+                                </span> */}
+                                </div>
+                              </Td>
+                              <Td>{dayjs(downloadFile.createdAt).fromNow()}</Td>
+                              <Td>{dayjs(downloadFile.updatedAt).fromNow()}</Td>
+                              <Td className="whitespace-nowrap">
+                                <div className="flex">
+                                  <span className="font-medium">
+                                    <Badge variant="outline">
+                                      {downloadFile.status}
+                                    </Badge>
+                                  </span>
+                                </div>
+                              </Td>
+                              <Td align="right">
+                                <ActionDashboard
+                                  viewLink={`/download-files/${downloadFile.slug}`}
+                                  onDelete={() => {
+                                    handleDelete(downloadFile)
+                                  }}
+                                  editLink={`/dashboard/download-files/${downloadFile.id}`}
+                                  content={downloadFile.title}
+                                />
+                              </Td>
+                            </Tr>
+                          ),
+                        )
+                      : router.query.search && (
+                          <>{`${router.query.search} not found`}</>
+                        )}
                     {data &&
+                      !router.query.search &&
                       downloadFiles.map(
                         (downloadFile: DownloadFileDataProps) => (
                           <Tr key={downloadFile.id}>
@@ -140,7 +226,7 @@ export default function DownloadFilesDashboard() {
                       )}
                   </Tbody>
                 </Table>
-                {page && (
+                {page && !router.query.search && (
                   <div className="align-center mt-2 flex items-center justify-center space-x-2">
                     <>
                       {page !== 1 && (

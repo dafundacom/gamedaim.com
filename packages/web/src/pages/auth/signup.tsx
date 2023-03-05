@@ -199,7 +199,7 @@ export default function Signup() {
                       })}
                     />
                     <Input.RightElement className="w-14">
-                      <button
+                      <div
                         onClick={(e) => {
                           e.preventDefault()
                           handleToggleShowPassword()
@@ -211,7 +211,7 @@ export default function Signup() {
                         ) : (
                           <HiEye className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
                         )}
-                      </button>
+                      </div>
                     </Input.RightElement>
                   </Input.Group>
                   {errors?.password && (

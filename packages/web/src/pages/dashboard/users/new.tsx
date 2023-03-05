@@ -193,7 +193,7 @@ export default function CreateUsersDashboard() {
                     Password
                     <RequiredIndicator />
                   </FormLabel>
-                  <Input.Group>
+                  <Input.Group className="max-w-xl">
                     <Input
                       className="max-w-xl pr-20"
                       type={showPassword ? "text" : "password"}
@@ -218,19 +218,19 @@ export default function CreateUsersDashboard() {
                     />
                     {/*FIX: not appear on mobile*/}
                     <Input.RightElement className="w-2">
-                      <button
+                      <div
                         onClick={(e) => {
                           e.preventDefault()
                           handleToggleShowPassword()
                         }}
-                        className="absolute inset-y-0 right-[970px] mr-3 flex items-center rounded-lg p-1 focus:outline-none"
+                        className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none"
                       >
                         {showPassword ? (
                           <HiEyeOff className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
                         ) : (
                           <HiEye className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />
                         )}
-                      </button>
+                      </div>
                     </Input.RightElement>
                   </Input.Group>
                   {errors?.password && (

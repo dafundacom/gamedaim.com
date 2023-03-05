@@ -34,7 +34,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
 
     return (
       <article
-        className="mb-[30px] flex grow border-separate flex-row rounded-lg drop-shadow-md lg:flex-col"
+        className="mb-[30px] flex grow border-separate flex-row rounded-lg lg:flex-col"
         ref={ref}
         {...rest}
       >

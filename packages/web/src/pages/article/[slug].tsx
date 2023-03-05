@@ -29,7 +29,7 @@ export default function SingleArticle(props: SingleArticleProps) {
     excerpt: article.excerpt,
     title: article.title,
     authorName: article.author.name,
-    authorUrl: article.author.id,
+    authorUrl: article.author.username,
     authorUsername: article.author.username,
     authorImg: article.author.profilePicture?.url,
     categories: article.topics,

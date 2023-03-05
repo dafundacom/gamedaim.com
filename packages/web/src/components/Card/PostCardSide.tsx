@@ -17,7 +17,7 @@ export const PostCardSide = React.forwardRef<
   return (
     <NextLink href={isWP ? slug : (`/article/${slug}` as any)}>
       <article
-        className="mb-4 flex w-full border-separate flex-col rounded-lg drop-shadow-md"
+        className="mb-4 flex w-full border-separate flex-col rounded-lg"
         ref={ref}
         {...rest}
       >
