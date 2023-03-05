@@ -1,5 +1,5 @@
-import db from "../../utils/db"
 import { hashPassword } from "../../utils/password"
+import db from "../../utils/db"
 import { CreateUserInput, UpdateUserInput } from "./user.schema"
 
 export async function createUser(input: CreateUserInput) {
@@ -24,6 +24,94 @@ export async function findUserByUsername(username: string) {
   return await db.user.findUnique({
     where: {
       username,
+    },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      phoneNumber: true,
+      about: true,
+      role: true,
+      profilePicture: {
+        select: {
+          id: true,
+          url: true,
+        },
+      },
+      articles: {
+        take: 6,
+        select: {
+          content: true,
+          excerpt: true,
+          title: true,
+          meta_title: true,
+          meta_description: true,
+          slug: true,
+          id: true,
+          status: true,
+          featuredImage: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
+export async function findUserByUsernameAndGetArticles(
+  username: string,
+  userPage: number,
+  perPage: number,
+) {
+  return await db.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      profilePicture: {
+        select: {
+          id: true,
+          url: true,
+        },
+      },
+      articles: {
+        skip: (userPage - 1) * perPage,
+        take: perPage,
+        select: {
+          content: true,
+          excerpt: true,
+          title: true,
+          meta_title: true,
+          meta_description: true,
+          slug: true,
+          id: true,
+          status: true,
+          featuredImage: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          articles: true,
+        },
+      },
     },
   })
 }
@@ -81,6 +169,7 @@ export async function findUsers(userPage: number, perPage: number) {
 export async function updateUser(userId: string, data: UpdateUserInput) {
   return await db.user.update({
     where: { id: userId },
+    //@ts-ignore
     data,
   })
 }

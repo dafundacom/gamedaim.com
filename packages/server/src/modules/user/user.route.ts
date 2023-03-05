@@ -1,15 +1,16 @@
 import { FastifyInstance } from "fastify"
 import {
-  deleteUserHandler,
-  getTotalUsersHandler,
-  getUserByIdHandler,
-  getUserByUsernameHandler,
-  getUsersHandler,
   loginHandler,
   registerUserHandler,
-  searchUsersHandler,
-  updateUserByAdminHandler,
+  getUsersHandler,
   updateUserHandler,
+  deleteUserHandler,
+  updateUserByAdminHandler,
+  getUserByIdHandler,
+  getUserByUsernameHandler,
+  getUserByUsernameAndGetArticlesHandler,
+  getTotalUsersHandler,
+  searchUsersHandler,
 } from "./user.controller"
 import { $ref } from "./user.schema"
 
@@ -86,6 +87,18 @@ async function userRoutes(server: FastifyInstance) {
       },
     },
     getUserByUsernameHandler,
+  )
+
+  server.get(
+    "/username/:username/articles/:userPage",
+    {
+      schema: {
+        response: {
+          200: $ref("userResponseSchema"),
+        },
+      },
+    },
+    getUserByUsernameAndGetArticlesHandler,
   )
 
   server.put(
