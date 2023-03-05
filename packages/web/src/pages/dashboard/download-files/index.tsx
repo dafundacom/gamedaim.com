@@ -152,9 +152,9 @@ export default function DownloadFilesDashboard() {
                               </Td>
                               <Td className="whitespace-nowrap">
                                 <div className="flex">
-                                  {/* <span className="font-medium">
-                                  {downloadFile.author.name}
-                                </span> */}
+                                  <span className="font-medium">
+                                    {downloadFile.author?.name}
+                                  </span>
                                 </div>
                               </Td>
                               <Td>{dayjs(downloadFile.createdAt).fromNow()}</Td>

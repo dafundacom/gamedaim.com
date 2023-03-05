@@ -85,6 +85,7 @@ export interface ArticlesDataProps {
 }
 
 export interface TopicDataProps {
+  [x: string]: any
   id: string
   title: string
   slug: string
