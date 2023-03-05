@@ -9,6 +9,7 @@ const userCore = {
       required_error: "Email is required",
       invalid_type_error: "Must be a valid email",
     })
+    .min(3)
     .email(),
   username: z
     .string({
@@ -18,11 +19,9 @@ const userCore = {
     .regex(new RegExp(/^[a-zA-Z0-9_]*$/), {
       message:
         "Username should be 3-20 characters without spaces, symbol or any special characters",
-    }),
-  name: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
-  }),
+    })
+    .min(3),
+  name: z.string().min(1),
   phoneNumber: z
     .string({ invalid_type_error: "Phone Number must be a string" })
     .optional(),

@@ -17,19 +17,23 @@ const AD_POSITION = [
 ]
 
 const adInput = {
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string",
-  }),
-  content: z.string({
-    required_error: "Content is required",
-    invalid_type_error: "Content must be a string",
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+      invalid_type_error: "Title must be a string",
+    })
+    .min(2),
+  content: z
+    .string({
+      required_error: "Content is required",
+      invalid_type_error: "Content must be a string",
+    })
+    .min(2),
   position: z
     .any()
     .refine(
       (position) => AD_POSITION.includes(position),
-      "only ABOVE_POST, BELOW_POST, INLINE_POST, and POP_UP are accepted",
+      "your ad position doesnt exist on available option.",
     ),
   active: z
     .boolean({

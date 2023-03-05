@@ -2,13 +2,17 @@ import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
 const downloadInput = {
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string",
-  }),
-  content: z.string({
-    invalid_type_error: "Content must be a string",
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+      invalid_type_error: "Title must be a string",
+    })
+    .min(2),
+  content: z
+    .string({
+      invalid_type_error: "Content must be a string",
+    })
+    .min(10),
   excerpt: z
     .string({
       invalid_type_error: "Content must be a string",
@@ -29,22 +33,30 @@ const downloadInput = {
     required_error: "Featured Image is required",
     invalid_type_error: "Featured Image must be a string",
   }),
-  developer: z.string({
-    required_error: "Developer is required",
-    invalid_type_error: "Developer must be a string",
-  }),
-  operationSystem: z.string({
-    required_error: "Operation System is required",
-    invalid_type_error: "Operation System must be a string",
-  }),
-  license: z.string({
-    required_error: "License is required",
-    invalid_type_error: "License must be a string",
-  }),
-  officialWeb: z.string({
-    required_error: "Official Web is required",
-    invalid_type_error: "Official Web must be a string",
-  }),
+  developer: z
+    .string({
+      required_error: "Developer is required",
+      invalid_type_error: "Developer must be a string",
+    })
+    .min(1),
+  operationSystem: z
+    .string({
+      required_error: "Operation System is required",
+      invalid_type_error: "Operation System must be a string",
+    })
+    .min(1),
+  license: z
+    .string({
+      required_error: "License is required",
+      invalid_type_error: "License must be a string",
+    })
+    .min(1),
+  officialWeb: z
+    .string({
+      required_error: "Official Web is required",
+      invalid_type_error: "Official Web must be a string",
+    })
+    .min(1),
   schemaType: z.string({
     required_error: "Schema Type is required",
     invalid_type_error: "Schema Type must be a string",

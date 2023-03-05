@@ -2,13 +2,17 @@ import { buildJsonSchemas } from "fastify-zod"
 import { z } from "zod"
 
 const articleInput = {
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string",
-  }),
-  content: z.string({
-    invalid_type_error: "Content must be a string",
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+      invalid_type_error: "Title must be a string",
+    })
+    .min(2),
+  content: z
+    .string({
+      invalid_type_error: "Content must be a string",
+    })
+    .min(50),
   excerpt: z
     .string({
       invalid_type_error: "Content must be a string",

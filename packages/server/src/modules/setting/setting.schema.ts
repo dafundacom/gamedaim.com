@@ -2,14 +2,18 @@ import { buildJsonSchemas } from "fastify-zod"
 import { z } from "zod"
 
 const settingInput = {
-  key: z.string({
-    required_error: "Key is required",
-    invalid_type_error: "Key must be a string",
-  }),
-  value: z.string({
-    required_error: "Value is required",
-    invalid_type_error: "Value must be a string",
-  }),
+  key: z
+    .string({
+      required_error: "Key is required",
+      invalid_type_error: "Key must be a string",
+    })
+    .min(1),
+  value: z
+    .string({
+      required_error: "Value is required",
+      invalid_type_error: "Value must be a string",
+    })
+    .min(1),
 }
 
 const updateSettingInput = {

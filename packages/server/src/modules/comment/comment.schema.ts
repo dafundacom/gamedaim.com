@@ -2,10 +2,12 @@ import { buildJsonSchemas } from "fastify-zod"
 import { z } from "zod"
 
 const commentInput = {
-  content: z.string({
-    required_error: "Content is required",
-    invalid_type_error: "Content must be a string",
-  }),
+  content: z
+    .string({
+      required_error: "Content is required",
+      invalid_type_error: "Content must be a string",
+    })
+    .min(1),
   articleId: z.string({
     required_error: "Content is required",
     invalid_type_error: "Content must be a string",

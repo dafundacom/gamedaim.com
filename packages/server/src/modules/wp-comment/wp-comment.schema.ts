@@ -6,10 +6,12 @@ const wpCommentInput = {
     required_error: "WP Post Id is required",
     invalid_type_error: "WP Post Id must be a string",
   }),
-  content: z.string({
-    required_error: "Content is required",
-    invalid_type_error: "Content must be a string",
-  }),
+  content: z
+    .string({
+      required_error: "Content is required",
+      invalid_type_error: "Content must be a string",
+    })
+    .min(1),
 }
 
 const wpCommentUpdateInput = {
