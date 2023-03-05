@@ -38,3 +38,16 @@ export const getArticleBySlug = async (slug: string) => {
 
   return { article: postData }
 }
+
+export const getArticleByAuthorId = async (id: string) => {
+  let postData
+  try {
+    const { data } = await axios.get(`/article/author/${id}/1`)
+    postData = data
+  } catch (e) {
+    console.log(`Failed to query post data: ${e}`)
+    throw e
+  }
+
+  return { articles: postData }
+}

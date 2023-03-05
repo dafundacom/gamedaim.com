@@ -13,6 +13,7 @@ import { Breadcrumb } from "ui"
 import { fetcher } from "@/lib/fetcher"
 import { ArticleDataProps } from "@/lib/data-types"
 import { DownloadCard } from "@/components/Card"
+import { splitUriWP } from "@/utils/split-html"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -140,7 +141,7 @@ export default function Search(props: SearchProps) {
                         excerpt={article.excerpt}
                         authorName={article.author?.name}
                         authorAvatarUrl={article.author?.profilePicture?.url}
-                        authorUri={article.author?.username}
+                        authorUri={article.author?.id}
                         date={article.createdAt}
                         isWP={false}
                       />
@@ -148,12 +149,14 @@ export default function Search(props: SearchProps) {
                   })}
                 {postsWP &&
                   postsWP?.posts.map((post: WpSinglePostDataProps) => {
+                    const newUri = splitUriWP(post.uri)
+
                     return (
                       <PostCard
                         key={post.id}
                         src={post.featuredImage.sourceUrl}
                         alt={post.featuredImage.altText}
-                        slug={post.uri}
+                        slug={newUri}
                         title={post.title}
                         excerpt={post.excerpt}
                         authorName={post.author.name}
@@ -181,13 +184,15 @@ export default function Search(props: SearchProps) {
                   </Heading>
                 </div>
                 {posts.map((post: WpSinglePostDataProps) => {
+                  const newUri = splitUriWP(post.uri)
+
                   return (
                     <PostCardSide
                       key={post.id}
                       src={post.featuredImage.sourceUrl}
                       alt={post.featuredImage.altText}
                       title={post.title}
-                      slug={post.uri}
+                      slug={newUri}
                     />
                   )
                 })}

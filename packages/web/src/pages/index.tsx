@@ -8,6 +8,7 @@ import { wpGetAllPosts } from "@/lib/wp-posts"
 import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 
 import { HomeLayout } from "@/layouts/Home"
+import { splitUriWP } from "@/utils/split-html"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -80,13 +81,14 @@ export default function Home(props: { postsHome: any }) {
                   </Heading>
                 </div>
                 {postsHome?.posts.map((post: WpSinglePostDataProps) => {
+                  const newUri = splitUriWP(post.uri)
                   return (
                     <PostCardSide
                       key={post.id}
-                      src={post.featuredImage?.sourceUrl ?? ""}
-                      alt={post.featuredImage?.altText ?? ""}
+                      src={post.featuredImage.sourceUrl}
+                      alt={post.featuredImage.altText}
                       title={post.title}
-                      slug={post.uri}
+                      slug={newUri}
                     />
                   )
                 })}

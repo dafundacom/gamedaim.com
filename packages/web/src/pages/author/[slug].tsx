@@ -13,6 +13,7 @@ const PostCardSide = dynamic(() =>
 )
 
 import { HomeLayout } from "@/layouts/Home"
+import { splitUriWP } from "@/utils/split-html"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -58,13 +59,14 @@ export default function Author(props: AuthorProps) {
                 </Heading>
               </div>
               {listPosts?.posts?.map((post: WpSinglePostDataProps) => {
+                const newUri = splitUriWP(post.uri)
                 return (
                   <PostCardSide
                     key={post.id}
                     src={post.featuredImage.sourceUrl}
                     alt={post.featuredImage.altText}
-                    slug={post.uri}
                     title={post.title}
+                    slug={newUri}
                   />
                 )
               })}

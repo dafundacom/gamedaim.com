@@ -29,7 +29,7 @@ export default function SingleArticle(props: SingleArticleProps) {
     excerpt: article.excerpt,
     title: article.title,
     authorName: article.author.name,
-    authorUrl: article.author.username,
+    authorUrl: article.author.id,
     authorUsername: article.author.username,
     authorImg: article.author.profilePicture?.url,
     categories: article.topics,
@@ -65,7 +65,7 @@ export default function SingleArticle(props: SingleArticleProps) {
             section: article.topics[0].title,
             authors: [`https://${env.DOMAIN}/user/${article.author.username}`],
             tags: [
-              article.topics.map((topic: TopicDataProps) => {
+              article.topics?.map((topic: TopicDataProps) => {
                 return topic.title
               }),
             ],

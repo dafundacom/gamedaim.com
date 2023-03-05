@@ -50,3 +50,9 @@ export const parseAndSplitHTMLString = (markup: string): FunctionReturn => {
     secondHalf: secondHalfHTMLString,
   }
 }
+export const splitUriWP = (uri: string) => {
+  let regex = /^\/(\w+)\/(\w+)\/(.*)$/
+  const match: any = uri.match(regex)
+  const newUri = match && match.length > 2 ? `/${match[1]}/${match[3]}` : uri
+  return newUri
+}

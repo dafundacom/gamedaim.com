@@ -8,7 +8,7 @@ import NextLink from "next/link"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
-import { parseAndSplitHTMLString } from "@/utils/split-html"
+import { parseAndSplitHTMLString, splitUriWP } from "@/utils/split-html"
 
 const MetadataPost = dynamic(() =>
   import("@/components/Metadata").then((mod) => mod.MetadataPost),
@@ -265,7 +265,11 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
                         key={post.title}
                       >
                         <NextLink
-                          href={isWP ? post.uri : "/article/" + post.slug}
+                          href={
+                            isWP
+                              ? splitUriWP(post.uri)
+                              : "/article/" + post.slug
+                          }
                         >
                           <Text
                             size="lg"

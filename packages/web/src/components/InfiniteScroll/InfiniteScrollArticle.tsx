@@ -70,7 +70,7 @@ export const InfiniteScrollArticle = React.forwardRef<
             excerpt={article.excerpt}
             authorName={article.author.name}
             authorAvatarUrl={article.author.profilePicture?.url}
-            authorUri={article.author?.username}
+            authorUri={article.author?.id}
             date={article.createdAt}
             isWP={false}
           />
