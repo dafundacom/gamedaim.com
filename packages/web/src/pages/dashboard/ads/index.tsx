@@ -82,7 +82,7 @@ export default function AdsDashboard() {
               <Button leftIcon={<MdAdd />}>Add New</Button>
             </NextLink>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {data && ads.length > 0 ? (
               <>
                 <Table>
@@ -90,8 +90,8 @@ export default function AdsDashboard() {
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Position</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
+                      <Th className="hidden md:!table-cell">Published Date</Th>
+                      <Th className="hidden md:!table-cell">Last Modified</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
@@ -109,8 +109,12 @@ export default function AdsDashboard() {
                               <span className="font-medium">{ad.position}</span>
                             </div>
                           </Td>
-                          <Td>{dayjs(ad.createdAt).fromNow()}</Td>
-                          <Td>{dayjs(ad.updatedAt).fromNow()}</Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(ad.createdAt).fromNow()}
+                          </Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(ad.updatedAt).fromNow()}
+                          </Td>
                           <Td align="right">
                             <ActionDashboard
                               onDelete={() => handleDelete(ad)}

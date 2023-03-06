@@ -141,7 +141,7 @@ export default function Search(props: SearchProps) {
                         excerpt={article.excerpt}
                         authorName={article.author?.name}
                         authorAvatarUrl={article.author?.profilePicture?.url}
-                        authorUri={article.author?.id}
+                        authorUri={article.author?.username}
                         date={article.createdAt}
                         isWP={false}
                       />

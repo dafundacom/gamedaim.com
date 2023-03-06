@@ -7,8 +7,13 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
-import { Button, IconButton, Text } from "ui"
-import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
+import { Button, IconButton, Input, Text } from "ui"
+import {
+  MdAdd,
+  MdChevronLeft,
+  MdChevronRight,
+  MdOutlineSearch,
+} from "react-icons/md"
 
 import env from "@/env"
 import { ActionDashboard } from "@/components/Action"
@@ -56,6 +61,9 @@ export default function TopicsDashboard() {
         topics: topics.filter((topic: { id: string }) => topic.id !== data.id),
       }))
       toast.success("Topic deleted successfully")
+      if (router.query.search) {
+        mutate()
+      }
     } catch (err: any) {
       console.log(err)
       toast.error(err.response.data.message)
@@ -63,6 +71,20 @@ export default function TopicsDashboard() {
   }
 
   const lastPage = count && Math.ceil(totalTopics / 10)
+
+  const handleSearch = (e: {
+    preventDefault: () => void
+    target: { value: any }
+  }) => {
+    e.preventDefault()
+    if (e.target["0"].value.length > 1) {
+      router.push(`/dashboard/topics?search=${e.target["0"].value}`)
+    }
+  }
+  const { data: searchResult, mutate } = useSWR(
+    router.query.search ? `/topic/search/${router.query.search}` : null,
+    fetcher,
+  )
 
   return (
     <>
@@ -79,15 +101,31 @@ export default function TopicsDashboard() {
       />
       <AdminRole>
         <DashboardLayout>
-          <div className="mt-4 flex items-end justify-end">
-            <NextLink href="/dashboard/topics/new">
-              <Button leftIcon={<MdAdd />}>Add New</Button>
-            </NextLink>
+          <div className="mt-4 flex items-end justify-between">
+            <div>
+              <NextLink href="/dashboard/topics/new">
+                <Button leftIcon={<MdAdd />}>Add New</Button>
+              </NextLink>
+            </div>
+
+            <form onSubmit={(e: any) => handleSearch(e)}>
+              <Input.Group>
+                <Input type="text" name="search" />
+                <Input.RightElement className="w-2">
+                  <button
+                    type="submit"
+                    className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none"
+                  >
+                    <MdOutlineSearch />
+                  </button>
+                </Input.RightElement>
+              </Input.Group>
+            </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {topics.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
@@ -97,10 +135,40 @@ export default function TopicsDashboard() {
                     </Tr>
                   </Thead>
                   <Tbody>
+                    {router.query.search &&
+                    searchResult &&
+                    searchResult.length > 0
+                      ? searchResult.map((topic: TopicDataProps) => (
+                          <Tr key={topic.id}>
+                            <Td className="line-clamp-3 max-w-[120px]">
+                              <div className="flex">
+                                <span className="font-medium">
+                                  {topic.title}
+                                </span>
+                              </div>
+                            </Td>
+                            <Td>{dayjs(topic.createdAt).fromNow()}</Td>
+                            <Td>{dayjs(topic.updatedAt).fromNow()}</Td>
+                            <Td align="right">
+                              <ActionDashboard
+                                viewLink={`/topics/${topic.slug}`}
+                                onDelete={() => {
+                                  handleDelete(topic)
+                                }}
+                                editLink={`/dashboard/topics/${topic.id}`}
+                                content={topic.title}
+                              />
+                            </Td>
+                          </Tr>
+                        ))
+                      : router.query.search && (
+                          <>{`${router.query.search} not found`}</>
+                        )}
                     {data &&
+                      !router.query.search &&
                       topics.map((topic: TopicDataProps) => (
                         <Tr key={topic.id}>
-                          <Td className="whitespace-nowrap">
+                          <Td className="line-clamp-3 max-w-[120px]">
                             <div className="flex">
                               <span className="font-medium">{topic.title}</span>
                             </div>
@@ -119,7 +187,7 @@ export default function TopicsDashboard() {
                       ))}
                   </Tbody>
                 </Table>
-                {page && (
+                {page && !router.query.search && (
                   <div className="align-center mt-2 flex items-center justify-center space-x-2">
                     <>
                       {page !== 1 && (

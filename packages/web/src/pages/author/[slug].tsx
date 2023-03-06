@@ -4,7 +4,6 @@ import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { useRouter } from "next/router"
 import env from "@/env"
-import { getSeoDatas } from "@/lib/wp-seo"
 import { wpGetPostsByAuthorSlug, wpGetAllPosts } from "@/lib/wp-posts"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 
@@ -14,6 +13,9 @@ const PostCardSide = dynamic(() =>
 
 import { HomeLayout } from "@/layouts/Home"
 import { splitUriWP } from "@/utils/split-html"
+import { NextSeo, BreadcrumbJsonLd } from "next-seo"
+import { wpGetUserBySlug } from "@/lib/wp-users"
+import { UserDataProps } from "@/lib/data-types"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -23,21 +25,48 @@ interface AuthorProps {
   posts: WpPostsDataProps
   listPosts: any
   pageInfo: any
-  seo: {
-    head: string
-    success: boolean
-  }
+  user: UserDataProps
 }
 
 export default function Author(props: AuthorProps) {
-  const { seo, posts, pageInfo, listPosts } = props
+  const { user, posts, pageInfo, listPosts } = props
   const router = useRouter()
   const {
     query: { slug },
   }: any = router
+  console.log(user)
+
   return (
     <>
-      <Head>{seo.success === true && parse(seo.head)}</Head>
+      <NextSeo
+        title={`${user.seo.title} — ${env.SITE_TITLE}`}
+        description={
+          user.seo?.description || `${user.seo.title} | ${env.SITE_TITLE}`
+        }
+        canonical={`https://${env.DOMAIN}/${user.slug}`}
+        openGraph={{
+          title: `${user.seo.title} | ${env.SITE_TITLE}`,
+          description:
+            user.seo?.description || `${user.seo.title} | ${env.SITE_TITLE}`,
+
+          url: `https://${env.DOMAIN}/author/${user.slug}`,
+        }}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+          {
+            position: 2,
+            name: user.seo.title,
+            item: `https://${env.DOMAIN}/author/${user.slug}`,
+          },
+        ]}
+      />
+      <Head>{parse(user.seo?.jsonLd?.raw)}</Head>
       <HomeLayout>
         <section className="mx-auto flex w-full flex-row md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] lg:px-4 min-[1200px]:max-w-[1170px]">
           <div className="flex w-full flex-col px-4 lg:mr-4">
@@ -84,13 +113,12 @@ export const getServerSideProps = async ({ params, res }: any) => {
     "public, s-maxage=120, stale-while-revalidate=600",
   )
 
-  const seo = await getSeoDatas(`https://${env.DOMAIN}/author/${params.slug}`)
-
   const slug = params?.slug
+  const { user } = await wpGetUserBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByAuthorSlug(slug)
   const listPosts = await wpGetAllPosts()
 
-  if (!posts) {
+  if (!user || !posts) {
     return {
       notFound: true,
     }
@@ -98,7 +126,7 @@ export const getServerSideProps = async ({ params, res }: any) => {
 
   return {
     props: {
-      seo,
+      user,
       posts,
       pageInfo,
       listPosts,

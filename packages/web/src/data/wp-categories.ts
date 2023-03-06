@@ -38,6 +38,15 @@ export const QUERY_WP_CATEGORY_BY_SLUG = `
           categoryId
           description
           id
+          seo {
+            breadcrumbTitle
+            canonicalUrl
+            description
+            title
+            jsonLd {
+              raw
+            }
+          }
           name
           slug
           children {

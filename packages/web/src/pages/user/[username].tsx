@@ -6,7 +6,7 @@ import { HomeLayout } from "@/layouts/Home"
 import { Heading, Text } from "ui"
 import { NextSeo } from "next-seo"
 import env from "@/env"
-import { getUserById } from "@/lib/users"
+import { getUserByUserName } from "@/lib/users"
 import { ArticleDataProps, UserDataProps } from "@/lib/data-types"
 import { getArticleByAuthorId } from "@/lib/articles"
 import { PostCard } from "@/components/Card"
@@ -75,7 +75,7 @@ export default function User(props: UserProps) {
                   excerpt={article.excerpt}
                   authorName={article.author?.name}
                   authorAvatarUrl={article.author?.profilePicture?.url}
-                  authorUri={article.author?.id}
+                  authorUri={article.author?.username}
                   date={article.createdAt}
                   isWP={false}
                 />
@@ -88,7 +88,7 @@ export default function User(props: UserProps) {
 }
 
 export async function getServerSideProps({ params }: any) {
-  const { user } = await getUserById(params?.id)
+  const { user } = await getUserByUserName(params?.username)
   const { articles } = await getArticleByAuthorId(user.id)
   if (!user) {
     return {

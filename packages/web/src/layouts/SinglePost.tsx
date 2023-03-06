@@ -3,14 +3,14 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { useRouter } from "next/router"
-import { Button } from "ui"
+import { Button, TagProps } from "ui"
 
 import env from "@/env"
 import { Article } from "@/components/Article"
 import { wpGetInfiniteScollArticles } from "@/lib/wp-posts"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
-import { getSeoDatas } from "@/lib/wp-seo"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
+import { ArticleJsonLd, BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
@@ -35,7 +35,24 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
     const LoaderRef = React.useRef(null)
     const articleRef = React.useRef(null)
     const router = useRouter()
-    const [seo, setSeo] = React.useState(seoData)
+    const [seo, setSeo] = React.useState({
+      title: seoData.title,
+      excerpt: post.excerpt,
+      description: seoData.description,
+      slug: post.slug,
+      category: primary,
+
+      authorName: post.author.name,
+      authorUrl: post.author.slug,
+      authorImg: post.author.avatar.url,
+      categories: post.categories,
+      featuredImageUrl: post.featuredImage.sourceUrl,
+      featuredImageAlt: post.featuredImage.altText,
+      featuredImageCaption: post.featuredImage.caption,
+      date: post.date,
+      modified: post.modified,
+      tags: post.tags,
+    })
 
     const postData = {
       content: post.content,
@@ -63,30 +80,50 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           setArticles((list: any) => [...list, ...data.posts])
           setEndCursor(data.pageInfo.endCursor)
           setHasNextPage(data.pageInfo.hasNextPage)
+          setSeo({
+            title: data.posts[0].seo.title,
+            excerpt: data.posts[0].excerpt,
+            description: data.posts[0].seo.description,
+            slug: data.posts[0].slug,
+            category: primary,
+            authorName: data.posts[0].author.name,
+            authorUrl: data.posts[0].author.slug,
+            authorImg: data.posts[0].author.avatar.url,
+            categories: data.posts[0].categories,
+            featuredImageUrl: data.posts[0].featuredImage.sourceUrl,
+            featuredImageAlt: data.posts[0].featuredImage.altText,
+            featuredImageCaption: data.posts[0].featuredImage.caption,
+            date: data.posts[0].date,
+            modified: data.posts[0].modified,
+            tags: data.posts[0].tags,
+          })
         }
       },
-      [endCursor, hasNextPage, primary.id],
-    )
-
-    const handleObserverSeo = React.useCallback(
-      async (entries: any) => {
-        const [target] = entries
-        if (target.isIntersecting) {
-          const seoDatas = await getSeoDatas(
-            `https://${env.DOMAIN}/${primary.slug}/${target.target.id}`,
-          )
-          setSeo(seoDatas)
-        }
-      },
-      [primary.slug],
+      [endCursor, hasNextPage, primary],
     )
 
     React.useEffect(() => {
       const observer = new IntersectionObserver(handleObserver)
-      const observerSeo = new IntersectionObserver(handleObserverSeo)
       const handleRouteChange = () => {
         setArticles([])
-        setSeo(seoData)
+        setSeo({
+          title: seoData.title,
+          excerpt: post.excerpt,
+          description: seoData.description,
+          slug: post.slug,
+          category: primary,
+
+          authorName: post.author.name,
+          authorUrl: post.author.slug,
+          authorImg: post.author.avatar.url,
+          categories: post.categories,
+          featuredImageUrl: post.featuredImage.sourceUrl,
+          featuredImageAlt: post.featuredImage.altText,
+          featuredImageCaption: post.featuredImage.caption,
+          date: post.date,
+          modified: post.modified,
+          tags: post.tags,
+        })
       }
 
       router.events.on("routeChangeComplete", handleRouteChange)
@@ -94,24 +131,84 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
         observer.observe(LoaderRef.current)
       }
 
-      if (articleRef.current) {
-        observerSeo.observe(articleRef.current)
-      }
-
       return () => {
         if (observer) {
           observer.disconnect()
         }
-        if (observerSeo) {
-          observerSeo.disconnect()
-        }
+
         router.events.off("routeChangeComplete", handleRouteChange)
       }
-    }, [handleObserver, handleObserverSeo, post, router.events, seoData])
+    }, [handleObserver, post, primary, router.events, seoData])
 
     return (
       <>
-        <Head>{seo?.success === true && parse(seo?.head)}</Head>
+        <Head>{parse(seoData.jsonLd.raw)}</Head>
+        <NextSeo
+          title={`${seo.title} | ${env.SITE_TITLE}`}
+          description={seo.description}
+          canonical={`https://${env.DOMAIN}/${seo.category.slug}/${seo.slug}`}
+          openGraph={{
+            url: `https://${env.DOMAIN}/${seo.slug}`,
+            title: `${seo.title} | ${env.SITE_TITLE}`,
+            description: seo.description,
+            images: [
+              {
+                url: seo.featuredImageUrl,
+                alt: seo.featuredImageAlt,
+                width: 1280,
+                height: 720,
+                type: "image/jpeg",
+              },
+            ],
+            article: {
+              publishedTime: seo.date,
+              modifiedTime: seo.modified,
+              section: seo.tags[0].title,
+              authors: [`https://${env.DOMAIN}/author/${seo.authorUrl}`],
+              tags: [
+                seo.tags?.map((tag: TagProps) => {
+                  return tag.title
+                }),
+              ],
+            },
+          }}
+        />
+        <ArticleJsonLd
+          url={`https://${env.DOMAIN}/${seo.category.slug}/${seo.slug}`}
+          title={`${seo.title} | ${env.SITE_TITLE}`}
+          images={[seo.featuredImageUrl]}
+          datePublished={seo.date}
+          dateModified={seo.modified}
+          authorName={[
+            {
+              name: seo.authorName,
+              url: `https://${env.DOMAIN}/author/${seo.authorUrl}`,
+            },
+          ]}
+          publisherName={env.SITE_TITLE}
+          publisherLogo={env.LOGO_URL}
+          description={seo.description}
+          isAccessibleForFree={true}
+        />
+        <BreadcrumbJsonLd
+          itemListElements={[
+            {
+              position: 1,
+              name: env.DOMAIN,
+              item: `https://${env.DOMAIN}`,
+            },
+            {
+              position: 2,
+              name: "Article",
+              item: `https://${env.DOMAIN}/${seo.category.slug}`,
+            },
+            {
+              position: 3,
+              name: seo.category.title,
+              item: `https://${env.DOMAIN}/${seo.category.slug}`,
+            },
+          ]}
+        />
         <div
           ref={ref}
           className="mx-auto flex w-full md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px]"

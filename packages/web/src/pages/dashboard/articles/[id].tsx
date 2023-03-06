@@ -180,7 +180,7 @@ export default function EditArticleDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="sticky top-[1.25rem] my-5 mx-3 flex items-center justify-between">
+          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/articles">Articles</NextLink>
             </Button>
@@ -201,8 +201,8 @@ export default function EditArticleDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="px-3">
-                <div className="scollbarhide scrollbar fixed right-0 top-[65px] bottom-0 flex min-w-[300px] max-w-[300px] flex-col space-y-4 bg-white px-4 dark:bg-[inherit]">
+              <div className="">
+                <div className="scollbarhide scrollbar fixed top-0 bottom-0 right-0 mt-[70px] flex min-w-[300px] max-w-[300px] flex-col space-y-4 overflow-auto bg-white p-4 dark:bg-[inherit] max-sm:!min-w-full max-sm:!max-w-full">
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
                       Slug
@@ -223,88 +223,89 @@ export default function EditArticleDashboard() {
                       )}
                     </FormControl>
                   </div>
-                </div>
-                <AddTopics
-                  topics={topics}
-                  addTopics={setTopics}
-                  selectedTopics={selectedTopics}
-                  addSelectedTopics={setSelectedTopics}
-                />
-                {selectedFeaturedImageId ? (
+
+                  <AddTopics
+                    topics={topics}
+                    addTopics={setTopics}
+                    selectedTopics={selectedTopics}
+                    addSelectedTopics={setSelectedTopics}
+                  />
+                  {selectedFeaturedImageId ? (
+                    <div className="my-2 flex flex-col px-4">
+                      <Heading as="h3" size="md">
+                        Featured Image
+                      </Heading>
+                      <NextImage
+                        src={selectedFeaturedImageUrl}
+                        fill
+                        alt="Featured Image"
+                        className="!relative mt-2 max-h-[200px] max-w-[200px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
+                        onClick={() => setOpenModal(true)}
+                      />
+                    </div>
+                  ) : (
+                    <div className="my-2 flex flex-col px-4">
+                      <Heading as="h3" size="md">
+                        Featured Image
+                      </Heading>
+                      <Text
+                        size="sm"
+                        colorScheme="blue"
+                        className="border-1 cursor-pointer rounded-md border-gray-200 p-8 text-center"
+                        onClick={() => setOpenModal(true)}
+                      >
+                        Select Featured Image
+                      </Text>
+                    </div>
+                  )}
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
-                      Featured Image
+                      Excerpt
                     </Heading>
-                    <NextImage
-                      src={selectedFeaturedImageUrl}
-                      fill
-                      alt="Featured Image"
-                      className="!relative mt-2 max-h-[200px] max-w-[200px] cursor-pointer rounded-sm border-2 border-gray-300 object-cover"
-                      onClick={() => setOpenModal(true)}
-                    />
+                    <FormControl invalid={Boolean(errors.excerpt)}>
+                      <Textarea
+                        {...register("excerpt")}
+                        placeholder="Enter Excerpt (Optional)"
+                      />
+                      {errors?.excerpt && (
+                        <FormErrorMessage>
+                          {errors.excerpt.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
                   </div>
-                ) : (
                   <div className="my-2 flex flex-col px-4">
                     <Heading as="h3" size="md">
-                      Featured Image
+                      Meta Title
                     </Heading>
-                    <Text
-                      size="sm"
-                      colorScheme="blue"
-                      className="border-1 cursor-pointer rounded-md border-gray-200 p-8 text-center"
-                      onClick={() => setOpenModal(true)}
-                    >
-                      Select Featured Image
-                    </Text>
+                    <FormControl invalid={Boolean(errors.meta_title)}>
+                      <Input
+                        {...register("meta_title")}
+                        placeholder="Enter Meta Title (Optional)"
+                      />
+                      {errors?.meta_title && (
+                        <FormErrorMessage>
+                          {errors.meta_title.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
                   </div>
-                )}
-                <div className="my-2 flex flex-col px-4">
-                  <Heading as="h3" size="md">
-                    Excerpt
-                  </Heading>
-                  <FormControl invalid={Boolean(errors.excerpt)}>
-                    <Textarea
-                      {...register("excerpt")}
-                      placeholder="Enter Excerpt (Optional)"
-                    />
-                    {errors?.excerpt && (
-                      <FormErrorMessage>
-                        {errors.excerpt.message}
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                </div>
-                <div className="my-2 flex flex-col px-4">
-                  <Heading as="h3" size="md">
-                    Meta Title
-                  </Heading>
-                  <FormControl invalid={Boolean(errors.meta_title)}>
-                    <Input
-                      {...register("meta_title")}
-                      placeholder="Enter Meta Title (Optional)"
-                    />
-                    {errors?.meta_title && (
-                      <FormErrorMessage>
-                        {errors.meta_title.message}
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                </div>
-                <div className="my-2 flex flex-col px-4">
-                  <Heading as="h3" size="md">
-                    Meta Description
-                  </Heading>
-                  <FormControl invalid={Boolean(errors.meta_description)}>
-                    <Textarea
-                      {...register("meta_description")}
-                      placeholder="Enter Meta Description (Optional)"
-                    />
-                    {errors?.meta_description && (
-                      <FormErrorMessage>
-                        {errors.meta_description.message}
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
+                  <div className="my-2 flex flex-col px-4">
+                    <Heading as="h3" size="md">
+                      Meta Description
+                    </Heading>
+                    <FormControl invalid={Boolean(errors.meta_description)}>
+                      <Textarea
+                        {...register("meta_description")}
+                        placeholder="Enter Meta Description (Optional)"
+                      />
+                      {errors?.meta_description && (
+                        <FormErrorMessage>
+                          {errors.meta_description.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
+                  </div>
                 </div>
               </div>
             }

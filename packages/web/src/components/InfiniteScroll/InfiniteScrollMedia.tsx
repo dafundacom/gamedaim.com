@@ -4,11 +4,11 @@ import NextImage from "next/image"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
-import { MdDeleteOutline } from "react-icons/md"
-import { Button, IconButton } from "ui"
+import { Button } from "ui"
 
 import { MediaDataProps } from "@/lib/data-types"
 import { getMedias } from "@/lib/medias"
+import { DeleteMediaButton } from "../Media"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   medias: any
@@ -84,13 +84,10 @@ export const InfiniteScrollMedia = React.forwardRef<
         {isLibrary
           ? list.map((media: MediaDataProps) => (
               <div className="relative overflow-hidden rounded-[18px]">
-                <IconButton
-                  colorScheme="red"
-                  className="!absolute z-20 !rounded-full !p-0"
-                  onClick={() => handleDelete(media)}
-                >
-                  <MdDeleteOutline />
-                </IconButton>
+                <DeleteMediaButton
+                  content={media.name}
+                  deleteMedia={() => handleDelete(media)}
+                />
                 <NextLink href={`/dashboard/media/${media.id}`}>
                   <NextImage
                     key={media.id}

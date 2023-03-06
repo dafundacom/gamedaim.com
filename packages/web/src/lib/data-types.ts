@@ -85,6 +85,7 @@ export interface ArticlesDataProps {
 }
 
 export interface TopicDataProps {
+  [x: string]: any
   id: string
   title: string
   slug: string
@@ -123,6 +124,8 @@ export interface MediaDataProps {
 }
 
 export interface UserDataProps {
+  seo: any
+  slug: any
   id: string
   email: string
   username: string

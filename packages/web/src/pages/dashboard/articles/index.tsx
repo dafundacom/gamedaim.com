@@ -7,8 +7,13 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import useSWR from "swr"
-import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
-import { Badge, Button, IconButton, Text } from "ui"
+import {
+  MdAdd,
+  MdChevronLeft,
+  MdChevronRight,
+  MdOutlineSearch,
+} from "react-icons/md"
+import { Badge, Button, IconButton, Input, Text } from "ui"
 
 import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
@@ -55,6 +60,9 @@ export default function ArticlesDashboard() {
         articles: articles.filter((ad: { id: string }) => ad.id !== data.id),
       }))
       toast.success("Articles deleted successfully")
+      if (router.query.search) {
+        mutate()
+      }
     } catch (err: any) {
       console.log(err)
       toast.error(err.response.data.message)
@@ -62,6 +70,19 @@ export default function ArticlesDashboard() {
   }
 
   const lastPage = count && Math.ceil(totalArticles / 10)
+  const handleSearch = (e: {
+    preventDefault: () => void
+    target: { value: any }
+  }) => {
+    e.preventDefault()
+    if (e.target["0"].value.length > 1) {
+      router.push(`/dashboard/articles?search=${e.target["0"].value}`)
+    }
+  }
+  const { data: searchResult, mutate } = useSWR(
+    router.query.search ? `/article/search/${router.query.search}` : null,
+    fetcher,
+  )
 
   return (
     <>
@@ -78,31 +99,97 @@ export default function ArticlesDashboard() {
       />
       <AdminOrAuthorRole>
         <DashboardLayout>
-          <div className="mt-4 flex items-end justify-end">
-            <NextLink href="/dashboard/articles/new">
-              <Button leftIcon={<MdAdd />}>Add New</Button>
-            </NextLink>
+          <div className="mt-4 flex items-end justify-between">
+            <div>
+              <NextLink href="/dashboard/articles/new">
+                <Button leftIcon={<MdAdd />}>Add New</Button>
+              </NextLink>
+            </div>
+
+            <form onSubmit={(e: any) => handleSearch(e)}>
+              <Input.Group className="max-w-[200px]">
+                <Input type="text" name="search" />
+                <Input.RightElement className="w-2">
+                  <button
+                    type="submit"
+                    className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none"
+                  >
+                    <MdOutlineSearch />
+                  </button>
+                </Input.RightElement>
+              </Input.Group>
+            </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[100px] mt-6 rounded">
             {articles.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed	border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Author</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
-                      <Th>Status</Th>
+                      <Th className="hidden md:table-cell">Published Date</Th>
+                      <Th className="hidden md:table-cell">Last Modified</Th>
+                      <Th className="hidden md:table-cell">Status</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
+                    {router.query.search &&
+                    searchResult &&
+                    searchResult.length > 0
+                      ? searchResult.map((article: ArticleDataProps) => (
+                          <Tr key={article.id}>
+                            <Td className="line-clamp-3 max-w-[120px]">
+                              <div className="flex">
+                                <span className="font-medium">
+                                  {article.title}
+                                </span>
+                              </div>
+                            </Td>
+                            <Td className="whitespace-nowrap">
+                              <div className="flex">
+                                {/* <span className="font-medium">
+                                  {article.author.name}
+                                </span> */}
+                              </div>
+                            </Td>
+                            <Td className="hidden md:table-cell">
+                              {dayjs(article.createdAt).fromNow()}
+                            </Td>
+                            <Td className="hidden md:table-cell">
+                              {dayjs(article.updatedAt).fromNow()}
+                            </Td>
+                            <Td className="hidden whitespace-nowrap md:table-cell">
+                              <div className="flex">
+                                <span className="font-medium">
+                                  <Badge variant="outline">
+                                    {article.status}
+                                  </Badge>
+                                </span>
+                              </div>
+                            </Td>
+                            <Td align="right">
+                              <ActionDashboard
+                                viewLink={`/article/${article.slug}`}
+                                onDelete={() => {
+                                  handleDelete(article)
+                                }}
+                                editLink={`/dashboard/articles/${article.id}`}
+                                content={article.title}
+                              />
+                            </Td>
+                          </Tr>
+                        ))
+                      : router.query.search && (
+                          <>{`${router.query.search} not found`}</>
+                        )}
                     {data &&
+                      !router.query.search &&
                       articles.map((article: ArticleDataProps) => (
                         <Tr key={article.id}>
-                          <Td className="whitespace-nowrap">
-                            <div className="flex">
+                          <Td className="line-clamp-3 max-w-[120px]">
+                            <div>
                               <span className="font-medium">
                                 {article.title}
                               </span>
@@ -115,9 +202,13 @@ export default function ArticlesDashboard() {
                               </span>
                             </div>
                           </Td>
-                          <Td>{dayjs(article.createdAt).fromNow()}</Td>
-                          <Td>{dayjs(article.updatedAt).fromNow()}</Td>
-                          <Td className="whitespace-nowrap">
+                          <Td className="hidden md:table-cell">
+                            {dayjs(article.createdAt).fromNow()}
+                          </Td>
+                          <Td className="hidden md:table-cell">
+                            {dayjs(article.updatedAt).fromNow()}
+                          </Td>
+                          <Td className="hidden whitespace-nowrap md:table-cell">
                             <div className="flex">
                               <span className="font-medium">
                                 <Badge variant="outline">
@@ -138,10 +229,10 @@ export default function ArticlesDashboard() {
                       ))}
                   </Tbody>
                 </Table>
-                {page && (
+                {page && articles && articles.length > 0 && (
                   <div className="align-center mt-2 flex items-center justify-center space-x-2">
                     <>
-                      {page !== 1 && (
+                      {page !== 1 && !router.query.search && (
                         <IconButton
                           onClick={() => setPage((old) => Math.max(old - 1, 0))}
                           disabled={page === 1}
@@ -150,7 +241,7 @@ export default function ArticlesDashboard() {
                           <MdChevronLeft />
                         </IconButton>
                       )}
-                      {count && page !== lastPage && (
+                      {count && page !== lastPage && !router.query.search && (
                         <IconButton
                           onClick={() => {
                             setPage((old) => old + 1)

@@ -39,6 +39,15 @@ export const QUERY_WP_TAG_BY_SLUG = `
           description
           id
           name
+          seo {
+            breadcrumbTitle
+            canonicalUrl
+            description
+            title
+            jsonLd {
+              raw
+            }
+          }
           uri
           slug
         }

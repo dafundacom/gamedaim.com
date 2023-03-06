@@ -2,6 +2,7 @@ import {
   QUERY_WP_ALL_USERS,
   QUERY_WP_USERS_BY_ID,
   QUERY_WP_ALL_USERS_SLUG,
+  QUERY_WP_USERS_BY_SLUG,
 } from "@/data/wp-users"
 import { wpFetchAPI } from "./wp-posts"
 
@@ -10,12 +11,19 @@ export function wpAuthorPathBySlug(slug: string) {
 }
 
 export async function wpGetUserBySlug(slug: string) {
-  const { users } = await wpGetAllUsers()
+  let usersData
 
-  const user = users.find((user: { slug: string }) => user.slug === slug)
-
+  try {
+    usersData = await wpFetchAPI(QUERY_WP_USERS_BY_SLUG, {
+      slug,
+    })
+  } catch (e) {
+    console.log(`[users][USERS_BY_ID] Failed to query users data: ${e}`)
+    throw e
+  }
+  const user = usersData?.data?.user
   return {
-    user,
+    user: user,
   }
 }
 

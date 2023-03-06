@@ -18,7 +18,7 @@ export const DownloadCardSide = React.forwardRef<
   return (
     <NextLink href={slug}>
       <article
-        className="mb-4 flex w-full border-separate flex-col rounded-lg drop-shadow-md"
+        className="mb-4 flex w-full border-separate flex-col rounded-lg"
         ref={ref}
         {...rest}
       >
