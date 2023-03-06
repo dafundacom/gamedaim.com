@@ -164,6 +164,31 @@ export const QUERY_WP_POST_BY_SLUG = `
         }
       }
       id
+      seo {
+        openGraph {
+          url
+          updatedTime
+          image {
+            url
+            height
+            width
+            secureUrl
+            type
+          }
+          alternateLocales
+          description
+          siteName
+          title
+          type
+        }
+        description
+        canonicalUrl
+        title
+        breadcrumbTitle
+        jsonLd {
+          raw
+        }
+      }
       categories {
         edges {
           node {
@@ -502,6 +527,31 @@ export const GET_INFINITE_SCROLL_POSTS = `query GET_POSTS_BY_CATEGORY($categoryI
           }
         }
         id
+        seo {
+          openGraph {
+            url
+            updatedTime
+            image {
+              url
+              height
+              width
+              secureUrl
+              type
+            }
+            alternateLocales
+            description
+            siteName
+            title
+            type
+          }
+          description
+          canonicalUrl
+          title
+          breadcrumbTitle
+          jsonLd {
+            raw
+          }
+        }
         categories {
           edges {
             node {

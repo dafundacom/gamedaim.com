@@ -26,6 +26,7 @@ export interface WpFeaturedImageDataProps {
 }
 
 export interface WpCategoriesDataProps {
+  seo: any
   id: string
   name: string
   children: any
@@ -35,6 +36,8 @@ export interface WpCategoriesDataProps {
 }
 
 export interface WpTagsDataProps {
+  seo: any
+  map(arg0: (tag: import("@/../../ui").TagProps) => string | undefined): string
   id: string
   name: string
   slug: string
@@ -51,6 +54,7 @@ export interface WpSinglePostDataProps {
   slug: string
   excerpt: string
   date: string
+  seo: any
   published: string
   modified: string
   content: string

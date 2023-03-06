@@ -124,6 +124,8 @@ export interface MediaDataProps {
 }
 
 export interface UserDataProps {
+  seo: any
+  slug: any
   id: string
   email: string
   username: string

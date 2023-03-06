@@ -136,7 +136,7 @@ export default function CreateArticlesDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="sticky top-[1.25rem] my-5 mx-3 flex items-center justify-between">
+          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/articles">Articles</NextLink>
             </Button>
@@ -157,7 +157,7 @@ export default function CreateArticlesDashboard() {
           <ArticleDashboardLayout
             isOpen={isOpen}
             sidebar={
-              <div className="scollbarhide scrollbar fixed right-0 top-[65px] bottom-0 flex min-w-[300px] max-w-[300px] flex-col space-y-4 bg-white px-4 dark:bg-[inherit]">
+              <div className="scollbarhide scrollbar fixed top-0 bottom-0 right-0 mt-[70px] flex min-w-[300px] max-w-[300px] flex-col space-y-4 overflow-auto bg-white p-4 dark:bg-[inherit] max-sm:!min-w-full max-sm:!max-w-full">
                 <AddTopics
                   topics={topics}
                   addTopics={setTopics}

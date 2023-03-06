@@ -107,7 +107,7 @@ export default function ArticlesDashboard() {
             </div>
 
             <form onSubmit={(e: any) => handleSearch(e)}>
-              <Input.Group>
+              <Input.Group className="max-w-[200px]">
                 <Input type="text" name="search" />
                 <Input.RightElement className="w-2">
                   <button
@@ -120,17 +120,17 @@ export default function ArticlesDashboard() {
               </Input.Group>
             </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[100px] mt-6 rounded">
             {articles.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed	border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Author</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
-                      <Th>Status</Th>
+                      <Th className="hidden md:table-cell">Published Date</Th>
+                      <Th className="hidden md:table-cell">Last Modified</Th>
+                      <Th className="hidden md:table-cell">Status</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
@@ -140,7 +140,7 @@ export default function ArticlesDashboard() {
                     searchResult.length > 0
                       ? searchResult.map((article: ArticleDataProps) => (
                           <Tr key={article.id}>
-                            <Td className="whitespace-nowrap">
+                            <Td className="line-clamp-3 max-w-[120px]">
                               <div className="flex">
                                 <span className="font-medium">
                                   {article.title}
@@ -154,9 +154,13 @@ export default function ArticlesDashboard() {
                                 </span> */}
                               </div>
                             </Td>
-                            <Td>{dayjs(article.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(article.updatedAt).fromNow()}</Td>
-                            <Td className="whitespace-nowrap">
+                            <Td className="hidden md:table-cell">
+                              {dayjs(article.createdAt).fromNow()}
+                            </Td>
+                            <Td className="hidden md:table-cell">
+                              {dayjs(article.updatedAt).fromNow()}
+                            </Td>
+                            <Td className="hidden whitespace-nowrap md:table-cell">
                               <div className="flex">
                                 <span className="font-medium">
                                   <Badge variant="outline">
@@ -184,8 +188,8 @@ export default function ArticlesDashboard() {
                       !router.query.search &&
                       articles.map((article: ArticleDataProps) => (
                         <Tr key={article.id}>
-                          <Td className="whitespace-nowrap">
-                            <div className="flex">
+                          <Td className="line-clamp-3 max-w-[120px]">
+                            <div>
                               <span className="font-medium">
                                 {article.title}
                               </span>
@@ -198,9 +202,13 @@ export default function ArticlesDashboard() {
                               </span>
                             </div>
                           </Td>
-                          <Td>{dayjs(article.createdAt).fromNow()}</Td>
-                          <Td>{dayjs(article.updatedAt).fromNow()}</Td>
-                          <Td className="whitespace-nowrap">
+                          <Td className="hidden md:table-cell">
+                            {dayjs(article.createdAt).fromNow()}
+                          </Td>
+                          <Td className="hidden md:table-cell">
+                            {dayjs(article.updatedAt).fromNow()}
+                          </Td>
+                          <Td className="hidden whitespace-nowrap md:table-cell">
                             <div className="flex">
                               <span className="font-medium">
                                 <Badge variant="outline">

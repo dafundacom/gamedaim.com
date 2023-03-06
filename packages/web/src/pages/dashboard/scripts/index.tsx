@@ -83,16 +83,16 @@ export default function ScriptsDashboard() {
               <Button leftIcon={<MdAdd />}>Add New</Button>
             </NextLink>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {scripts.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Active</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
+                      <Th className="hidden md:!table-cell">Published Date</Th>
+                      <Th className="hidden md:!table-cell">Last Modified</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
@@ -100,7 +100,7 @@ export default function ScriptsDashboard() {
                     {data &&
                       scripts.map((script: ScriptDataProps) => (
                         <Tr key={script.id}>
-                          <Td className="whitespace-nowrap">
+                          <Td className="line-clamp-3 max-w-[120px]">
                             <div className="flex">
                               <span className="font-medium">
                                 {script.title}
@@ -114,8 +114,12 @@ export default function ScriptsDashboard() {
                               </span>
                             </div>
                           </Td>
-                          <Td>{dayjs(script.createdAt).fromNow()}</Td>
-                          <Td>{dayjs(script.updatedAt).fromNow()}</Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(script.createdAt).fromNow()}
+                          </Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(script.updatedAt).fromNow()}
+                          </Td>
                           <Td align="right">
                             <ActionDashboard
                               onDelete={() => handleDelete(script)}

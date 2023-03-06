@@ -122,16 +122,16 @@ export default function DownloadsDashboard() {
               </Input.Group>
             </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {downloads.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Author</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
+                      <Th className="hidden md:!table-cell">Published Date</Th>
+                      <Th className="hidden md:!table-cell">Last Modified</Th>
                       <Th>Status</Th>
                       <Th>Actions</Th>
                     </Tr>
@@ -142,7 +142,7 @@ export default function DownloadsDashboard() {
                     searchResult.length > 0
                       ? searchResult.map((download: DownloadDataProps) => (
                           <Tr key={download.id}>
-                            <Td className="whitespace-nowrap">
+                            <Td className="line-clamp-3 max-w-[120px]">
                               <div className="flex">
                                 <span className="font-medium">
                                   {download.title}
@@ -156,8 +156,12 @@ export default function DownloadsDashboard() {
                                 </span>
                               </div>
                             </Td>
-                            <Td>{dayjs(download.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(download.updatedAt).fromNow()}</Td>
+                            <Td className="hidden md:!table-cell">
+                              {dayjs(download.createdAt).fromNow()}
+                            </Td>
+                            <Td className="hidden md:!table-cell">
+                              {dayjs(download.updatedAt).fromNow()}
+                            </Td>
                             <Td className="whitespace-nowrap">
                               <div className="flex">
                                 <span className="font-medium">
@@ -186,7 +190,7 @@ export default function DownloadsDashboard() {
                       !router.query.search &&
                       downloads.map((download: DownloadDataProps) => (
                         <Tr key={download.id}>
-                          <Td className="whitespace-nowrap">
+                          <Td className="line-clamp-3 max-w-[120px]">
                             <div className="flex">
                               <span className="font-medium">
                                 {download.title}
@@ -200,8 +204,12 @@ export default function DownloadsDashboard() {
                               </span>
                             </div>
                           </Td>
-                          <Td>{dayjs(download.createdAt).fromNow()}</Td>
-                          <Td>{dayjs(download.updatedAt).fromNow()}</Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(download.createdAt).fromNow()}
+                          </Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(download.updatedAt).fromNow()}
+                          </Td>
                           <Td className="whitespace-nowrap">
                             <div className="flex">
                               <span className="font-medium">

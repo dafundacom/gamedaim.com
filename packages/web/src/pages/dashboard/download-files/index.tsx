@@ -122,16 +122,16 @@ export default function DownloadFilesDashboard() {
               </Input.Group>
             </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {downloadFiles.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
                       <Th>Author</Th>
-                      <Th>Published Date</Th>
-                      <Th>Last Modified</Th>
+                      <Th className="hidden md:!table-cell">Published Date</Th>
+                      <Th className="hidden md:!table-cell">Last Modified</Th>
                       <Th>Status</Th>
                       <Th>Actions</Th>
                     </Tr>
@@ -143,7 +143,7 @@ export default function DownloadFilesDashboard() {
                       ? searchResult.map(
                           (downloadFile: DownloadFileDataProps) => (
                             <Tr key={downloadFile.id}>
-                              <Td className="whitespace-nowrap">
+                              <Td className="line-clamp-3 max-w-[120px]">
                                 <div className="flex">
                                   <span className="font-medium">
                                     {downloadFile.title}
@@ -157,8 +157,12 @@ export default function DownloadFilesDashboard() {
                                   </span>
                                 </div>
                               </Td>
-                              <Td>{dayjs(downloadFile.createdAt).fromNow()}</Td>
-                              <Td>{dayjs(downloadFile.updatedAt).fromNow()}</Td>
+                              <Td className="hidden md:!table-cell">
+                                {dayjs(downloadFile.createdAt).fromNow()}
+                              </Td>
+                              <Td className="hidden md:!table-cell">
+                                {dayjs(downloadFile.updatedAt).fromNow()}
+                              </Td>
                               <Td className="whitespace-nowrap">
                                 <div className="flex">
                                   <span className="font-medium">
@@ -189,7 +193,7 @@ export default function DownloadFilesDashboard() {
                       downloadFiles.map(
                         (downloadFile: DownloadFileDataProps) => (
                           <Tr key={downloadFile.id}>
-                            <Td className="whitespace-nowrap">
+                            <Td className="line-clamp-3 max-w-[120px]">
                               <div className="flex">
                                 <span className="font-medium">
                                   {downloadFile.title}
@@ -203,8 +207,12 @@ export default function DownloadFilesDashboard() {
                                 </span>
                               </div>
                             </Td>
-                            <Td>{dayjs(downloadFile.createdAt).fromNow()}</Td>
-                            <Td>{dayjs(downloadFile.updatedAt).fromNow()}</Td>
+                            <Td className="hidden md:!table-cell">
+                              {dayjs(downloadFile.createdAt).fromNow()}
+                            </Td>
+                            <Td className="hidden md:!table-cell">
+                              {dayjs(downloadFile.updatedAt).fromNow()}
+                            </Td>
                             <Td className="whitespace-nowrap">
                               <div className="flex">
                                 <span className="font-medium">

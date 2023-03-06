@@ -122,10 +122,10 @@ export default function TopicsDashboard() {
               </Input.Group>
             </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {topics.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Title</Th>
@@ -140,7 +140,7 @@ export default function TopicsDashboard() {
                     searchResult.length > 0
                       ? searchResult.map((topic: TopicDataProps) => (
                           <Tr key={topic.id}>
-                            <Td className="whitespace-nowrap">
+                            <Td className="line-clamp-3 max-w-[120px]">
                               <div className="flex">
                                 <span className="font-medium">
                                   {topic.title}
@@ -168,7 +168,7 @@ export default function TopicsDashboard() {
                       !router.query.search &&
                       topics.map((topic: TopicDataProps) => (
                         <Tr key={topic.id}>
-                          <Td className="whitespace-nowrap">
+                          <Td className="line-clamp-3 max-w-[120px]">
                             <div className="flex">
                               <span className="font-medium">{topic.title}</span>
                             </div>

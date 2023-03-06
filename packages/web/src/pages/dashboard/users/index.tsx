@@ -120,17 +120,17 @@ export default function UsersDashboard() {
               </Input.Group>
             </form>
           </div>
-          <div className="my-6 rounded">
+          <div className="mb-[80px] mt-6 rounded">
             {users.length > 0 ? (
               <>
-                <Table>
+                <Table className="!table-fixed border-collapse border-spacing-0">
                   <Thead>
                     <Tr isTitle>
                       <Th>Username</Th>
                       <Th>Name</Th>
-                      <Th>Email</Th>
+                      <Th className="hidden md:!table-cell">Email</Th>
                       <Th>Role</Th>
-                      <Th>Date Joined</Th>
+                      <Th className="hidden md:!table-cell">Date Joined</Th>
                       <Th>Actions</Th>
                     </Tr>
                   </Thead>
@@ -140,19 +140,19 @@ export default function UsersDashboard() {
                     searchResult.length > 0
                       ? searchResult.map((user: UserDataProps) => (
                           <Tr key={user.id}>
-                            <Td className="whitespace-nowrap">
+                            <Td className="line-clamp-3 max-w-[120px]">
                               <div className="flex">
                                 <span className="font-medium">
                                   {user.username}
                                 </span>
                               </div>
                             </Td>
-                            <Td className="whitespace-nowrap">
+                            <Td className="white-space-nowrap">
                               <div className="flex">
                                 <span className="font-medium">{user.name}</span>
                               </div>
                             </Td>
-                            <Td className="whitespace-nowrap">
+                            <Td className="hidden whitespace-nowrap md:!table-cell">
                               <div className="flex">
                                 <span className="font-medium">
                                   {user.email}
@@ -166,7 +166,9 @@ export default function UsersDashboard() {
                                 </span>
                               </div>
                             </Td>
-                            <Td>{dayjs(user.createdAt).fromNow()}</Td>
+                            <Td className="hidden md:!table-cell">
+                              {dayjs(user.createdAt).fromNow()}
+                            </Td>
                             <Td align="right">
                               <ActionDashboard
                                 viewLink={`/user/${user.id}`}
@@ -183,19 +185,19 @@ export default function UsersDashboard() {
                       !router.query.search &&
                       users.map((user: UserDataProps) => (
                         <Tr key={user.id}>
-                          <Td className="whitespace-nowrap">
+                          <Td className="line-clamp-3 max-w-[120px]">
                             <div className="flex">
                               <span className="font-medium">
                                 {user.username}
                               </span>
                             </div>
                           </Td>
-                          <Td className="whitespace-nowrap">
+                          <Td className="white-space-nowrap">
                             <div className="flex">
                               <span className="font-medium">{user.name}</span>
                             </div>
                           </Td>
-                          <Td className="whitespace-nowrap">
+                          <Td className="hidden whitespace-nowrap md:!table-cell">
                             <div className="flex">
                               <span className="font-medium">{user.email}</span>
                             </div>
@@ -207,7 +209,9 @@ export default function UsersDashboard() {
                               </span>
                             </div>
                           </Td>
-                          <Td>{dayjs(user.createdAt).fromNow()}</Td>
+                          <Td className="hidden md:!table-cell">
+                            {dayjs(user.createdAt).fromNow()}
+                          </Td>
                           <Td align="right">
                             <ActionDashboard
                               viewLink={`/user/${user.id}`}

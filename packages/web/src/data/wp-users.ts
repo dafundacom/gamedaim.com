@@ -57,3 +57,35 @@ export const QUERY_WP_USERS_BY_ID = `
     }
   }
 `
+export const QUERY_WP_USERS_BY_SLUG = `
+  query AuthorId($slug: ID!){
+    user(id: $slug,idType: SLUG) {
+          avatar {
+            height
+            width
+            url
+          }
+          description
+          id
+          name
+          seo {
+            breadcrumbTitle
+            canonicalUrl
+            description
+            title
+            jsonLd {
+              raw
+            }
+            fullHead
+            robots
+          }
+          roles {
+            nodes {
+              name
+            }
+          }
+          slug
+        
+    }
+  }
+`

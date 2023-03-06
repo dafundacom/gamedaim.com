@@ -9,7 +9,6 @@ import { useRouter } from "next/router"
 import env from "@/env"
 import { wpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug } from "@/lib/wp-posts"
-import { getSeoDatas } from "@/lib/wp-seo"
 import {
   WpPostsDataProps,
   WpSinglePostDataProps,
@@ -22,6 +21,7 @@ const PostCardSide = dynamic(() =>
 )
 import { HomeLayout } from "@/layouts/Home"
 import { splitUriWP } from "@/utils/split-html"
+import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -39,7 +39,7 @@ interface TagProps {
 }
 
 export default function Tag(props: TagProps) {
-  const { seo, posts, pageInfo, tag } = props
+  const { posts, pageInfo, tag } = props
   const router: any = useRouter()
   const {
     query: { slug },
@@ -47,7 +47,35 @@ export default function Tag(props: TagProps) {
 
   return (
     <>
-      <Head>{seo.success === true && parse(seo.head)}</Head>
+      <NextSeo
+        title={`${tag.seo.title} — ${env.SITE_TITLE}`}
+        description={
+          tag.seo.description || `${tag.seo.title} | ${env.SITE_TITLE}`
+        }
+        canonical={`https://${env.DOMAIN}/${tag.slug}`}
+        openGraph={{
+          title: `${tag.seo.title} | ${env.SITE_TITLE}`,
+          description:
+            tag.seo.description || `${tag.seo.title} | ${env.SITE_TITLE}`,
+
+          url: `https://${env.DOMAIN}/${tag.slug}`,
+        }}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+          {
+            position: 2,
+            name: tag.seo.title,
+            item: `https://${env.DOMAIN}/tag/${tag.slug}`,
+          },
+        ]}
+      />
+      <Head>{parse(tag.seo?.jsonLd?.raw)}</Head>
       <HomeLayout>
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r from-[#1e3799] to-[#0984e3] py-10">
@@ -120,7 +148,6 @@ export default function Tag(props: TagProps) {
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const slug = params?.slug
-  const seo = await getSeoDatas(`https://${env.DOMAIN}/tag/${slug}`)
   const { tag } = await wpGetTagBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByTagSlug(tag.slug)
   if (!tag || !posts) {
@@ -130,7 +157,6 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   }
   return {
     props: {
-      seo,
       tag,
       posts,
       pageInfo,

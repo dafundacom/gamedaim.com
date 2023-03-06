@@ -16,8 +16,8 @@ interface PostProps {
   post: WpSinglePostDataProps
 }
 export default function Post(props: PostProps) {
-  const { seo, posts, post } = props
-
+  const { posts, post } = props
+  const { seo } = post
   return (
     <>
       <HomeLayout>

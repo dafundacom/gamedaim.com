@@ -6,7 +6,6 @@ import parse from "html-react-parser"
 import { GetStaticProps, GetStaticPaths } from "next"
 
 import env from "@/env"
-import { getSeoDatas } from "@/lib/wp-seo"
 import { wpGetCategoryBySlug, wpGetAllCategories } from "@/lib/wp-categories"
 import { wpGetPostsByCategorySlug } from "@/lib/wp-posts"
 import {
@@ -25,28 +24,58 @@ const PostCardSide = dynamic(() =>
 import { HomeLayout } from "@/layouts/Home"
 import { Breadcrumb, Button, Heading } from "ui"
 import { splitUriWP } from "@/utils/split-html"
+import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 interface CategoryProps {
   category: WpCategoriesDataProps
   posts: WpPostsDataProps
   pageInfo: any
-  seo: {
-    head: string
-    success: boolean
-  }
 }
 
 export default function Category(props: CategoryProps) {
-  const { seo, posts, category, pageInfo } = props
+  const { posts, category, pageInfo } = props
 
   return (
     <>
-      <Head>{seo?.success === true && parse(seo?.head)}</Head>
+      <NextSeo
+        title={`${category.seo.title} — ${env.SITE_TITLE}`}
+        description={
+          category.seo.description ||
+          `${category.seo.title} | ${env.SITE_TITLE}`
+        }
+        canonical={`https://${env.DOMAIN}/${category.slug}`}
+        openGraph={{
+          title: `${category.seo.title} | ${env.SITE_TITLE}`,
+          description:
+            category.seo.description ||
+            `${category.seo.title} | ${env.SITE_TITLE}`,
+
+          url: `https://${env.DOMAIN}/${category.slug}`,
+        }}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: env.DOMAIN,
+            item: `https://${env.DOMAIN}`,
+          },
+          {
+            position: 2,
+            name: category.seo.title,
+            item: `https://${env.DOMAIN}/${category.slug}`,
+          },
+        ]}
+      />
+      <Head>{parse(category.seo?.jsonLd?.raw)}</Head>
       <HomeLayout>
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
             <div className="absolute top-1 ml-5">
-              <Breadcrumb className="text-white" separator={<MdChevronRight />}>
+              <Breadcrumb
+                className="text-white"
+                separator={<MdChevronRight className="text-white" />}
+              >
                 <Breadcrumb.Item bold>
                   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
                 </Breadcrumb.Item>
@@ -129,7 +158,6 @@ export default function Category(props: CategoryProps) {
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const slug = params?.category
 
-  const seo = await getSeoDatas(`https://${env.DOMAIN}/${slug}`)
   const { category } = await wpGetCategoryBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByCategorySlug(category?.slug)
 
@@ -144,7 +172,6 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       posts,
       pageInfo,
       category,
-      seo,
     },
     revalidate: 100,
   }
