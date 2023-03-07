@@ -5,6 +5,7 @@ import {
   getTotalWpCommentsHandler,
   getWpCommentByIdHandler,
   getWpCommentsHandler,
+  searchWpCommentsHandler,
   updateWpCommentHandler,
 } from "./wp-comment.controller"
 import { $ref } from "./wp-comment.schema"
@@ -35,6 +36,19 @@ async function wpCommentRoutes(server: FastifyInstance) {
     },
 
     getWpCommentsHandler,
+  )
+
+  server.get(
+    "/search/:searchWpCommentQuery",
+    {
+      schema: {
+        response: {
+          200: $ref("wpCommentsResponseSchema"),
+        },
+      },
+    },
+
+    searchWpCommentsHandler,
   )
 
   server.get(

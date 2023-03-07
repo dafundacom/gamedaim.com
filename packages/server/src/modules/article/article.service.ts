@@ -205,6 +205,40 @@ export async function searchArticles(searchArticleQuery: string) {
         { slug: { contains: searchArticleQuery } },
       ],
     },
+    select: {
+      content: true,
+      excerpt: true,
+      title: true,
+      meta_title: true,
+      meta_description: true,
+      slug: true,
+      id: true,
+      status: true,
+      featuredImage: {
+        select: {
+          id: true,
+          url: true,
+          alt: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+      topics: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+        },
+      },
+      author: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          profilePicture: true,
+        },
+      },
+    },
   })
 }
 

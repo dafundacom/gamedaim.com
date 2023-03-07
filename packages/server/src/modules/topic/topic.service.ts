@@ -308,6 +308,28 @@ export async function searchTopics(searchTopicQuery: string) {
         { slug: { contains: searchTopicQuery } },
       ],
     },
+    select: {
+      description: true,
+      title: true,
+      meta_title: true,
+      meta_description: true,
+      slug: true,
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      featuredImage: {
+        select: {
+          id: true,
+          url: true,
+        },
+      },
+      author: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+    },
   })
 }
 
