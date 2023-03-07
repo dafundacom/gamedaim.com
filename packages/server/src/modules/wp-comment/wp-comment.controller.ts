@@ -68,6 +68,21 @@ export async function getWpCommentByIdHandler(
   }
 }
 
+export async function searchWpCommentsHandler(
+  request: FastifyRequest<{ Params: { searchWpCommentQuery: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const searchQuery = request.params.searchWpCommentQuery
+
+    const comments = await searchWpComments(searchQuery)
+    return reply.code(201).send(comments)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
 export async function deleteWpCommentHandler(
   request: FastifyRequest<{ Params: { WpCommentId: string } }>,
   reply: FastifyReply,

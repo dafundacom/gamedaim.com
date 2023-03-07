@@ -102,6 +102,21 @@ export async function searchMedias(searchMediaQuery: string) {
         { alt: { contains: searchMediaQuery } },
       ],
     },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      alt: true,
+      url: true,
+      author: {
+        select: {
+          name: true,
+          username: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+    },
   })
 }
 

@@ -68,6 +68,18 @@ export async function searchComments(searchCommentQuery: string) {
     where: {
       content: { contains: searchCommentQuery },
     },
+    select: {
+      content: true,
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      author: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+    },
   })
 }
 

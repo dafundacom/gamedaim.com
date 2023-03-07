@@ -183,6 +183,43 @@ export async function searchUsers(searchUserQuery: string) {
         { username: { contains: searchUserQuery } },
       ],
     },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      name: true,
+      meta_title: true,
+      meta_description: true,
+      phoneNumber: true,
+      about: true,
+      role: true,
+      profilePicture: {
+        select: {
+          id: true,
+          url: true,
+        },
+      },
+      articles: {
+        take: 6,
+        select: {
+          content: true,
+          excerpt: true,
+          title: true,
+          meta_title: true,
+          meta_description: true,
+          slug: true,
+          id: true,
+          status: true,
+          featuredImage: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+            },
+          },
+        },
+      },
+    },
   })
 }
 

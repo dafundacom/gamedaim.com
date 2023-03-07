@@ -248,6 +248,48 @@ export async function searchDownloadFiles(searchDownloadFileQuery: string) {
         { downloadLink: { contains: searchDownloadFileQuery } },
       ],
     },
+    select: {
+      title: true,
+      meta_title: true,
+      meta_description: true,
+      slug: true,
+      id: true,
+      featuredImage: {
+        select: {
+          id: true,
+          url: true,
+          alt: true,
+        },
+      },
+      author: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          profilePicture: true,
+        },
+      },
+      downloads: {
+        select: {
+          title: true,
+          slug: true,
+          developer: true,
+          operationSystem: true,
+          license: true,
+          officialWeb: true,
+          schemaType: true,
+          type: true,
+        },
+      },
+      version: true,
+      downloadLink: true,
+      fileSize: true,
+      currency: true,
+      price: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   })
 }
 

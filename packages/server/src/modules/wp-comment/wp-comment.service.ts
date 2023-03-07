@@ -83,6 +83,27 @@ export async function updateWpComment(
   })
 }
 
+export async function searchWpComments(searchWpCommentQuery: string) {
+  return await db.wpComment.findMany({
+    where: {
+      content: { contains: searchWpCommentQuery },
+    },
+    select: {
+      content: true,
+      wpPostId: true,
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      author: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+    },
+  })
+}
+
 export async function deleteWpCommentById(wpCommentId: string) {
   return await db.wpComment.delete({
     where: {
