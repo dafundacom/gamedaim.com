@@ -7,6 +7,7 @@ import {
   findWpCommentById,
   getTotalWpComments,
   getWpComments,
+  searchWpComments,
   updateWpComment,
 } from "./wp-comment.service"
 
