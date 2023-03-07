@@ -101,7 +101,7 @@ export default function UsersDashboard() {
         <DashboardLayout>
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <NextLink href="/dashboard/scripts/new">
+              <NextLink href="/dashboard/users/new">
                 <Button leftIcon={<MdAdd />}>Add New</Button>
               </NextLink>
             </div>
