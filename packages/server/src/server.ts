@@ -1,10 +1,11 @@
+import fastify, { FastifyReply, FastifyRequest } from "fastify"
 import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
 import multipart from "@fastify/multipart"
 import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUi from "@fastify/swagger-ui"
-import fastify, { FastifyReply, FastifyRequest } from "fastify"
 import { withRefResolver } from "fastify-zod"
+import fastifyFormbody from "@fastify/formbody"
 
 import env from "./env"
 import { loggerOption } from "./utils/logger"
@@ -28,6 +29,7 @@ import settingRoutes from "./modules/setting/setting.route"
 import { settingSchemas } from "./modules/setting/setting.schema"
 import topicRoutes from "./modules/topic/topic.route"
 import { topicSchemas } from "./modules/topic/topic.schema"
+import topupRoutes from "./modules/top-up/topup.route"
 import userRoutes from "./modules/user/user.route"
 import { userSchemas } from "./modules/user/user.schema"
 import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
@@ -62,6 +64,8 @@ function buildServer() {
   server.get("/health-check", async () => {
     return { status: "OK" }
   })
+
+  server.register(fastifyFormbody)
 
   server.addHook("preHandler", (req, _reply, next) => {
     req.jwt = server.jwt
@@ -126,6 +130,7 @@ function buildServer() {
   server.register(downloadRoutes, { prefix: "api/download" })
   server.register(downloadFileRoutes, { prefix: "api/download-file" })
   server.register(topicRoutes, { prefix: "api/topic" })
+  server.register(topupRoutes, { prefix: "api/top-up" })
   server.register(mediaRoutes, { prefix: "api/media" })
   server.register(scriptRoutes, { prefix: "api/script" })
   server.register(wpCommentRoutes, { prefix: "api/wp-comment" })

@@ -20,6 +20,9 @@ const env = {
   R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
   R2_ACCESS_KEY: process.env.R2_ACCESS_KEY,
   R2_SECRET_KEY: process.env.R2_SECRET_KEY,
+  DIGIFLAZZ_USERNAME: process.env.DIGIFLAZZ_USERNAME,
+  DIGIFLAZZ_API_KEY_DEV: process.env.DIGIFLAZZ_API_KEY_DEV,
+  DIGIFLAZZ_API_KEY_PROD: process.env.DIGIFLAZZ_API_KEY_PROD,
 }
 
 export default env
