@@ -17,11 +17,11 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = (
       <div
         className={`${
           open ? "max-lg:!translate-x-0" : null
-        } sticky top-0 z-[99] h-screen w-3/12 transition-[transform] max-lg:!fixed max-lg:!w-[250px] max-lg:-translate-x-full`}
+        } sticky top-0 z-[99] h-screen w-3/12 max-w-[250px] transition-[transform] max-lg:!fixed max-lg:!w-[250px] max-lg:-translate-x-full`}
       >
         <SidebarDashboard />
       </div>
-      <div className="w-9/12 px-3 transition-all max-lg:w-full">{children}</div>
+      <div className="w-full px-3 transition-all max-lg:w-full">{children}</div>
       <div className="fixed inset-x-0 bottom-0 z-[9999] flex items-center justify-around border-t bg-white py-3 dark:bg-gray-800 lg:hidden">
         <NextLink
           className="flex h-12 basis-1/3 cursor-pointer flex-col items-center justify-around text-center text-gray-800"
