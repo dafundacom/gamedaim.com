@@ -1,7 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
 import { digiflazz } from "../../utils/digiflazz-client"
-import { CreateDepositInput, CreateTransactionInput } from "./top-up.schema"
+import {
+  CreateDepositInput,
+  CreatePlnChecknput,
+  CreateTransactionCounterInput,
+  CreateTransactionInput,
+} from "./top-up.schema"
+import {
+  createTransactionCounter,
+  findTransactionCounterBySku,
+} from "./top-up.service"
 
 export async function webhookHandler(
   request: FastifyRequest,
@@ -104,9 +113,7 @@ export async function transactionHandler(
 
 export async function plnCheckHandler(
   request: FastifyRequest<{
-    Body: {
-      customerNo: string
-    }
+    Body: CreatePlnChecknput
   }>,
   reply: FastifyReply,
 ) {
@@ -116,6 +123,40 @@ export async function plnCheckHandler(
     const deposit = await digiflazz.cekIdPln(customerNo)
 
     return reply.code(201).send(deposit)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function createTransactionCounterHandler(
+  request: FastifyRequest<{ Body: CreateTransactionCounterInput }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { sku } = request.body
+
+    const transactionCounter = await createTransactionCounter({ sku })
+
+    return reply.code(201).send(transactionCounter)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function getTransactionCounterBySkuHandler(
+  request: FastifyRequest<{
+    Params: { transactionSku: string }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { transactionSku } = request.params
+
+    const transactionCounter = await findTransactionCounterBySku(transactionSku)
+
+    return reply.code(201).send(transactionCounter)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

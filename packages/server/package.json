@@ -12,7 +12,7 @@
     "test": "tap --node-arg=--require=ts-node/register",
     "db:generate": "pnpx prisma generate",
     "db:seed": "pnpx prisma db seed",
-    "db:migrate": "pnpx prisma migrate dev --name init && pnpm db:seed",
+    "db:migrate": "pnpx prisma migrate dev --name init",
     "db:push": "pnpx prisma db push --skip-generate",
     "db:studio": "pnpx prisma studio"
   },
