@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { digiflazz } from "../../utils/digiflazz"
+import { digiflazz } from "../../utils/digiflazz-client"
+import { CreateDepositInput, CreateTransactionInput } from "./top-up.schema"
 
 export async function webhookHandler(
   request: FastifyRequest,
@@ -60,7 +61,7 @@ export async function priceListPostPaidHandler(
 
 export async function depositHandler(
   request: FastifyRequest<{
-    Body: { amount: number; bank: string; name: string }
+    Body: CreateDepositInput
   }>,
   reply: FastifyReply,
 ) {
@@ -68,6 +69,51 @@ export async function depositHandler(
     const { amount, bank, name } = request.body
 
     const deposit = await digiflazz.deposit(amount, bank, name)
+
+    return reply.code(201).send(deposit)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function transactionHandler(
+  request: FastifyRequest<{
+    Body: CreateTransactionInput
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { sku, customerNo, refId, cmd, testing, msg } = request.body
+
+    const deposit = await digiflazz.transaksi(
+      sku,
+      customerNo,
+      refId,
+      cmd,
+      testing,
+      msg,
+    )
+
+    return reply.code(201).send(deposit)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function plnCheckHandler(
+  request: FastifyRequest<{
+    Body: {
+      customerNo: string
+    }
+  }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { customerNo } = request.body
+
+    const deposit = await digiflazz.cekIdPln(customerNo)
 
     return reply.code(201).send(deposit)
   } catch (e) {
