@@ -4,7 +4,6 @@ import {
   createSettingHandler,
   getSettingByKeyHandler,
   getSettingsHandler,
-  updateSettingHandler,
 } from "./setting.controller"
 
 import { $ref } from "./setting.schema"
@@ -22,20 +21,6 @@ async function settingRoutes(server: FastifyInstance) {
       },
     },
     createSettingHandler,
-  )
-
-  server.put(
-    "/:settingKey",
-    {
-      preHandler: [server.authenticate],
-      schema: {
-        body: $ref("updateSettingSchema"),
-        response: {
-          201: $ref("settingResponseSchema"),
-        },
-      },
-    },
-    updateSettingHandler,
   )
 
   server.get(

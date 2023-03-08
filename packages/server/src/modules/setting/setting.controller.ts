@@ -1,12 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { CreateSettingInput, UpdateSettingInput } from "./setting.schema"
+import { CreateSettingInput } from "./setting.schema"
 
-import {
-  createSetting,
-  findSettingByKey,
-  getSettings,
-  updateSetting,
-} from "./setting.service"
+import { createSetting, findSettingByKey, getSettings } from "./setting.service"
 
 export async function createSettingHandler(
   request: FastifyRequest<{ Body: CreateSettingInput }>,
@@ -22,33 +17,6 @@ export async function createSettingHandler(
 
     const setting = await createSetting({
       key,
-      value,
-    })
-
-    return reply.code(201).send(setting)
-  } catch (e) {
-    console.log(e)
-    return reply.code(500).send(e)
-  }
-}
-
-export async function updateSettingHandler(
-  request: FastifyRequest<{
-    Params: { settingKey: string }
-    Body: UpdateSettingInput
-  }>,
-  reply: FastifyReply,
-) {
-  try {
-    const { value } = request.body
-
-    const settingKey = request.params.settingKey
-    const user = request.user
-    if (user.role !== "ADMIN") {
-      return reply.code(403).send({ message: "Unauthorized" })
-    }
-
-    const setting = await updateSetting(settingKey, {
       value,
     })
 
