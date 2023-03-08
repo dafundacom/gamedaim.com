@@ -10,6 +10,8 @@ import {
   depositHandler,
   transactionHandler,
   plnCheckHandler,
+  createTransactionCounterHandler,
+  getTransactionCounterBySkuHandler,
 } from "./top-up.controller"
 // import { digiflazzHook } from "../../utils/digiflazz"
 
@@ -46,6 +48,31 @@ async function topupRoutes(server: FastifyInstance) {
       },
     },
     plnCheckHandler,
+  )
+
+  server.post(
+    "/transaction-counter",
+    {
+      schema: {
+        body: $ref("createTransactionCounterSchema"),
+        response: {
+          201: $ref("transactionCounterResponseSchema"),
+        },
+      },
+    },
+    createTransactionCounterHandler,
+  )
+
+  server.get(
+    "/transaction-counter/:transactionSku",
+    {
+      schema: {
+        response: {
+          201: $ref("transactionCounterResponseSchema"),
+        },
+      },
+    },
+    getTransactionCounterBySkuHandler,
   )
 }
 

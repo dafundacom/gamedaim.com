@@ -71,6 +71,25 @@ const plnCheckInput = {
     .min(2),
 }
 
+const transactionCounterInput = {
+  sku: z
+    .string({
+      required_error: "SKU is required",
+      invalid_type_error: "SKU must be a string",
+    })
+    .min(2),
+}
+
+const transactionCounterGenerated = {
+  id: z.string(),
+  transactions: z.number(),
+}
+
+const transactionCounterResponseSchema = z.object({
+  ...transactionCounterInput,
+  ...transactionCounterGenerated,
+})
+
 const createDepositSchema = z.object({
   ...depositInput,
 })
@@ -83,14 +102,23 @@ const createPlnCheckSchema = z.object({
   ...plnCheckInput,
 })
 
+const createTransactionCounterSchema = z.object({
+  ...transactionCounterInput,
+})
+
 export type CreateDepositInput = z.infer<typeof createDepositSchema>
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>
 export type CreatePlnChecknput = z.infer<typeof createPlnCheckSchema>
+export type CreateTransactionCounterInput = z.infer<
+  typeof createTransactionCounterSchema
+>
 
 const models = {
   createDepositSchema,
   createTransactionSchema,
   createPlnCheckSchema,
+  createTransactionCounterSchema,
+  transactionCounterResponseSchema,
 }
 
 export const { schemas: topUpSchemas, $ref } = buildJsonSchemas(models, {
