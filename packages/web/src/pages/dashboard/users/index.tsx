@@ -171,7 +171,7 @@ export default function UsersDashboard() {
                             </Td>
                             <Td align="right">
                               <ActionDashboard
-                                viewLink={`/user/${user.id}`}
+                                viewLink={`/user/${user.username}`}
                                 onDelete={() => handleDelete(user)}
                                 editLink={`/dashboard/users/${user.id}`}
                               />
@@ -214,7 +214,7 @@ export default function UsersDashboard() {
                           </Td>
                           <Td align="right">
                             <ActionDashboard
-                              viewLink={`/user/${user.id}`}
+                              viewLink={`/user/${user.username}`}
                               onDelete={() => handleDelete(user)}
                               editLink={`/dashboard/users/${user.id}`}
                             />

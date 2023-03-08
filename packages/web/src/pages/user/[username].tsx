@@ -89,12 +89,13 @@ export default function User(props: UserProps) {
 
 export async function getServerSideProps({ params }: any) {
   const { user } = await getUserByUserName(params?.username)
-  const { articles } = await getArticleByAuthorId(user.id)
+  const { articles } = await getArticleByAuthorId(user?.id)
   if (!user) {
     return {
       notFound: true,
     }
   }
+
   return {
     props: {
       user,
