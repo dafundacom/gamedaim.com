@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify"
 import { digiflazz } from "../../utils/digiflazz-client"
 import {
   CreateDepositInput,
-  CreatePlnChecknput,
+  CreatePlnCheckInput,
   CreateTransactionCounterInput,
   CreateTransactionInput,
 } from "./top-up.schema"
@@ -113,7 +113,7 @@ export async function transactionHandler(
 
 export async function plnCheckHandler(
   request: FastifyRequest<{
-    Body: CreatePlnChecknput
+    Body: CreatePlnCheckInput
   }>,
   reply: FastifyReply,
 ) {

@@ -108,7 +108,7 @@ const createTransactionCounterSchema = z.object({
 
 export type CreateDepositInput = z.infer<typeof createDepositSchema>
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>
-export type CreatePlnChecknput = z.infer<typeof createPlnCheckSchema>
+export type CreatePlnCheckInput = z.infer<typeof createPlnCheckSchema>
 export type CreateTransactionCounterInput = z.infer<
   typeof createTransactionCounterSchema
 >
