@@ -16,10 +16,6 @@ const settingInput = {
     .min(1),
 }
 
-const updateSettingInput = {
-  ...settingInput,
-}
-
 const settingGenerated = {
   id: z.string(),
   createdAt: z.string(),
@@ -30,10 +26,6 @@ const createSettingSchema = z.object({
   ...settingInput,
 })
 
-const updateSettingSchema = z.object({
-  ...updateSettingInput,
-})
-
 const settingResponseSchema = z.object({
   ...settingInput,
   ...settingGenerated,
@@ -42,13 +34,11 @@ const settingResponseSchema = z.object({
 const settingsResponseSchema = z.array(settingResponseSchema)
 
 export type CreateSettingInput = z.infer<typeof createSettingSchema>
-export type UpdateSettingInput = z.infer<typeof updateSettingSchema>
 
 const models = {
   settingResponseSchema,
   settingsResponseSchema,
   createSettingSchema,
-  updateSettingSchema,
 }
 
 export const { schemas: settingSchemas, $ref } = buildJsonSchemas(models, {
