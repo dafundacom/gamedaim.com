@@ -66,7 +66,7 @@ export default class Digiflazz {
   async deposit(amount: number, bank: string, name: string) {
     const options = {
       username: this._user,
-      amount,
+      amount: amount,
       Bank: bank,
       owner_name: name,
       sign: crypto
@@ -90,27 +90,56 @@ export default class Digiflazz {
 
   async transaksi(
     sku: string,
-    customer: string,
-    refID: string,
+    customerNo: string,
+    refId: string,
     cmd: TransactoinType = null,
-    msg: string | null = null,
+    testing: boolean,
+    msg: string,
   ) {
     const options = {
       username: this._user,
       buyer_sku_code: sku,
-      customer_no: customer,
-      ref_id: refID,
+      customer_no: customerNo,
+      ref_id: refId,
+      testing: testing,
+      msg: msg,
       commands: cmd,
-      msg,
       sign: crypto
         .createHash("md5")
-        .update(`${this._user}${this._key}${refID}`)
+        .update(`${this._user}${this._key}${refId}`)
         .digest("hex"),
     }
+
+    /** NOTE:
+    inq-pasca: cek tagihan
+    pay-pasca: bayar tagihan
+    status-pasca: cek status tagihan
+
+    ** Jangan pernah mencoba untuk melakukan Cek Status terhadap transaksi yang sudah lewat 90 HARI karena hal tersebut akan menyebabkan pembuatan transaksi BARU. **
+    **/
 
     if (cmd === "inq-pasca") options.commands = "inq-pasca"
     if (cmd === "pay-pasca") options.commands = "pay-pasca"
     if (cmd === "status-pasca") options.commands = "status-pasca"
+
+    return await fetch(`${this._endpoint}/transaction`, {
+      method: "POST",
+      body: JSON.stringify(options),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data
+      })
+      .catch(function (err) {
+        throw err
+      })
+  }
+
+  async cekIdPln(customerNo: string) {
+    const options = {
+      customer_no: customerNo,
+      commands: "pln-subscribe",
+    }
 
     return await fetch(`${this._endpoint}/transaction`, {
       method: "POST",

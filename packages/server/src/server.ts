@@ -30,6 +30,7 @@ import { settingSchemas } from "./modules/setting/setting.schema"
 import topicRoutes from "./modules/topic/topic.route"
 import { topicSchemas } from "./modules/topic/topic.schema"
 import topupRoutes from "./modules/top-up/topup.route"
+import { topUpSchemas } from "./modules/top-up/top-up.schema"
 import userRoutes from "./modules/user/user.route"
 import { userSchemas } from "./modules/user/user.schema"
 import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
@@ -93,6 +94,7 @@ function buildServer() {
     ...mediaSchemas,
     ...scriptSchemas,
     ...topicSchemas,
+    ...topUpSchemas,
     ...wpCommentSchemas,
     ...settingSchemas,
   ]) {
