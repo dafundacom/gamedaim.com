@@ -34,7 +34,6 @@ export default function Author(props: AuthorProps) {
   const {
     query: { slug },
   }: any = router
-  console.log(user)
 
   return (
     <>
