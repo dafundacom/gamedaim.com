@@ -109,8 +109,8 @@ function buildServer() {
       staticCSP: true,
       openapi: {
         info: {
-          title: "Downloaddaim API",
-          description: "Downloaddaim API",
+          title: "Gamedaim API",
+          description: "Gamedaim API",
           version,
         },
       },
