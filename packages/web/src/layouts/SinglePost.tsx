@@ -257,7 +257,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
                   slug: postData.slug,
                   tags: postData.tags,
                 }
-                if (i > 0 && arr[i].slug == post.slug) {
+                if (arr[i].slug == post.slug) {
                   return null
                 }
                 return (
