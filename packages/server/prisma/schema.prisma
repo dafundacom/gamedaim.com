@@ -259,3 +259,11 @@ model TransactionCounter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model WpView {
+  id        String   @id @unique @default(uuid())
+  wpPostId  String   @unique
+  viewCount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
