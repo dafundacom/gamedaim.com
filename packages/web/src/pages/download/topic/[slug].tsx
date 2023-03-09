@@ -2,6 +2,8 @@ import * as React from "react"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { Heading } from "ui"
+
+import env from "@/env"
 import { getDownloadByTopics } from "@/lib/download"
 import { HomeLayout } from "@/layouts/Home"
 import { InfiniteScrollDownloadByTopic } from "@/components/InfiniteScroll"

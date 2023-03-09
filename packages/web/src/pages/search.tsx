@@ -2,9 +2,10 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import env from "@/env"
 import useSWR from "swr"
 import { MdChevronRight } from "react-icons/md"
+
+import env from "@/env"
 import { wpGetPostsBySearch, wpGetAllPosts } from "@/lib/wp-posts"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 import { HomeLayout } from "@/layouts/Home"
@@ -14,6 +15,7 @@ import { ArticleDataProps } from "@/lib/data-types"
 import { DownloadCard } from "@/components/Card"
 import { splitUriWP } from "@/utils/split-html"
 import { getSettingsSite } from "@/lib/settings"
+
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
