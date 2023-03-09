@@ -5,7 +5,6 @@ import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { GetStaticProps, GetStaticPaths } from "next"
 
-import env from "@/env"
 import { wpGetCategoryBySlug, wpGetAllCategories } from "@/lib/wp-categories"
 import { wpGetPostsByCategorySlug } from "@/lib/wp-posts"
 import {
@@ -25,45 +24,47 @@ import { HomeLayout } from "@/layouts/Home"
 import { Breadcrumb, Button, Heading } from "ui"
 import { splitUriWP } from "@/utils/split-html"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
+import { getSettingsSite } from "@/lib/settings"
 
 interface CategoryProps {
   category: WpCategoriesDataProps
   posts: WpPostsDataProps
   pageInfo: any
+  settingsSite: any
 }
 
 export default function Category(props: CategoryProps) {
-  const { posts, category, pageInfo } = props
+  const { posts, category, pageInfo, settingsSite } = props
 
   return (
     <>
       <NextSeo
-        title={`${category.seo.title} — ${env.SITE_TITLE}`}
+        title={`${category.seo.title} — ${settingsSite.title?.value || ""}`}
         description={
           category.seo.description ||
-          `${category.seo.title} | ${env.SITE_TITLE}`
+          `${category.seo.title} | ${settingsSite.title?.value || ""}`
         }
-        canonical={`https://${env.DOMAIN}/${category.slug}`}
+        canonical={`https://${settingsSite.url?.value || ""}/${category.slug}`}
         openGraph={{
-          title: `${category.seo.title} | ${env.SITE_TITLE}`,
+          title: `${category.seo.title} | ${settingsSite.title?.value || ""}`,
           description:
             category.seo.description ||
-            `${category.seo.title} | ${env.SITE_TITLE}`,
+            `${category.seo.title} | ${settingsSite.title?.value || ""}`,
 
-          url: `https://${env.DOMAIN}/${category.slug}`,
+          url: `https://${settingsSite.url?.value || ""}/${category.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: category.seo.title,
-            item: `https://${env.DOMAIN}/${category.slug}`,
+            item: `https://${settingsSite.url?.value || ""}/${category.slug}`,
           },
         ]}
       />
@@ -160,6 +161,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
   const { category } = await wpGetCategoryBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByCategorySlug(category?.slug)
+  const { settingsSite } = await getSettingsSite()
 
   if (!category) {
     return {
@@ -172,6 +174,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       posts,
       pageInfo,
       category,
+      settingsSite,
     },
     revalidate: 100,
   }

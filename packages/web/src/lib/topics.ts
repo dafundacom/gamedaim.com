@@ -16,14 +16,16 @@ export const getTopicsCount = async () => {
 export const getTopics = async (page = 1) => {
   let topicsData
   try {
-    const { data } = await axios.get(`/topic/page/${page}`)
+    const { data } = await axios.get(
+      `https://beta.gamedaim.com/api/topic/page/${page}`,
+    )
     topicsData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
     throw e
   }
 
-  return { topics: topicsData }
+  return { topics: topicsData || "" }
 }
 
 export const getArticlesByTopic = async (slug: any, page = 1) => {

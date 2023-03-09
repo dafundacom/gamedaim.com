@@ -6,7 +6,6 @@ import dynamic from "next/dynamic"
 import { GetStaticProps, GetStaticPaths } from "next"
 import { useRouter } from "next/router"
 
-import env from "@/env"
 import { wpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug } from "@/lib/wp-posts"
 import {
@@ -22,6 +21,7 @@ const PostCardSide = dynamic(() =>
 import { HomeLayout } from "@/layouts/Home"
 import { splitUriWP } from "@/utils/split-html"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
+import { getSettingsSite } from "@/lib/settings"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -36,10 +36,11 @@ interface TagProps {
   }
   posts: WpPostsDataProps
   pageInfo: any
+  settingsSite: any
 }
 
 export default function Tag(props: TagProps) {
-  const { posts, pageInfo, tag } = props
+  const { posts, pageInfo, tag, settingsSite } = props
   const router: any = useRouter()
   const {
     query: { slug },
@@ -48,30 +49,32 @@ export default function Tag(props: TagProps) {
   return (
     <>
       <NextSeo
-        title={`${tag.seo.title} — ${env.SITE_TITLE}`}
+        title={`${tag.seo.title} — ${settingsSite.title?.value || ""}`}
         description={
-          tag.seo.description || `${tag.seo.title} | ${env.SITE_TITLE}`
+          tag.seo.description ||
+          `${tag.seo.title} | ${settingsSite.title?.value || ""}`
         }
-        canonical={`https://${env.DOMAIN}/${tag.slug}`}
+        canonical={`https://${settingsSite.url?.value || ""}/${tag.slug}`}
         openGraph={{
-          title: `${tag.seo.title} | ${env.SITE_TITLE}`,
+          title: `${tag.seo.title} | ${settingsSite.title?.value || ""}`,
           description:
-            tag.seo.description || `${tag.seo.title} | ${env.SITE_TITLE}`,
+            tag.seo.description ||
+            `${tag.seo.title} | ${settingsSite.title?.value || ""}`,
 
-          url: `https://${env.DOMAIN}/${tag.slug}`,
+          url: `https://${settingsSite.url?.value || ""}/${tag.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: tag.seo.title,
-            item: `https://${env.DOMAIN}/tag/${tag.slug}`,
+            item: `https://${settingsSite.url?.value || ""}/tag/${tag.slug}`,
           },
         ]}
       />
@@ -150,6 +153,8 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const slug = params?.slug
   const { tag } = await wpGetTagBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByTagSlug(tag.slug)
+  const { settingsSite } = await getSettingsSite()
+
   if (!tag || !posts) {
     return {
       notFound: true,
@@ -160,6 +165,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       tag,
       posts,
       pageInfo,
+      settingsSite,
     },
     revalidate: 100,
   }

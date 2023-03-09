@@ -19,7 +19,7 @@ export const StickyShare = React.forwardRef<HTMLDivElement, StickyShareProps>(
         {...rest}
       >
         <ShareButtonArticle
-          url={`https://${env.DOMAIN}/${categorySlug}/${postSlug}`}
+          url={`https://${env.SITE_TITLE}/${categorySlug}/${postSlug}`}
           text={title}
         />
       </div>

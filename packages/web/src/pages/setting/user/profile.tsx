@@ -15,11 +15,11 @@ import {
   Text,
 } from "ui"
 
-import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { ModalSelectMedia } from "@/components/Modal"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   username: string
@@ -29,7 +29,8 @@ interface FormValues {
   phoneNumber?: string
 }
 
-export default function SettingUserProfile() {
+export default function SettingUserProfile(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [selectedProfilePictureId, setSelectedProfilePictureId] =
@@ -120,13 +121,13 @@ export default function SettingUserProfile() {
   return (
     <>
       <NextSeo
-        title={`Edit Profile | ${env.SITE_TITLE}`}
-        description={`Edit Profile | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Profile | ${settingsSite.title?.value || ""}`}
+        description={`Edit Profile | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Profile | ${env.SITE_TITLE}`,
-          description: `Edit Profile | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Edit Profile | ${settingsSite.title?.value || ""}`,
+          description: `Edit Profile | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -242,4 +243,11 @@ export default function SettingUserProfile() {
       </UserRole>
     </>
   )
+}
+export async function getStaticProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+    revalidate: 60,
+  }
 }

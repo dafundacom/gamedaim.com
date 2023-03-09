@@ -16,13 +16,14 @@ import {
 } from "react-icons/md"
 import { Heading } from "ui"
 
-import env from "@/env"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { BoxDashboard } from "@/components/Box"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function Dashboard() {
+export default function Dashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const router = useRouter()
 
   const { data: totalAds } = useSWR("/ad/count", fetcher)
@@ -38,13 +39,13 @@ export default function Dashboard() {
   return (
     <>
       <NextSeo
-        title={`Dashboard | ${env.SITE_TITLE}`}
-        description={`Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Dashboard | ${settingsSite.title?.value || ""}`}
+        description={`Dashboard | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Dashboard | ${env.SITE_TITLE}`,
-          description: `Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Dashboard | ${settingsSite.title?.value || ""}`,
+          description: `Dashboard | ${settingsSite.title?.value || ""}`,
         }}
       />
       <AdminOrAuthorRole>
@@ -123,4 +124,11 @@ export default function Dashboard() {
       </AdminOrAuthorRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

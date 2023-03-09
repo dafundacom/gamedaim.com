@@ -22,13 +22,15 @@ import { HiEye, HiEyeOff } from "react-icons/hi"
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { PublicRole } from "@/components/Role"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   email: string
   password: string
 }
 
-export default function Login() {
+export default function Login(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [auth, setAuth] = React.useContext<any>(AuthContext)
   const [showPassword, setShowPassword] = React.useState(false)
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
@@ -74,13 +76,13 @@ export default function Login() {
   return (
     <>
       <NextSeo
-        title={`Login | ${env.SITE_TITLE}`}
-        description={`Login | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Login | ${settingsSite.title?.value || ""}`}
+        description={`Login | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Login | ${env.SITE_TITLE}`,
-          description: `Login | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Login | ${settingsSite.title?.value || ""}`,
+          description: `Login | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -94,7 +96,7 @@ export default function Login() {
               <NextImage
                 height={32}
                 width={120}
-                alt={env.SITE_TITLE}
+                alt={settingsSite.title?.value || ""}
                 src={env.LOGO_URL}
               />
             </NextLink>
@@ -189,4 +191,10 @@ export default function Login() {
       </PublicRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

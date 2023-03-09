@@ -4,13 +4,13 @@ import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { MdChevronRight } from "react-icons/md"
 
-import env from "@/env"
 import { getArticles, getArticlesCount } from "@/lib/articles"
 import { ArticlesDataProps, ArticleDataProps } from "@/lib/data-types"
 import { InfiniteScrollArticle } from "@/components/InfiniteScroll"
 import { Breadcrumb } from "ui"
 
 import { HomeLayout } from "@/layouts/Home"
+import { getSettingsSite } from "@/lib/settings"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -19,37 +19,38 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface ArticlesProps {
   articles: ArticlesDataProps
+  settingsSite: any
   articlesCount: number
 }
 
 export default function Articles(props: ArticlesProps) {
-  const { articles, articlesCount } = props
+  const { articles, articlesCount, settingsSite } = props
   const totalPage = Math.ceil(articlesCount / 10)
   const router = useRouter()
 
   return (
     <>
       <NextSeo
-        title={`Article | ${env.SITE_TITLE}`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Article | ${settingsSite.title?.value || ""}`}
+        description={settingsSite.description?.value || ""}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Article | ${env.SITE_TITLE}`,
-          description: env.DESCRIPTION,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Article | ${settingsSite.title?.value || ""}`,
+          description: settingsSite.description?.value || "",
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: "Article",
-            item: `https://${env.DOMAIN}${router.pathname}`,
+            item: `https://${settingsSite.url?.value || ""}${router.pathname}`,
           },
         ]}
       />
@@ -118,6 +119,7 @@ export default function Articles(props: ArticlesProps) {
 export const getServerSideProps = async () => {
   const { articles } = await getArticles()
   const { articlesCount } = await getArticlesCount()
+  const { settingsSite } = await getSettingsSite()
 
   if (!articles) {
     return {
@@ -129,6 +131,7 @@ export const getServerSideProps = async () => {
     props: {
       articles: articles,
       articlesCount: articlesCount,
+      settingsSite,
     },
   }
 }

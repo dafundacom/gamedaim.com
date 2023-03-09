@@ -3,27 +3,31 @@ import axios from "axios"
 export const getDownloadsCount = async () => {
   let downloadsCountData
   try {
-    const { data } = await axios.get("/download/count")
+    const { data } = await axios.get(
+      "https://beta.gamedaim.com/api/download/count",
+    )
     downloadsCountData = data
   } catch (e) {
     console.log(`Failed to query data: ${e}`)
     throw e
   }
 
-  return { downloadsCount: downloadsCountData }
+  return { downloadsCount: downloadsCountData || "" }
 }
 
 export const getDownloads = async (page = 1) => {
   let downloadsData
   try {
-    const { data } = await axios.get(`/download/page/${page}`)
+    const { data } = await axios.get(
+      `https://beta.gamedaim.com/api/download/page/${page}`,
+    )
     downloadsData = data
   } catch (e) {
-    console.log(`Failed to query post data: ${e}`)
+    console.log(`Failed to query download data: ${e}`)
     throw e
   }
 
-  return { downloads: downloadsData }
+  return { downloads: downloadsData || "" }
 }
 
 export const getDownloadBySlug = async (slug: string) => {
@@ -53,7 +57,9 @@ export const getDownloadBySearch = async (search: string) => {
 export const getDownloadByType = async (type: string, page = 1) => {
   let postData
   try {
-    const { data } = await axios.get(`/download/type/${type}/${page}`)
+    const { data } = await axios.get(
+      `https://beta.gamedaim.com/api/download/type/${type}/${page}`,
+    )
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

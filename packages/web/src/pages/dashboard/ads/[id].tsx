@@ -16,9 +16,9 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 interface FormValues {
   title: string
   content: string
@@ -39,7 +39,8 @@ interface FormValues {
     | "DOWNLOADING_PAGE"
 }
 
-export default function EditAdDashboard() {
+export default function EditAdDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [ad, setAd] = React.useState<any>({
     id: "",
@@ -105,13 +106,13 @@ export default function EditAdDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Ad | ${env.SITE_TITLE}`}
-        description={`Edit Ad | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Ad | ${settingsSite.title?.value || ""}`}
+        description={`Edit Ad | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Ad | ${env.SITE_TITLE}`,
-          description: `Edit Ad | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Edit Ad | ${settingsSite.title?.value || ""}`,
+          description: `Edit Ad | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -215,4 +216,10 @@ export default function EditAdDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

@@ -3,7 +3,6 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { useRouter } from "next/router"
-import env from "@/env"
 import { wpGetPostsByAuthorSlug, wpGetAllPosts } from "@/lib/wp-posts"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 
@@ -16,6 +15,7 @@ import { splitUriWP } from "@/utils/split-html"
 import { NextSeo, BreadcrumbJsonLd } from "next-seo"
 import { wpGetUserBySlug } from "@/lib/wp-users"
 import { UserDataProps } from "@/lib/data-types"
+import { getSettingsSite } from "@/lib/settings"
 const InfiniteScrollWP = dynamic(() =>
   import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
 )
@@ -24,12 +24,13 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 interface AuthorProps {
   posts: WpPostsDataProps
   listPosts: any
+  settingsSite: any
   pageInfo: any
   user: UserDataProps
 }
 
 export default function Author(props: AuthorProps) {
-  const { user, posts, pageInfo, listPosts } = props
+  const { user, posts, pageInfo, listPosts, settingsSite } = props
   const router = useRouter()
   const {
     query: { slug },
@@ -38,30 +39,34 @@ export default function Author(props: AuthorProps) {
   return (
     <>
       <NextSeo
-        title={`${user.seo.title} — ${env.SITE_TITLE}`}
+        title={`${user.seo.title} — ${settingsSite.title?.value || ""}`}
         description={
-          user.seo?.description || `${user.seo.title} | ${env.SITE_TITLE}`
+          user.seo?.description ||
+          `${user.seo.title} | ${settingsSite.title?.value || ""}`
         }
-        canonical={`https://${env.DOMAIN}/${user.slug}`}
+        canonical={`https://${settingsSite.url?.value || ""}/${user.slug}`}
         openGraph={{
-          title: `${user.seo.title} | ${env.SITE_TITLE}`,
+          title: `${user.seo.title} | ${settingsSite.title?.value || ""}`,
           description:
-            user.seo?.description || `${user.seo.title} | ${env.SITE_TITLE}`,
+            user.seo?.description ||
+            `${user.seo.title} | ${settingsSite.title?.value || ""}`,
 
-          url: `https://${env.DOMAIN}/author/${user.slug}`,
+          url: `https://${settingsSite.url?.value || ""}/author/${user.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: user.seo.title,
-            item: `https://${env.DOMAIN}/author/${user.slug}`,
+            item: `https://${settingsSite.url?.value || ""}/author/${
+              user.slug
+            }`,
           },
         ]}
       />
@@ -116,6 +121,7 @@ export const getServerSideProps = async ({ params, res }: any) => {
   const { user } = await wpGetUserBySlug(slug)
   const { posts, pageInfo } = await wpGetPostsByAuthorSlug(slug)
   const listPosts = await wpGetAllPosts()
+  const { settingsSite } = await getSettingsSite()
 
   if (!user || !posts) {
     return {
@@ -129,6 +135,7 @@ export const getServerSideProps = async ({ params, res }: any) => {
       posts,
       pageInfo,
       listPosts,
+      settingsSite,
     },
   }
 }

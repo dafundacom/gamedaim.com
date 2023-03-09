@@ -21,13 +21,12 @@ import {
   useDisclosure,
 } from "ui"
 
-import env from "@/env"
-
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { AddTopics } from "@/components/Form"
 
 import { ModalSelectMedia } from "@/components/Modal"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -37,7 +36,8 @@ interface FormValues {
   meta_description?: string
 }
 
-export default function CreateArticlesDashboard() {
+export default function CreateArticlesDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
@@ -103,13 +103,13 @@ export default function CreateArticlesDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Article | ${env.SITE_TITLE}`}
-        description={`Add New Article | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Article | ${settingsSite.title?.value || ""}`}
+        description={`Add New Article | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Article | ${env.SITE_TITLE}`,
-          description: `Add New Article | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Add New Article | ${settingsSite.title?.value || ""}`,
+          description: `Add New Article | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -263,4 +263,11 @@ export default function CreateArticlesDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

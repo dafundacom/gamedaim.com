@@ -3,7 +3,6 @@ import NextLink from "next/link"
 import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
-import env from "@/env"
 import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
 import { ListDownload } from "@/components/List"
@@ -15,48 +14,58 @@ const PostCardSide = dynamic(() =>
 import { HomeLayout } from "@/layouts/Home"
 import { Breadcrumb } from "ui"
 import { ListArticleFeatured } from "@/components/Card"
+import { getSettingsSite } from "@/lib/settings"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 const Text = dynamic(() => import("ui").then((mod) => mod.Text))
 
 interface TopicProps {
   topic: TopicDataProps
   download: any
+  settingsSite: any
 }
 
 export default function Topic(props: TopicProps) {
-  const { topic, download } = props
+  const { topic, download, settingsSite } = props
 
   return (
     <>
       <NextSeo
-        title={`${topic.meta_title || topic.title} — ${env.SITE_TITLE}`}
+        title={`${topic.meta_title || topic.title} — ${
+          settingsSite.title?.value || ""
+        }`}
         description={
           topic.meta_description ||
           topic.description ||
-          `${topic.title} | ${env.SITE_TITLE}`
+          `${topic.title} | ${settingsSite.title?.value || ""}`
         }
-        canonical={`https://${env.DOMAIN}/topic/${topic.slug}`}
+        canonical={`https://${settingsSite.url?.value || ""}/topic/${
+          topic.slug
+        }`}
         openGraph={{
-          title: `${topic.meta_title || topic.title} | ${env.SITE_TITLE}`,
+          title: `${topic.meta_title || topic.title} | ${
+            settingsSite.title?.value || ""
+          }`,
           description:
             topic.meta_description ||
             topic.description ||
-            `${topic.title} | ${env.SITE_TITLE}`,
+            `${topic.title} | ${settingsSite.title?.value || ""}`,
 
-          url: `https://${env.DOMAIN}/topic/${topic.slug}`,
+          url: `https://${settingsSite.url?.value || ""}/topic/${topic.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: topic.meta_title || topic.title,
-            item: `https://${env.DOMAIN}/topic/${topic.slug}`,
+            item: `https://${settingsSite.url?.value || ""}/topic/${
+              topic.slug
+            }`,
           },
         ]}
       />
@@ -144,8 +153,10 @@ export default function Topic(props: TopicProps) {
 }
 
 export const getServerSideProps = async ({ params }: any) => {
-  const { topic } = await getArticlesByTopic(params.slug)
+  const { topic } = await getArticlesByTopic(params?.slug)
   const { topic: download } = await getDownloadsByTopic(params?.slug)
+  const { settingsSite } = await getSettingsSite()
+
   if (!topic) {
     return {
       notFound: true,
@@ -156,6 +167,7 @@ export const getServerSideProps = async ({ params }: any) => {
     props: {
       topic,
       download,
+      settingsSite,
     },
   }
 }

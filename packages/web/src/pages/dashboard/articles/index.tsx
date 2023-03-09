@@ -15,7 +15,6 @@ import {
 } from "react-icons/md"
 import { Badge, Button, IconButton, Input, Text } from "ui"
 
-import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminOrAuthorRole } from "@/components/Role"
@@ -23,8 +22,10 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { ArticleDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function ArticlesDashboard() {
+export default function ArticlesDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [content, setContent] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalArticles, setTotalArticles] = React.useState<number>(0)
@@ -87,13 +88,13 @@ export default function ArticlesDashboard() {
   return (
     <>
       <NextSeo
-        title={`Article Dashboard | ${env.SITE_TITLE}`}
-        description={`Article Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Article Dashboard | ${settingsSite.title?.value || ""}`}
+        description={`Article Dashboard | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Article Dashboard | ${env.SITE_TITLE}`,
-          description: `Article Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Article Dashboard | ${settingsSite.title?.value || ""}`,
+          description: `Article Dashboard | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -267,4 +268,11 @@ export default function ArticlesDashboard() {
       </AdminOrAuthorRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

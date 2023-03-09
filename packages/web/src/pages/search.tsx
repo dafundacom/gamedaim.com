@@ -5,7 +5,6 @@ import { NextSeo } from "next-seo"
 
 import useSWR from "swr"
 import { MdChevronRight } from "react-icons/md"
-import env from "@/env"
 import { wpGetPostsBySearch, wpGetAllPosts } from "@/lib/wp-posts"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
 import { HomeLayout } from "@/layouts/Home"
@@ -14,6 +13,7 @@ import { fetcher } from "@/lib/fetcher"
 import { ArticleDataProps } from "@/lib/data-types"
 import { DownloadCard } from "@/components/Card"
 import { splitUriWP } from "@/utils/split-html"
+import { getSettingsSite } from "@/lib/settings"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -25,10 +25,11 @@ const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface SearchProps {
   posts: WpPostsDataProps
+  settingsSite: any
 }
 
 export default function Search(props: SearchProps) {
-  const { posts } = props
+  const { posts, settingsSite } = props
   const router = useRouter()
 
   const inputRef = React.useRef() as React.RefObject<HTMLInputElement>
@@ -55,13 +56,13 @@ export default function Search(props: SearchProps) {
   return (
     <>
       <NextSeo
-        title={`Search | ${env.SITE_TITLE}`}
-        description={`Search | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Search | ${settingsSite.title?.value || ""}`}
+        description={`Search | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Search | ${env.SITE_TITLE}`,
-          description: `Search | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Search | ${settingsSite.title?.value || ""}`,
+          description: `Search | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -207,5 +208,7 @@ export default function Search(props: SearchProps) {
 
 export async function getServerSideProps() {
   const { posts, pageInfo } = await wpGetAllPosts()
-  return { props: { posts, pageInfo } }
+  const { settingsSite } = await getSettingsSite()
+
+  return { props: { posts, pageInfo, settingsSite } }
 }

@@ -9,7 +9,6 @@ import { NextSeo } from "next-seo"
 import { Button, IconButton, Text } from "ui"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 import useSWR from "swr"
-import env from "@/env"
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
@@ -17,8 +16,10 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function AdsDashboard() {
+export default function AdsDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [content, setContent] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalAds, setTotalAds]: any = React.useState()
@@ -65,13 +66,13 @@ export default function AdsDashboard() {
   return (
     <>
       <NextSeo
-        title={`Ad Dashboard | ${env.SITE_TITLE}`}
-        description={`Ad Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Ad Dashboard | ${settingsSite.title?.value || ""}`}
+        description={`Ad Dashboard | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Ad Dashboard | ${env.SITE_TITLE}`,
-          description: `Ad Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Ad Dashboard | ${settingsSite.title?.value || ""}`,
+          description: `Ad Dashboard | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -164,4 +165,11 @@ export default function AdsDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

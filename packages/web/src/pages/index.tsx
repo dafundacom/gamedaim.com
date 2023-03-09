@@ -3,12 +3,12 @@ import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo"
 
-import env from "@/env"
 import { wpGetAllPosts } from "@/lib/wp-posts"
 import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 
 import { HomeLayout } from "@/layouts/Home"
 import { splitUriWP } from "@/utils/split-html"
+import { getSettingsSite } from "@/lib/settings"
 const PostCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.PostCardSide),
 )
@@ -20,8 +20,8 @@ const InfiniteScrollWP = dynamic(() =>
 )
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
-export default function Home(props: { postsHome: any }) {
-  const { postsHome } = props
+export default function Home(props: { postsHome: any; settingsSite: any }) {
+  const { postsHome, settingsSite } = props
 
   const router = useRouter()
   const featured = postsHome?.posts?.slice(0, 9)
@@ -33,29 +33,33 @@ export default function Home(props: { postsHome: any }) {
   return (
     <>
       <NextSeo
-        title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`${
+          settingsSite.title?.value || ""
+        } | Everlasting Gaming Knowledge`}
+        description={settingsSite.description?.value || ""}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
-          description: env.DESCRIPTION,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `${
+            settingsSite.title?.value || ""
+          } | Everlasting Gaming Knowledge`,
+          description: settingsSite.description?.value || "",
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
         ]}
       />
       <SiteLinksSearchBoxJsonLd
-        url={`https://${env.DOMAIN}${router.pathname}`}
+        url={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         potentialActions={[
           {
-            target: `https://${env.DOMAIN}/search?q`,
+            target: `https://${settingsSite.url?.value || ""}/search?q`,
             queryInput: "search_term_string",
           },
         ]}
@@ -103,8 +107,9 @@ export default function Home(props: { postsHome: any }) {
 
 export async function getStaticProps() {
   const postsHome = await wpGetAllPosts()
+  const { settingsSite } = await getSettingsSite()
   return {
-    props: { postsHome: postsHome },
+    props: { postsHome: postsHome, settingsSite },
     revalidate: 60,
   }
 }

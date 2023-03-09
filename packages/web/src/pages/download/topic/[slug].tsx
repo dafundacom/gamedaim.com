@@ -2,29 +2,34 @@ import * as React from "react"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { Heading } from "ui"
-import env from "@/env"
 import { getDownloadByTopics } from "@/lib/download"
 import { HomeLayout } from "@/layouts/Home"
 import { InfiniteScrollDownloadByTopic } from "@/components/InfiniteScroll"
 import { TopicDataProps } from "@/lib/data-types"
+import { getSettingsSite } from "@/lib/settings"
 
 interface TopicProps {
   downloadByTopic: TopicDataProps
+  settingsSite: any
 }
 export default function DownloadsByTopic(props: TopicProps) {
-  const { downloadByTopic } = props
+  const { downloadByTopic, settingsSite } = props
   const router = useRouter()
   const totalPage = Math.ceil(downloadByTopic._count.downloads / 10)
   return (
     <>
       <NextSeo
-        title={`${env.SITE_TITLE} | Everlasting Gaming Knowledge`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`${
+          settingsSite.title?.value || ""
+        } | Everlasting Gaming Knowledge`}
+        description={settingsSite.description?.value || ""}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `${env.SITE_TITLE} | Everlasting Gaming Knowledge`,
-          description: env.DESCRIPTION,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `${
+            settingsSite.title?.value || ""
+          } | Everlasting Gaming Knowledge`,
+          description: settingsSite.description?.value || "",
         }}
       />
       <HomeLayout>
@@ -52,12 +57,14 @@ export async function getServerSideProps({ params }: any) {
   const slug: any = params?.slug
 
   const { downloadByTopic } = await getDownloadByTopics(slug)
+  const { settingsSite } = await getSettingsSite()
+
   if (!downloadByTopic) {
     return {
       notFound: true,
     }
   }
   return {
-    props: { downloadByTopic },
+    props: { downloadByTopic, settingsSite },
   }
 }

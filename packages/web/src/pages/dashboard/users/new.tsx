@@ -18,10 +18,10 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   username: string
@@ -35,7 +35,9 @@ interface FormValues {
   meta_description?: string
 }
 
-export default function CreateUsersDashboard() {
+export default function CreateUsersDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
+
   const [loading, setLoading] = React.useState<boolean>(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
@@ -89,13 +91,13 @@ export default function CreateUsersDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New User | ${env.SITE_TITLE}`}
-        description={`Add New User | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New User | ${settingsSite.title?.value || ""}`}
+        description={`Add New User | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New User | ${env.SITE_TITLE}`,
-          description: `Add New User | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Add New User | ${settingsSite.title?.value || ""}`,
+          description: `Add New User | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -308,4 +310,11 @@ export default function CreateUsersDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

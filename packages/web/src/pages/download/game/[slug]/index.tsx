@@ -29,6 +29,7 @@ import { HomeLayout } from "@/layouts/Home"
 import axios from "axios"
 import { parseAndSplitHTMLString } from "@/utils/split-html"
 import { PopupAd } from "@/components/Ads/PopupAd"
+import { getSettingsSite } from "@/lib/settings"
 
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
@@ -41,8 +42,12 @@ const SpecBox = dynamic(() =>
   import("@/components/Box").then((mod) => mod.SpecBox),
 )
 
-export default function DownloadGame(props: { download: any; downloads: any }) {
-  const { download, downloads } = props
+export default function DownloadGame(props: {
+  download: any
+  downloads: any
+  settingsSite: any
+}) {
+  const { download, downloads, settingsSite } = props
   dayjs.extend(relativeTime)
 
   const [ad, setAd]: any = React.useState()
@@ -85,12 +90,20 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
   return (
     <>
       <NextSeo
-        title={`${download.meta_title || download.title} | ${env.SITE_TITLE}`}
+        title={`${download.meta_title || download.title} | ${
+          settingsSite.title?.value || ""
+        }`}
         description={download.meta_description || download.excerpt}
-        canonical={`https://${env.DOMAIN}/download/game/${download.slug}`}
+        canonical={`https://${settingsSite.url?.value || ""}/download/game/${
+          download.slug
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}/download/game/${download.slug}`,
-          title: `${download.meta_title || download.title} | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}/download/game/${
+            download.slug
+          }`,
+          title: `${download.meta_title || download.title} | ${
+            settingsSite.title?.value || ""
+          }`,
           description: download.meta_description || download.excerpt,
           images: [
             {
@@ -104,18 +117,22 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
         }}
       />
       <ArticleJsonLd
-        url={`https://${env.DOMAIN}/download/game/${download.slug}`}
-        title={`${download.meta_title || download.title} | ${env.SITE_TITLE}`}
+        url={`https://${settingsSite.url?.value || ""}/download/game/${
+          download.slug
+        }`}
+        title={`${download.meta_title || download.title} | ${
+          settingsSite.title?.value || ""
+        }`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
         authorName={[
           {
-            name: env.SITE_TITLE,
-            url: `https://${env.DOMAIN}`,
+            name: settingsSite.title?.value || "",
+            url: `https://${settingsSite.url?.value || ""}`,
           },
         ]}
-        publisherName={env.SITE_TITLE}
+        publisherName={settingsSite.title?.value || ""}
         publisherLogo={env.LOGO_URL}
         description={download.meta_description || download.excerpt}
         isAccessibleForFree={true}
@@ -132,25 +149,29 @@ export default function DownloadGame(props: { download: any; downloads: any }) {
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${env.DOMAIN}/download/`,
+            item: `https://${settingsSite.url?.value || ""}/download/`,
           },
           {
             position: 3,
             name: download.type,
-            item: `https://${env.DOMAIN}/download/${download.type.toString()}`,
+            item: `https://${
+              settingsSite.url?.value || ""
+            }/download/${download.type.toString()}`,
           },
           {
             position: 4,
             name: download.topics && download.topics[0]?.title,
             item:
               download.topics &&
-              `https://${env.DOMAIN}/download/topic/${download.topics[0]?.slug}`,
+              `https://${settingsSite.url?.value || ""}/download/topic/${
+                download.topics[0]?.slug
+              }`,
           },
         ]}
       />
@@ -394,12 +415,14 @@ export async function getServerSideProps({ params }: any) {
 
   const { downloadByType } = await getDownloadByType("Game")
   const { download } = await getDownloadBySlug(slug)
+  const { settingsSite } = await getSettingsSite()
+
   if (!download || download.type !== "Game") {
     return {
       notFound: true,
     }
   }
   return {
-    props: { downloads: downloadByType, download: download },
+    props: { downloads: downloadByType, download: download, settingsSite },
   }
 }

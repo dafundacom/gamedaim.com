@@ -17,10 +17,10 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdminRole } from "@/components/Role"
+import { getSettingsSite } from "@/lib/settings"
 
 enum UserRoles {
   "ADMIN",
@@ -37,7 +37,8 @@ interface FormValues {
   role: UserRoles
 }
 
-export default function DashboardEditUser() {
+export default function DashboardEditUser(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [selectedProfilePictureId, setSelectedProfilePictureId] =
@@ -132,13 +133,13 @@ export default function DashboardEditUser() {
   return (
     <>
       <NextSeo
-        title={`Edit User | ${env.SITE_TITLE}`}
-        description={`Edit User | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit User | ${settingsSite.title?.value || ""}`}
+        description={`Edit User | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit User | ${env.SITE_TITLE}`,
-          description: `Edit User | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Edit User | ${settingsSite.title?.value || ""}`,
+          description: `Edit User | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -275,4 +276,11 @@ export default function DashboardEditUser() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

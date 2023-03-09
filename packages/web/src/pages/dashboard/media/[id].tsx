@@ -15,9 +15,9 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   name: string
@@ -26,7 +26,8 @@ interface FormValues {
   description: string
 }
 
-export default function EditMediaDashboard() {
+export default function EditMediaDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [media, setMedia] = React.useState<any>({
     id: "",
@@ -93,13 +94,13 @@ export default function EditMediaDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Media | ${env.SITE_TITLE}`}
-        description={`Edit Media | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Media | ${settingsSite.title?.value || ""}`}
+        description={`Edit Media | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Media | ${env.SITE_TITLE}`,
-          description: `Edit Media | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Edit Media | ${settingsSite.title?.value || ""}`,
+          description: `Edit Media | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -169,4 +170,11 @@ export default function EditMediaDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

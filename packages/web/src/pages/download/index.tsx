@@ -3,7 +3,6 @@ import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { Heading, Text } from "ui"
-import env from "@/env"
 import { ListDownload } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
 import { SearchInput } from "@/components/Search"
@@ -13,39 +12,41 @@ import { getTopics } from "@/lib/topics"
 
 import { HomeLayout } from "@/layouts/Home"
 import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
+import { getSettingsSite } from "@/lib/settings"
 interface DownloadProps {
   downloads: DownloadDataProps
   apps: DownloadDataProps
   games: DownloadDataProps
   topics: TopicDataProps[]
+  settingsSite: any
 }
 export default function Download(props: DownloadProps) {
-  const { downloads, apps, games, topics } = props
+  const { downloads, apps, games, topics, settingsSite } = props
   const router = useRouter()
 
   return (
     <>
       <NextSeo
-        title={`Download | ${env.SITE_TITLE}`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Download | ${settingsSite.title?.value || ""}`}
+        description={settingsSite.description?.value || ""}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Download | ${env.SITE_TITLE}`,
-          description: env.DESCRIPTION,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Download | ${settingsSite.title?.value || ""}`,
+          description: settingsSite.description?.value || "",
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || "",
+            item: `https://${settingsSite.url?.value || ""}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${env.DOMAIN}${router.pathname}`,
+            item: `https://${settingsSite.url?.value || ""}${router.pathname}`,
           },
         ]}
       />
@@ -110,8 +111,9 @@ export async function getStaticProps() {
   const apps = await getDownloadByType("App")
   const { topics } = await getTopics(1)
   const games = await getDownloadByType("Game")
+  const { settingsSite } = await getSettingsSite()
 
   return {
-    props: { downloads, apps, games, topics },
+    props: { downloads, apps, games, topics, settingsSite },
   }
 }

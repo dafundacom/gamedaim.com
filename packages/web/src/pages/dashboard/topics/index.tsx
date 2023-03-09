@@ -15,7 +15,6 @@ import {
   MdOutlineSearch,
 } from "react-icons/md"
 
-import env from "@/env"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
@@ -23,8 +22,10 @@ import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { TopicDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function TopicsDashboard() {
+export default function TopicsDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [post, setPost] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalTopics, setTotalTopics]: any = React.useState()
@@ -89,13 +90,13 @@ export default function TopicsDashboard() {
   return (
     <>
       <NextSeo
-        title={`Topic Dashboard | ${env.SITE_TITLE}`}
-        description={`Topic Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Topic Dashboard | ${settingsSite.title?.value || ""}`}
+        description={`Topic Dashboard | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Topic Dashboard | ${env.SITE_TITLE}`,
-          description: `Topic Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Topic Dashboard | ${settingsSite.title?.value || ""}`,
+          description: `Topic Dashboard | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -225,4 +226,10 @@ export default function TopicsDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

@@ -9,7 +9,6 @@ import { useRouter } from "next/router"
 import { IconButton, Text } from "ui"
 import { MdChevronLeft, MdChevronRight } from "react-icons/md"
 
-import env from "@/env"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
@@ -17,8 +16,10 @@ import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { WpCommentDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function WpCommentsDashboard() {
+export default function WpCommentsDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [post, setPost] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalWpComments, setTotalWpComments]: any = React.useState()
@@ -68,13 +69,17 @@ export default function WpCommentsDashboard() {
   return (
     <>
       <NextSeo
-        title={`WP Comment Dashboard | ${env.SITE_TITLE}`}
-        description={`WP Comment Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`WP Comment Dashboard | ${settingsSite.title?.value || ""}`}
+        description={`WP Comment Dashboard | ${
+          settingsSite.title?.value || ""
+        }`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `WP Comment Dashboard | ${env.SITE_TITLE}`,
-          description: `WP Comment Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `WP Comment Dashboard | ${settingsSite.title?.value || ""}`,
+          description: `WP Comment Dashboard | ${
+            settingsSite.title?.value || ""
+          }`,
         }}
         noindex={true}
       />
@@ -157,4 +162,10 @@ export default function WpCommentsDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

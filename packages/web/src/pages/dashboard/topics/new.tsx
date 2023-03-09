@@ -16,10 +16,10 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -28,7 +28,8 @@ interface FormValues {
   meta_description?: string
 }
 
-export default function CreateTopicsDashboard() {
+export default function CreateTopicsDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
@@ -83,13 +84,13 @@ export default function CreateTopicsDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Topic | ${env.SITE_TITLE}`}
-        description={`Add New Topic | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Topic | ${settingsSite.title?.value || ""}`}
+        description={`Add New Topic | ${settingsSite.title?.value || ""}`}
+        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Topic | ${env.SITE_TITLE}`,
-          description: `Add New Topic | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          title: `Add New Topic | ${settingsSite.title?.value || ""}`,
+          description: `Add New Topic | ${settingsSite.title?.value || ""}`,
         }}
         noindex={true}
       />
@@ -195,4 +196,10 @@ export default function CreateTopicsDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }
