@@ -58,8 +58,8 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
       if (data?.error) {
         toast.error(data.error)
       } else {
-        reset()
         toast.success("Download-file Successfully created")
+        reset()
       }
     } catch (err: any) {
       console.log("err => ", err)
