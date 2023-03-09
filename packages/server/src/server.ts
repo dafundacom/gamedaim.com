@@ -35,6 +35,8 @@ import userRoutes from "./modules/user/user.route"
 import { userSchemas } from "./modules/user/user.schema"
 import wpCommentRoutes from "./modules/wp-comment/wp-comment.route"
 import { wpCommentSchemas } from "./modules/wp-comment/wp-comment.schema"
+import wpViewRoutes from "./modules/wp-view/wp-view.route"
+import { wpViewSchemas } from "./modules/wp-view/wp-view.schema"
 
 function buildServer() {
   const server = fastify({
@@ -96,6 +98,7 @@ function buildServer() {
     ...topicSchemas,
     ...topUpSchemas,
     ...wpCommentSchemas,
+    ...wpViewSchemas,
     ...settingSchemas,
   ]) {
     server.addSchema(schema)
@@ -136,6 +139,7 @@ function buildServer() {
   server.register(mediaRoutes, { prefix: "api/media" })
   server.register(scriptRoutes, { prefix: "api/script" })
   server.register(wpCommentRoutes, { prefix: "api/wp-comment" })
+  server.register(wpViewRoutes, { prefix: "api/wp-view" })
   server.register(settingRoutes, { prefix: "api/setting" })
 
   return server
