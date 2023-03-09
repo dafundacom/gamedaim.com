@@ -74,7 +74,8 @@ const updateUserSchema = z.object({
     .refine(
       (role) => USER_ROLE.includes(role),
       "only USER, AUTHOR, and ADMIN are accepted",
-    ),
+    )
+    .optional(),
   password: z
     .string({
       required_error: "Password is required",
