@@ -108,6 +108,7 @@ model Article {
   featuredImageId  String
   featuredImage    Media      @relation(name: "ArticleFeaturedImages", fields: [featuredImageId], references: [id])
   status           PostStatus @default(PUBLISHED)
+  viewCount        Int        @default(0)
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
 }
@@ -124,7 +125,8 @@ model Topic {
   author           User      @relation(name: "TopicAuthors", fields: [authorId], references: [id])
   authorId         String
   articles         Article[] @relation(name: "ArticleTopics")
-  downloads            Download[]    @relation(name: "DownloadTopics")
+  downloads        Download[]    @relation(name: "DownloadTopics")
+  viewCount        Int        @default(0)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
@@ -191,6 +193,7 @@ model Download {
   officialWeb      String
   schemaType       DownloadSchema @default(DownloadApp)
   type             DownloadType   @default(App)
+  viewCount        Int        @default(0)
   status           PostStatus     @default(PUBLISHED)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
@@ -212,6 +215,7 @@ model DownloadFile {
   fileSize         String
   currency         String
   price            String
+  viewCount        Int        @default(0)
   status           PostStatus     @default(PUBLISHED)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

@@ -10,6 +10,7 @@ import {
   getTotalDownloadFilesHandler,
   searchDownloadFilesHandler,
   updateDownloadFileHandler,
+  updateDownloadFileViewCountHandler,
 } from "./download-file.controller"
 import { $ref } from "./download-file.schema"
 
@@ -102,6 +103,18 @@ async function downloadFileRoutes(server: FastifyInstance) {
       },
     },
     updateDownloadFileHandler,
+  )
+
+  server.put(
+    "/update-view/:downloadFileId",
+    {
+      schema: {
+        response: {
+          201: $ref("downloadFileResponseSchema"),
+        },
+      },
+    },
+    updateDownloadFileViewCountHandler,
   )
 
   server.delete(

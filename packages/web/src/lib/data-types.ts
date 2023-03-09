@@ -71,6 +71,7 @@ export interface ArticleDataProps {
   topics: TopicDataProps
   comments?: CommentDataProps
   featuredImage: MediaDataProps
+  viewCount: number
   status: PostStatusData
   createdAt: string
   updatedAt: string
@@ -96,11 +97,12 @@ export interface TopicDataProps {
   author: UserDataProps
   articles: ArticleDataProps
   downloads?: DownloadDataProps
-  createdAt: string
   _count: {
     articles: number
     downloads: number
   }
+  viewCount: number
+  createdAt: string
   updatedAt: string
 }
 
@@ -188,6 +190,7 @@ export interface DownloadDataProps {
   officialWeb: string
   schemaType: DownloadSchemaTypeData
   type: DownloadTypeData | string
+  viewCount: number
   status: PostStatusData
   createdAt: string
   updatedAt: string
@@ -207,6 +210,7 @@ export interface DownloadFileDataProps {
   fileSize: string
   currency: string
   price: string
+  viewCount: number
   status: PostStatusData
   createdAt: string
   updatedAt: string

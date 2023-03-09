@@ -51,6 +51,7 @@ export async function getDownloads(downloadPage: number, perPage: number) {
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -112,6 +113,7 @@ export async function findDownloadById(downloadId: string) {
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -183,6 +185,7 @@ export async function findDownloadByType(
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -253,6 +256,7 @@ export async function findDownloadByAuthorId(
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -318,6 +322,7 @@ export async function findDownloadBySlug(
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -402,6 +407,7 @@ export async function searchDownloads(searchDownloadQuery: string) {
       officialWeb: true,
       schemaType: true,
       type: true,
+      viewCount: true,
       status: true,
       downloadFiles: {
         orderBy: {
@@ -427,6 +433,17 @@ export async function searchDownloads(searchDownloadQuery: string) {
           username: true,
           profilePicture: true,
         },
+      },
+    },
+  })
+}
+
+export async function updateDownloadViewCount(downloadId: string) {
+  await db.download.update({
+    where: { id: downloadId },
+    data: {
+      viewCount: {
+        increment: 1,
       },
     },
   })

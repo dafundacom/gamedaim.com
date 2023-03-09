@@ -64,6 +64,7 @@ export async function getDownloadFiles(
       fileSize: true,
       currency: true,
       price: true,
+      viewCount: true,
       status: true,
       createdAt: true,
       updatedAt: true,
@@ -112,6 +113,7 @@ export async function findDownloadFileById(downloadFileId: string) {
       fileSize: true,
       currency: true,
       price: true,
+      viewCount: true,
       status: true,
       createdAt: true,
       updatedAt: true,
@@ -169,6 +171,7 @@ export async function findDownloadFileByAuthorId(
       fileSize: true,
       currency: true,
       price: true,
+      viewCount: true,
       status: true,
       createdAt: true,
       updatedAt: true,
@@ -217,6 +220,7 @@ export async function findDownloadFileBySlug(downloadFileSlug: string) {
       fileSize: true,
       currency: true,
       price: true,
+      viewCount: true,
       status: true,
       createdAt: true,
       updatedAt: true,
@@ -286,9 +290,21 @@ export async function searchDownloadFiles(searchDownloadFileQuery: string) {
       fileSize: true,
       currency: true,
       price: true,
+      viewCount: true,
       status: true,
       createdAt: true,
       updatedAt: true,
+    },
+  })
+}
+
+export async function updateDownloadFileViewCount(downloadFileId: string) {
+  await db.downloadFile.update({
+    where: { id: downloadFileId },
+    data: {
+      viewCount: {
+        increment: 1,
+      },
     },
   })
 }

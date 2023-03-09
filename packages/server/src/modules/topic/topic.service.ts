@@ -94,6 +94,7 @@ export async function findTopicBySlug(topicSlug: string) {
           meta_description: true,
           slug: true,
           id: true,
+          viewCount: true,
           status: true,
           featuredImage: {
             select: {
@@ -128,6 +129,7 @@ export async function findTopicBySlug(topicSlug: string) {
           officialWeb: true,
           schemaType: true,
           type: true,
+          viewCount: true,
           status: true,
           featuredImage: {
             select: {
@@ -181,6 +183,7 @@ export async function findTopicBySlugAndGetArticles(
           meta_description: true,
           slug: true,
           id: true,
+          viewCount: true,
           status: true,
           featuredImage: {
             select: {
@@ -253,6 +256,7 @@ export async function findTopicBySlugAndGetDownloads(
           officialWeb: true,
           schemaType: true,
           type: true,
+          viewCount: true,
           status: true,
           featuredImage: {
             select: {
@@ -328,6 +332,17 @@ export async function searchTopics(searchTopicQuery: string) {
           name: true,
           id: true,
         },
+      },
+    },
+  })
+}
+
+export async function updateTopicViewCount(topicId: string) {
+  await db.topic.update({
+    where: { id: topicId },
+    data: {
+      viewCount: {
+        increment: 1,
       },
     },
   })

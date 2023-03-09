@@ -15,6 +15,7 @@ import {
   getTotalDownloadFiles,
   searchDownloadFiles,
   updateDownloadFile,
+  updateDownloadFileViewCount,
 } from "./download-file.service"
 
 export async function createDownloadFileHandler(
@@ -215,6 +216,21 @@ export async function searchDownloadFilesHandler(
 
     const downloadFiles = await searchDownloadFiles(searchQuery)
     return reply.code(201).send(downloadFiles)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function updateDownloadFileViewCountHandler(
+  request: FastifyRequest<{ Params: { downloadFileId: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { downloadFileId } = request.params
+
+    const downloadFileView = await updateDownloadFileViewCount(downloadFileId)
+    return reply.code(201).send(downloadFileView)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)
