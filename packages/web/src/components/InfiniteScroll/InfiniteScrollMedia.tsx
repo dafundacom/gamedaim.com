@@ -55,7 +55,7 @@ export const InfiniteScrollMedia = React.forwardRef<
     const lmRef: any = loadMoreRef.current
     const observer = new IntersectionObserver(handleObserver)
     const handleRouteChange = () => {
-      setPage(0)
+      setPage(1)
     }
 
     router.events.on("routeChangeComplete", handleRouteChange)
@@ -83,7 +83,7 @@ export const InfiniteScrollMedia = React.forwardRef<
 
   return (
     <div ref={ref} {...rest}>
-      <div className="mb-4 grid grid-cols-5 gap-3">
+      <div className="mb-4 grid grid-cols-3 gap-3 lg:!grid-cols-5">
         {isLibrary
           ? medias.map((list: any) =>
               list.map((media: MediaDataProps) => {

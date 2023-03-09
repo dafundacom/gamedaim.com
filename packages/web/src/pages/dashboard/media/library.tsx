@@ -87,7 +87,7 @@ export default function MediaLibraryDashboard() {
           {router.query.search && searchResult && searchResult.length > 0 ? (
             <>
               <div className="my-3">
-                <div className="mb-4 grid grid-cols-5 gap-3">
+                <div className="mb-4 grid grid-cols-3 gap-3 md:!grid-cols-5">
                   {searchResult &&
                     searchResult.map((media: MediaDataProps) => (
                       <div className="relative overflow-hidden rounded-[18px]">
