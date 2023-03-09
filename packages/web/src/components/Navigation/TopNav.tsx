@@ -3,6 +3,7 @@ import { useTheme } from "next-themes"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import useSWR from "swr"
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa"
 import { MdSearch } from "react-icons/md"
 import {
@@ -15,9 +16,9 @@ import {
   SunIcon,
   useDisclosure,
 } from "ui"
-
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
+import { getSettingByKey } from "@/lib/settings"
 
 interface TopNavProps {
   toggleSideNav?: any
@@ -33,6 +34,19 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
     const { isOpen, onToggle } = useDisclosure()
     const [values, setValues] = React.useState("")
 
+    const { data: facebook } = useSWR("facebook_username", (key) =>
+      getSettingByKey(key),
+    )
+    const { data: twitter } = useSWR("twitter_username", (key) =>
+      getSettingByKey(key),
+    )
+
+    const { data: instagram } = useSWR("instagram_username", (key) =>
+      getSettingByKey(key),
+    )
+    const { data: youtube } = useSWR("youtube_username", (key) =>
+      getSettingByKey(key),
+    )
     const router = useRouter()
 
     const handleChange = (event: {
@@ -124,40 +138,46 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                 </div>
                 <div className="grow-1 ml-auto flex flex-row space-x-2">
                   <div className="hidden space-x-2 lg:block">
-                    <NextLink
-                      href={`https://www.facebook.com/${env.FACEBOOK_USERNAME}`}
-                      target="_blank"
-                    >
-                      <IconButton variant="ghost" className="!px-1 !text-lg">
-                        <FaFacebook />
-                      </IconButton>
-                    </NextLink>
-                    <NextLink
-                      href={`https://www.twitter.com/${env.TWITTER_USERNAME}`}
-                      target="_blank"
-                    >
-                      <IconButton variant="ghost" className="!px-1 !text-lg">
-                        <FaTwitter />
-                      </IconButton>
-                    </NextLink>
-                    {env.YOUTUBE_CHANNEL ? (
+                    {facebook && facebook.setting.value && (
                       <NextLink
-                        href={`https://www.youtube.com/channel/${env.YOUTUBE_CHANNEL}`}
+                        href={`https://www.facebook.com/${facebook.setting.value}`}
+                        target="_blank"
+                      >
+                        <IconButton variant="ghost" className="!px-1 !text-lg">
+                          <FaFacebook />
+                        </IconButton>
+                      </NextLink>
+                    )}
+                    {twitter && twitter.setting.value && (
+                      <NextLink
+                        href={`https://www.twitter.com/${twitter.setting.value}`}
+                        target="_blank"
+                      >
+                        <IconButton variant="ghost" className="!px-1 !text-lg">
+                          <FaTwitter />
+                        </IconButton>
+                      </NextLink>
+                    )}
+                    {youtube && youtube.setting.value && (
+                      <NextLink
+                        href={`https://www.youtube.com/channel/${youtube.setting.value}`}
                         target="_blank"
                       >
                         <IconButton variant="ghost" className="!px-1 !text-lg">
                           <FaYoutube />
                         </IconButton>
                       </NextLink>
-                    ) : null}
-                    <NextLink
-                      href={`https://www.instagram.com/${env.INSTAGRAM_USERNAME}`}
-                      target="_blank"
-                    >
-                      <IconButton variant="ghost" className="!px-1 !text-lg">
-                        <FaInstagram />
-                      </IconButton>
-                    </NextLink>
+                    )}
+                    {instagram && instagram.setting.value && (
+                      <NextLink
+                        href={`https://www.instagram.com/${instagram.setting.value}`}
+                        target="_blank"
+                      >
+                        <IconButton variant="ghost" className="!px-1 !text-lg">
+                          <FaInstagram />
+                        </IconButton>
+                      </NextLink>
+                    )}
                   </div>
                   {auth.user ? (
                     <>
