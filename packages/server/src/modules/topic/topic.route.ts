@@ -10,6 +10,7 @@ import {
   getTotalTopicsHandler,
   searchTopicsHandler,
   updateTopicHandler,
+  updateTopicViewCountHandler,
 } from "./topic.controller"
 
 import { $ref } from "./topic.schema"
@@ -115,6 +116,18 @@ async function topicRoutes(server: FastifyInstance) {
       },
     },
     updateTopicHandler,
+  )
+
+  server.put(
+    "/update-view/:topicId",
+    {
+      schema: {
+        response: {
+          201: $ref("topicResponseSchema"),
+        },
+      },
+    },
+    updateTopicViewCountHandler,
   )
 
   server.delete(

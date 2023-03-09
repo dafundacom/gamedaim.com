@@ -13,6 +13,7 @@ import {
   getTotalTopics,
   searchTopics,
   updateTopic,
+  updateTopicViewCount,
 } from "./topic.service"
 
 export async function createTopicHandler(
@@ -215,6 +216,21 @@ export async function searchTopicsHandler(
 
     const topics = await searchTopics(searchQuery)
     return reply.code(201).send(topics)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function updateTopicViewCountHandler(
+  request: FastifyRequest<{ Params: { topicId: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { topicId } = request.params
+
+    const topicView = await updateTopicViewCount(topicId)
+    return reply.code(201).send(topicView)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

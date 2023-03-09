@@ -10,6 +10,7 @@ import {
   getTotalArticlesHandler,
   searchArticlesHandler,
   updateArticleHandler,
+  updateArticleViewCountHandler,
 } from "./article.controller"
 import { $ref } from "./article.schema"
 
@@ -102,6 +103,18 @@ async function articleRoutes(server: FastifyInstance) {
       },
     },
     updateArticleHandler,
+  )
+
+  server.put(
+    "/update-view/:articleId",
+    {
+      schema: {
+        response: {
+          201: $ref("articleResponseSchema"),
+        },
+      },
+    },
+    updateArticleViewCountHandler,
   )
 
   server.delete(

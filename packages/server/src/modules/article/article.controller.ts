@@ -13,6 +13,7 @@ import {
   getTotalArticles,
   searchArticles,
   updateArticle,
+  updateArticleViewCount,
 } from "./article.service"
 
 export async function createArticleHandler(
@@ -197,6 +198,21 @@ export async function getArticleByAuthorIdHandler(
 
     const article = await findArticleByAuthorId(authorId, articlePage, perPage)
     return reply.code(201).send(article)
+  } catch (e) {
+    console.log(e)
+    return reply.code(500).send(e)
+  }
+}
+
+export async function updateArticleViewCountHandler(
+  request: FastifyRequest<{ Params: { articleId: string } }>,
+  reply: FastifyReply,
+) {
+  try {
+    const { articleId } = request.params
+
+    const articleView = await updateArticleViewCount(articleId)
+    return reply.code(201).send(articleView)
   } catch (e) {
     console.log(e)
     return reply.code(500).send(e)

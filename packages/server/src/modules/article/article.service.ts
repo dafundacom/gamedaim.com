@@ -24,13 +24,14 @@ export async function getArticles(articlePage: number, perPage: number) {
     skip: (articlePage - 1) * perPage,
     take: perPage,
     select: {
+      id: true,
+      title: true,
       content: true,
       excerpt: true,
-      title: true,
       meta_title: true,
       meta_description: true,
       slug: true,
-      id: true,
+      viewCount: true,
       status: true,
       featuredImage: {
         select: {
@@ -72,6 +73,7 @@ export async function findArticleById(artilceId: string) {
       slug: true,
       id: true,
       status: true,
+      viewCount: true,
       featuredImage: {
         select: {
           id: true,
@@ -121,6 +123,7 @@ export async function findArticleByAuthorId(
       slug: true,
       id: true,
       status: true,
+      viewCount: true,
       featuredImage: {
         select: {
           id: true,
@@ -153,6 +156,7 @@ export async function findArticleBySlug(artilceSlug: string) {
       slug: true,
       id: true,
       status: true,
+      viewCount: true,
       featuredImage: {
         select: {
           id: true,
@@ -214,6 +218,7 @@ export async function searchArticles(searchArticleQuery: string) {
       slug: true,
       id: true,
       status: true,
+      viewCount: true,
       featuredImage: {
         select: {
           id: true,
@@ -237,6 +242,17 @@ export async function searchArticles(searchArticleQuery: string) {
           username: true,
           profilePicture: true,
         },
+      },
+    },
+  })
+}
+
+export async function updateArticleViewCount(articleId: string) {
+  await db.article.update({
+    where: { id: articleId },
+    data: {
+      viewCount: {
+        increment: 1,
       },
     },
   })
