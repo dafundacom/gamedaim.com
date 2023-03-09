@@ -14,6 +14,7 @@ import {
   MdOutlineSearch,
 } from "react-icons/md"
 import { Badge, Button, IconButton, Input, Text } from "ui"
+import env from "@/env"
 
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
@@ -90,14 +91,24 @@ export default function DownloadsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Download Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Download Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Download Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Download Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Download Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Download Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: `Download Dashboard | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
         noindex={true}

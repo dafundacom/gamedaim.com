@@ -2,6 +2,8 @@ import * as React from "react"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import env from "@/env"
+
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -84,13 +86,25 @@ export default function CreateTopicsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Topic | ${settingsSite.title?.value || ""}`}
-        description={`Add New Topic | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Topic | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Topic | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Topic | ${settingsSite.title?.value || ""}`,
-          description: `Add New Topic | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Topic | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Topic | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

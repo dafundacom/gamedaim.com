@@ -3,9 +3,7 @@ import axios from "axios"
 export const getSettingByKey = async (key: string) => {
   let setting
   try {
-    const { data } = await axios.get(
-      `https://beta.gamedaim.com/api/setting/${key}`,
-    )
+    const { data } = await axios.get(`/setting/${key}`)
     setting = data
   } catch (error) {
     console.log(error)

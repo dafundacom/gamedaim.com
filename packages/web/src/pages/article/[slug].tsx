@@ -46,14 +46,18 @@ export default function SingleArticle(props: SingleArticleProps) {
     <>
       <NextSeo
         title={`${article.meta_title || article.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={article.meta_description || article.excerpt}
-        canonical={`https://${settingsSite.url?.value || ""}/${article.slug}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+          article.slug
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}/${article.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/${
+            article.slug
+          }`,
           title: `${article.meta_title || article.title} | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description: article.meta_description || article.excerpt,
           images: [
@@ -70,7 +74,7 @@ export default function SingleArticle(props: SingleArticleProps) {
             modifiedTime: article.updatedAt,
             section: article.topics[0]?.title,
             authors: [
-              `https://${settingsSite.url?.value || ""}/user/${
+              `https://${settingsSite.url?.value || env.DOMAIN}/user/${
                 article.author.username
               }`,
             ],
@@ -83,9 +87,9 @@ export default function SingleArticle(props: SingleArticleProps) {
         }}
       />
       <ArticleJsonLd
-        url={`https://${settingsSite.url?.value || ""}/${article.slug}`}
+        url={`https://${settingsSite.url?.value || env.DOMAIN}/${article.slug}`}
         title={`${article.meta_title || article.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         images={[article.featuredImage.url]}
         datePublished={article.createdAt}
@@ -93,12 +97,12 @@ export default function SingleArticle(props: SingleArticleProps) {
         authorName={[
           {
             name: article.author.name,
-            url: `https://${settingsSite.url?.value || ""}/user/${
+            url: `https://${settingsSite.url?.value || env.DOMAIN}/user/${
               article.author.username
             }`,
           },
         ]}
-        publisherName={settingsSite.title?.value || ""}
+        publisherName={settingsSite.title?.value || env.SITE_TITTLE}
         publisherLogo={env.LOGO_URL}
         description={article.meta_description || article.excerpt}
         isAccessibleForFree={true}
@@ -107,18 +111,18 @@ export default function SingleArticle(props: SingleArticleProps) {
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Article",
-            item: `https://${settingsSite.url?.value || ""}/article`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/article`,
           },
           {
             position: 3,
             name: article.topics[0]?.title,
-            item: `https://${settingsSite.url?.value || ""}/topic/${
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/topic/${
               article.topics[0]?.slug
             }`,
           },

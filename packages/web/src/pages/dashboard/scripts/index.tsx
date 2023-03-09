@@ -9,6 +9,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 import { Button, IconButton, Text } from "ui"
+import env from "@/env"
 
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
@@ -67,13 +68,25 @@ export default function ScriptsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Script Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Script Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Script Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Script Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Script Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Script Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Script Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Script Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

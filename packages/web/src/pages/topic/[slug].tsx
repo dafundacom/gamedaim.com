@@ -1,6 +1,8 @@
 import * as React from "react"
 import NextLink from "next/link"
 import dynamic from "next/dynamic"
+import env from "@/env"
+
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 
 import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
@@ -31,39 +33,41 @@ export default function Topic(props: TopicProps) {
     <>
       <NextSeo
         title={`${topic.meta_title || topic.title} — ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={
           topic.meta_description ||
           topic.description ||
-          `${topic.title} | ${settingsSite.title?.value || ""}`
+          `${topic.title} | ${settingsSite.title?.value || env.SITE_TITTLE}`
         }
-        canonical={`https://${settingsSite.url?.value || ""}/topic/${
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/topic/${
           topic.slug
         }`}
         openGraph={{
           title: `${topic.meta_title || topic.title} | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description:
             topic.meta_description ||
             topic.description ||
-            `${topic.title} | ${settingsSite.title?.value || ""}`,
+            `${topic.title} | ${settingsSite.title?.value || env.SITE_TITTLE}`,
 
-          url: `https://${settingsSite.url?.value || ""}/topic/${topic.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/topic/${
+            topic.slug
+          }`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: topic.meta_title || topic.title,
-            item: `https://${settingsSite.url?.value || ""}/topic/${
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/topic/${
               topic.slug
             }`,
           },

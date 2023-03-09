@@ -4,6 +4,9 @@ import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+
+import env from "@/env"
+
 import {
   Button,
   Checkbox,
@@ -106,13 +109,21 @@ export default function EditAdDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Edit Ad | ${settingsSite.title?.value || ""}`}
-        description={`Edit Ad | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Edit Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Ad | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Edit Ad | ${settingsSite.title?.value || ""}`,
-          description: `Edit Ad | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Edit Ad | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

@@ -2,7 +2,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-
+import env from "@/env"
 import useSWR from "swr"
 import { MdChevronRight } from "react-icons/md"
 import { wpGetPostsBySearch, wpGetAllPosts } from "@/lib/wp-posts"
@@ -56,13 +56,19 @@ export default function Search(props: SearchProps) {
   return (
     <>
       <NextSeo
-        title={`Search | ${settingsSite.title?.value || ""}`}
-        description={`Search | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Search | ${settingsSite.title?.value || ""}`,
-          description: `Search | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Search | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Search | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

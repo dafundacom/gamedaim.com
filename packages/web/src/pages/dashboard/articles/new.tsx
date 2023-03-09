@@ -5,6 +5,8 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
+import env from "@/env"
+
 import { NextSeo } from "next-seo"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
@@ -103,13 +105,25 @@ export default function CreateArticlesDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Article | ${settingsSite.title?.value || ""}`}
-        description={`Add New Article | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Article | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Article | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Article | ${settingsSite.title?.value || ""}`,
-          description: `Add New Article | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Article | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Article | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

@@ -2,6 +2,8 @@ import * as React from "react"
 import NextLink from "next/link"
 import axios from "axios"
 import dayjs from "dayjs"
+import env from "@/env"
+
 import useSWR from "swr"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
@@ -90,13 +92,25 @@ export default function TopicsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Topic Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Topic Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Topic Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Topic Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Topic Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Topic Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Topic Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Topic Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

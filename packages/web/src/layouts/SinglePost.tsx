@@ -145,14 +145,18 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
       <>
         <Head>{parse(seoData.jsonLd.raw)}</Head>
         <NextSeo
-          title={`${seo.title} | ${settingsSite.title?.value || ""}`}
+          title={`${seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`}
           description={seo.description}
-          canonical={`https://${settingsSite.url?.value || ""}/${
+          canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
             seo.category.slug
           }/${seo.slug}`}
           openGraph={{
-            url: `https://${settingsSite.url?.value || ""}/${seo.slug}`,
-            title: `${seo.title} | ${settingsSite.title?.value || ""}`,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}/${seo.slug}`,
+            title: `${seo.title} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
             description: seo.description,
             images: [
               {
@@ -168,7 +172,7 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
               modifiedTime: seo.modified,
               section: seo.tags[0].title,
               authors: [
-                `https://${settingsSite.url?.value || ""}/author/${
+                `https://${settingsSite.url?.value || env.DOMAIN}/author/${
                   seo.authorUrl
                 }`,
               ],
@@ -181,22 +185,24 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           }}
         />
         <ArticleJsonLd
-          url={`https://${settingsSite.url?.value || ""}/${seo.category.slug}/${
-            seo.slug
+          url={`https://${settingsSite.url?.value || env.DOMAIN}/${
+            seo.category.slug
+          }/${seo.slug}`}
+          title={`${seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
           }`}
-          title={`${seo.title} | ${settingsSite.title?.value || ""}`}
           images={[seo.featuredImageUrl]}
           datePublished={seo.date}
           dateModified={seo.modified}
           authorName={[
             {
               name: seo.authorName,
-              url: `https://${settingsSite.url?.value || ""}/author/${
+              url: `https://${settingsSite.url?.value || env.DOMAIN}/author/${
                 seo.authorUrl
               }`,
             },
           ]}
-          publisherName={settingsSite.title?.value || ""}
+          publisherName={settingsSite.title?.value || env.SITE_TITTLE}
           publisherLogo={env.LOGO_URL}
           description={seo.description}
           isAccessibleForFree={true}
@@ -205,20 +211,20 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           itemListElements={[
             {
               position: 1,
-              name: settingsSite.url?.value || "",
-              item: `https://${settingsSite.url?.value || ""}`,
+              name: settingsSite.url?.value || env.DOMAIN,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}`,
             },
             {
               position: 2,
               name: "Article",
-              item: `https://${settingsSite.url?.value || ""}/${
+              item: `https://${settingsSite.url?.value || env.DOMAIN}/${
                 seo.category.slug
               }`,
             },
             {
               position: 3,
               name: seo.category.title,
-              item: `https://${settingsSite.url?.value || ""}/${
+              item: `https://${settingsSite.url?.value || env.DOMAIN}/${
                 seo.category.slug
               }`,
             },

@@ -1,6 +1,8 @@
 import * as React from "react"
 import NextLink from "next/link"
 import axios from "axios"
+import env from "@/env"
+
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import useSWR from "swr"
@@ -88,13 +90,25 @@ export default function UsersDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`User Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`User Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`User Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`User Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `User Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `User Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `User Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `User Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

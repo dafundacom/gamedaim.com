@@ -9,6 +9,9 @@ import { useForm } from "react-hook-form"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
+
+import env from "@/env"
+
 import {
   Button,
   FormControl,
@@ -146,13 +149,23 @@ export default function EditArticleDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Edit Article | ${settingsSite.title?.value || ""}`}
-        description={`Edit Article | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Edit Article | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Article | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Edit Article | ${settingsSite.title?.value || ""}`,
-          description: `Edit Article | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Article | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Edit Article | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

@@ -4,6 +4,7 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import parse from "html-react-parser"
 import { GetStaticProps, GetStaticPaths } from "next"
+import env from "@/env"
 
 import { wpGetCategoryBySlug, wpGetAllCategories } from "@/lib/wp-categories"
 import { wpGetPostsByCategorySlug } from "@/lib/wp-posts"
@@ -39,32 +40,46 @@ export default function Category(props: CategoryProps) {
   return (
     <>
       <NextSeo
-        title={`${category.seo.title} — ${settingsSite.title?.value || ""}`}
+        title={`${category.seo.title} — ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
         description={
           category.seo.description ||
-          `${category.seo.title} | ${settingsSite.title?.value || ""}`
+          `${category.seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`
         }
-        canonical={`https://${settingsSite.url?.value || ""}/${category.slug}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+          category.slug
+        }`}
         openGraph={{
-          title: `${category.seo.title} | ${settingsSite.title?.value || ""}`,
+          title: `${category.seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description:
             category.seo.description ||
-            `${category.seo.title} | ${settingsSite.title?.value || ""}`,
+            `${category.seo.title} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
 
-          url: `https://${settingsSite.url?.value || ""}/${category.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/${
+            category.slug
+          }`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: category.seo.title,
-            item: `https://${settingsSite.url?.value || ""}/${category.slug}`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/${
+              category.slug
+            }`,
           },
         ]}
       />

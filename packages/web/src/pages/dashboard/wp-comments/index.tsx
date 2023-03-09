@@ -4,6 +4,8 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import useSWR from "swr"
+import env from "@/env"
+
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { IconButton, Text } from "ui"
@@ -69,16 +71,24 @@ export default function WpCommentsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`WP Comment Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`WP Comment Dashboard | ${
-          settingsSite.title?.value || ""
+        title={`WP Comment Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={`WP Comment Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `WP Comment Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `WP Comment Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: `WP Comment Dashboard | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
         noindex={true}

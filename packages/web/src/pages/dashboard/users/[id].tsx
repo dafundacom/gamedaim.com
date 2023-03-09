@@ -1,6 +1,8 @@
 import * as React from "react"
 import NextImage from "next/image"
 import axios from "axios"
+import env from "@/env"
+
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -133,13 +135,21 @@ export default function DashboardEditUser(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Edit User | ${settingsSite.title?.value || ""}`}
-        description={`Edit User | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Edit User | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit User | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Edit User | ${settingsSite.title?.value || ""}`,
-          description: `Edit User | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit User | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Edit User | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

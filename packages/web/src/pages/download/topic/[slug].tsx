@@ -20,16 +20,20 @@ export default function DownloadsByTopic(props: TopicProps) {
     <>
       <NextSeo
         title={`${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         } | Everlasting Gaming Knowledge`}
-        description={settingsSite.description?.value || ""}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={settingsSite.description?.value || env.DESCRIPTION}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
           title: `${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           } | Everlasting Gaming Knowledge`,
-          description: settingsSite.description?.value || "",
+          description: settingsSite.description?.value || env.DESCRIPTION,
         }}
       />
       <HomeLayout>

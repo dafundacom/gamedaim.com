@@ -5,6 +5,7 @@ import parse from "html-react-parser"
 import dynamic from "next/dynamic"
 import { GetStaticProps, GetStaticPaths } from "next"
 import { useRouter } from "next/router"
+import env from "@/env"
 
 import { wpGetTagBySlug, wpGetAllTags } from "@/lib/wp-tags"
 import { wpGetPostsByTagSlug } from "@/lib/wp-posts"
@@ -49,32 +50,42 @@ export default function Tag(props: TagProps) {
   return (
     <>
       <NextSeo
-        title={`${tag.seo.title} — ${settingsSite.title?.value || ""}`}
+        title={`${tag.seo.title} — ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
         description={
           tag.seo.description ||
-          `${tag.seo.title} | ${settingsSite.title?.value || ""}`
+          `${tag.seo.title} | ${settingsSite.title?.value || env.SITE_TITTLE}`
         }
-        canonical={`https://${settingsSite.url?.value || ""}/${tag.slug}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+          tag.slug
+        }`}
         openGraph={{
-          title: `${tag.seo.title} | ${settingsSite.title?.value || ""}`,
+          title: `${tag.seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description:
             tag.seo.description ||
-            `${tag.seo.title} | ${settingsSite.title?.value || ""}`,
+            `${tag.seo.title} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
 
-          url: `https://${settingsSite.url?.value || ""}/${tag.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/${tag.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: tag.seo.title,
-            item: `https://${settingsSite.url?.value || ""}/tag/${tag.slug}`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/tag/${
+              tag.slug
+            }`,
           },
         ]}
       />

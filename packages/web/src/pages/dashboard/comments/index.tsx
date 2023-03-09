@@ -8,6 +8,7 @@ import useSWR from "swr"
 import { NextSeo } from "next-seo"
 import { IconButton, Text } from "ui"
 import { MdChevronLeft, MdChevronRight } from "react-icons/md"
+import env from "@/env"
 
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
@@ -69,13 +70,25 @@ export default function CommentsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Comment Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Comment Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Comment Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Comment Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Comment Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Comment Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Comment Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Comment Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

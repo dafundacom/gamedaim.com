@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { MdAdd, MdOutlineSearch } from "react-icons/md"
 import { Button, Input, Text } from "ui"
+import env from "@/env"
 
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
@@ -52,13 +53,25 @@ export default function MediaLibraryDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Media Library | ${settingsSite.title?.value || ""}`}
-        description={`Media Library | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Media Library | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Media Library | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Media Library | ${settingsSite.title?.value || ""}`,
-          description: `Media Library | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Media Library | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Media Library | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

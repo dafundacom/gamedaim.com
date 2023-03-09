@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { FormControl, DropZone, FormErrorMessage, Button } from "ui"
+import env from "@/env"
 
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
@@ -53,13 +54,25 @@ export default function UploadMediaDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Media | ${settingsSite.title?.value || ""}`}
-        description={`Add New Media | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Media | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Media | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Media | ${settingsSite.title?.value || ""}`,
-          description: `Add New Media | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Media | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Media | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

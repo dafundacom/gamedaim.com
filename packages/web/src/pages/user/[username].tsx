@@ -2,6 +2,8 @@ import * as React from "react"
 import dayjs from "dayjs"
 import NextImage from "next/image"
 import { useRouter } from "next/router"
+import env from "@/env"
+
 import { HomeLayout } from "@/layouts/Home"
 import { Heading, Text } from "ui"
 import { NextSeo } from "next-seo"
@@ -23,15 +25,25 @@ export default function User(props: UserProps) {
     <HomeLayout>
       <div className="mx-4 mt-[70px] w-full rounded px-4">
         <NextSeo
-          title={`${user?.name} | ${settingsSite.title?.value || ""}`}
-          description={`${user?.name} | ${settingsSite.title?.value || ""}`}
-          canonical={`https://${settingsSite.url?.value || ""}${
+          title={`${user?.name} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`}
+          description={`${user?.name} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`}
+          canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
             router.pathname
           }`}
           openGraph={{
-            url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-            title: `${user?.name} | ${settingsSite.title?.value || ""}`,
-            description: `${user?.about} | ${settingsSite.title?.value || ""}`,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}${
+              router.pathname
+            }`,
+            title: `${user?.name} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
+            description: `${user?.about} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
           }}
           noindex={true}
         />

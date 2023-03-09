@@ -5,6 +5,8 @@ import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+import env from "@/env"
+
 import {
   Button,
   FormControl,
@@ -185,16 +187,24 @@ export default function EditDownloadFileDashboard(props: {
   return (
     <>
       <NextSeo
-        title={`Add New Download-file | ${settingsSite.title?.value || ""}`}
-        description={`Add New Download File | ${
-          settingsSite.title?.value || ""
+        title={`Add New Download-file | ${
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={`Add New Download File | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Download File | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Download File | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: `Add New Download File | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
         noindex={true}

@@ -6,6 +6,8 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
 import useSWR from "swr"
 import { useRouter } from "next/router"
+import env from "@/env"
+
 import { NextSeo } from "next-seo"
 import {
   MdAdd,
@@ -90,16 +92,24 @@ export default function DownloadFilesDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Download-file Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Download-file Dashboard | ${
-          settingsSite.title?.value || ""
+        title={`Download-file Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={`Download-file Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Download File Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Download File Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: `Download File Dashboard | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
         noindex={true}

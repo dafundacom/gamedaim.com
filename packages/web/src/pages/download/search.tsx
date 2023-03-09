@@ -38,13 +38,19 @@ export default function DownloadSearch(props: SearchProps) {
   return (
     <>
       <NextSeo
-        title={`Search | ${settingsSite.title?.value || ""}`}
-        description={`Search | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Search | ${settingsSite.title?.value || ""}`,
-          description: `Search | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Search | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Search | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

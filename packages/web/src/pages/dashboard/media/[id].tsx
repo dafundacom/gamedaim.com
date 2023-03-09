@@ -14,6 +14,7 @@ import {
   RequiredIndicator,
   Textarea,
 } from "ui"
+import env from "@/env"
 
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
@@ -94,13 +95,21 @@ export default function EditMediaDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Edit Media | ${settingsSite.title?.value || ""}`}
-        description={`Edit Media | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Edit Media | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Media | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Edit Media | ${settingsSite.title?.value || ""}`,
-          description: `Edit Media | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Media | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Edit Media | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

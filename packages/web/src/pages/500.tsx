@@ -1,7 +1,7 @@
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-import env from "env"
+import env from "@/env"
 import { Button } from "ui"
 
 export default function Custom500() {

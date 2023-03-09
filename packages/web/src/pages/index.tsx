@@ -2,6 +2,7 @@ import * as React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo"
+import env from "@/env"
 
 import { wpGetAllPosts } from "@/lib/wp-posts"
 import { WpSinglePostDataProps } from "@/lib/wp-data-types"
@@ -34,32 +35,38 @@ export default function Home(props: { postsHome: any; settingsSite: any }) {
     <>
       <NextSeo
         title={`${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         } | Everlasting Gaming Knowledge`}
-        description={settingsSite.description?.value || ""}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={settingsSite.description?.value || env.DESCRIPTION}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
           title: `${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           } | Everlasting Gaming Knowledge`,
-          description: settingsSite.description?.value || "",
+          description: settingsSite.description?.value || env.DESCRIPTION,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
         ]}
       />
       <SiteLinksSearchBoxJsonLd
-        url={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        url={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         potentialActions={[
           {
-            target: `https://${settingsSite.url?.value || ""}/search?q`,
+            target: `https://${settingsSite.url?.value || env.DOMAIN}/search?q`,
             queryInput: "search_term_string",
           },
         ]}

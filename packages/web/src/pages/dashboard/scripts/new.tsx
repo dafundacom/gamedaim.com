@@ -4,6 +4,8 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
+import env from "@/env"
+
 import {
   Button,
   Checkbox,
@@ -58,13 +60,25 @@ export default function CreateScriptsDashBoard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Script | ${settingsSite.title?.value || ""}`}
-        description={`Add New Script | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Script | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Script | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Script | ${settingsSite.title?.value || ""}`,
-          description: `Add New Script | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

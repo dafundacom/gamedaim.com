@@ -6,6 +6,8 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
+import env from "@/env"
+
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -136,16 +138,24 @@ export default function CreateDownloadfilesDashboard(props: {
   return (
     <>
       <NextSeo
-        title={`Add New Download File | ${settingsSite.title?.value || ""}`}
-        description={`Add New Download File | ${
-          settingsSite.title?.value || ""
+        title={`Add New Download File | ${
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        description={`Add New Download File | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Download File | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Download File | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: `Add New Download File | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
         noindex={true}

@@ -7,6 +7,8 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import useSWR from "swr"
+import env from "@/env"
+
 import {
   MdAdd,
   MdChevronLeft,
@@ -88,13 +90,25 @@ export default function ArticlesDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Article Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Article Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Article Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Article Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Article Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Article Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Article Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Article Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

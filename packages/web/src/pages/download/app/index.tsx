@@ -2,6 +2,7 @@ import * as React from "react"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { Heading } from "ui"
+import env from "@/env"
 
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
@@ -32,32 +33,40 @@ export default function App(props: AppProps) {
   return (
     <>
       <NextSeo
-        title={`Download App | ${settingsSite.title?.value || ""}`}
-        description={settingsSite.description?.value || ""}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Download App | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={settingsSite.description?.value || env.DESCRIPTION}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Download App | ${settingsSite.title?.value || ""}`,
-          description: settingsSite.description?.value || "",
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Download App | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: settingsSite.description?.value || env.DESCRIPTION,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${settingsSite.url?.value || ""}/download`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/download`,
           },
 
           {
             position: 3,
             name: "App",
-            item: `https://${settingsSite.url?.value || ""}${router.pathname}`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}${
+              router.pathname
+            }`,
           },
         ]}
       />

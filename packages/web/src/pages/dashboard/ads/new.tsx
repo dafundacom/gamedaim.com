@@ -3,6 +3,9 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
+
+import env from "@/env"
+
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -73,13 +76,21 @@ export default function CreateAdsDashBoard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Ad | ${settingsSite.title?.value || ""}`}
-        description={`Add New Ad | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Add New Ad | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Ad | ${settingsSite.title?.value || ""}`,
-          description: `Add New Ad | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Add New Ad | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

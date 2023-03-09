@@ -4,6 +4,7 @@ import NextImage from "next/image"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+
 import { toast } from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import {
@@ -76,13 +77,19 @@ export default function Login(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Login | ${settingsSite.title?.value || ""}`}
-        description={`Login | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Login | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Login | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Login | ${settingsSite.title?.value || ""}`,
-          description: `Login | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Login | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Login | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -96,7 +103,7 @@ export default function Login(props: { settingsSite: any }) {
               <NextImage
                 height={32}
                 width={120}
-                alt={settingsSite.title?.value || ""}
+                alt={settingsSite.title?.value || env.SITE_TITTLE}
                 src={env.LOGO_URL}
               />
             </NextLink>

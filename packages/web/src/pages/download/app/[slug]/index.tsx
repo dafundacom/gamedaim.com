@@ -92,18 +92,18 @@ export default function DownloadApp(props: {
     <>
       <NextSeo
         title={`${download.meta_title || download.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={download.meta_description || download.excerpt}
-        canonical={`https://${settingsSite.url?.value || ""}/download/app/${
-          download.slug
-        }`}
+        canonical={`https://${
+          settingsSite.url?.value || env.DOMAIN
+        }/download/app/${download.slug}`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}/download/app/${
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/download/app/${
             download.slug
           }`,
           title: `${download.meta_title || download.title} | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description: download.meta_description || download.excerpt,
           images: [
@@ -118,22 +118,22 @@ export default function DownloadApp(props: {
         }}
       />
       <ArticleJsonLd
-        url={`https://${settingsSite.url?.value || ""}/download/app/${
+        url={`https://${settingsSite.url?.value || env.DOMAIN}/download/app/${
           download.slug
         }`}
         title={`${download.meta_title || download.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
         authorName={[
           {
-            name: settingsSite.title?.value || "",
-            url: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.title?.value || env.SITE_TITTLE,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
         ]}
-        publisherName={settingsSite.title?.value || ""}
+        publisherName={settingsSite.title?.value || env.SITE_TITTLE}
         publisherLogo={env.LOGO_URL}
         description={download.meta_description || download.excerpt}
         isAccessibleForFree={true}
@@ -150,19 +150,19 @@ export default function DownloadApp(props: {
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${settingsSite.url?.value || ""}/download/`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/download/`,
           },
           {
             position: 3,
             name: download.type,
             item: `https://${
-              settingsSite.url?.value || ""
+              settingsSite.url?.value || env.DOMAIN
             }/download/${download.type.toString()}`,
           },
           {
@@ -170,9 +170,9 @@ export default function DownloadApp(props: {
             name: download.topics && download.topics[0]?.title,
             item:
               download.topics &&
-              `https://${settingsSite.url?.value || ""}/download/topic/${
-                download.topics[0]?.slug
-              }`,
+              `https://${
+                settingsSite.url?.value || env.DOMAIN
+              }/download/topic/${download.topics[0]?.slug}`,
           },
         ]}
       />

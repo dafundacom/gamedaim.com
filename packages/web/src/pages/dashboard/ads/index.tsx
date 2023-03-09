@@ -4,6 +4,9 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
+
+import env from "@/env"
+
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { Button, IconButton, Text } from "ui"
@@ -66,13 +69,23 @@ export default function AdsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Ad Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Ad Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Ad Dashboard | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Ad Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Ad Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Ad Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Ad Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Ad Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

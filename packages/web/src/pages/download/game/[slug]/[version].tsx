@@ -86,18 +86,18 @@ export default function DownloadGameVersion(props: {
     <>
       <NextSeo
         title={`${downloadFile.meta_title || downloadFile.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={download.meta_description || download.excerpt}
-        canonical={`https://${settingsSite.url?.value || ""}/download/game/${
-          download.slug
-        }/${downloadFile.slug}`}
+        canonical={`https://${
+          settingsSite.url?.value || env.DOMAIN
+        }/download/game/${download.slug}/${downloadFile.slug}`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}/download/game/${
-            download.slug
-          }/${downloadFile.slug}`,
+          url: `https://${
+            settingsSite.url?.value || env.DOMAIN
+          }/download/game/${download.slug}/${downloadFile.slug}`,
           title: `${downloadFile.meta_title || downloadFile.title} | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description: download.meta_description || download.excerpt,
           images: [
@@ -112,22 +112,22 @@ export default function DownloadGameVersion(props: {
         }}
       />
       <ArticleJsonLd
-        url={`https://${settingsSite.url?.value || ""}/download/game/${
+        url={`https://${settingsSite.url?.value || env.DOMAIN}/download/game/${
           download.slug
         }/${downloadFile.slug}`}
         title={`${downloadFile.meta_title || downloadFile.title} | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
         authorName={[
           {
-            name: settingsSite.title?.value || "",
-            url: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.title?.value || env.SITE_TITTLE,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
         ]}
-        publisherName={settingsSite.title?.value || ""}
+        publisherName={settingsSite.title?.value || env.SITE_TITTLE}
         publisherLogo={env.LOGO_URL}
         description={download.excerpt}
         isAccessibleForFree={true}
@@ -144,19 +144,19 @@ export default function DownloadGameVersion(props: {
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${settingsSite.url?.value || ""}/download/`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/download/`,
           },
           {
             position: 3,
             name: download.type,
             item: `https://${
-              settingsSite.url?.value || ""
+              settingsSite.url?.value || env.DOMAIN
             }/download/${download.type.toString()}`,
           },
           {
@@ -164,16 +164,16 @@ export default function DownloadGameVersion(props: {
             name: download.topics && download.topics[0]?.title,
             item:
               download.topics &&
-              `https://${settingsSite.url?.value || ""}/download/topic/${
-                download.topics[0]?.slug
-              }`,
+              `https://${
+                settingsSite.url?.value || env.DOMAIN
+              }/download/topic/${download.topics[0]?.slug}`,
           },
           {
             position: 5,
             name: download.meta_title || download.title,
-            item: `https://${settingsSite.url?.value || ""}/download/game/${
-              download.slug
-            }`,
+            item: `https://${
+              settingsSite.url?.value || env.DOMAIN
+            }/download/game/${download.slug}`,
           },
         ]}
       />

@@ -1,4 +1,5 @@
 import * as React from "react"
+import env from "@/env"
 
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
@@ -39,13 +40,21 @@ export default function Dashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Dashboard | ${settingsSite.title?.value || ""}`}
-        description={`Dashboard | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Dashboard | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Dashboard | ${settingsSite.title?.value || ""}`,
-          description: `Dashboard | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Dashboard | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
       />
       <AdminOrAuthorRole>

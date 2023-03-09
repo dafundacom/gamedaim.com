@@ -21,6 +21,7 @@ import {
   Textarea,
   useDisclosure,
 } from "ui"
+import env from "@/env"
 
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
@@ -149,13 +150,25 @@ export default function CreateDownloadsDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Download | ${settingsSite.title?.value || ""}`}
-        description={`Add New Download | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New Download | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Download | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New Download | ${settingsSite.title?.value || ""}`,
-          description: `Add New Download | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Download | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Download | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

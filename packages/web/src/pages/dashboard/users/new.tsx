@@ -3,6 +3,8 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
+import env from "@/env"
+
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import { HiEye, HiEyeOff } from "react-icons/hi"
@@ -91,13 +93,23 @@ export default function CreateUsersDashboard(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New User | ${settingsSite.title?.value || ""}`}
-        description={`Add New User | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Add New User | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Add New User | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Add New User | ${settingsSite.title?.value || ""}`,
-          description: `Add New User | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New User | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New User | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />

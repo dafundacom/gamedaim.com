@@ -1,6 +1,7 @@
 import * as React from "react"
 import dynamic from "next/dynamic"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
+import env from "@/env"
 
 import { getArticlesByTopic, getDownloadsByTopic } from "@/lib/topics"
 import { ArticleDataProps, TopicDataProps } from "@/lib/data-types"
@@ -29,48 +30,52 @@ export default function TopicArticle(props: TopicProps) {
     <>
       <NextSeo
         title={`${topic.meta_title || topic.title} Articles | ${
-          settingsSite.title?.value || ""
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={
           topic.meta_description ||
           topic.description ||
-          `${topic.title} Articles | ${settingsSite.title?.value || ""}`
+          `${topic.title} Articles | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`
         }
-        canonical={`https://${settingsSite.url?.value || ""}/article/topic/${
-          topic.slug
-        }`}
+        canonical={`https://${
+          settingsSite.url?.value || env.DOMAIN
+        }/article/topic/${topic.slug}`}
         openGraph={{
           title: `${topic.meta_title || topic.title} Articles | ${
-            settingsSite.title?.value || ""
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description:
             topic.meta_description ||
             topic.description ||
-            `${topic.title} Articles | ${settingsSite.title?.value || ""}`,
+            `${topic.title} Articles | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
 
-          url: `https://${settingsSite.url?.value || ""}/article/topic/${
-            topic.slug
-          }`,
+          url: `https://${
+            settingsSite.url?.value || env.DOMAIN
+          }/article/topic/${topic.slug}`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Article",
-            item: `https://${settingsSite.url?.value || ""}/article`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/article`,
           },
           {
             position: 2,
             name: topic.meta_title || topic.title,
-            item: `https://${settingsSite.url?.value || ""}/article/topic/${
-              topic.slug
-            }`,
+            item: `https://${
+              settingsSite.url?.value || env.DOMAIN
+            }/article/topic/${topic.slug}`,
           },
         ]}
       />

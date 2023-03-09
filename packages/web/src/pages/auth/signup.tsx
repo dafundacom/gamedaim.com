@@ -74,13 +74,21 @@ export default function Signup(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Sign Up | ${settingsSite.title?.value || ""}`}
-        description={`Sign Up | ${settingsSite.title?.value || ""}`}
-        canonical={`https://${settingsSite.url?.value || ""}${router.pathname}`}
+        title={`Sign Up | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Sign Up | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${settingsSite.url?.value || ""}${router.pathname}`,
-          title: `Sign Up | ${settingsSite.title?.value || ""}`,
-          description: `Sign Up | ${settingsSite.title?.value || ""}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Sign Up | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Sign Up | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -94,7 +102,7 @@ export default function Signup(props: { settingsSite: any }) {
               <NextImage
                 height={32}
                 width={120}
-                alt={settingsSite.title?.value || ""}
+                alt={settingsSite.title?.value || env.SITE_TITTLE}
                 src={env.LOGO_URL}
               />
             </NextLink>

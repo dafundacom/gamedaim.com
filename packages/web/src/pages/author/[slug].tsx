@@ -1,6 +1,9 @@
 import * as React from "react"
 import Head from "next/head"
 import dynamic from "next/dynamic"
+
+import env from "@/env"
+
 import parse from "html-react-parser"
 import { useRouter } from "next/router"
 import { wpGetPostsByAuthorSlug, wpGetAllPosts } from "@/lib/wp-posts"
@@ -39,32 +42,42 @@ export default function Author(props: AuthorProps) {
   return (
     <>
       <NextSeo
-        title={`${user.seo.title} — ${settingsSite.title?.value || ""}`}
+        title={`${user.seo.title} — ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
         description={
           user.seo?.description ||
-          `${user.seo.title} | ${settingsSite.title?.value || ""}`
+          `${user.seo.title} | ${settingsSite.title?.value || env.SITE_TITTLE}`
         }
-        canonical={`https://${settingsSite.url?.value || ""}/${user.slug}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+          user.slug
+        }`}
         openGraph={{
-          title: `${user.seo.title} | ${settingsSite.title?.value || ""}`,
+          title: `${user.seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description:
             user.seo?.description ||
-            `${user.seo.title} | ${settingsSite.title?.value || ""}`,
+            `${user.seo.title} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
 
-          url: `https://${settingsSite.url?.value || ""}/author/${user.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/author/${
+            user.slug
+          }`,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: settingsSite.url?.value || "",
-            item: `https://${settingsSite.url?.value || ""}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: user.seo.title,
-            item: `https://${settingsSite.url?.value || ""}/author/${
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/author/${
               user.slug
             }`,
           },
