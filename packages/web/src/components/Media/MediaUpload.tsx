@@ -36,7 +36,7 @@ export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
           { image },
           { headers: { "Content-Type": "multipart/form-data" } },
         )
-        addLoadMedias((prev: any) => [data, ...prev])
+        addLoadMedias()
         if (data?.error) {
           toast.error(data.error)
         } else {

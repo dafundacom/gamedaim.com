@@ -16,21 +16,14 @@ import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 import { MediaDataProps } from "@/lib/data-types"
 import axios from "axios"
 import { DeleteMediaButton } from "@/components/Media"
+import { useInfiniteMedias } from "@/lib/medias"
 
 export default function MediaLibraryDashboard() {
-  const [medias, setMedias] = React.useState([])
   const router = useRouter()
   const { data: mediasCount } = useSWR("/media/count", fetcher)
 
   const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
-  const { data } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data) => {
-      setMedias(data)
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const { medias, page, setPage, updateMedias } = useInfiniteMedias()
   const handleSearch = (e: {
     preventDefault: () => void
     target: { value: any }
@@ -95,7 +88,7 @@ export default function MediaLibraryDashboard() {
             <>
               <div className="my-3">
                 <div className="mb-4 grid grid-cols-5 gap-3">
-                  {data &&
+                  {searchResult &&
                     searchResult.map((media: MediaDataProps) => (
                       <div className="relative overflow-hidden rounded-[18px]">
                         <DeleteMediaButton
@@ -108,9 +101,9 @@ export default function MediaLibraryDashboard() {
                             src={media.url}
                             alt={media.alt || media.name}
                             fill
-                            className="!relative aspect-[1/1] h-[500px] max-w-[unset] animate-pulse rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
+                            className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
                             onLoadingComplete={(e) => {
-                              e.classList.remove("animate-pulse")
+                              e.classList.remove("loading-image")
                             }}
                           />
                         </NextLink>
@@ -128,15 +121,18 @@ export default function MediaLibraryDashboard() {
               </div>
             )
           )}
-          {!router.query.search && medias.length > 0 ? (
+          {!router.query.search && medias && medias.length > 0 ? (
             <>
               <div className="my-3">
-                {data && (
+                {medias && (
                   <InfiniteScrollMedia
                     medias={medias}
                     index={2}
                     isLibrary={true}
                     totalPage={totalPageMedias}
+                    page={page}
+                    setPage={setPage}
+                    updateMedia={updateMedias}
                   />
                 )}
               </div>
