@@ -62,11 +62,11 @@ export default function SingleArticle(props: SingleArticleProps) {
           article: {
             publishedTime: article.createdAt,
             modifiedTime: article.updatedAt,
-            section: article.topics[0].title,
+            section: article.topics[0]?.title,
             authors: [`https://${env.DOMAIN}/user/${article.author.username}`],
             tags: [
               article.topics?.map((topic: TopicDataProps) => {
-                return topic.title
+                return topic?.title
               }),
             ],
           },
@@ -103,8 +103,8 @@ export default function SingleArticle(props: SingleArticleProps) {
           },
           {
             position: 3,
-            name: article.topics[0].title,
-            item: `https://${env.DOMAIN}/topic/${article.topics[0].slug}`,
+            name: article.topics[0]?.title,
+            item: `https://${env.DOMAIN}/topic/${article.topics[0]?.slug}`,
           },
         ]}
       />

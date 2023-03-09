@@ -4,7 +4,6 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
-import useSWR from "swr"
 import { useForm } from "react-hook-form"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 import {
@@ -20,12 +19,9 @@ import {
 } from "ui"
 
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 interface FormValues {
   username: string
@@ -44,7 +40,6 @@ export default function CreateUsersDashboard() {
   const [showPassword, setShowPassword] = React.useState(false)
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedProfilePictureId, setSelectedProfilePictureId] =
     React.useState<string>("")
   const [selectedProfilePictureUrl, setSelectedProfilePictureUrl] =
@@ -59,14 +54,6 @@ export default function CreateUsersDashboard() {
     reset,
   } = useForm<FormValues>()
 
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
@@ -90,9 +77,7 @@ export default function CreateUsersDashboard() {
     }
     setLoading(false)
   }
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
 
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
     url: React.SetStateAction<string>
@@ -312,25 +297,10 @@ export default function CreateUsersDashboard() {
                   Submit
                 </Button>
               </form>
-              <Modal
-                title="Select Featured Image"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {medias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

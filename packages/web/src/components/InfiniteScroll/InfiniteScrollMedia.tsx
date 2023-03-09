@@ -7,50 +7,55 @@ import { toast } from "react-hot-toast"
 import { Button } from "ui"
 
 import { MediaDataProps } from "@/lib/data-types"
-import { getMedias } from "@/lib/medias"
 import { DeleteMediaButton } from "../Media"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   medias: any
   index: number
-  updateMedia?: any
+  selectMedia?: any
   totalPage: any
   isLibrary?: boolean
   deleteMedia?: any
+  page: any
+  setPage: any
+  updateMedia: any
 }
 
 export const InfiniteScrollMedia = React.forwardRef<
   HTMLDivElement,
   InfiniteScrollProps
 >((props, ref) => {
-  const { medias, totalPage, isLibrary, updateMedia, index, ...rest } = props
+  const {
+    medias,
+    totalPage,
+    isLibrary,
+    selectMedia,
+    index,
+    page,
+    setPage,
+    updateMedia,
+    ...rest
+  } = props
 
   const router = useRouter()
 
   const loadMoreRef = React.useRef<any>(null)
-  const [page, setPage] = React.useState<any>(index)
-  const [list, setList] = React.useState(medias) as any
 
   const handleObserver = React.useCallback(
     async (entries: any) => {
       const [target] = entries
       if (target.isIntersecting && totalPage >= page) {
-        const { medias }: any = await getMedias(page)
-        setList((list: any) => [...list, ...medias])
-        setPage((prev: number) => prev + 1)
+        setPage(page + 1)
       }
     },
-    [page, totalPage],
+    [page, setPage, totalPage],
   )
 
   React.useEffect(() => {
     const lmRef: any = loadMoreRef.current
     const observer = new IntersectionObserver(handleObserver)
     const handleRouteChange = () => {
-      if (!isLibrary) {
-        setList(medias)
-        setPage(index)
-      }
+      setPage(0)
     }
 
     router.events.on("routeChangeComplete", handleRouteChange)
@@ -63,15 +68,13 @@ export const InfiniteScrollMedia = React.forwardRef<
 
       router.events.off("routeChangeComplete", handleRouteChange)
     }
-  }, [handleObserver, index, isLibrary, medias, router.events])
+  }, [handleObserver, index, isLibrary, medias, router.events, setPage])
   const handleDelete = async (item: { name: any }) => {
     try {
       const { data } = await axios.delete(`/media/name/${item.name}`)
-      const filteredData = list.filter(
-        (media: { name: string }) => media.name !== data.name,
-      )
-      setList(filteredData)
-      toast.success("Media deleted successfully")
+      updateMedia()
+
+      if (data) toast.success("Media deleted successfully")
     } catch (err: any) {
       console.log(err)
       toast.error(err.response.data.message)
@@ -82,44 +85,50 @@ export const InfiniteScrollMedia = React.forwardRef<
     <div ref={ref} {...rest}>
       <div className="mb-4 grid grid-cols-5 gap-3">
         {isLibrary
-          ? list.map((media: MediaDataProps) => (
-              <div className="relative overflow-hidden rounded-[18px]">
-                <DeleteMediaButton
-                  content={media.name}
-                  deleteMedia={() => handleDelete(media)}
-                />
-                <NextLink href={`/dashboard/media/${media.id}`}>
+          ? medias.map((list: any) =>
+              list.map((media: MediaDataProps) => {
+                return (
+                  <div className="relative overflow-hidden rounded-[18px]">
+                    <DeleteMediaButton
+                      content={media.name}
+                      deleteMedia={() => handleDelete(media)}
+                    />
+                    <NextLink href={`/dashboard/media/${media.id}`}>
+                      <NextImage
+                        key={media.id}
+                        src={media.url}
+                        alt={media.alt || media.name}
+                        fill
+                        className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
+                        onLoadingComplete={(e) => {
+                          e.classList.remove("loading-image")
+                        }}
+                      />
+                    </NextLink>
+                  </div>
+                )
+              }),
+            )
+          : medias.map((list: any) =>
+              list.map((media: MediaDataProps) => {
+                return (
                   <NextImage
                     key={media.id}
                     src={media.url}
                     alt={media.alt || media.name}
                     fill
-                    className="!relative aspect-[1/1] h-[500px] max-w-[unset] animate-pulse rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
+                    className="loading-image !relative aspect-[1/1] h-[500px] max-w-[unset] cursor-pointer rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
                     onLoadingComplete={(e) => {
-                      e.classList.remove("animate-pulse")
+                      e.classList.remove("loading-image")
+                    }}
+                    onClick={(e: { preventDefault: () => void }) => {
+                      e.preventDefault()
+                      selectMedia(media)
                     }}
                   />
-                </NextLink>
-              </div>
-            ))
-          : list.map((media: MediaDataProps) => {
-              return (
-                <NextImage
-                  key={media.id}
-                  src={media.url}
-                  alt={media.alt || media.name}
-                  fill
-                  className="!relative aspect-[1/1] h-[500px] max-w-[unset] animate-pulse cursor-pointer rounded-sm border-2 border-gray-300 bg-slate-300 object-cover"
-                  onLoadingComplete={(e) => {
-                    e.classList.remove("animate-pulse")
-                  }}
-                  onClick={(e: { preventDefault: () => void }) => {
-                    e.preventDefault()
-                    updateMedia(media)
-                  }}
-                />
-              )
-            })}
+                )
+              }),
+            )}
       </div>
       <div ref={loadMoreRef}>
         <Button

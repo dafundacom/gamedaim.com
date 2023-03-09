@@ -164,14 +164,16 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
           >
             {title}
           </Heading>
-          <div className="mb-2">
-            <MetadataPost
-              authorName={authorName}
-              authorAvatarUrl={authorImg}
-              authorSlug={authorUrl}
-              date={date}
-            />
-          </div>
+          {isWP && (
+            <div className="mb-2">
+              <MetadataPost
+                authorName={authorName}
+                authorAvatarUrl={authorImg}
+                authorSlug={authorUrl}
+                date={date}
+              />
+            </div>
+          )}
           {featuredImageUrl && (
             <>
               <NextImage

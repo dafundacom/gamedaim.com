@@ -1,5 +1,6 @@
 import axios from "axios"
-
+import useSWRInfinite from "swr/infinite"
+import { fetcher } from "./fetcher"
 export const getMediasCount = async () => {
   let mediasCountData
   try {
@@ -73,4 +74,23 @@ export const getMediaByTopics = async (slug: string, page = 1) => {
   }
 
   return { mediaByTopic: postData }
+}
+
+export const getKeyMedias = (
+  pageIndex: any,
+  previousPageData: string | any[],
+) => {
+  if (previousPageData && !previousPageData.length) return null // reached the end
+  return `/media/page/${pageIndex + 1}` // SWR key
+}
+
+export function useInfiniteMedias() {
+  const { data, size, setSize, mutate } = useSWRInfinite(getKeyMedias, fetcher)
+
+  return {
+    medias: data,
+    page: size,
+    setPage: setSize,
+    updateMedias: mutate,
+  }
 }

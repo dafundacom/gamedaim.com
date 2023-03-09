@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import useSWR from "swr"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -18,13 +17,12 @@ import {
 } from "ui"
 import { MdOutlineClose } from "react-icons/md"
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { DownloadDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
+
+import { ModalSelectMedia } from "@/components/Modal"
 
 interface FormValues {
   title: string
@@ -40,7 +38,6 @@ interface FormValues {
 export default function EditDownloadFileDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -62,19 +59,6 @@ export default function EditDownloadFileDashboard() {
   const [selectedDownloads, setSelectedDownloads] = React.useState<any>([])
   const [inputValue, setInputValue] = React.useState("")
   const router = useRouter()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   React.useEffect(() => {
     loadDownloadFile()
@@ -415,25 +399,10 @@ export default function EditDownloadFileDashboard() {
                   Submit
                 </Button>
               </form>
-              <Modal
-                title="Select Featured Image"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {medias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

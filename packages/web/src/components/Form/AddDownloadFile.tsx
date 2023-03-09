@@ -3,7 +3,6 @@ import axios from "axios"
 import NextImage from "next/image"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import useSWR from "swr"
 import {
   Button,
   FormControl,
@@ -15,11 +14,7 @@ import {
   Textarea,
 } from "ui"
 
-import { MediaUpload } from "@/components/Media"
-import { Modal } from "@/components/Modal"
-
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "../InfiniteScroll"
+import { ModalSelectMedia } from "@/components/Modal"
 
 interface FormValues {
   title: string
@@ -36,7 +31,6 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
   const { updateDownloadFiles } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -48,19 +42,6 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
     handleSubmit,
     reset,
   } = useForm<FormValues>()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const onSubmit = async (values: any) => {
     setLoading(true)
@@ -243,25 +224,10 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
           Submit
         </Button>
       </form>
-      <Modal
-        title="Select Featured Image"
-        content={
-          <>
-            <MediaUpload addLoadMedias={setLoadedMedias} />
-            <div className="my-3">
-              {medias && (
-                <InfiniteScrollMedia
-                  medias={loadedMedias}
-                  index={2}
-                  updateMedia={handleUpdateMedia}
-                  totalPage={totalPageMedias}
-                />
-              )}
-            </div>
-          </>
-        }
-        isOpen={openModal}
-        onClose={() => setOpenModal(false)}
+      <ModalSelectMedia
+        handleSelectUpdateMedia={handleUpdateMedia}
+        open={openModal}
+        setOpen={setOpenModal}
       />
     </div>
   )

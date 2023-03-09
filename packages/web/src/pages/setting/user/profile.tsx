@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import useSWR from "swr"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -18,12 +17,9 @@ import {
 
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
-import { fetcher } from "@/lib/fetcher"
 
 interface FormValues {
   username: string
@@ -36,7 +32,6 @@ interface FormValues {
 export default function SettingUserProfile() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedProfilePictureId, setSelectedProfilePictureId] =
     React.useState<string>("")
   const [selectedProfilePictureUrl, setSelectedProfilePictureUrl] =
@@ -55,16 +50,7 @@ export default function SettingUserProfile() {
 
   const router = useRouter()
 
-  const loadMedias = async () => {
-    try {
-      const { data } = await axios.get(`/media/author/${auth.user.id}/1`)
-      setLoadedMedias(data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
   React.useEffect(() => {
-    loadMedias()
     loadUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.id])
@@ -123,10 +109,6 @@ export default function SettingUserProfile() {
     }
     setLoading(false)
   }
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
     url: React.SetStateAction<string>
@@ -249,25 +231,10 @@ export default function SettingUserProfile() {
                   Save
                 </Button>
               </form>
-              <Modal
-                title="Select Profile Picture"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {loadedMedias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
-import useSWR from "swr"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
@@ -24,17 +23,13 @@ import {
 } from "ui"
 
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { DownloadFileDataProps, DownloadSchemaTypeData } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
-// import { AddDownloadFile } from "@/components/Form"
 
 interface FormValues {
   title: string
@@ -57,7 +52,6 @@ export default function CreateDownloadsDashboard() {
   const [topics, setTopics] = React.useState([])
   const [selectedTopics, setSelectedTopics] = React.useState<any>([])
 
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -71,15 +65,6 @@ export default function CreateDownloadsDashboard() {
   const router = useRouter()
 
   const { isOpen, onToggle } = useDisclosure()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
 
   const editor = useEditor({
     extensions: [EditorKitExtension],
@@ -151,10 +136,6 @@ export default function CreateDownloadsDashboard() {
     reset,
   } = useForm<FormValues>({ mode: "onBlur" })
 
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
-
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
     url: React.SetStateAction<string>
@@ -184,7 +165,7 @@ export default function CreateDownloadsDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
+          <div className="sticky top-[0px] z-[90] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/downloads">Downloads</NextLink>
             </Button>
@@ -524,25 +505,10 @@ export default function CreateDownloadsDashboard() {
             </div>
           )}
         </div>
-        <Modal
-          title="Select Featured Image"
-          content={
-            <>
-              <MediaUpload addLoadMedias={setLoadedMedias} />
-              <div className="my-3">
-                {medias && (
-                  <InfiniteScrollMedia
-                    medias={loadedMedias}
-                    index={2}
-                    updateMedia={handleUpdateMedia}
-                    totalPage={totalPageMedias}
-                  />
-                )}
-              </div>
-            </>
-          }
-          isOpen={openModal}
-          onClose={() => setOpenModal(false)}
+        <ModalSelectMedia
+          handleSelectUpdateMedia={handleUpdateMedia}
+          open={openModal}
+          setOpen={setOpenModal}
         />
       </AdminRole>
     </>

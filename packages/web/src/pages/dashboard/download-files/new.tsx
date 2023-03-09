@@ -7,7 +7,6 @@ import { DashboardLayout } from "@/layouts/Dashboard"
 import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
-import useSWR from "swr"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -20,12 +19,10 @@ import {
   Textarea,
 } from "ui"
 
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
 import { MdOutlineClose } from "react-icons/md"
 import { DownloadDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
+
+import { ModalSelectMedia } from "@/components/Modal"
 
 interface FormValues {
   title: string
@@ -43,7 +40,6 @@ export default function CreateDownloadfilesDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [downloads, setDownloads] = React.useState([])
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -57,21 +53,6 @@ export default function CreateDownloadfilesDashboard() {
     handleSubmit,
     reset,
   } = useForm<FormValues>()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
-  })
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const handleSearchChange = async (e: any) => {
     e.preventDefault()
@@ -369,25 +350,10 @@ export default function CreateDownloadfilesDashboard() {
                   Submit
                 </Button>
               </form>
-              <Modal
-                title="Select Featured Image"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {medias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

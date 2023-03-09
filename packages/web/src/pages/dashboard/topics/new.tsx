@@ -4,7 +4,6 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
-import useSWR from "swr"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -18,12 +17,9 @@ import {
 } from "ui"
 
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 interface FormValues {
   title: string
@@ -35,7 +31,6 @@ interface FormValues {
 export default function CreateTopicsDashboard() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -49,17 +44,6 @@ export default function CreateTopicsDashboard() {
     handleSubmit,
     reset,
   } = useForm<FormValues>()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-    revalidateIfStale: true,
-    refreshInterval: 1000,
-  })
 
   const onSubmit = async (values: any) => {
     setLoading(true)
@@ -86,10 +70,6 @@ export default function CreateTopicsDashboard() {
     }
     setLoading(false)
   }
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
@@ -204,25 +184,10 @@ export default function CreateTopicsDashboard() {
                   Submit
                 </Button>
               </form>
-              <Modal
-                title="Select Featured Image"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {medias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

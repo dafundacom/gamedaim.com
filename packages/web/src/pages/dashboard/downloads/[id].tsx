@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import NextLink from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
-import useSWR from "swr"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -24,8 +23,7 @@ import {
 } from "ui"
 
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import {
@@ -33,11 +31,9 @@ import {
   DownloadSchemaTypeData,
   TopicDataProps,
 } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Thead, Tr, Th, Tbody, Td } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 interface FormValues {
   title: string
@@ -60,7 +56,6 @@ export default function EditDownloadDashboard() {
   const [editorContent, setEditorContent] = React.useState("")
   const [topics, setTopics] = React.useState<any>([])
   const [selectedTopics, setSelectedTopics] = React.useState([])
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -94,14 +89,6 @@ export default function EditDownloadDashboard() {
   })
 
   const { isOpen, onToggle } = useDisclosure()
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
 
   const router = useRouter()
 
@@ -149,10 +136,6 @@ export default function EditDownloadDashboard() {
       console.log(err)
     }
   }
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const handleUpdateFile = (value: any) => {
     setSelectedDownloadFile((prev: any) => [...prev, value])
@@ -241,7 +224,7 @@ export default function EditDownloadDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
+          <div className="sticky top-[0px] z-[90] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/downloads">Downloads</NextLink>
             </Button>
@@ -599,26 +582,10 @@ export default function EditDownloadDashboard() {
             </div>
           )}
         </div>
-        <Modal
-          title="Select Featured Image"
-          className="!max-w-full"
-          content={
-            <>
-              <MediaUpload addLoadMedias={setLoadedMedias} />
-              <div className="my-3">
-                {medias && (
-                  <InfiniteScrollMedia
-                    medias={loadedMedias}
-                    index={2}
-                    updateMedia={handleUpdateMedia}
-                    totalPage={totalPageMedias}
-                  />
-                )}
-              </div>
-            </>
-          }
-          isOpen={openModal}
-          onClose={() => setOpenModal(false)}
+        <ModalSelectMedia
+          handleSelectUpdateMedia={handleUpdateMedia}
+          open={openModal}
+          setOpen={setOpenModal}
         />
       </AdminRole>
     </>

@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
-import useSWR from "swr"
 import {
   Button,
   FormControl,
@@ -22,14 +21,11 @@ import {
   useDisclosure,
 } from "ui"
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { TopicDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
 import { AddTopics } from "@/components/Form"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
+import { ModalSelectMedia } from "@/components/Modal"
 
 interface FormValues {
   title: string
@@ -45,7 +41,6 @@ export default function EditArticleDashboard() {
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
   const [topics, setTopics] = React.useState<any>([])
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
     React.useState<string>("")
   const [selectedFeaturedImageUrl, setSelectedFeaturedImageUrl] =
@@ -69,19 +64,6 @@ export default function EditArticleDashboard() {
   })
 
   const { isOpen, onToggle } = useDisclosure()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const router = useRouter()
 
@@ -180,7 +162,7 @@ export default function EditArticleDashboard() {
           }}
           className="space-y-4"
         >
-          <div className="sticky top-[0px] z-[9999] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
+          <div className="sticky top-[0px] z-[90] flex items-center justify-between bg-white py-5 px-3 dark:bg-gray-800">
             <Button variant="ghost" leftIcon={<MdChevronLeft />}>
               <NextLink href="/dashboard/articles">Articles</NextLink>
             </Button>
@@ -338,26 +320,10 @@ export default function EditArticleDashboard() {
             </div>
           </ArticleDashboardLayout>
         </form>
-        <Modal
-          title="Select Featured Image"
-          className="!max-w-full"
-          content={
-            <>
-              <MediaUpload addLoadMedias={setLoadedMedias} />
-              <div className="my-3">
-                {medias && (
-                  <InfiniteScrollMedia
-                    medias={loadedMedias}
-                    index={2}
-                    updateMedia={handleUpdateMedia}
-                    totalPage={totalPageMedias}
-                  />
-                )}
-              </div>
-            </>
-          }
-          isOpen={openModal}
-          onClose={() => setOpenModal(false)}
+        <ModalSelectMedia
+          handleSelectUpdateMedia={handleUpdateMedia}
+          open={openModal}
+          setOpen={setOpenModal}
         />
       </AdminRole>
     </>

@@ -3,7 +3,6 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import useSWR from "swr"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -19,12 +18,9 @@ import {
 } from "ui"
 
 import env from "@/env"
-import { Modal } from "@/components/Modal"
-import { MediaUpload } from "@/components/Media"
+import { ModalSelectMedia } from "@/components/Modal"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdminRole } from "@/components/Role"
-import { fetcher } from "@/lib/fetcher"
-import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 
 enum UserRoles {
   "ADMIN",
@@ -44,7 +40,6 @@ interface FormValues {
 export default function DashboardEditUser() {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [loadedMedias, setLoadedMedias] = React.useState([])
   const [selectedProfilePictureId, setSelectedProfilePictureId] =
     React.useState<string>("")
   const [selectedProfilePictureUrl, setSelectedProfilePictureUrl] =
@@ -61,15 +56,6 @@ export default function DashboardEditUser() {
   })
 
   const router = useRouter()
-
-  const { data: medias } = useSWR(`/media/page/1`, fetcher, {
-    onSuccess: (data: any) => {
-      setLoadedMedias(data)
-    },
-    onError: (error: any) => {
-      toast.error(error.message)
-    },
-  })
 
   React.useEffect(() => {
     loadUser()
@@ -134,10 +120,6 @@ export default function DashboardEditUser() {
       setLoading(false)
     }
   }
-
-  const { data: mediasCount } = useSWR("/media/count", fetcher)
-
-  const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
   const handleUpdateMedia = (data: {
     id: React.SetStateAction<string>
@@ -282,25 +264,10 @@ export default function DashboardEditUser() {
                   Save
                 </Button>
               </form>
-              <Modal
-                title="Select Profile Picture"
-                content={
-                  <>
-                    <MediaUpload addLoadMedias={setLoadedMedias} />
-                    <div className="my-3">
-                      {medias && (
-                        <InfiniteScrollMedia
-                          medias={loadedMedias}
-                          index={2}
-                          updateMedia={handleUpdateMedia}
-                          totalPage={totalPageMedias}
-                        />
-                      )}
-                    </div>
-                  </>
-                }
-                isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+              <ModalSelectMedia
+                handleSelectUpdateMedia={handleUpdateMedia}
+                open={openModal}
+                setOpen={setOpenModal}
               />
             </div>
           </div>

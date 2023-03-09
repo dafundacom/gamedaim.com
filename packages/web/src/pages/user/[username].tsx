@@ -8,8 +8,6 @@ import { NextSeo } from "next-seo"
 import env from "@/env"
 import { getUserByUserName } from "@/lib/users"
 import { ArticleDataProps, UserDataProps } from "@/lib/data-types"
-import { getArticleByAuthorId } from "@/lib/articles"
-import { PostCard } from "@/components/Card"
 
 interface UserProps {
   user: UserDataProps
@@ -17,9 +15,8 @@ interface UserProps {
 }
 
 export default function User(props: UserProps) {
-  const { user, articles } = props
+  const { user } = props
   const router = useRouter()
-  console.log(user)
 
   return (
     <HomeLayout>
@@ -56,7 +53,7 @@ export default function User(props: UserProps) {
             <Text>{user?.about}</Text>
           </div>
         </div>
-        <div>
+        {/* <div>
           <div className="my-2 flex flex-row justify-between pb-2">
             <Heading as="h2" size="2xl" bold>
               {`Articles by ${user.name}`}
@@ -81,7 +78,7 @@ export default function User(props: UserProps) {
                 />
               )
             })}
-        </div>
+        </div> */}
       </div>
     </HomeLayout>
   )
@@ -89,7 +86,6 @@ export default function User(props: UserProps) {
 
 export async function getServerSideProps({ params }: any) {
   const { user } = await getUserByUserName(params?.username)
-  const { articles } = await getArticleByAuthorId(user?.id)
   if (!user) {
     return {
       notFound: true,
@@ -99,7 +95,6 @@ export async function getServerSideProps({ params }: any) {
   return {
     props: {
       user,
-      articles,
     },
   }
 }
