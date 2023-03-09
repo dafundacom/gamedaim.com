@@ -124,13 +124,13 @@ export default function CreateDownloadsDashboard() {
         if (data?.error) {
           toast.error(data.error)
         } else {
+          toast.success("Download Successfully created")
           setSelectedDownloadFile([])
           setSelectedDownloadFileId([])
           setSelectedFeaturedImageId("")
           setSelectedFeaturedImageUrl("")
           setSelectedTopics([])
           reset()
-          toast.success("Download Successfully created")
         }
       } catch (err: any) {
         console.log("err => ", err)
