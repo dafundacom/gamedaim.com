@@ -4,6 +4,8 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
+import env from "@/env"
+
 import {
   Button,
   Checkbox,
@@ -15,9 +17,9 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -25,7 +27,8 @@ interface FormValues {
   active: boolean
 }
 
-export default function CreateScriptsDashBoard() {
+export default function CreateScriptsDashBoard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const router = useRouter()
@@ -57,13 +60,25 @@ export default function CreateScriptsDashBoard() {
   return (
     <>
       <NextSeo
-        title={`Add New Script | ${env.SITE_TITLE}`}
-        description={`Add New Script | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Script | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Script | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Script | ${env.SITE_TITLE}`,
-          description: `Add New Script | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -118,4 +133,10 @@ export default function CreateScriptsDashBoard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

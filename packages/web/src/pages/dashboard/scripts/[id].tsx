@@ -4,6 +4,8 @@ import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+import env from "@/env"
+
 import {
   Button,
   Checkbox,
@@ -15,16 +17,17 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 interface FormValues {
   title: string
   content?: string
   active: boolean
 }
 
-export default function EditScriptDashboard() {
+export default function EditScriptDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [script, setScript] = React.useState<any>({
     id: "",
@@ -89,13 +92,23 @@ export default function EditScriptDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Script | ${env.SITE_TITLE}`}
-        description={`Edit Script | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Script | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Script | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Script | ${env.SITE_TITLE}`,
-          description: `Edit Script | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Edit Script | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -143,4 +156,11 @@ export default function EditScriptDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

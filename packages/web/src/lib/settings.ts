@@ -17,3 +17,21 @@ export const getSettingByKey = async (key: string) => {
   }
   return { setting }
 }
+
+export const getSettingsSite = async () => {
+  const { setting: title } = await getSettingByKey("title")
+  const { setting: metaTitle } = await getSettingByKey("meta_title")
+  const { setting: description } = await getSettingByKey("description")
+  const { setting: metaDescription } = await getSettingByKey("meta_description")
+  const { setting: url } = await getSettingByKey("url")
+
+  return {
+    settingsSite: {
+      title: title || "",
+      metaTitle: metaTitle || "",
+      description: description || "",
+      metaDescription: metaDescription || "",
+      url: url || "",
+    },
+  }
+}

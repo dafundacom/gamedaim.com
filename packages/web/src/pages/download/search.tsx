@@ -3,7 +3,6 @@ import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import useSWR from "swr"
-import env from "@/env"
 
 import { HomeLayout } from "@/layouts/Home"
 import { fetcher } from "@/lib/fetcher"
@@ -12,15 +11,17 @@ import { getDownloads } from "@/lib/download"
 import { DownloadDataProps } from "@/lib/data-types"
 import { Breadcrumb } from "ui"
 import { MdChevronRight } from "react-icons/md"
+import { getSettingsSite } from "@/lib/settings"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface SearchProps {
   downloads: DownloadDataProps
+  settingsSite: any
 }
 
 export default function DownloadSearch(props: SearchProps) {
-  const { downloads } = props
+  const { downloads, settingsSite } = props
   const router = useRouter()
 
   const inputRef = React.useRef() as React.RefObject<HTMLInputElement>
@@ -37,13 +38,19 @@ export default function DownloadSearch(props: SearchProps) {
   return (
     <>
       <NextSeo
-        title={`Search | ${env.SITE_TITLE}`}
-        description={`Search | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Search | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Search | ${env.SITE_TITLE}`,
-          description: `Search | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Search | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Search | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -155,5 +162,7 @@ export default function DownloadSearch(props: SearchProps) {
 
 export async function getServerSideProps() {
   const { downloads } = await getDownloads()
-  return { props: { downloads } }
+  const { settingsSite } = await getSettingsSite()
+
+  return { props: { downloads, settingsSite } }
 }

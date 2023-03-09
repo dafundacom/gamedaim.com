@@ -18,6 +18,7 @@ import { getDownloadBySlug, getDownloads } from "@/lib/download"
 import { getDownloadFileBySlug } from "@/lib/download-file"
 import { HomeLayout } from "@/layouts/Home"
 import axios from "axios"
+import { getSettingsSite } from "@/lib/settings"
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
@@ -32,8 +33,9 @@ export default function DownloadAppVersion(props: {
   download: any
   downloadFile: any
   downloads: any
+  settingsSite: any
 }) {
-  const { downloadFile, download, downloads } = props
+  const { downloadFile, download, downloads, settingsSite } = props
   dayjs.extend(relativeTime)
 
   const [showCountdown, setShowCountdown] = React.useState(false)
@@ -84,14 +86,18 @@ export default function DownloadAppVersion(props: {
     <>
       <NextSeo
         title={`${downloadFile.meta_title || downloadFile.title} | ${
-          env.SITE_TITLE
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         description={download.meta_description || download.excerpt}
-        canonical={`https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`}
+        canonical={`https://${
+          settingsSite.url?.value || env.DOMAIN
+        }/download/app/${download.slug}/${downloadFile.slug}`}
         openGraph={{
-          url: `https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/download/app/${
+            download.slug
+          }/${downloadFile.slug}`,
           title: `${downloadFile.meta_title || downloadFile.title} | ${
-            env.SITE_TITLE
+            settingsSite.title?.value || env.SITE_TITTLE
           }`,
           description: download.meta_description || download.excerpt,
           images: [
@@ -106,20 +112,22 @@ export default function DownloadAppVersion(props: {
         }}
       />
       <ArticleJsonLd
-        url={`https://${env.DOMAIN}/download/app/${download.slug}/${downloadFile.slug}`}
+        url={`https://${settingsSite.url?.value || env.DOMAIN}/download/app/${
+          download.slug
+        }/${downloadFile.slug}`}
         title={`${downloadFile.meta_title || downloadFile.title} | ${
-          env.SITE_TITLE
+          settingsSite.title?.value || env.SITE_TITTLE
         }`}
         images={[download.featuredImage.url]}
         datePublished={download.createdAt}
         dateModified={download.createdAt}
         authorName={[
           {
-            name: env.SITE_TITLE,
-            url: `https://${env.DOMAIN}`,
+            name: settingsSite.title?.value || env.SITE_TITTLE,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
         ]}
-        publisherName={env.SITE_TITLE}
+        publisherName={settingsSite.title?.value || env.SITE_TITTLE}
         publisherLogo={env.LOGO_URL}
         description={download.excerpt}
         isAccessibleForFree={true}
@@ -136,30 +144,36 @@ export default function DownloadAppVersion(props: {
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${env.DOMAIN}/download/`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/download/`,
           },
           {
             position: 3,
             name: download.type,
-            item: `https://${env.DOMAIN}/download/${download.type.toString()}`,
+            item: `https://${
+              settingsSite.url?.value || env.DOMAIN
+            }/download/${download.type.toString()}`,
           },
           {
             position: 4,
             name: download.topics && download.topics[0]?.title,
             item:
               download.topics &&
-              `https://${env.DOMAIN}/download/topic/${download.topics[0]?.slug}`,
+              `https://${
+                settingsSite.url?.value || env.DOMAIN
+              }/download/topic/${download.topics[0]?.slug}`,
           },
           {
             position: 5,
             name: download.meta_title || download.title,
-            item: `https://${env.DOMAIN}/download/app/${download.slug}`,
+            item: `https://${
+              settingsSite.url?.value || env.DOMAIN
+            }/download/app/${download.slug}`,
           },
         ]}
       />
@@ -299,12 +313,14 @@ export async function getServerSideProps({ params }: any) {
   const { downloadFile } = await getDownloadFileBySlug(params.version)
   const { download } = await getDownloadBySlug(params.slug)
   const { downloads } = await getDownloads()
+  const { settingsSite } = await getSettingsSite()
+
   if (!download || !downloadFile) {
     return {
       notFound: true,
     }
   }
   return {
-    props: { downloadFile, download, downloads },
+    props: { downloadFile, download, downloads, settingsSite },
   }
 }

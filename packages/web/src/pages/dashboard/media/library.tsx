@@ -7,8 +7,8 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { MdAdd, MdOutlineSearch } from "react-icons/md"
 import { Button, Input, Text } from "ui"
-
 import env from "@/env"
+
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { fetcher } from "@/lib/fetcher"
@@ -17,8 +17,10 @@ import { MediaDataProps } from "@/lib/data-types"
 import axios from "axios"
 import { DeleteMediaButton } from "@/components/Media"
 import { useInfiniteMedias } from "@/lib/medias"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function MediaLibraryDashboard() {
+export default function MediaLibraryDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const router = useRouter()
   const { data: mediasCount } = useSWR("/media/count", fetcher)
 
@@ -51,13 +53,25 @@ export default function MediaLibraryDashboard() {
   return (
     <>
       <NextSeo
-        title={`Media Library | ${env.SITE_TITLE}`}
-        description={`Media Library | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Media Library | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Media Library | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Media Library | ${env.SITE_TITLE}`,
-          description: `Media Library | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Media Library | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Media Library | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -150,4 +164,10 @@ export default function MediaLibraryDashboard() {
       </AdminOrAuthorRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

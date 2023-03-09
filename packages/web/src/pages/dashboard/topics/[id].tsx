@@ -3,6 +3,8 @@ import NextImage from "next/image"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
+import env from "@/env"
+
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -16,10 +18,10 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -29,7 +31,8 @@ interface FormValues {
   meta_description?: string
 }
 
-export default function EditTopicDashboard() {
+export default function EditTopicDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
@@ -121,13 +124,21 @@ export default function EditTopicDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Topic | ${env.SITE_TITLE}`}
-        description={`Edit Topic | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Topic | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Topic | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Topic | ${env.SITE_TITLE}`,
-          description: `Edit Topic | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Topic | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Edit Topic | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -248,4 +259,10 @@ export default function EditTopicDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

@@ -4,6 +4,7 @@ import NextImage from "next/image"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+
 import { toast } from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import {
@@ -22,13 +23,15 @@ import { HiEye, HiEyeOff } from "react-icons/hi"
 import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { PublicRole } from "@/components/Role"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   email: string
   password: string
 }
 
-export default function Login() {
+export default function Login(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [auth, setAuth] = React.useContext<any>(AuthContext)
   const [showPassword, setShowPassword] = React.useState(false)
   const handleToggleShowPassword = () => setShowPassword(!showPassword)
@@ -74,13 +77,19 @@ export default function Login() {
   return (
     <>
       <NextSeo
-        title={`Login | ${env.SITE_TITLE}`}
-        description={`Login | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Login | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Login | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Login | ${env.SITE_TITLE}`,
-          description: `Login | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Login | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Login | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -94,7 +103,7 @@ export default function Login() {
               <NextImage
                 height={32}
                 width={120}
-                alt={env.SITE_TITLE}
+                alt={settingsSite.title?.value || env.SITE_TITTLE}
                 src={env.LOGO_URL}
               />
             </NextLink>
@@ -189,4 +198,10 @@ export default function Login() {
       </PublicRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

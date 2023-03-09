@@ -10,7 +10,7 @@ export const getDownloadsCount = async () => {
     throw e
   }
 
-  return { downloadsCount: downloadsCountData }
+  return { downloadsCount: downloadsCountData || "" }
 }
 
 export const getDownloads = async (page = 1) => {
@@ -19,11 +19,11 @@ export const getDownloads = async (page = 1) => {
     const { data } = await axios.get(`/download/page/${page}`)
     downloadsData = data
   } catch (e) {
-    console.log(`Failed to query post data: ${e}`)
+    console.log(`Failed to query download data: ${e}`)
     throw e
   }
 
-  return { downloads: downloadsData }
+  return { downloads: downloadsData || "" }
 }
 
 export const getDownloadBySlug = async (slug: string) => {

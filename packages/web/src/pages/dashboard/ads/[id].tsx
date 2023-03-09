@@ -4,6 +4,9 @@ import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+
+import env from "@/env"
+
 import {
   Button,
   Checkbox,
@@ -16,9 +19,9 @@ import {
   Textarea,
 } from "ui"
 
-import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
+import { getSettingsSite } from "@/lib/settings"
 interface FormValues {
   title: string
   content: string
@@ -39,7 +42,8 @@ interface FormValues {
     | "DOWNLOADING_PAGE"
 }
 
-export default function EditAdDashboard() {
+export default function EditAdDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [ad, setAd] = React.useState<any>({
     id: "",
@@ -105,13 +109,21 @@ export default function EditAdDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Ad | ${env.SITE_TITLE}`}
-        description={`Edit Ad | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Edit Ad | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Ad | ${env.SITE_TITLE}`,
-          description: `Edit Ad | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Ad | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Edit Ad | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -215,4 +227,10 @@ export default function EditAdDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

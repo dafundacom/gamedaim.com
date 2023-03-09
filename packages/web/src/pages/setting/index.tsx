@@ -1,6 +1,8 @@
 import * as React from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import env from "@/env"
+
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import useSWR from "swr"
@@ -14,18 +16,18 @@ import {
   RequiredIndicator,
 } from "ui"
 
-import env from "@/env"
-
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   key: string
   value: string
 }
 
-export default function CreateTopicsDashboard() {
+export default function Settings(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const router = useRouter()
@@ -328,13 +330,25 @@ export default function CreateTopicsDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Topic | ${env.SITE_TITLE}`}
-        description={`Add New Topic | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Topic | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Topic | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Topic | ${env.SITE_TITLE}`,
-          description: `Add New Topic | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Topic | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Topic | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -561,4 +575,12 @@ export default function CreateTopicsDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+    revalidate: 60,
+  }
 }

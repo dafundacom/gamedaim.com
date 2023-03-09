@@ -23,7 +23,7 @@ export const getTopics = async (page = 1) => {
     throw e
   }
 
-  return { topics: topicsData }
+  return { topics: topicsData || "" }
 }
 
 export const getArticlesByTopic = async (slug: any, page = 1) => {

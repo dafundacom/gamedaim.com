@@ -1,12 +1,12 @@
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
-
-import { Button } from "ui"
 import env from "@/env"
+import { Button } from "ui"
 
 export default function Custom500() {
   const router = useRouter()
+
   return (
     <>
       <NextSeo

@@ -9,8 +9,8 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md"
 import { Button, IconButton, Text } from "ui"
-
 import env from "@/env"
+
 import { ContentContext } from "@/contexts/content.context"
 import { ActionDashboard } from "@/components/Action"
 import { AdminRole } from "@/components/Role"
@@ -18,8 +18,10 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { ScriptDataProps } from "@/lib/data-types"
 import { fetcher } from "@/lib/fetcher"
+import { getSettingsSite } from "@/lib/settings"
 
-export default function ScriptsDashboard() {
+export default function ScriptsDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [script, setScript] = React.useContext(ContentContext)
   const [page, setPage] = React.useState(1)
   const [totalScripts, setTotalScripts]: any = React.useState()
@@ -66,13 +68,25 @@ export default function ScriptsDashboard() {
   return (
     <>
       <NextSeo
-        title={`Script Dashboard | ${env.SITE_TITLE}`}
-        description={`Script Dashboard | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Script Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Script Dashboard | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Script Dashboard | ${env.SITE_TITLE}`,
-          description: `Script Dashboard | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Script Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Script Dashboard | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -169,4 +183,10 @@ export default function ScriptsDashboard() {
       </AdminRole>
     </>
   )
+}
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

@@ -4,7 +4,6 @@ import { useRouter } from "next/router"
 
 import { Button } from "ui"
 import env from "@/env"
-
 export default function Custom404() {
   const router = useRouter()
   return (

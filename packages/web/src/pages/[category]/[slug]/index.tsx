@@ -2,27 +2,28 @@ import * as React from "react"
 
 import { GetStaticProps, GetStaticPaths } from "next"
 
-import env from "@/env"
-import { getSeoDatas } from "@/lib/wp-seo"
 import { wpGetPostBySlug, wpGetAllPosts, wpGetAllSlug } from "@/lib/wp-posts"
 import { SinglePostLayout } from "@/layouts/SinglePost"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { HomeLayout } from "@/layouts/Home"
 import { WpPostsDataProps, WpSinglePostDataProps } from "@/lib/wp-data-types"
+import { getSettingsSite } from "@/lib/settings"
 
 interface PostProps {
   seo: any
   posts: WpPostsDataProps
+  settingsSite: any
   post: WpSinglePostDataProps
 }
 export default function Post(props: PostProps) {
-  const { posts, post } = props
+  const { posts, post, settingsSite } = props
   const { seo } = post
   return (
     <>
       <HomeLayout>
         <SinglePostLayout
           seoData={seo}
+          settingsSite={settingsSite}
           post={post}
           posts={posts as unknown as WpPostsDataProps}
         />
@@ -32,12 +33,10 @@ export default function Post(props: PostProps) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  const seo = await getSeoDatas(
-    `https://${env.DOMAIN}/${params.category}/${params.slug}`,
-  )
   const slug = params.slug
   const { posts } = await wpGetAllPosts()
   const { post } = await wpGetPostBySlug(slug)
+  const { settingsSite } = await getSettingsSite()
 
   if (!post) {
     return {
@@ -47,8 +46,8 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
   return {
     props: {
-      seo,
       posts,
+      settingsSite,
       post,
     },
   }

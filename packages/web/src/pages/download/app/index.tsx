@@ -1,8 +1,8 @@
 import * as React from "react"
 import { useRouter } from "next/router"
 import { BreadcrumbJsonLd, NextSeo } from "next-seo"
-import env from "@/env"
 import { Heading } from "ui"
+import env from "@/env"
 
 import { ListDownload, ListDownloadCategory } from "@/components/List"
 import { DropdownLink } from "@/components/Dropdown/DropdownLink"
@@ -16,47 +16,57 @@ import { getTopics } from "@/lib/topics"
 import { HomeLayout } from "@/layouts/Home"
 import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
 import { InfiniteScrollDownload } from "@/components/InfiniteScroll"
+import { getSettingsSite } from "@/lib/settings"
 
 interface AppProps {
   downloads: DownloadDataProps
   apps: DownloadDataProps
   topics: TopicDataProps[]
   downloadsCount: any
+  settingsSite: any
 }
 export default function App(props: AppProps) {
-  const { downloads, apps, topics, downloadsCount } = props
+  const { downloads, apps, topics, downloadsCount, settingsSite } = props
   const router = useRouter()
   const totalPage = Math.ceil(downloadsCount / 10)
 
   return (
     <>
       <NextSeo
-        title={`Download App | ${env.SITE_TITLE}`}
-        description={env.DESCRIPTION}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Download App | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={settingsSite.description?.value || env.DESCRIPTION}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Download App | ${env.SITE_TITLE}`,
-          description: env.DESCRIPTION,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Download App | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: settingsSite.description?.value || env.DESCRIPTION,
         }}
       />
       <BreadcrumbJsonLd
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Download",
-            item: `https://${env.DOMAIN}/download`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/download`,
           },
 
           {
             position: 3,
             name: "App",
-            item: `https://${env.DOMAIN}${router.pathname}`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}${
+              router.pathname
+            }`,
           },
         ]}
       />
@@ -112,7 +122,9 @@ export async function getStaticProps() {
   const apps = await getDownloadByType("App")
   const { topics } = await getTopics(1)
   const { downloadsCount } = await getDownloadsCount()
+  const { settingsSite } = await getSettingsSite()
+
   return {
-    props: { downloads, apps, topics, downloadsCount },
+    props: { downloads, apps, topics, downloadsCount, settingsSite },
   }
 }

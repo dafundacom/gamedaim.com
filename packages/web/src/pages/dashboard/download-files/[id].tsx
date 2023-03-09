@@ -5,6 +5,8 @@ import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
+import env from "@/env"
+
 import {
   Button,
   FormControl,
@@ -16,13 +18,13 @@ import {
   Textarea,
 } from "ui"
 import { MdOutlineClose } from "react-icons/md"
-import env from "@/env"
 
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { DownloadDataProps } from "@/lib/data-types"
 
 import { ModalSelectMedia } from "@/components/Modal"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -35,7 +37,10 @@ interface FormValues {
   price: string
 }
 
-export default function EditDownloadFileDashboard() {
+export default function EditDownloadFileDashboard(props: {
+  settingsSite: any
+}) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [selectedFeaturedImageId, setSelectedFeaturedImageId] =
@@ -182,13 +187,25 @@ export default function EditDownloadFileDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Download-file | ${env.SITE_TITLE}`}
-        description={`Add New Download File | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Download-file | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Download File | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Download File | ${env.SITE_TITLE}`,
-          description: `Add New Download File | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Download File | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Download File | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -410,4 +427,11 @@ export default function EditDownloadFileDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

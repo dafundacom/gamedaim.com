@@ -13,16 +13,18 @@ import {
   ArticlesDataProps,
   TopicDataProps,
 } from "@/lib/data-types"
+import { getSettingsSite } from "@/lib/settings"
 
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 interface SingleArticleProps {
   article: ArticleDataProps
   articles: ArticlesDataProps
+  settingsSite: any
 }
 
 export default function SingleArticle(props: SingleArticleProps) {
-  const { article, articles } = props
+  const { article, articles, settingsSite } = props
 
   const articleData = {
     content: article.content,
@@ -43,12 +45,20 @@ export default function SingleArticle(props: SingleArticleProps) {
   return (
     <>
       <NextSeo
-        title={`${article.meta_title || article.title} | ${env.SITE_TITLE}`}
+        title={`${article.meta_title || article.title} | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
         description={article.meta_description || article.excerpt}
-        canonical={`https://${env.DOMAIN}/${article.slug}`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+          article.slug
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}/${article.slug}`,
-          title: `${article.meta_title || article.title} | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}/${
+            article.slug
+          }`,
+          title: `${article.meta_title || article.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
           description: article.meta_description || article.excerpt,
           images: [
             {
@@ -63,7 +73,11 @@ export default function SingleArticle(props: SingleArticleProps) {
             publishedTime: article.createdAt,
             modifiedTime: article.updatedAt,
             section: article.topics[0]?.title,
-            authors: [`https://${env.DOMAIN}/user/${article.author.username}`],
+            authors: [
+              `https://${settingsSite.url?.value || env.DOMAIN}/user/${
+                article.author.username
+              }`,
+            ],
             tags: [
               article.topics?.map((topic: TopicDataProps) => {
                 return topic?.title
@@ -73,18 +87,22 @@ export default function SingleArticle(props: SingleArticleProps) {
         }}
       />
       <ArticleJsonLd
-        url={`https://${env.DOMAIN}/${article.slug}`}
-        title={`${article.meta_title || article.title} | ${env.SITE_TITLE}`}
+        url={`https://${settingsSite.url?.value || env.DOMAIN}/${article.slug}`}
+        title={`${article.meta_title || article.title} | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
         images={[article.featuredImage.url]}
         datePublished={article.createdAt}
         dateModified={article.createdAt}
         authorName={[
           {
             name: article.author.name,
-            url: `https://${env.DOMAIN}/user/${article.author.username}`,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}/user/${
+              article.author.username
+            }`,
           },
         ]}
-        publisherName={env.SITE_TITLE}
+        publisherName={settingsSite.title?.value || env.SITE_TITTLE}
         publisherLogo={env.LOGO_URL}
         description={article.meta_description || article.excerpt}
         isAccessibleForFree={true}
@@ -93,18 +111,20 @@ export default function SingleArticle(props: SingleArticleProps) {
         itemListElements={[
           {
             position: 1,
-            name: env.DOMAIN,
-            item: `https://${env.DOMAIN}`,
+            name: settingsSite.url?.value || env.DOMAIN,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}`,
           },
           {
             position: 2,
             name: "Article",
-            item: `https://${env.DOMAIN}/article`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/article`,
           },
           {
             position: 3,
             name: article.topics[0]?.title,
-            item: `https://${env.DOMAIN}/topic/${article.topics[0]?.slug}`,
+            item: `https://${settingsSite.url?.value || env.DOMAIN}/topic/${
+              article.topics[0]?.slug
+            }`,
           },
         ]}
       />
@@ -162,6 +182,7 @@ export const getServerSideProps = async ({
 }) => {
   const { article } = await getArticleBySlug(params.slug)
   const { articles } = await getArticles()
+  const { settingsSite } = await getSettingsSite()
 
   if (!article) {
     return {
@@ -173,6 +194,7 @@ export const getServerSideProps = async ({
     props: {
       article: article,
       articles: articles,
+      settingsSite,
     },
   }
 }

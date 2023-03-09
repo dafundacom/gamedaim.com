@@ -22,11 +22,12 @@ interface PostProps {
   post: WpSinglePostDataProps
   posts: WpPostsDataProps
   seoData: any
+  settingsSite: any
 }
 
 export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
   (props, ref) => {
-    const { post, posts, seoData } = props
+    const { post, posts, seoData, settingsSite } = props
     const { categories } = post
     const { primary } = wpPrimaryCategorySlug(categories as any)
     const [articles, setArticles] = React.useState<any>([])
@@ -144,12 +145,18 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
       <>
         <Head>{parse(seoData.jsonLd.raw)}</Head>
         <NextSeo
-          title={`${seo.title} | ${env.SITE_TITLE}`}
+          title={`${seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`}
           description={seo.description}
-          canonical={`https://${env.DOMAIN}/${seo.category.slug}/${seo.slug}`}
+          canonical={`https://${settingsSite.url?.value || env.DOMAIN}/${
+            seo.category.slug
+          }/${seo.slug}`}
           openGraph={{
-            url: `https://${env.DOMAIN}/${seo.slug}`,
-            title: `${seo.title} | ${env.SITE_TITLE}`,
+            url: `https://${settingsSite.url?.value || env.DOMAIN}/${seo.slug}`,
+            title: `${seo.title} | ${
+              settingsSite.title?.value || env.SITE_TITTLE
+            }`,
             description: seo.description,
             images: [
               {
@@ -164,7 +171,11 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
               publishedTime: seo.date,
               modifiedTime: seo.modified,
               section: seo.tags[0].title,
-              authors: [`https://${env.DOMAIN}/author/${seo.authorUrl}`],
+              authors: [
+                `https://${settingsSite.url?.value || env.DOMAIN}/author/${
+                  seo.authorUrl
+                }`,
+              ],
               tags: [
                 seo.tags?.map((tag: TagProps) => {
                   return tag.title
@@ -174,18 +185,24 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           }}
         />
         <ArticleJsonLd
-          url={`https://${env.DOMAIN}/${seo.category.slug}/${seo.slug}`}
-          title={`${seo.title} | ${env.SITE_TITLE}`}
+          url={`https://${settingsSite.url?.value || env.DOMAIN}/${
+            seo.category.slug
+          }/${seo.slug}`}
+          title={`${seo.title} | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`}
           images={[seo.featuredImageUrl]}
           datePublished={seo.date}
           dateModified={seo.modified}
           authorName={[
             {
               name: seo.authorName,
-              url: `https://${env.DOMAIN}/author/${seo.authorUrl}`,
+              url: `https://${settingsSite.url?.value || env.DOMAIN}/author/${
+                seo.authorUrl
+              }`,
             },
           ]}
-          publisherName={env.SITE_TITLE}
+          publisherName={settingsSite.title?.value || env.SITE_TITTLE}
           publisherLogo={env.LOGO_URL}
           description={seo.description}
           isAccessibleForFree={true}
@@ -194,18 +211,22 @@ export const SinglePostLayout = React.forwardRef<HTMLDivElement, PostProps>(
           itemListElements={[
             {
               position: 1,
-              name: env.DOMAIN,
-              item: `https://${env.DOMAIN}`,
+              name: settingsSite.url?.value || env.DOMAIN,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}`,
             },
             {
               position: 2,
               name: "Article",
-              item: `https://${env.DOMAIN}/${seo.category.slug}`,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}/${
+                seo.category.slug
+              }`,
             },
             {
               position: 3,
               name: seo.category.title,
-              item: `https://${env.DOMAIN}/${seo.category.slug}`,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}/${
+                seo.category.slug
+              }`,
             },
           ]}
         />

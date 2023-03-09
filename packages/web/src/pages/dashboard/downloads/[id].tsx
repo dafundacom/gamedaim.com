@@ -21,8 +21,8 @@ import {
   Textarea,
   useDisclosure,
 } from "ui"
-
 import env from "@/env"
+
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
@@ -34,6 +34,7 @@ import {
 import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Thead, Tr, Th, Tbody, Td } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   title: string
@@ -50,7 +51,8 @@ interface FormValues {
   type: string
 }
 
-export default function EditDownloadDashboard() {
+export default function EditDownloadDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const [editorContent, setEditorContent] = React.useState("")
@@ -207,13 +209,25 @@ export default function EditDownloadDashboard() {
   return (
     <>
       <NextSeo
-        title={`Edit Download | ${env.SITE_TITLE}`}
-        description={`Edit Download | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Edit Download | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Edit Download | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Edit Download | ${env.SITE_TITLE}`,
-          description: `Edit Download | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Edit Download | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Edit Download | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -590,4 +604,11 @@ export default function EditDownloadDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }

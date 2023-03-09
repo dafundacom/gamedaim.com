@@ -5,17 +5,19 @@ import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { FormControl, DropZone, FormErrorMessage, Button } from "ui"
-
 import env from "@/env"
+
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { resizeImage } from "@/utils/resize-image"
+import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
   file: Blob
 }
 
-export default function UploadMediaDashboard() {
+export default function UploadMediaDashboard(props: { settingsSite: any }) {
+  const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const router = useRouter()
@@ -52,13 +54,25 @@ export default function UploadMediaDashboard() {
   return (
     <>
       <NextSeo
-        title={`Add New Media | ${env.SITE_TITLE}`}
-        description={`Add New Media | ${env.SITE_TITLE}`}
-        canonical={`https://${env.DOMAIN}${router.pathname}`}
+        title={`Add New Media | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        description={`Add New Media | ${
+          settingsSite.title?.value || env.SITE_TITTLE
+        }`}
+        canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
+          router.pathname
+        }`}
         openGraph={{
-          url: `https://${env.DOMAIN}${router.pathname}`,
-          title: `Add New Media | ${env.SITE_TITLE}`,
-          description: `Add New Media | ${env.SITE_TITLE}`,
+          url: `https://${settingsSite.url?.value || env.DOMAIN}${
+            router.pathname
+          }`,
+          title: `Add New Media | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
+          description: `Add New Media | ${
+            settingsSite.title?.value || env.SITE_TITTLE
+          }`,
         }}
         noindex={true}
       />
@@ -87,4 +101,11 @@ export default function UploadMediaDashboard() {
       </AdminRole>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const { settingsSite } = await getSettingsSite()
+  return {
+    props: { settingsSite },
+  }
 }
