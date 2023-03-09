@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import useSWR from "swr"
 
+import env from "@/env"
 import { HomeLayout } from "@/layouts/Home"
 import { fetcher } from "@/lib/fetcher"
 import { DownloadCard, DownloadCardSide } from "@/components/Card"

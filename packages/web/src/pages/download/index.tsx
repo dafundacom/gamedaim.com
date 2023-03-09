@@ -10,6 +10,7 @@ import { getDownloadByType, getDownloads } from "@/lib/download"
 import { DownloadCard } from "@/components/Card"
 import { getTopics } from "@/lib/topics"
 
+import env from "@/env"
 import { HomeLayout } from "@/layouts/Home"
 import { DownloadDataProps, TopicDataProps } from "@/lib/data-types"
 import { getSettingsSite } from "@/lib/settings"
