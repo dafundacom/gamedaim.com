@@ -53,6 +53,9 @@ export async function getDownloads(downloadPage: number, perPage: number) {
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
@@ -111,6 +114,9 @@ export async function findDownloadById(downloadId: string) {
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
@@ -179,6 +185,9 @@ export async function findDownloadByType(
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
@@ -246,6 +255,9 @@ export async function findDownloadByAuthorId(
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
@@ -308,6 +320,9 @@ export async function findDownloadBySlug(
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         skip: (downloadPage - 1) * perPage,
         take: perPage,
         select: {
@@ -389,6 +404,9 @@ export async function searchDownloads(searchDownloadQuery: string) {
       type: true,
       status: true,
       downloadFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
