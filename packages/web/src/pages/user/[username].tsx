@@ -28,7 +28,6 @@ export default function User(props: UserProps) {
   const [imageAvatar, setImageAvatar] = React.useState(
     user?.profilePicture?.url,
   )
-  const router = useRouter()
   return (
     <HomeLayout>
       <div className="mx-4 mt-[70px] w-full rounded px-4">
