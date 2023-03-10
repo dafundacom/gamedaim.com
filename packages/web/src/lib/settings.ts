@@ -24,7 +24,7 @@ export const getSettingsSite = async () => {
   const { setting: description } = await getSettingByKey("description")
   const { setting: metaDescription } = await getSettingByKey("meta_description")
   const { setting: url } = await getSettingByKey("url")
-
+  const { setting: tagline } = await getSettingByKey("tagline")
   return {
     settingsSite: {
       title: title || "",
@@ -32,6 +32,7 @@ export const getSettingsSite = async () => {
       description: description || "",
       metaDescription: metaDescription || "",
       url: url || "",
+      tagline: tagline || "",
     },
   }
 }
