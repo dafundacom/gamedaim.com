@@ -17,6 +17,7 @@ export const ModalSelectMedia = (props: {
 }) => {
   const { handleSelectUpdateMedia, open, setOpen } = props
   const [resultMedias, setResultMedias] = React.useState([])
+
   const [searched, setSearched] = React.useState(false)
   const {
     medias: listMedias,
@@ -29,14 +30,18 @@ export const ModalSelectMedia = (props: {
 
   const totalPageMedias = mediasCount && Math.ceil(mediasCount / 10)
 
-  const handleSearchMedia = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchChange = async (e: any) => {
     e.preventDefault()
-    const { media } = await getMediaBySearch(e.target["0"].value)
-
     setSearched(true)
-    setResultMedias(media)
-  }
 
+    if (e.target.value.length > 1) {
+      const { media } = await getMediaBySearch(e.target.value)
+
+      setResultMedias(media)
+    } else if (e.target.value.length < 1) {
+      setResultMedias([])
+    }
+  }
   return (
     <>
       <Modal
@@ -45,9 +50,13 @@ export const ModalSelectMedia = (props: {
           <>
             <MediaUpload addLoadMedias={updateMedias} />
             <div>
-              <form onSubmit={(e) => handleSearchMedia(e)}>
+              <form onSubmit={(e) => e.preventDefault()}>
                 <Input.Group>
-                  <Input type="text" placeholder="Search image" />
+                  <Input
+                    onChange={handleSearchChange}
+                    type="text"
+                    placeholder="Search image"
+                  />
                   <Input.RightElement className="w-2">
                     <button
                       type="submit"
