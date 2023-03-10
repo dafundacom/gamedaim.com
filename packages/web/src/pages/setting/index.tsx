@@ -1,8 +1,6 @@
 import * as React from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
-import env from "@/env"
-
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import useSWR from "swr"
@@ -13,9 +11,11 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Textarea,
   RequiredIndicator,
 } from "ui"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { fetcher } from "@/lib/fetcher"
@@ -156,6 +156,7 @@ export default function Settings(props: { settingsSite: any }) {
     resetYoutube(youtube)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   const onSubmitTitle = async (values: any) => {
     try {
       const { data } = await axios.post("/setting", values)
@@ -171,6 +172,7 @@ export default function Settings(props: { settingsSite: any }) {
       toast.error(err.response.data.message)
     }
   }
+
   const onSubmitMetaTitle = async (values: any) => {
     try {
       const { data } = await axios.post("/setting", values)
@@ -201,6 +203,7 @@ export default function Settings(props: { settingsSite: any }) {
       toast.error(err.response.data.message)
     }
   }
+
   const onSubmitMetaDescription = async (values: any) => {
     try {
       const { data } = await axios.post("/setting", values)
@@ -296,6 +299,7 @@ export default function Settings(props: { settingsSite: any }) {
       toast.error(err.response.data.message)
     }
   }
+
   const onSubmitYoutube = async (values: any) => {
     try {
       const { data } = await axios.post("/setting", values)
@@ -330,10 +334,8 @@ export default function Settings(props: { settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`Add New Topic | ${
-          settingsSite.title?.value || env.SITE_TITTLE
-        }`}
-        description={`Add New Topic | ${
+        title={`Setting | ${settingsSite.title?.value || env.SITE_TITTLE}`}
+        description={`Setting | ${
           settingsSite.title?.value || env.SITE_TITTLE
         }`}
         canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
@@ -343,10 +345,8 @@ export default function Settings(props: { settingsSite: any }) {
           url: `https://${settingsSite.url?.value || env.DOMAIN}${
             router.pathname
           }`,
-          title: `Add New Topic | ${
-            settingsSite.title?.value || env.SITE_TITTLE
-          }`,
-          description: `Add New Topic | ${
+          title: `Setting | ${settingsSite.title?.value || env.SITE_TITTLE}`,
+          description: `Setting | ${
             settingsSite.title?.value || env.SITE_TITTLE
           }`,
         }}
@@ -404,7 +404,7 @@ export default function Settings(props: { settingsSite: any }) {
                     Description
                     <RequiredIndicator />
                   </FormLabel>
-                  <Input
+                  <Textarea
                     type="text"
                     {...registerDescription("value", {
                       required: "Description is Required",
@@ -425,7 +425,7 @@ export default function Settings(props: { settingsSite: any }) {
                     Meta Description
                     <RequiredIndicator />
                   </FormLabel>
-                  <Input
+                  <Textarea
                     type="text"
                     {...registerMetaDescription("value", {
                       required: "Meta Description is Required",
