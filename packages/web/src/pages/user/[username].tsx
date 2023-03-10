@@ -2,6 +2,7 @@ import * as React from "react"
 import dayjs from "dayjs"
 import NextImage from "next/image"
 import env from "@/env"
+import useSWR from "swr"
 
 import { HomeLayout } from "@/layouts/Home"
 import { Heading, Text } from "ui"
@@ -9,6 +10,8 @@ import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { getUserByUserName } from "@/lib/users"
 import { ArticleDataProps, UserDataProps } from "@/lib/data-types"
 import { getSettingsSite } from "@/lib/settings"
+import { getArticleByAuthorId } from "@/lib/articles"
+import { PostCard } from "@/components/Card"
 
 interface UserProps {
   user: UserDataProps
@@ -19,6 +22,13 @@ interface UserProps {
 export default function User(props: UserProps) {
   const { user, settingsSite } = props
 
+  const { data: articles } = useSWR(user?.id, (key) =>
+    getArticleByAuthorId(key),
+  )
+  const [imageAvatar, setImageAvatar] = React.useState(
+    user?.profilePicture?.url,
+  )
+  const router = useRouter()
   return (
     <HomeLayout>
       <div className="mx-4 mt-[70px] w-full rounded px-4">
@@ -103,9 +113,12 @@ export default function User(props: UserProps) {
           <div className="mr-4">
             {user?.profilePicture?.url && (
               <NextImage
-                src={user?.profilePicture?.url}
+                src={imageAvatar}
                 alt={user?.name}
                 width={400}
+                onError={() => {
+                  setImageAvatar("/icons/author.jpg")
+                }}
                 height={400}
                 className="aspect-[1/1] w-[150px] max-w-[unset] rounded-full object-cover lg:!w-[200px]"
               />
@@ -120,15 +133,15 @@ export default function User(props: UserProps) {
             <Text>{user?.about}</Text>
           </div>
         </div>
-        {/* <div>
+        <div>
           <div className="my-2 flex flex-row justify-between pb-2">
             <Heading as="h2" size="2xl" bold>
               {`Articles by ${user.name}`}
             </Heading>
           </div>
           {articles &&
-            articles.length > 0 &&
-            articles.map((article: ArticleDataProps) => {
+            articles.articles.length > 0 &&
+            articles.articles.map((article: ArticleDataProps) => {
               return (
                 <PostCard
                   key={article.id}
@@ -137,15 +150,12 @@ export default function User(props: UserProps) {
                   slug={article.slug}
                   title={article.title}
                   excerpt={article.excerpt}
-                  authorName={article.author?.name}
-                  authorAvatarUrl={article.author?.profilePicture?.url}
-                  authorUri={article.author?.username}
                   date={article.createdAt}
                   isWP={false}
                 />
               )
             })}
-        </div> */}
+        </div>
       </div>
     </HomeLayout>
   )
@@ -153,8 +163,8 @@ export default function User(props: UserProps) {
 
 export async function getServerSideProps({ params }: any) {
   const { user } = await getUserByUserName(params?.username)
-  const { settingsSite } = await getSettingsSite()
 
+  const { settingsSite } = await getSettingsSite()
   if (!user) {
     return {
       notFound: true,
@@ -164,6 +174,7 @@ export async function getServerSideProps({ params }: any) {
   return {
     props: {
       user,
+
       settingsSite,
     },
   }

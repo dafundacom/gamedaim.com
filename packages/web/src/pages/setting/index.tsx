@@ -11,8 +11,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  Textarea,
   RequiredIndicator,
+  Textarea,
 } from "ui"
 
 import env from "@/env"
@@ -29,6 +29,7 @@ interface FormValues {
 export default function Settings(props: { settingsSite: any }) {
   const { settingsSite } = props
   const [loading, setLoading] = React.useState<boolean>(false)
+  const [successCount, setSuccessCount] = React.useState(0)
 
   const router = useRouter()
   const { data: title } = useSWR("/setting/title", fetcher)
@@ -41,6 +42,7 @@ export default function Settings(props: { settingsSite: any }) {
   const { data: instagram } = useSWR("/setting/instagram_username", fetcher)
   const { data: pinterest } = useSWR("/setting/pinterest_username", fetcher)
   const { data: youtube } = useSWR("/setting/youtube_username", fetcher)
+  const { data: tagline } = useSWR("/setting/tagline", fetcher)
 
   const {
     register: registerTitle,
@@ -143,6 +145,18 @@ export default function Settings(props: { settingsSite: any }) {
       key: "youtube_username",
     },
   })
+
+  const {
+    register: registerTagline,
+    formState: { errors: errorsTagline },
+    handleSubmit: handleSubmitTagline,
+    reset: resetTagline,
+  } = useForm<FormValues>({
+    defaultValues: {
+      key: "tagline",
+    },
+  })
+
   React.useEffect(() => {
     resetTitle(title)
     resetMetaTitle(metaTitle)
@@ -154,8 +168,21 @@ export default function Settings(props: { settingsSite: any }) {
     resetPinterest(pinterest)
     resetTwitter(twitter)
     resetYoutube(youtube)
+    resetTagline(tagline)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [
+    description,
+    facebook,
+    instagram,
+    metaDescription,
+    metaTitle,
+    pinterest,
+    tagline,
+    title,
+    twitter,
+    url,
+    youtube,
+  ])
 
   const onSubmitTitle = async (values: any) => {
     try {
@@ -165,7 +192,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetTitle(data)
-        toast.success("Title Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -181,7 +208,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetMetaTitle(data)
-        toast.success("Meta Title Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -196,7 +223,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetDescription(data)
-        toast.success("Description Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -212,7 +239,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetMetaDescription(data)
-        toast.success("Meta Description Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -228,7 +255,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetUrl(data)
-        toast.success("Url Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -244,7 +271,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetFacebook(data)
-        toast.success("Facebook Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -260,7 +287,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetInstagram(data)
-        toast.success("Instagram Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -276,7 +303,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetTwitter(data)
-        toast.success("Twitter Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -292,7 +319,7 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetPinterest(data)
-        toast.success("Pinterest Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -308,7 +335,23 @@ export default function Settings(props: { settingsSite: any }) {
         toast.error(data.error)
       } else {
         resetYoutube(data)
-        toast.success("Youtube Successfully created")
+        setSuccessCount((prevCount) => prevCount + 1)
+      }
+    } catch (err: any) {
+      console.log("err => ", err)
+      toast.error(err.response.data.message)
+    }
+  }
+
+  const onSubmitTagline = async (values: any) => {
+    try {
+      const { data } = await axios.post("/setting", values)
+
+      if (data?.error) {
+        toast.error(data.error)
+      } else {
+        resetTagline(data)
+        setSuccessCount((prevCount) => prevCount + 1)
       }
     } catch (err: any) {
       console.log("err => ", err)
@@ -328,6 +371,12 @@ export default function Settings(props: { settingsSite: any }) {
     handleSubmitInstagram(onSubmitInstagram)()
     handleSubmitYoutube(onSubmitYoutube)()
     handleSubmitPinterest(onSubmitPinterest)()
+    handleSubmitTagline(onSubmitTagline)()
+    if (successCount === 11) {
+      toast.success("Settings submitted successfully!")
+      setSuccessCount(0)
+    }
+
     setLoading(false)
   }
 
@@ -457,6 +506,27 @@ export default function Settings(props: { settingsSite: any }) {
                   {errorsUrl?.value && (
                     <FormErrorMessage>
                       {errorsUrl.value.message}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </form>
+              <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                <FormControl invalid={Boolean(errorsTagline.value)}>
+                  <FormLabel>
+                    Tagline Username
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    {...registerTagline("value", {
+                      required: "Tagline is Required",
+                    })}
+                    className="max-w-xl"
+                    placeholder="Enter Tagline Username"
+                  />
+                  {errorsTagline?.value && (
+                    <FormErrorMessage>
+                      {errorsTagline.value.message}
                     </FormErrorMessage>
                   )}
                 </FormControl>
