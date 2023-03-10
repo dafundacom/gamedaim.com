@@ -34,9 +34,9 @@ export default function Home(props: { postsHome: any; settingsSite: any }) {
   return (
     <>
       <NextSeo
-        title={`${
-          settingsSite.title?.value || env.SITE_TITTLE
-        } | Everlasting Gaming Knowledge`}
+        title={`${settingsSite.title?.value || env.SITE_TITTLE} | ${
+          settingsSite.tagline?.value || ""
+        }`}
         description={settingsSite.description?.value || env.DESCRIPTION}
         canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
           router.pathname
@@ -45,9 +45,9 @@ export default function Home(props: { postsHome: any; settingsSite: any }) {
           url: `https://${settingsSite.url?.value || env.DOMAIN}${
             router.pathname
           }`,
-          title: `${
-            settingsSite.title?.value || env.SITE_TITTLE
-          } | Everlasting Gaming Knowledge`,
+          title: `${settingsSite.title?.value || env.SITE_TITTLE} | ${
+            settingsSite.tagline?.value || ""
+          }`,
           description: settingsSite.description?.value || env.DESCRIPTION,
         }}
       />
