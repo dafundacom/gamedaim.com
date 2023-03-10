@@ -1,13 +1,12 @@
 import * as React from "react"
 import dayjs from "dayjs"
 import NextImage from "next/image"
-import { useRouter } from "next/router"
 import env from "@/env"
 import useSWR from "swr"
 
 import { HomeLayout } from "@/layouts/Home"
 import { Heading, Text } from "ui"
-import { NextSeo } from "next-seo"
+import { BreadcrumbJsonLd, NextSeo } from "next-seo"
 import { getUserByUserName } from "@/lib/users"
 import { ArticleDataProps, UserDataProps } from "@/lib/data-types"
 import { getSettingsSite } from "@/lib/settings"
@@ -22,6 +21,7 @@ interface UserProps {
 
 export default function User(props: UserProps) {
   const { user, settingsSite } = props
+
   const { data: articles } = useSWR(user?.id, (key) =>
     getArticleByAuthorId(key),
   )
@@ -29,32 +29,85 @@ export default function User(props: UserProps) {
     user?.profilePicture?.url,
   )
   const router = useRouter()
-
   return (
     <HomeLayout>
       <div className="mx-4 mt-[70px] w-full rounded px-4">
-        <NextSeo
-          title={`${user?.name} | ${
-            settingsSite.title?.value || env.SITE_TITTLE
-          }`}
-          description={`${user?.name} | ${
-            settingsSite.title?.value || env.SITE_TITTLE
-          }`}
-          canonical={`https://${settingsSite.url?.value || env.DOMAIN}${
-            router.pathname
-          }`}
-          openGraph={{
-            url: `https://${settingsSite.url?.value || env.DOMAIN}${
-              router.pathname
-            }`,
-            title: `${user?.name} | ${
-              settingsSite.title?.value || env.SITE_TITTLE
-            }`,
-            description: `${user?.about} | ${
-              settingsSite.title?.value || env.SITE_TITTLE
-            }`,
-          }}
-          noindex={true}
+        {user.profilePicture ? (
+          <NextSeo
+            title={`${user.meta_title || user.username} — ${
+              settingsSite.title?.value || env.SITE_TITLE
+            }`}
+            description={
+              user.meta_description ||
+              user.about ||
+              `${user.name} — ${settingsSite.title?.value || env.SITE_TITLE}`
+            }
+            canonical={`https://${env.DOMAIN}/user/${user.username}`}
+            openGraph={{
+              title: `${user.meta_title || user.name} — ${
+                settingsSite.title?.value || env.SITE_TITLE
+              }`,
+              description:
+                user.meta_description ||
+                user.about ||
+                `${user.name} — ${settingsSite.title?.value || env.SITE_TITLE}`,
+              url: `https://${settingsSite.url?.value || env.DOMAIN}/user/${
+                user.username
+              }`,
+              images: [
+                {
+                  url: user.profilePicture.url,
+                  alt: user.name,
+                  height: 250,
+                  width: 250,
+                  type: "image/webp",
+                },
+              ],
+            }}
+          />
+        ) : (
+          <NextSeo
+            title={`${user.meta_title || user.username} — ${
+              settingsSite.title?.value || env.SITE_TITLE
+            }`}
+            description={
+              user.meta_description ||
+              user.about ||
+              `${user.name} — ${settingsSite.title?.value || env.SITE_TITLE}`
+            }
+            canonical={`https://${settingsSite.url?.value || env.DOMAIN}/user/${
+              user.username
+            }`}
+            openGraph={{
+              title: `${user.meta_title || user.name} — ${
+                settingsSite.title?.value || env.SITE_TITLE
+              }`,
+              description:
+                user.meta_description ||
+                user.about ||
+                `${user.name} — ${settingsSite.title?.value || env.SITE_TITLE}`,
+              url: `https://${settingsSite.url?.value || env.DOMAIN}/user/${
+                user.username
+              }`,
+            }}
+          />
+        )}
+
+        <BreadcrumbJsonLd
+          itemListElements={[
+            {
+              position: 1,
+              name: settingsSite.url?.value || env.DOMAIN,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}`,
+            },
+            {
+              position: 2,
+              name: user.name,
+              item: `https://${settingsSite.url?.value || env.DOMAIN}/user/${
+                user.username
+              }`,
+            },
+          ]}
         />
         <div className="flex flex-col items-center space-y-2 border-b">
           <div className="mr-4">
