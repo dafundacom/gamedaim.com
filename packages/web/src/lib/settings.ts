@@ -7,6 +7,11 @@ export const getSettingByKey = async (key: string) => {
     setting = data
   } catch (error) {
     console.log(error)
+    return {
+      setting: {
+        [key]: { error: "Something went wrong" },
+      },
+    }
   }
   if (setting === null || undefined) {
     return {
