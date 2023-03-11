@@ -1,6 +1,6 @@
 import * as React from "react"
-import { tx } from "@twind/core"
-import { Link, LinkProps } from "../link"
+import NextLink from "next/link"
+import cx from "clsx"
 import { getValidChildren } from "../children-utils"
 
 export interface BreadcrumbSeparatorProps
@@ -17,22 +17,31 @@ export const BreadcrumbSeparator = React.forwardRef<
     <span
       ref={ref}
       role="presentation"
-      className={tx("mx-2 text-gray-500 dark:text-gray-400", className)}
+      className={cx("mx-2 text-gray-600 dark:text-gray-200", className)}
       {...rest}
     />
   )
 })
 
-export interface BreadcrumbLinkProps extends LinkProps {
+export interface BreadcrumbLinkProps {
   currentPage?: boolean
 }
 
 export const BreadcrumbLink = React.forwardRef<any, any>((props, ref) => {
   const { currentPage, ...rest } = props
-  const Comp = currentPage ? "span" : Link
+  const Comp = currentPage ? "span" : NextLink
 
   return (
-    <Comp ref={ref} aria-current={currentPage ? "page" : undefined} {...rest} />
+    <Comp
+      ref={ref}
+      className={
+        currentPage
+          ? "text-gray-400 dark:text-gray-400"
+          : "text-gray-600 dark:text-gray-200"
+      }
+      aria-current={currentPage ? "page" : undefined}
+      {...rest}
+    />
   )
 })
 
@@ -79,7 +88,7 @@ export const BreadcrumbItem = React.forwardRef<
   return (
     <li
       ref={ref}
-      className={tx(
+      className={cx(
         "inline-flex items-center whitespace-nowrap",
         bold && "font-bold",
         semibold && "font-semibold",
@@ -124,10 +133,10 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
       <nav
         ref={ref}
         aria-label="breadcrumb"
-        className={tx("relative", className)}
+        className={cx("relative mb-2", className)}
         {...rest}
       >
-        <ol>{clones}</ol>
+        <ol className="inline-flex">{clones}</ol>
       </nav>
     )
   },
