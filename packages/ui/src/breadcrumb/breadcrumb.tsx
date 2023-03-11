@@ -1,6 +1,6 @@
 import * as React from "react"
 import NextLink from "next/link"
-import cx from "clsx"
+import { tx } from "@twind/core"
 import { getValidChildren } from "../children-utils"
 
 export interface BreadcrumbSeparatorProps
@@ -17,7 +17,7 @@ export const BreadcrumbSeparator = React.forwardRef<
     <span
       ref={ref}
       role="presentation"
-      className={cx("mx-2 text-gray-600 dark:text-gray-200", className)}
+      className={tx("mx-2 text-gray-600 dark:text-gray-200", className)}
       {...rest}
     />
   )
@@ -88,7 +88,7 @@ export const BreadcrumbItem = React.forwardRef<
   return (
     <li
       ref={ref}
-      className={cx(
+      className={tx(
         "inline-flex items-center whitespace-nowrap",
         bold && "font-bold",
         semibold && "font-semibold",
@@ -133,7 +133,7 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
       <nav
         ref={ref}
         aria-label="breadcrumb"
-        className={cx("relative mb-2", className)}
+        className={tx("relative mb-2", className)}
         {...rest}
       >
         <ol className="inline-flex">{clones}</ol>
