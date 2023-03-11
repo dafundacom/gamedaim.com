@@ -1,9 +1,9 @@
-import axios from "axios"
+import axiosInstance from "@/utils/axiosinstance"
 
 export const getDownloadFilesCount = async () => {
   let downloadsCountData
   try {
-    const { data } = await axios.get("/download-file/count")
+    const { data } = await axiosInstance.get("/download-file/count")
     downloadsCountData = data
   } catch (e) {
     console.log(`Failed to query data: ${e}`)
@@ -16,7 +16,7 @@ export const getDownloadFilesCount = async () => {
 export const getDownloadFiles = async (page = 1) => {
   let downloadsData
   try {
-    const { data } = await axios.get(`/download-file/page/${page}`)
+    const { data } = await axiosInstance.get(`/download-file/page/${page}`)
     downloadsData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -29,7 +29,7 @@ export const getDownloadFiles = async (page = 1) => {
 export const getDownloadFileBySlug = async (slug: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/download-file/slug/${slug}`)
+    const { data } = await axiosInstance.get(`/download-file/slug/${slug}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -41,7 +41,7 @@ export const getDownloadFileBySlug = async (slug: string) => {
 export const getDownloadFileBySearch = async (search: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/download-file/search/${search}`)
+    const { data } = await axiosInstance.get(`/download-file/search/${search}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

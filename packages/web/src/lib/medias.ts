@@ -1,10 +1,11 @@
-import axios from "axios"
 import useSWRInfinite from "swr/infinite"
 import { fetcher } from "./fetcher"
+import axiosInstance from "@/utils/axiosinstance"
+
 export const getMediasCount = async () => {
   let mediasCountData
   try {
-    const { data } = await axios.get("/media/count")
+    const { data } = await axiosInstance.get("/media/count")
     mediasCountData = data
   } catch (e) {
     console.log(`Failed to query data: ${e}`)
@@ -17,7 +18,7 @@ export const getMediasCount = async () => {
 export const getMedias = async (page = 1) => {
   let mediasData
   try {
-    const { data } = await axios.get(`/media/page/${page}`)
+    const { data } = await axiosInstance.get(`/media/page/${page}`)
     mediasData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -30,7 +31,7 @@ export const getMedias = async (page = 1) => {
 export const getMediaBySlug = async (slug: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/media/slug/${slug}`)
+    const { data } = await axiosInstance.get(`/media/slug/${slug}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -42,7 +43,7 @@ export const getMediaBySlug = async (slug: string) => {
 export const getMediaBySearch = async (search: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/media/search/${search}`)
+    const { data } = await axiosInstance.get(`/media/search/${search}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -54,7 +55,7 @@ export const getMediaBySearch = async (search: string) => {
 export const getMediaByType = async (type: string, page = 1) => {
   let postData
   try {
-    const { data } = await axios.get(`/media/type/${type}/${page}`)
+    const { data } = await axiosInstance.get(`/media/type/${type}/${page}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -66,7 +67,9 @@ export const getMediaByType = async (type: string, page = 1) => {
 export const getMediaByTopics = async (slug: string, page = 1) => {
   let postData
   try {
-    const { data } = await axios.get(`/topic/slug/${slug}/medias/${page}`)
+    const { data } = await axiosInstance.get(
+      `/topic/slug/${slug}/medias/${page}`,
+    )
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

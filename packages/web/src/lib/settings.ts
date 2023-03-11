@@ -1,9 +1,9 @@
-import axios from "axios"
+import axiosInstance from "@/utils/axiosinstance"
 
 export const getSettingByKey = async (key: string) => {
   let setting
   try {
-    const { data } = await axios.get(`/setting/${key}`)
+    const { data } = await axiosInstance.get(`/setting/${key}`)
     setting = data
   } catch (error) {
     console.log(error)

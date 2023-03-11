@@ -1,9 +1,9 @@
-import axios from "axios"
+import axiosInstance from "@/utils/axiosinstance"
 
 export const getArticlesCount = async () => {
   let articlesCountData
   try {
-    const { data } = await axios.get("/article/count")
+    const { data } = await axiosInstance.get("/article/count")
     articlesCountData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -16,7 +16,7 @@ export const getArticlesCount = async () => {
 export const getArticles = async (page = 1) => {
   let articlesData
   try {
-    const { data } = await axios.get(`/article/page/${page}`)
+    const { data } = await axiosInstance.get(`/article/page/${page}`)
     articlesData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -29,7 +29,7 @@ export const getArticles = async (page = 1) => {
 export const getArticleBySlug = async (slug: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/article/slug/${slug}`)
+    const { data } = await axiosInstance.get(`/article/slug/${slug}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -42,7 +42,7 @@ export const getArticleBySlug = async (slug: string) => {
 export const getArticleByAuthorId = async (id: string) => {
   let postData
   try {
-    const { data } = await axios.get(`/article/author/${id}/1`)
+    const { data } = await axiosInstance.get(`/article/author/${id}/1`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

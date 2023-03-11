@@ -5,7 +5,7 @@ import { ThemeProvider as NextThemeProvider } from "next-themes"
 import { Toaster } from "react-hot-toast"
 import install from "@twind/with-next/app"
 import { DefaultSeo } from "next-seo"
-
+import axiosInstance from "@/utils/axiosinstance"
 import env from "@/env"
 import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"
@@ -224,5 +224,7 @@ function App({ Component, pageProps }: AppProps) {
     </>
   )
 }
+
+axiosInstance.defaults.baseURL = env.API
 
 export default install(styleConfig, App)
