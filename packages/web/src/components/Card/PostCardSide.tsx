@@ -13,6 +13,7 @@ export const PostCardSide = React.forwardRef<
   PostCardSlideProps
 >((props, ref) => {
   const { src, alt, slug, isWP = true, title, ...rest } = props
+  const [thumbnail, setThumbnail] = React.useState(src)
 
   return (
     <NextLink href={isWP ? slug : (`/article/${slug}` as any)}>
@@ -28,7 +29,8 @@ export const PostCardSide = React.forwardRef<
               height={75}
               width={75}
               className="loading-image aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
-              src={src}
+              src={thumbnail}
+              onError={() => setThumbnail("/image/image-error.svg")}
               onLoadingComplete={(e) => {
                 e.classList.remove("loading-image")
               }}

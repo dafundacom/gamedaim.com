@@ -14,6 +14,7 @@ export const DownloadCardSide = React.forwardRef<
   DownloadCardSlideProps
 >((props, ref) => {
   const { src, slug, title, ...rest } = props
+  const [thumbnail, setThumbnail] = React.useState(src)
 
   return (
     <NextLink href={slug}>
@@ -29,7 +30,8 @@ export const DownloadCardSide = React.forwardRef<
               height={75}
               width={75}
               className="loading-comple aspect-[1/1] !h-[75px] !w-auto max-w-[unset] rounded-md object-cover"
-              src={src}
+              src={thumbnail}
+              onError={() => setThumbnail("/image/image-error.svg")}
               onLoadingComplete={(e) => {
                 e.classList.remove("loading-image")
               }}
