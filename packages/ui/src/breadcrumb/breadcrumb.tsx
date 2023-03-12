@@ -89,7 +89,7 @@ export const BreadcrumbItem = React.forwardRef<
     <li
       ref={ref}
       className={tx(
-        "inline-flex items-center whitespace-nowrap",
+        "inline-flex items-center whitespace-nowrap text-xs md:text-sm",
         bold && "font-bold",
         semibold && "font-semibold",
         medium && "font-medium",
