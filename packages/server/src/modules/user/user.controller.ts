@@ -185,6 +185,7 @@ export async function updateUserByAdminHandler(
       meta_description,
       phoneNumber,
       profilePictureId,
+      role,
       about,
     } = request.body
     const user = request.user
@@ -220,6 +221,7 @@ export async function updateUserByAdminHandler(
       meta_description,
       phoneNumber,
       profilePictureId,
+      role,
       about,
     })
     return reply.code(201).send(updatedUser)

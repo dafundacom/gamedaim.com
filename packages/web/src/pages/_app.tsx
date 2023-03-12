@@ -18,6 +18,7 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
   const [scripts, setScripts] = React.useState<any>()
+
   React.useEffect(() => {
     const getScriptHead = async () => {
       const data = await getScripts(1)
@@ -28,6 +29,7 @@ function App({ Component, pageProps }: AppProps) {
     getScriptHead()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   React.useEffect(() => {
     const handleRouteStart = () => setLoading(true)
     const handleRouteDone = () => setLoading(false)
