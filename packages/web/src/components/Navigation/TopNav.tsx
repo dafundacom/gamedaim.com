@@ -6,19 +6,10 @@ import { useRouter } from "next/router"
 import useSWR from "swr"
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa"
 import { MdSearch } from "react-icons/md"
-import {
-  DashboardIcon,
-  Heading,
-  IconButton,
-  LoginIcon,
-  LogoutIcon,
-  MoonIcon,
-  SunIcon,
-  useDisclosure,
-} from "ui"
+import { Heading, IconButton, MoonIcon, SunIcon, useDisclosure } from "ui"
 import env from "@/env"
-import { AuthContext } from "@/contexts/auth.context"
 import { getSettingByKey } from "@/lib/settings"
+import { DropdownProfile } from "../Dropdown"
 
 interface TopNavProps {
   toggleSideNav?: any
@@ -30,7 +21,6 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
 
     const [mounted, setMounted] = React.useState(false)
     const { resolvedTheme, setTheme } = useTheme()
-    const [auth, setAuth] = React.useContext(AuthContext)
     const { isOpen, onToggle } = useDisclosure()
     const [values, setValues] = React.useState("")
 
@@ -68,15 +58,6 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
     }
 
     React.useEffect(() => setMounted(true), [])
-
-    const logOut = () => {
-      localStorage.removeItem("auth")
-      setAuth({
-        user: null,
-        accessToken: "",
-      })
-      router.push("/auth/login")
-    }
 
     return (
       <>
@@ -179,39 +160,6 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                       </NextLink>
                     )}
                   </div>
-                  {auth.user ? (
-                    <>
-                      {auth.user?.role !== "USER" && (
-                        <NextLink href="/dashboard">
-                          <IconButton
-                            variant="ghost"
-                            aria-label="Profile"
-                            className="!px-1"
-                          >
-                            <DashboardIcon className="h-5 w-5" />
-                          </IconButton>
-                        </NextLink>
-                      )}
-                      <IconButton
-                        className="!px-1"
-                        variant="ghost"
-                        aria-label="Log Out"
-                        onClick={() => logOut()}
-                      >
-                        <LogoutIcon className="h-5 w-5" />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <NextLink href="/auth/login">
-                      <IconButton
-                        className="!px-1"
-                        variant="ghost"
-                        aria-label="Login"
-                      >
-                        <LoginIcon className="h-5 w-5" />
-                      </IconButton>
-                    </NextLink>
-                  )}
                   <div className="flex space-x-2">
                     <IconButton
                       variant="ghost"
@@ -259,6 +207,7 @@ export const TopNav = React.forwardRef<HTMLDivElement, TopNavProps>(
                       )}
                     </div>
                   </div>
+                  <DropdownProfile />
                 </div>
               </div>
             </div>
