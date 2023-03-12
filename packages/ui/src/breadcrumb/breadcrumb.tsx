@@ -36,7 +36,7 @@ export const BreadcrumbLink = React.forwardRef<any, any>((props, ref) => {
       ref={ref}
       className={
         currentPage
-          ? "text-gray-400 dark:text-gray-400"
+          ? "max-w-[150px] truncate whitespace-nowrap text-gray-400 dark:text-gray-400 md:max-w-[250px]"
           : "text-gray-600 dark:text-gray-200"
       }
       aria-current={currentPage ? "page" : undefined}
@@ -89,7 +89,7 @@ export const BreadcrumbItem = React.forwardRef<
     <li
       ref={ref}
       className={tx(
-        "inline-flex items-center whitespace-nowrap",
+        "inline-flex items-center whitespace-nowrap text-xs md:text-sm",
         bold && "font-bold",
         semibold && "font-semibold",
         medium && "font-medium",
