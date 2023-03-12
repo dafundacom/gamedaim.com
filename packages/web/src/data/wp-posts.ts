@@ -245,7 +245,7 @@ export const QUERY_WP_POST_BY_SLUG = `
 
 export const QUERY_WP_POSTS_BY_CATEGORY_SLUG = `
   query PostsByCategoryId($categoryId: String, $after: String) {
-    posts(where: { categoryName: $categoryId }, after: $after, first: 12) {
+    posts(where: { categoryName: $categoryId }, after: $after, first: 10) {
       pageInfo {
         hasNextPage
         endCursor
@@ -292,7 +292,6 @@ export const QUERY_WP_POSTS_BY_CATEGORY_SLUG = `
               }
             }
           }
-          content
           date
           excerpt
           featuredImage {
@@ -355,7 +354,7 @@ export const QUERY_WP_POSTS_BY_TAG_SLUG = `
               }
             }
           }
-          content
+          
           date
           excerpt
           featuredImage {

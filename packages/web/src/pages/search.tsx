@@ -163,8 +163,8 @@ export default function Search(props: SearchProps) {
                     return (
                       <PostCard
                         key={post.id}
-                        src={post.featuredImage.sourceUrl}
-                        alt={post.featuredImage.altText}
+                        src={post.featuredImage?.sourceUrl}
+                        alt={post.featuredImage?.altText}
                         slug={newUri}
                         title={post.title}
                         excerpt={post.excerpt}
