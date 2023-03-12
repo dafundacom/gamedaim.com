@@ -13,7 +13,7 @@ export const StoreLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
     return (
       <div ref={ref} {...rest}>
         <TopNavStore />
-        <div className="mt-[60px]">{children}</div>
+        <div className="mt-[75px]">{children}</div>
       </div>
     )
   },
