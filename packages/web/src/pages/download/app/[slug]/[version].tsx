@@ -17,8 +17,9 @@ import env from "@/env"
 import { getDownloadBySlug, getDownloads } from "@/lib/download"
 import { getDownloadFileBySlug } from "@/lib/download-file"
 import { HomeLayout } from "@/layouts/Home"
-import axios from "axios"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
+
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
@@ -50,7 +51,7 @@ export default function DownloadAppVersion(props: {
 
   const getAds = async () => {
     try {
-      const { data } = await axios.get("/ad/page/1")
+      const { data } = await fetch.get("/ad/page/1")
       setAd(data)
       setLoadingAd(true)
     } catch (err: any) {

@@ -1,6 +1,6 @@
 import * as React from "react"
 import useSWR from "swr"
-import { fetcher } from "@/lib/fetcher"
+import { fetcher } from "@/lib/fetch"
 import { getMediaBySearch, useInfiniteMedias } from "@/lib/medias"
 import { MdOutlineSearch } from "react-icons/md"
 import NextImage from "next/image"

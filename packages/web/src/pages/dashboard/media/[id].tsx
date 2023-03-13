@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -14,11 +13,12 @@ import {
   RequiredIndicator,
   Textarea,
 } from "ui"
-import env from "@/env"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   name: string
@@ -52,7 +52,7 @@ export default function EditMediaDashboard(props: { settingsSite: any }) {
 
   const loadMedia = async () => {
     try {
-      const { data } = await axios.get(`/media/${router.query.id}`)
+      const { data } = await fetch.get(`/media/${router.query.id}`)
       setMedia({
         id: data.id,
         name: data.name,
@@ -76,7 +76,7 @@ export default function EditMediaDashboard(props: { settingsSite: any }) {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true)
-      const { data } = await axios.put(`/media/${media.id}`, values)
+      const { data } = await fetch.put(`/media/${media.id}`, values)
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)

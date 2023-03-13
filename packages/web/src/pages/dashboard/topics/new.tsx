@@ -1,9 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import toast from "react-hot-toast"
-import env from "@/env"
-
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -18,10 +15,12 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -55,7 +54,7 @@ export default function CreateTopicsDashboard(props: { settingsSite: any }) {
         ...values,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.post(
+      const { data } = await fetch.post(
         "/topic",
         selectedFeaturedImageId ? mergedValues : values,
       )

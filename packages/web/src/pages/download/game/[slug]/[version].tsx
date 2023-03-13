@@ -2,6 +2,7 @@ import * as React from "react"
 import NextImage from "next/image"
 import dynamic from "next/dynamic"
 import dayjs from "dayjs"
+import parse from "html-react-parser"
 import relativeTime from "dayjs/plugin/relativeTime"
 import {
   ArticleJsonLd,
@@ -12,13 +13,13 @@ import {
 import { MdChevronRight } from "react-icons/md"
 import { Breadcrumb, Button, Heading, Text } from "ui"
 
-import parse from "html-react-parser"
 import env from "@/env"
+import { HomeLayout } from "@/layouts/Home"
 import { getDownloadBySlug, getDownloads } from "@/lib/download"
 import { getDownloadFileBySlug } from "@/lib/download-file"
-import { HomeLayout } from "@/layouts/Home"
-import axios from "axios"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
+
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
 )
@@ -50,7 +51,7 @@ export default function DownloadGameVersion(props: {
 
   const getAds = async () => {
     try {
-      const { data } = await axios.get("/ad/page/1")
+      const { data } = await fetch.get("/ad/page/1")
       setAd(data)
       setLoadingAd(true)
     } catch (err: any) {

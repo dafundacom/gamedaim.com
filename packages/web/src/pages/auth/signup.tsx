@@ -1,7 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
@@ -23,6 +22,7 @@ import env from "@/env"
 import { AuthContext } from "@/contexts/auth.context"
 import { PublicRole } from "@/components/Role"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   email: string
@@ -54,7 +54,7 @@ export default function Signup(props: { settingsSite: any }) {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true)
-      const { data } = await axios.post(`/user/signup`, values)
+      const { data } = await fetch.post(`/user/signup`, values)
       if (data?.error) {
         toast.error(data.error)
         setLoading(false)

@@ -1,7 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
@@ -26,9 +25,9 @@ import {
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { AddTopics } from "@/components/Form"
-
 import { ModalSelectMedia } from "@/components/Modal"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -76,7 +75,7 @@ export default function CreateArticlesDashboard(props: { settingsSite: any }) {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.post("/article", mergedValues)
+      const { data } = await fetch.post("/article", mergedValues)
       setSelectedTopics([])
       setSelectedFeaturedImageUrl("")
       setSelectedFeaturedImageId("")

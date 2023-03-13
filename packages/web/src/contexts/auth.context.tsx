@@ -1,8 +1,6 @@
 import * as React from "react"
 import axios from "axios"
 
-import env from "@/env"
-
 export const AuthContext = React.createContext<any>(null)
 
 interface AuthProviderProps {
@@ -19,7 +17,6 @@ export const AuthProvider: React.FunctionComponent<AuthProviderProps> = (
     accessToken: "",
   })
 
-  axios.defaults.baseURL = env.API
   axios.defaults.headers.common["Authorization"] = `Bearer ${auth?.accessToken}`
 
   React.useEffect(() => {

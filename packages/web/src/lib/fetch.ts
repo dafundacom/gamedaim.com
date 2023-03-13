@@ -1,6 +1,16 @@
 import axios from "axios"
+
 import env from "@/env"
-export const fetcher = (url: string) => axios.get(url).then((res) => res.data)
+
+export const fetch = axios.create({
+  baseURL: env.API,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  withCredentials: false,
+})
+
 export async function fetcherGraphQL(req: { query: any; variables: any }) {
   const headers = { "Content-Type": "application/json" }
   const { query, variables } = req
@@ -13,3 +23,5 @@ export async function fetcherGraphQL(req: { query: any; variables: any }) {
   })
   return data
 }
+
+export const fetcher = (url: string) => fetch.get(url).then((res) => res.data)

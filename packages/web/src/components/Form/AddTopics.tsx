@@ -1,11 +1,11 @@
-import axios from "axios"
 import * as React from "react"
-import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import { useForm } from "react-hook-form"
 import { MdOutlineClose } from "react-icons/md"
 import { Button, FormErrorMessage, Heading, Input } from "ui"
 
 import { TopicDataProps } from "@/lib/data-types"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -44,7 +44,7 @@ export const AddTopics = (props: AddTopicsProps) => {
     async (value: any) => {
       if (value.title.length > 0) {
         try {
-          const { data } = await axios.post("/topic", value)
+          const { data } = await fetch.post("/topic", value)
           addSelectedTopics((prev: any) => [...prev, data])
           addTopics((prev: any) => [...prev, data.id])
           if (data?.error) {
@@ -97,7 +97,7 @@ export const AddTopics = (props: AddTopicsProps) => {
     e.preventDefault()
     setInputValue(e.target.value)
     if (e.target.value.length > 1) {
-      const { data } = await axios.get(`/topic/search/${e.target.value}`)
+      const { data } = await fetch.get(`/topic/search/${e.target.value}`)
 
       setSearchResults(data)
     } else if (e.target.value.length < 1) {
@@ -112,7 +112,7 @@ export const AddTopics = (props: AddTopicsProps) => {
       assignTopic(value.id)
       addSelectedTopics((prev: any) => [...prev, value])
     } else {
-      toast.error(value.title + " telah dikirimkan")
+      toast.error(value.title + " already created")
       setInputValue("")
       setSearchResults([])
     }

@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import parse from "html-react-parser"
 import dynamic from "next/dynamic"
 import NextImage from "next/image"
@@ -8,6 +7,7 @@ import NextLink from "next/link"
 import { wpPrimaryCategorySlug } from "@/lib/wp-categories"
 import { WpPostsDataProps } from "@/lib/wp-data-types"
 import { wpTagPathBySlug } from "@/lib/wp-tags"
+import { fetch } from "@/lib/fetch"
 import { parseAndSplitHTMLString, splitUriWP } from "@/utils/split-html"
 
 const MetadataPost = dynamic(() =>
@@ -94,7 +94,7 @@ export const Article = React.forwardRef<HTMLDivElement, PostProps>(
 
     const getAds = async () => {
       try {
-        const { data } = await axios.get("/ad/page/1")
+        const { data } = await fetch.get("/ad/page/1")
         setAd(data)
         setLoadingAd(true)
       } catch (err: any) {

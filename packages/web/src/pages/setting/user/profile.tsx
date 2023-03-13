@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import env from "@/env"
 
 import toast from "react-hot-toast"
@@ -22,6 +21,7 @@ import { ModalSelectMedia } from "@/components/Modal"
 import { DefaultLayout } from "@/layouts/Default"
 import { UserRole } from "@/components/Role"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   username: string
@@ -65,7 +65,7 @@ export default function SettingUserProfile(props: { settingsSite: any }) {
 
   const loadUser = async () => {
     try {
-      const { data } = await axios.get(`/user/${auth.user.id}`)
+      const { data } = await fetch.get(`/user/${auth.user.id}`)
       setUser({
         username: data.username,
         name: data.name,
@@ -96,7 +96,7 @@ export default function SettingUserProfile(props: { settingsSite: any }) {
         ...values,
         profilePictureId: selectedProfilePictureId,
       }
-      const { data } = await axios.put(
+      const { data } = await fetch.put(
         `/user/${auth.user.id}`,
         selectedProfilePictureId ? mergedValues : values,
       )

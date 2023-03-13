@@ -1,11 +1,8 @@
 import * as React from "react"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
 import { useForm } from "react-hook-form"
-import env from "@/env"
-
 import {
   Button,
   Checkbox,
@@ -17,9 +14,11 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -43,7 +42,7 @@ export default function CreateScriptsDashBoard(props: { settingsSite: any }) {
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
-      const { data } = await axios.post("/script", values)
+      const { data } = await fetch.post("/script", values)
       if (data?.error) {
         toast.error(data.error)
       } else {

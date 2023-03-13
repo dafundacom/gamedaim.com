@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -18,7 +17,7 @@ import {
 import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { fetcher } from "@/lib/fetcher"
+import { fetch, fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 interface FormValues {
@@ -186,7 +185,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitTitle = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -202,7 +201,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitMetaTitle = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -217,7 +216,7 @@ export default function Settings(props: { settingsSite: any }) {
   }
   const onSubmitDescription = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -233,7 +232,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitMetaDescription = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -249,7 +248,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitUrl = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -265,7 +264,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitFacebook = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -281,7 +280,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitInstagram = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -297,7 +296,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitTwitter = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -313,7 +312,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitPinterest = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -329,7 +328,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitYoutube = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)
@@ -345,7 +344,7 @@ export default function Settings(props: { settingsSite: any }) {
 
   const onSubmitTagline = async (values: any) => {
     try {
-      const { data } = await axios.post("/setting", values)
+      const { data } = await fetch.post("/setting", values)
 
       if (data?.error) {
         toast.error(data.error)

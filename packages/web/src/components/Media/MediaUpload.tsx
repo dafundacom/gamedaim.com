@@ -1,9 +1,9 @@
 import * as React from "react"
-import axios from "axios"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { Button, DropZone, FormControl, FormErrorMessage } from "ui"
 
+import { fetch } from "@/lib/fetch"
 import { resizeImage } from "@/utils/resize-image"
 
 interface FormValues {
@@ -31,7 +31,7 @@ export const MediaUpload = React.forwardRef<HTMLDivElement, MediaUploadProps>(
       setLoading(true)
       try {
         const image = await resizeImage(values.file[0])
-        const { data } = await axios.post(
+        const { data } = await fetch.post(
           "/media/image",
           { image },
           { headers: { "Content-Type": "multipart/form-data" } },
