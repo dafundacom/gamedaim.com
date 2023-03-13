@@ -1,14 +1,14 @@
-import axiosInstance from "@/utils/axiosinstance"
+import { getDatas } from "./fetcher"
 
 export const getScriptsCount = async () => {
-  const { data } = await axiosInstance.get("/script/count")
+  const data = await getDatas("/script/count")
   return data
 }
 
 export const getScripts = async (page: number) => {
   let scriptsData
   try {
-    const { data } = await axiosInstance.get(`/script/page/${page}`)
+    const data = await getDatas(`/script/page/${page}`)
     scriptsData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

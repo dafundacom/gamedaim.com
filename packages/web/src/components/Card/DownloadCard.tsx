@@ -46,7 +46,10 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
                       width={400}
                       height={400}
                       className="loading-image h-[185px] w-[200px] max-w-[unset] object-cover"
-                      onError={() => setThumbnail("/image/image-error.svg")}
+                      onError={(e: any) => {
+                        setThumbnail("/image/image-error.svg")
+                        e.target.style.backgroundColor = "#e7e7e7"
+                      }}
                       onLoadingComplete={(e) => {
                         e.classList.remove("loading-image")
                       }}

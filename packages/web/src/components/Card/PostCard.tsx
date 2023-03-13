@@ -50,7 +50,10 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               width={350}
               className="post-card-thumbnail loading-image h-[90px] min-h-[90px] w-[125px] min-w-[125px] rounded-lg object-cover md:!h-[193px] md:!min-h-full md:!w-[270px] md:!min-w-[270px]"
               src={thumbnail}
-              onError={() => setThumbnail("/image/image-error.svg")}
+              onError={(e: any) => {
+                setThumbnail("/image/image-error.svg")
+                e.target.style.backgroundColor = "#e7e7e7"
+              }}
               onLoadingComplete={(e) => {
                 e.classList.remove("loading-image")
               }}

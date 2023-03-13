@@ -35,7 +35,10 @@ export const ArticleCardFeatured = React.forwardRef<
                 width={600}
                 className="loading-image aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
                 src={thumbnail}
-                onError={() => setThumbnail("/image/image-error.svg")}
+                onError={(e: any) => {
+                  setThumbnail("/image/image-error.svg")
+                  e.target.style.backgroundColor = "#e7e7e7"
+                }}
                 onLoadingComplete={(e) => {
                   e.classList.remove("loading-image")
                 }}

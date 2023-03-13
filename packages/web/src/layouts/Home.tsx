@@ -30,22 +30,18 @@ export const HomeLayout = React.forwardRef<HTMLDivElement, HomeLayoutProps>(
             onClick={onToggle}
             className={`${
               isOpen == true && "!block md:!hidden"
-            } fixed top-0 bottom-0 z-[19] hidden w-full bg-black opacity-80 transition-all`}
+            } fixed top-0 bottom-0 z-[19] hidden w-full bg-black opacity-80`}
           />
         </div>
         <div
           id="container"
           className={`mt-20 flex w-full ${
             isOpen == true && "md:!pl-[0]"
-          } transition-[padding] delay-150 ease-in-out md:pl-[250px]`}
+          } delay-150 ease-in-out md:pl-[250px]`}
         >
           {children}
         </div>
-        <Footer
-          className={`transition-[padding] delay-150 ease-in-out md:pl-[250px] ${
-            isOpen == true && "md:!pl-[0]"
-          }`}
-        />
+        <Footer className={`md:pl-[250px] ${isOpen == true && "md:!pl-[0]"}`} />
       </div>
     )
   },
