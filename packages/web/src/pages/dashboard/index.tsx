@@ -20,7 +20,7 @@ import { Heading } from "ui"
 import { AdminOrAuthorRole } from "@/components/Role"
 import { BoxDashboard } from "@/components/Box"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { fetcher } from "@/lib/fetcher"
+import { fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 export default function Dashboard(props: { settingsSite: any }) {

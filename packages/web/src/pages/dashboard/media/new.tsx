@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
@@ -11,6 +10,7 @@ import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { resizeImage } from "@/utils/resize-image"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   file: Blob
@@ -33,7 +33,7 @@ export default function UploadMediaDashboard(props: { settingsSite: any }) {
     setLoading(true)
     try {
       const image = await resizeImage(values.file[0])
-      const { data } = await axios.post(
+      const { data } = await fetch.post(
         "/media/image",
         { image },
         { headers: { "Content-Type": "multipart/form-data" } },

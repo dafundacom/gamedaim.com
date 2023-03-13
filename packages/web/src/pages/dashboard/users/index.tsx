@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import axios from "axios"
 import env from "@/env"
 
 import dayjs from "dayjs"
@@ -23,7 +22,7 @@ import { AdminOrAuthorRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { UserDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
+import { fetch, fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 export default function UsersDashboard(props: { settingsSite: any }) {
@@ -57,7 +56,7 @@ export default function UsersDashboard(props: { settingsSite: any }) {
 
   const handleDelete = async (item: { id: any }) => {
     try {
-      const { data } = await axios.delete(`/user/${item.id}`)
+      const { data } = await fetch.delete(`/user/${item.id}`)
 
       setPost((prev: any) => ({
         ...prev,

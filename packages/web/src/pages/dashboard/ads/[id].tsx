@@ -1,12 +1,8 @@
 import * as React from "react"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
-
-import env from "@/env"
-
 import {
   Button,
   Checkbox,
@@ -19,9 +15,12 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
+
 interface FormValues {
   title: string
   content: string
@@ -66,7 +65,7 @@ export default function EditAdDashboard(props: { settingsSite: any }) {
 
   const loadAd = async () => {
     try {
-      const { data } = await axios.get(`/ad/${router.query.id}`)
+      const { data } = await fetch.get(`/ad/${router.query.id}`)
       setAd({
         id: data.id,
         title: data.title,
@@ -90,7 +89,7 @@ export default function EditAdDashboard(props: { settingsSite: any }) {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true)
-      const { data } = await axios.put(`/ad/${ad.id}`, values)
+      const { data } = await fetch.put(`/ad/${ad.id}`, values)
       if (data?.error) {
         toast.error(data?.error)
         setLoading(false)

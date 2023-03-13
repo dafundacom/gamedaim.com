@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
@@ -17,7 +16,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { ScriptDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
+import { fetch, fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 export default function ScriptsDashboard(props: { settingsSite: any }) {
@@ -48,7 +47,7 @@ export default function ScriptsDashboard(props: { settingsSite: any }) {
   })
   const handleDelete = async (item: { id: any }) => {
     try {
-      const { data } = await axios.delete(`/script/${item.id}`)
+      const { data } = await fetch.delete(`/script/${item.id}`)
 
       setScript((prev: any) => ({
         ...prev,

@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
@@ -18,7 +17,7 @@ import { AdminRole } from "@/components/Role"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
+import { fetch, fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 export default function AdsDashboard(props: { settingsSite: any }) {
@@ -51,7 +50,7 @@ export default function AdsDashboard(props: { settingsSite: any }) {
 
   const handleDelete = async (item: { id: string }) => {
     try {
-      const { data } = await axios.delete(`/ad/${item.id}`)
+      const { data } = await fetch.delete(`/ad/${item.id}`)
 
       setContent((prev: any) => ({
         ...prev,

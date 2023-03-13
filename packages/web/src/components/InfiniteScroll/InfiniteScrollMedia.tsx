@@ -1,13 +1,13 @@
 import * as React from "react"
-import axios from "axios"
 import NextImage from "next/image"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
 import { Button } from "ui"
 
+import { DeleteMediaButton } from "@/components/Media"
 import { MediaDataProps } from "@/lib/data-types"
-import { DeleteMediaButton } from "../Media"
+import { fetch } from "@/lib/fetch"
 
 interface InfiniteScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   medias: any
@@ -71,7 +71,7 @@ export const InfiniteScrollMedia = React.forwardRef<
   }, [handleObserver, index, isLibrary, medias, router.events, setPage])
   const handleDelete = async (item: { name: any }) => {
     try {
-      const { data } = await axios.delete(`/media/name/${item.name}`)
+      const { data } = await fetch.delete(`/media/name/${item.name}`)
       updateMedia()
 
       if (data) toast.success("Media deleted successfully")
