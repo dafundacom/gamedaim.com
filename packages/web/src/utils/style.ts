@@ -54,6 +54,7 @@ export default defineConfig({
         Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji,
         segoe ui symbol, noto color emoji !important;
     }
+
     @keyframes loading {
       0% {
         background-color: #f5f5f5;

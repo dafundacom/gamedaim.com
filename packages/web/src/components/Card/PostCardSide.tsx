@@ -22,7 +22,7 @@ export const PostCardSide = React.forwardRef<
         ref={ref}
         {...rest}
       >
-        <div className="relative flex max-w-xs flex-col space-y-3 md:max-w-3xl md:flex-row md:space-x-4 md:space-y-0">
+        <div className="relative flex max-w-xs flex-col space-y-3 md:max-w-3xl md:!flex-row md:space-x-4 md:space-y-0">
           <div className="relative">
             <NextImage
               priority={true}

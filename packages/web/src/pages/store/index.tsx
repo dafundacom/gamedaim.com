@@ -6,10 +6,17 @@ import { StoreLayout } from "@/layouts/Store"
 import { ListCardStore, ListLinkTopup } from "@/components/List"
 
 import { getSettingsSite } from "@/lib/settings"
+import { BannerStore } from "@/components/Banner"
 
 export default function Store(props: { settingsSite: any }) {
   const { settingsSite } = props
   const router = useRouter()
+  const banner = [
+    { title: "anu" },
+    { title: "anut" },
+    { title: "are" },
+    { title: "tu" },
+  ]
   return (
     <>
       <NextSeo
@@ -30,6 +37,9 @@ export default function Store(props: { settingsSite: any }) {
       />
       <StoreLayout>
         <div className="mx-auto flex w-full flex-col space-y-4 md:max-[991px]:max-w-[750px] min-[992px]:max-[1199px]:max-w-[970px] min-[1200px]:max-w-[1170px]">
+          <div>
+            <BannerStore content={banner} />
+          </div>
           <ListLinkTopup />
           <ListCardStore />
         </div>
