@@ -4,11 +4,6 @@ import env from "@/env"
 
 export const fetch = axios.create({
   baseURL: env.API,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  withCredentials: false,
 })
 
 export async function fetcherGraphQL(req: { query: any; variables: any }) {
