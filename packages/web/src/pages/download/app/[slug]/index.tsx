@@ -23,13 +23,13 @@ import {
 import { Breadcrumb, Button, Heading, Text } from "ui"
 
 import env from "@/env"
-import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
 import { DownloadFileDataProps } from "@/lib/data-types"
-import { HomeLayout } from "@/layouts/Home"
-import axios from "axios"
-import { parseAndSplitHTMLString } from "@/utils/split-html"
 import { PopupAd } from "@/components/Ads/PopupAd"
+import { HomeLayout } from "@/layouts/Home"
+import { getDownloadBySlug, getDownloadByType } from "@/lib/download"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
+import { parseAndSplitHTMLString } from "@/utils/split-html"
 
 const DownloadCardSide = dynamic(() =>
   import("@/components/Card").then((mod) => mod.DownloadCardSide),
@@ -71,7 +71,7 @@ export default function DownloadApp(props: {
 
   const getAds = async () => {
     try {
-      const { data } = await axios.get("/ad/page/1")
+      const { data } = await fetch.get("/ad/page/1")
       setAd(data)
       setLoadingAd(true)
     } catch (err: any) {

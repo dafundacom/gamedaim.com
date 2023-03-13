@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import toast from "react-hot-toast"
@@ -16,7 +15,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { CommentDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
+import { fetch, fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
 
 export default function CommentsDashboard(props: { settingsSite: any }) {
@@ -50,7 +49,7 @@ export default function CommentsDashboard(props: { settingsSite: any }) {
 
   const handleDelete = async (item: { id: any }) => {
     try {
-      const { data } = await axios.delete(`/comment/${item.id}`)
+      const { data } = await fetch.delete(`/comment/${item.id}`)
 
       setPost((prev: any) => ({
         ...prev,

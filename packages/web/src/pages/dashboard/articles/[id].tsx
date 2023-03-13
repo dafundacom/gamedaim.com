@@ -1,7 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -9,9 +8,6 @@ import { useForm } from "react-hook-form"
 import { MdChevronLeft, MdOutlineViewSidebar } from "react-icons/md"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { EditorKitExtension, EditorMenu } from "editor"
-
-import env from "@/env"
-
 import {
   Button,
   FormControl,
@@ -23,12 +19,15 @@ import {
   Textarea,
   useDisclosure,
 } from "ui"
+
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
 import { TopicDataProps } from "@/lib/data-types"
 import { AddTopics } from "@/components/Form"
 import { ModalSelectMedia } from "@/components/Modal"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -83,7 +82,7 @@ export default function EditArticleDashboard(props: { settingsSite: any }) {
 
   const loadArticle = async () => {
     try {
-      const { data } = await axios.get(`/article/${router.query.id}`)
+      const { data } = await fetch.get(`/article/${router.query.id}`)
       setArticle({
         id: data.id,
         title: data.title,
@@ -120,7 +119,7 @@ export default function EditArticleDashboard(props: { settingsSite: any }) {
         topicIds: topics,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.put(`/article/${article.id}`, mergedValues)
+      const { data } = await fetch.put(`/article/${article.id}`, mergedValues)
 
       if (data?.error) {
         toast.error(data?.error)

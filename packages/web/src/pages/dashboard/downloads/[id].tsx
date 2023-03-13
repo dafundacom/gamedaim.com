@@ -1,7 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -21,8 +20,8 @@ import {
   Textarea,
   useDisclosure,
 } from "ui"
-import env from "@/env"
 
+import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { ArticleDashboardLayout } from "@/layouts/ArticleDashboard"
@@ -35,6 +34,7 @@ import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Thead, Tr, Th, Tbody, Td } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -106,7 +106,7 @@ export default function EditDownloadDashboard(props: { settingsSite: any }) {
 
   const loadDownload = async () => {
     try {
-      const { data } = await axios.get(`/download/${router.query.id}`)
+      const { data } = await fetch.get(`/download/${router.query.id}`)
       setDownload({
         id: data.id,
         title: data.title,
@@ -173,7 +173,7 @@ export default function EditDownloadDashboard(props: { settingsSite: any }) {
           featuredImageId: selectedFeaturedImageId,
           downloadFileIds: selectedDownloadFileId,
         }
-        const { data } = await axios.put(
+        const { data } = await fetch.put(
           `/download/${download.id}`,
           mergedValues,
         )

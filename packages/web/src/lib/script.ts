@@ -1,14 +1,14 @@
-import { getDatas } from "./fetcher"
+import { fetch } from "@/lib/fetch"
 
 export const getScriptsCount = async () => {
-  const data = await getDatas("/script/count")
+  const { data } = await fetch.get("/script/count")
   return data
 }
 
 export const getScripts = async (page: number) => {
   let scriptsData
   try {
-    const data = await getDatas(`/script/page/${page}`)
+    const { data } = await fetch.get(`/script/page/${page}`)
     scriptsData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

@@ -1,7 +1,6 @@
 import * as React from "react"
 import NextImage from "next/image"
 import NextLink from "next/link"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
@@ -31,6 +30,7 @@ import { AddDownloadFile, AddTopics } from "@/components/Form"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ActionDashboard } from "@/components/Action"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -105,7 +105,7 @@ export default function CreateDownloadsDashboard(props: { settingsSite: any }) {
           downloadFileIds: selectedDownloadFileId,
           featuredImageId: selectedFeaturedImageId,
         }
-        const { data } = await axios.post("/download", mergedValues)
+        const { data } = await fetch.post("/download", mergedValues)
         console.log(mergedValues)
 
         if (data?.error) {

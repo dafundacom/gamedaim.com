@@ -11,13 +11,12 @@ import env from "@/env"
 
 import { AdminOrAuthorRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
-import { fetcher } from "@/lib/fetcher"
 import { InfiniteScrollMedia } from "@/components/InfiniteScroll"
 import { MediaDataProps } from "@/lib/data-types"
-import axios from "axios"
 import { DeleteMediaButton } from "@/components/Media"
 import { useInfiniteMedias } from "@/lib/medias"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch, fetcher } from "@/lib/fetch"
 
 export default function MediaLibraryDashboard(props: { settingsSite: any }) {
   const { settingsSite } = props
@@ -41,7 +40,7 @@ export default function MediaLibraryDashboard(props: { settingsSite: any }) {
   )
   const handleDelete = async (item: { name: any }) => {
     try {
-      await axios.delete(`/media/name/${item.name}`)
+      await fetch.delete(`/media/name/${item.name}`)
       mutate()
       toast.success("Media deleted successfully")
     } catch (err: any) {

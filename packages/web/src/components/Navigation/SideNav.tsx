@@ -14,7 +14,7 @@ import { Text } from "ui"
 
 import env from "@/env"
 import { WP_GetMenusByName } from "@/data/wp-menus"
-import { fetcherGraphQL } from "@/lib/fetcher"
+import { fetcherGraphQL } from "@/lib/fetch"
 
 interface SideNavProps {
   primaryMenus?: any

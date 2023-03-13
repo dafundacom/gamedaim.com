@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/router"
 import { NextSeo } from "next-seo"
@@ -22,6 +21,7 @@ import {
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -59,7 +59,7 @@ export default function CreateAdsDashBoard(props: { settingsSite: any }) {
   const onSubmit = async (values: any) => {
     setLoading(true)
     try {
-      const { data } = await axios.post("/ad", values)
+      const { data } = await fetch.post("/ad", values)
       if (data?.error) {
         toast.error(data.error)
       } else {

@@ -6,7 +6,7 @@ import useSWR from "swr"
 
 import env from "@/env"
 import { HomeLayout } from "@/layouts/Home"
-import { fetcher } from "@/lib/fetcher"
+import { fetcher } from "@/lib/fetch"
 import { DownloadCard, DownloadCardSide } from "@/components/Card"
 import { getDownloads } from "@/lib/download"
 import { DownloadDataProps } from "@/lib/data-types"

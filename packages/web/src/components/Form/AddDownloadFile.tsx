@@ -1,5 +1,4 @@
 import * as React from "react"
-import axios from "axios"
 import NextImage from "next/image"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -15,6 +14,7 @@ import {
 } from "ui"
 
 import { ModalSelectMedia } from "@/components/Modal"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -51,7 +51,7 @@ export const AddDownloadFile = (props: { updateDownloadFiles: any }) => {
         downloadIds: [],
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.post("/download-file", mergedValues)
+      const { data } = await fetch.post("/download-file", mergedValues)
       updateDownloadFiles(data)
       setSelectedFeaturedImageUrl("")
       setSelectedFeaturedImageId("")

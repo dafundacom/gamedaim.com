@@ -1,10 +1,11 @@
 import useSWRInfinite from "swr/infinite"
-import { fetcher, getDatas } from "./fetcher"
+
+import { fetch, fetcher } from "@/lib/fetch"
 
 export const getMediasCount = async () => {
   let mediasCountData
   try {
-    const data = await getDatas("/media/count")
+    const { data } = await fetch.get("/media/count")
     mediasCountData = data
   } catch (e) {
     console.log(`Failed to query data: ${e}`)
@@ -17,7 +18,7 @@ export const getMediasCount = async () => {
 export const getMedias = async (page = 1) => {
   let mediasData
   try {
-    const data = await getDatas(`/media/page/${page}`)
+    const { data } = await fetch.get(`/media/page/${page}`)
     mediasData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -30,7 +31,7 @@ export const getMedias = async (page = 1) => {
 export const getMediaBySlug = async (slug: string) => {
   let postData
   try {
-    const data = await getDatas(`/media/slug/${slug}`)
+    const { data } = await fetch.get(`/media/slug/${slug}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -42,7 +43,7 @@ export const getMediaBySlug = async (slug: string) => {
 export const getMediaBySearch = async (search: string) => {
   let postData
   try {
-    const data = await getDatas(`/media/search/${search}`)
+    const { data } = await fetch.get(`/media/search/${search}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -54,7 +55,7 @@ export const getMediaBySearch = async (search: string) => {
 export const getMediaByType = async (type: string, page = 1) => {
   let postData
   try {
-    const data = await getDatas(`/media/type/${type}/${page}`)
+    const { data } = await fetch.get(`/media/type/${type}/${page}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)
@@ -66,7 +67,7 @@ export const getMediaByType = async (type: string, page = 1) => {
 export const getMediaByTopics = async (slug: string, page = 1) => {
   let postData
   try {
-    const data = await getDatas(`/topic/slug/${slug}/medias/${page}`)
+    const { data } = await fetch.get(`/topic/slug/${slug}/medias/${page}`)
     postData = data
   } catch (e) {
     console.log(`Failed to query post data: ${e}`)

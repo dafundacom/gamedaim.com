@@ -1,10 +1,7 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
-import env from "@/env"
-
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import {
@@ -18,10 +15,12 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -62,7 +61,7 @@ export default function EditTopicDashboard(props: { settingsSite: any }) {
 
   const loadTopic = async () => {
     try {
-      const { data } = await axios.get(`/topic/${router.query.id}`)
+      const { data } = await fetch.get(`/topic/${router.query.id}`)
       setTopic({
         id: data.id,
         title: data.title,
@@ -92,7 +91,7 @@ export default function EditTopicDashboard(props: { settingsSite: any }) {
         ...values,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.put(
+      const { data } = await fetch.put(
         `/topic/${topic.id}`,
         selectedFeaturedImageId ? mergedValues : values,
       )

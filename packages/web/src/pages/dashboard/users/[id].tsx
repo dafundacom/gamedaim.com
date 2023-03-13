@@ -1,8 +1,5 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
-import env from "@/env"
-
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
@@ -19,10 +16,12 @@ import {
   Textarea,
 } from "ui"
 
+import env from "@/env"
 import { ModalSelectMedia } from "@/components/Modal"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { AdminRole } from "@/components/Role"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 enum UserRoles {
   "ADMIN",
@@ -72,7 +71,7 @@ export default function DashboardEditUser(props: { settingsSite: any }) {
 
   const loadUser = async () => {
     try {
-      const { data } = await axios.get(`/user/${router.query.id}`)
+      const { data } = await fetch.get(`/user/${router.query.id}`)
       setUser({
         id: data.id,
         username: data.username,
@@ -104,7 +103,7 @@ export default function DashboardEditUser(props: { settingsSite: any }) {
         ...values,
         profilePictureId: selectedProfilePictureId,
       }
-      const { data } = await axios.put(
+      const { data } = await fetch.put(
         `/user/update-by-admin/${user.id}`,
         selectedProfilePictureId ? mergedValues : values,
       )

@@ -1,12 +1,10 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
-import env from "@/env"
-
+import { MdOutlineClose } from "react-icons/md"
 import {
   Button,
   FormControl,
@@ -17,14 +15,14 @@ import {
   Text,
   Textarea,
 } from "ui"
-import { MdOutlineClose } from "react-icons/md"
 
+import env from "@/env"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { DownloadDataProps } from "@/lib/data-types"
-
 import { ModalSelectMedia } from "@/components/Modal"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   title: string
@@ -77,7 +75,7 @@ export default function EditDownloadFileDashboard(props: {
 
   const loadDownloadFile = async () => {
     try {
-      const { data } = await axios.get(`/download-file/${router.query.id}`)
+      const { data } = await fetch.get(`/download-file/${router.query.id}`)
       setDownloadFile({
         id: data.id,
         title: data.title,
@@ -110,7 +108,7 @@ export default function EditDownloadFileDashboard(props: {
     e.preventDefault()
     setInputValue(e.target.value)
     if (e.target.value.length > 1) {
-      const { data } = await axios.get(`/download/search/${e.target.value}`)
+      const { data } = await fetch.get(`/download/search/${e.target.value}`)
 
       setSearchResults(data)
     } else if (e.target.value.length < 1) {
@@ -157,7 +155,7 @@ export default function EditDownloadFileDashboard(props: {
         downloadIds: downloads,
         featuredImageId: selectedFeaturedImageId,
       }
-      const { data } = await axios.put(
+      const { data } = await fetch.put(
         `/download-file/${downloadFile.id}`,
         mergedValues,
       )

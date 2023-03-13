@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextImage from "next/image"
-import axios from "axios"
 import toast from "react-hot-toast"
 import { NextSeo } from "next-seo"
 import env from "@/env"
@@ -24,6 +23,7 @@ import { ModalSelectMedia } from "@/components/Modal"
 import { AdminRole } from "@/components/Role"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 interface FormValues {
   username: string
@@ -65,7 +65,7 @@ export default function CreateUsersDashboard(props: { settingsSite: any }) {
         ...values,
         profilePictureId: selectedProfilePictureId,
       }
-      const { data } = await axios.post(
+      const { data } = await fetch.post(
         "/user/signup",
         selectedProfilePictureId ? mergedValues : values,
       )

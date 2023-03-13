@@ -1,6 +1,5 @@
 import * as React from "react"
 import NextLink from "next/link"
-import axios from "axios"
 import dayjs from "dayjs"
 import env from "@/env"
 
@@ -23,8 +22,9 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/Table"
 import { ContentContext } from "@/contexts/content.context"
 import { DashboardLayout } from "@/layouts/Dashboard"
 import { TopicDataProps } from "@/lib/data-types"
-import { fetcher } from "@/lib/fetcher"
+import { fetcher } from "@/lib/fetch"
 import { getSettingsSite } from "@/lib/settings"
+import { fetch } from "@/lib/fetch"
 
 export default function TopicsDashboard(props: { settingsSite: any }) {
   const { settingsSite } = props
@@ -57,7 +57,7 @@ export default function TopicsDashboard(props: { settingsSite: any }) {
 
   const handleDelete = async (item: { id: any }) => {
     try {
-      const { data } = await axios.delete(`/topic/${item.id}`)
+      const { data } = await fetch.delete(`/topic/${item.id}`)
 
       setPost((prev: any) => ({
         ...prev,
