@@ -29,7 +29,7 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
     } = props
 
     const [imageAvatar, setImageAvatar] = React.useState(authorAvatarUrl)
-
+    const [thumbnail, setThumbnail] = React.useState(src)
     dayjs.extend(relativeTime)
 
     return (
@@ -49,7 +49,11 @@ export const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>(
               height={250}
               width={350}
               className="post-card-thumbnail loading-image h-[90px] min-h-[90px] w-[125px] min-w-[125px] rounded-lg object-cover md:!h-[193px] md:!min-h-full md:!w-[270px] md:!min-w-[270px]"
-              src={src}
+              src={thumbnail}
+              onError={(e: any) => {
+                setThumbnail("/image/image-error.svg")
+                e.target.style.backgroundColor = "#e7e7e7"
+              }}
               onLoadingComplete={(e) => {
                 e.classList.remove("loading-image")
               }}

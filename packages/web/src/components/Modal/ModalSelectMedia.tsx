@@ -32,13 +32,14 @@ export const ModalSelectMedia = (props: {
 
   const handleSearchChange = async (e: any) => {
     e.preventDefault()
-    setSearched(true)
 
     if (e.target.value.length > 1) {
+      setSearched(true)
       const { media } = await getMediaBySearch(e.target.value)
 
       setResultMedias(media)
     } else if (e.target.value.length < 1) {
+      setSearched(false)
       setResultMedias([])
     }
   }
@@ -58,12 +59,9 @@ export const ModalSelectMedia = (props: {
                     placeholder="Search image"
                   />
                   <Input.RightElement className="w-2">
-                    <button
-                      type="submit"
-                      className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none"
-                    >
+                    <div className="inset-y-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none">
                       <MdOutlineSearch />
-                    </button>
+                    </div>
                   </Input.RightElement>
                 </Input.Group>
               </form>

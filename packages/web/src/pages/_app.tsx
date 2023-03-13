@@ -5,7 +5,6 @@ import { ThemeProvider as NextThemeProvider } from "next-themes"
 import { Toaster } from "react-hot-toast"
 import install from "@twind/with-next/app"
 import { DefaultSeo } from "next-seo"
-
 import env from "@/env"
 import styleConfig from "@/utils/style"
 import { AuthProvider } from "@/contexts/auth.context"

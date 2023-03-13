@@ -6,6 +6,7 @@ import { SidebarToggleItem, SidebarToggleItemProps } from "./SidebarToggleItem"
 import { SidebarItem, SidebarItemProps } from "./SidebarItem"
 import { SidebarDashboard, SidebarDashboardProps } from "./SidebarDashboard"
 import { TopNav } from "./TopNav"
+import { TopNavStore } from "./TopNavStore"
 import { SideNav } from "./SideNav"
 
 interface Sidebar
@@ -41,4 +42,5 @@ export {
   SidebarDashboard,
   TopNav,
   SideNav,
+  TopNavStore,
 }

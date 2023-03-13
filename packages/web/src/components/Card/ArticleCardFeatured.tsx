@@ -14,6 +14,8 @@ export const ArticleCardFeatured = React.forwardRef<
   ArticleCardFeaturedProps
 >(({ post, ...props }, ref) => {
   const { title, featuredImage, slug } = post
+  const [thumbnail, setThumbnail] = React.useState(featuredImage?.url)
+
   return (
     <>
       <article
@@ -32,7 +34,11 @@ export const ArticleCardFeatured = React.forwardRef<
                 height={500}
                 width={600}
                 className="loading-image aspect-[8/16] !h-[300px] !w-auto rounded-md object-cover transition-all md:!aspect-[9/16]"
-                src={featuredImage?.url}
+                src={thumbnail}
+                onError={(e: any) => {
+                  setThumbnail("/image/image-error.svg")
+                  e.target.style.backgroundColor = "#e7e7e7"
+                }}
                 onLoadingComplete={(e) => {
                   e.classList.remove("loading-image")
                 }}

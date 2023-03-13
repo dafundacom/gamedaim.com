@@ -66,16 +66,17 @@ export default function Articles(props: ArticlesProps) {
         <section className="flex w-full flex-col">
           <div className="relative mb-10 flex flex-col bg-gradient-to-r !from-[#1e3799] !to-[#0984e3] py-10">
             <div className="absolute top-1 ml-4">
-              <Breadcrumb
-                className="!text-white"
-                separator={<MdChevronRight className="text-white" />}
-              >
+              <Breadcrumb separator={<MdChevronRight className="text-white" />}>
                 <Breadcrumb.Item bold>
-                  <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+                  <Breadcrumb.Link className="text-white" href="/">
+                    Home
+                  </Breadcrumb.Link>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item currentPage>
-                  <Breadcrumb.Link href="article">Article</Breadcrumb.Link>
+                  <Breadcrumb.Link className="text-white" href="article">
+                    Article
+                  </Breadcrumb.Link>
                 </Breadcrumb.Item>
               </Breadcrumb>
             </div>

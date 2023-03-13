@@ -21,6 +21,7 @@ interface DownloadCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
   (props, ref) => {
     const { list, ...rest } = props
+    const [thumbnail, setThumbnail] = React.useState(list.featuredImage?.url)
 
     return (
       <>
@@ -40,11 +41,15 @@ export const DownloadCard = React.forwardRef<HTMLDivElement, DownloadCardProps>(
                     href={`/download/${list.type.toLowerCase()}/${list.slug}`}
                   >
                     <NextImage
-                      src={list.featuredImage?.url}
+                      src={thumbnail}
                       alt={list.title}
                       width={400}
                       height={400}
                       className="loading-image h-[185px] w-[200px] max-w-[unset] object-cover"
+                      onError={(e: any) => {
+                        setThumbnail("/image/image-error.svg")
+                        e.target.style.backgroundColor = "#e7e7e7"
+                      }}
                       onLoadingComplete={(e) => {
                         e.classList.remove("loading-image")
                       }}

@@ -10,15 +10,9 @@ import { WpSinglePostDataProps } from "@/lib/wp-data-types"
 import { HomeLayout } from "@/layouts/Home"
 import { splitUriWP } from "@/utils/split-html"
 import { getSettingsSite } from "@/lib/settings"
-const PostCardSide = dynamic(() =>
-  import("@/components/Card").then((mod) => mod.PostCardSide),
-)
-const ListPostFeatured = dynamic(() =>
-  import("@/components/Card").then((mod) => mod.ListPostFeatured),
-)
-const InfiniteScrollWP = dynamic(() =>
-  import("@/components/InfiniteScroll").then((mod) => mod.InfiniteScrollWP),
-)
+import { PostCardSide, ListPostFeatured } from "@/components/Card"
+
+import { InfiniteScrollWP } from "@/components/InfiniteScroll"
 const Heading = dynamic(() => import("ui").then((mod) => mod.Heading))
 
 export default function Home(props: { postsHome: any; settingsSite: any }) {
