@@ -1,5 +1,6 @@
 import * as React from "react"
-import axios from "axios"
+
+import { fetch } from "@/lib/fetch"
 
 export const AuthContext = React.createContext<any>(null)
 
@@ -17,7 +18,7 @@ export const AuthProvider: React.FunctionComponent<AuthProviderProps> = (
     accessToken: "",
   })
 
-  axios.defaults.headers.common["Authorization"] = `Bearer ${auth?.accessToken}`
+  fetch.defaults.headers.common["Authorization"] = `Bearer ${auth?.accessToken}`
 
   React.useEffect(() => {
     if (localStorage.getItem("auth")) {
